@@ -2,28 +2,47 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:UltimateToolkit.Modern.Views" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UltimateToolkit.Modern.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="850" d:DesignWidth="1000">
+             d:DesignHeight="1000" d:DesignWidth="1050">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="24">
             <!-- Header -->
-            <Grid Margin="0,0,0,18">
+            <Grid Margin="0,0,0,16">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
-                    <TextBlock Text="💼 BT Teknik Servis Masası &amp; Zimmet Portali" FontSize="22" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" />
-                    <TextBlock Text="Arıza bildirimleri, kullanıcı destek talepleri ve donanım zimmet envanteri (Saf yerel C# &amp; SQLite altyapısı)." 
+                    <TextBlock Text="💼 BT Teknik Servis Masası &amp; Müdürlük Portali" FontSize="22" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" />
+                    <TextBlock Text="Müdürlük &amp; birim yönetimi, arıza talepleri, zimmet envanteri ve dahili C# web konsolu." 
                                FontSize="13" Foreground="{StaticResource PtTextSecondary}" Margin="0,3,0,0"/>
                 </StackPanel>
                 <Button Grid.Column="1" Content="🔄 Verileri Yenile" Style="{StaticResource PtSecondaryButton}" Click="BtnRefresh_Click" VerticalAlignment="Center"/>
             </Grid>
 
-            <!-- 1. KPI Metric Summary Cards (DevToys Style) -->
-            <Grid Margin="0,0,0,18">
+            <!-- 1. Embedded Web Dashboard Control Bar -->
+            <Border Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,16">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="🌐 Dahili BT Web Konsolu (Yerel &amp; Ağ Yayını)" FontSize="13" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}"/>
+                        <TextBlock x:Name="TxtWebStatus" Text="⚪ Web sunucusu kapalı. Başlatıldığında ağdaki cihazlar arıza kaydı bırakabilir." FontSize="11" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="BtnToggleWeb" Content="▶️ Web Panelini Başlat" Style="{StaticResource PtPrimaryButton}" Margin="0,0,8,0" Click="BtnToggleWeb_Click"/>
+                        <Button x:Name="BtnOpenBrowser" Content="🖥️ Tarayıcıda Aç" Style="{StaticResource PtSecondaryButton}" IsEnabled="False" Click="BtnOpenBrowser_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 2. KPI Metric Summary Cards -->
+            <Grid Margin="0,0,0,16">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="12" />
@@ -54,12 +73,63 @@
                 </Border>
             </Grid>
 
-            <!-- 2. Tickets Section (Arıza & Destek Talepleri) -->
-            <Border Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,18">
+            <!-- 3. Departments & Units Management (Müdürlük & Birim Ekleme) -->
+            <Border Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
                 <StackPanel>
-                    <Grid Margin="0,0,0,12">
-                        <TextBlock Text="🎫 Arıza &amp; Destek Talepleri (Tickets)" FontSize="16" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}"/>
-                        <TextBlock Text="Yeni talep oluşturun veya durumunu güncelleyin" HorizontalAlignment="Right" FontSize="12" Foreground="{StaticResource PtTextSecondary}"/>
+                    <TextBlock Text="🏢 Müdürlük &amp; Alt Birim Yönetimi" FontSize="15" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" Margin="0,0,0,10"/>
+                    
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Add Department -->
+                        <TextBox x:Name="TxtNewDeptName" Grid.Column="0" Height="34" Style="{StaticResource PtTextBox}"/>
+                        <TextBlock Text="Yeni Müdürlük Adı..." Grid.Column="0" Foreground="#666666" Margin="8,8,0,0" IsHitTestVisible="False"
+                                   Visibility="{Binding Text.IsEmpty, ElementName=TxtNewDeptName, Converter={x:Static local:EmptyToVisibilityConverter.Instance}}"/>
+                        <Button Grid.Column="2" Content="➕ Müdürlük Ekle" Style="{StaticResource PtPrimaryButton}" Height="34" Click="BtnAddDept_Click"/>
+
+                        <!-- Add Unit -->
+                        <TextBox x:Name="TxtNewUnitName" Grid.Column="4" Height="34" Style="{StaticResource PtTextBox}"/>
+                        <TextBlock Text="Seçili Müdürlüğe Alt Birim..." Grid.Column="4" Foreground="#666666" Margin="8,8,0,0" IsHitTestVisible="False"
+                                   Visibility="{Binding Text.IsEmpty, ElementName=TxtNewUnitName, Converter={x:Static local:EmptyToVisibilityConverter.Instance}}"/>
+                        <Button Grid.Column="6" Content="➕ Birim Ekle" Style="{StaticResource PtSecondaryButton}" Height="34" Click="BtnAddUnit_Click"/>
+                    </Grid>
+
+                    <!-- Departments list badges -->
+                    <ItemsControl x:Name="ListDepartments">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#1C1C1C" BorderBrush="#383838" BorderThickness="1" CornerRadius="6" Padding="10,6" Margin="0,0,8,8">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" Foreground="#38BDF8" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Units.Count, StringFormat=' ({0} Birim)'}" FontSize="11" Foreground="#888888" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                        <Button Content="✕" Tag="{Binding Id}" Style="{StaticResource PtSecondaryButton}" Padding="4,1" FontSize="10" Foreground="#EF4444" Click="BtnDeleteDept_Click"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- 4. Tickets Section (Arıza & Destek Talepleri) -->
+            <Border Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                <StackPanel>
+                    <Grid Margin="0,0,0,10">
+                        <TextBlock Text="🎫 Arıza &amp; Destek Talepleri (Tickets)" FontSize="15" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}"/>
+                        <TextBlock Text="Müdürlük ve personele göre kayıt oluşturun" HorizontalAlignment="Right" FontSize="11" Foreground="{StaticResource PtTextSecondary}"/>
                     </Grid>
 
                     <!-- New Ticket Form -->
@@ -72,7 +142,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1.2*" />
                                 <ColumnDefinition Width="8" />
-                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1.2*" />
                                 <ColumnDefinition Width="8" />
                                 <ColumnDefinition Width="0.8*" />
                                 <ColumnDefinition Width="8" />
@@ -85,9 +155,7 @@
                             <TextBlock Text="Personel Adı" Grid.Row="0" Grid.Column="0" Foreground="#666666" Margin="8,8,0,0" IsHitTestVisible="False"
                                        Visibility="{Binding Text.IsEmpty, ElementName=TxtNewPerson, Converter={x:Static local:EmptyToVisibilityConverter.Instance}}"/>
 
-                            <TextBox x:Name="TxtNewDept" Grid.Row="0" Grid.Column="2" Height="34" Style="{StaticResource PtTextBox}" Margin="0,0,0,6"/>
-                            <TextBlock Text="Birim / Müdürlük" Grid.Row="0" Grid.Column="2" Foreground="#666666" Margin="8,8,0,0" IsHitTestVisible="False"
-                                       Visibility="{Binding Text.IsEmpty, ElementName=TxtNewDept, Converter={x:Static local:EmptyToVisibilityConverter.Instance}}"/>
+                            <ComboBox x:Name="CmbDepts" Grid.Row="0" Grid.Column="2" Height="34" Style="{StaticResource PtComboBox}" Margin="0,0,0,6" DisplayMemberPath="Name"/>
 
                             <TextBox x:Name="TxtNewInternal" Grid.Row="0" Grid.Column="4" Height="34" Style="{StaticResource PtTextBox}" Margin="0,0,0,6"/>
                             <TextBlock Text="Dahili No" Grid.Row="0" Grid.Column="4" Foreground="#666666" Margin="8,8,0,0" IsHitTestVisible="False"
@@ -101,7 +169,6 @@
                                 <ComboBoxItem Content="E-Posta / Hesap"/>
                             </ComboBox>
 
-                            <!-- Row 2: Description and Submit -->
                             <TextBox x:Name="TxtNewDesc" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7" Height="34" Style="{StaticResource PtTextBox}"/>
                             <TextBlock Text="Arıza / Talep açıklaması..." Grid.Row="1" Grid.Column="0" Foreground="#666666" Margin="8,8,0,0" IsHitTestVisible="False"
                                        Visibility="{Binding Text.IsEmpty, ElementName=TxtNewDesc, Converter={x:Static local:EmptyToVisibilityConverter.Instance}}"/>
@@ -117,12 +184,12 @@
                                 <Border Background="#1C1C1C" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="6" Padding="12,8" Margin="0,3">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="60" />
+                                            <ColumnDefinition Width="50" />
+                                            <ColumnDefinition Width="130" />
                                             <ColumnDefinition Width="140" />
-                                            <ColumnDefinition Width="130" />
-                                            <ColumnDefinition Width="130" />
+                                            <ColumnDefinition Width="120" />
                                             <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="90" />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
 
@@ -169,25 +236,24 @@
                 </StackPanel>
             </Border>
 
-            <!-- 3. Hardware Inventory Section (Donanım Zimmet Envanteri) -->
+            <!-- 5. Hardware Inventory Section -->
             <Border Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16">
                 <StackPanel>
-                    <Grid Margin="0,0,0,12">
-                        <TextBlock Text="🖥️ Cihaz &amp; Donanım Zimmet Envanteri" FontSize="16" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}"/>
+                    <Grid Margin="0,0,0,10">
+                        <TextBlock Text="🖥️ Cihaz &amp; Donanım Zimmet Envanteri" FontSize="15" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}"/>
                         <Button Content="⚡ Bu Bilgisayarı Envantere Otomatik Ekle" Style="{StaticResource PtPrimaryButton}" HorizontalAlignment="Right" Click="BtnAutoRegisterPc_Click"/>
                     </Grid>
 
-                    <!-- Inventory List -->
                     <ItemsControl x:Name="ListInventory">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Background="#1C1C1C" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="6" Padding="12,8" Margin="0,3">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="140" />
                                             <ColumnDefinition Width="150" />
-                                            <ColumnDefinition Width="160" />
-                                            <ColumnDefinition Width="160" />
-                                            <ColumnDefinition Width="130" />
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition Width="120" />
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
@@ -196,7 +262,7 @@
                                         <TextBlock Grid.Column="1" Text="{Binding Model}" Foreground="#CBD5E1" VerticalAlignment="Center"/>
                                         <TextBlock Grid.Column="2" Text="{Binding SerialNo, StringFormat='SN: {0}'}" FontFamily="Consolas" Foreground="#38BDF8" VerticalAlignment="Center"/>
                                         <TextBlock Grid.Column="3" Text="{Binding IpAddress, StringFormat='IP: {0}'}" FontFamily="Consolas" Foreground="#A0A0A0" VerticalAlignment="Center"/>
-                                        <TextBlock Grid.Column="4" Text="{Binding UserName, StringFormat='Kullanıcı: {0}'}" Foreground="#E2E8F0" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="4" Text="{Binding UserName, StringFormat='Zimmet: {0}'}" Foreground="#E2E8F0" VerticalAlignment="Center"/>
                                         <Button Grid.Column="5" Content="🗑️" Tag="{Binding Id}" Style="{StaticResource PtSecondaryButton}" Padding="8,3" FontSize="11" Click="BtnDeleteInventory_Click"/>
                                     </Grid>
                                 </Border>

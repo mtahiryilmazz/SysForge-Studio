@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using UltimateToolkit.Modern.Services;
@@ -17,6 +17,7 @@ namespace UltimateToolkit.Modern
         private ToolsView? _toolsView;
         private SystemRepairView? _sysRepairView;
         private LegacyModulesView? _legacyView;
+        private AIDiagnosticView? _aiDiagView;
         private HardwareExpertiseView? _expertiseView;
         private ITTechServiceView? _itServiceView;
         private LogsView? _logsView;
@@ -38,6 +39,7 @@ namespace UltimateToolkit.Modern
             _sysRepairView = new SystemRepairView();
             _legacyView = new LegacyModulesView();
             _legacyView.NavigateToPrintersRequested += () => NavPrinters.IsChecked = true;
+            _aiDiagView = new AIDiagnosticView();
             _expertiseView = new HardwareExpertiseView();
             _itServiceView = new ITTechServiceView();
             _logsView = new LogsView();
@@ -104,6 +106,10 @@ namespace UltimateToolkit.Modern
             else if (query.Contains("yedek") || query.Contains("backup"))
             {
                 NavBackup.IsChecked = true;
+            }
+            else if (query.Contains("ai") || query.Contains("yapay") || query.Contains("zeka") || query.Contains("hata") || query.Contains("çözüm"))
+            {
+                NavAIDiag.IsChecked = true;
             }
             else if (query.Contains("ekspertiz") || query.Contains("donanım") || query.Contains("hash") || query.Contains("md5") || query.Contains("sha") || query.Contains("ram") || query.Contains("seri"))
             {
@@ -174,6 +180,12 @@ namespace UltimateToolkit.Modern
                     TxtHeaderTitle.Text = "Entegre Gelişmiş Motorlar (v6, v5, Printer Pro)";
                     TxtHeaderSubtitle.Text = "v6 Web Dashboard (Port 9999), 37 modüllü v5 IT konsolu, Printer Analyzer ve sandbox temizliği";
                     if (_legacyView != null) MainContent.Content = _legacyView;
+                    break;
+
+                case nameof(NavAIDiag):
+                    TxtHeaderTitle.Text = "Yapay Zeka Teşhis & Hızlı Onarım";
+                    TxtHeaderSubtitle.Text = "Hata kodları ve arızalar için kök neden analizi ve tek tıkla otomatik onarım komutları";
+                    if (_aiDiagView != null) MainContent.Content = _aiDiagView;
                     break;
 
                 case nameof(NavExpertise):
