@@ -95,6 +95,7 @@ namespace UltimateToolkit.Modern.Services
             EnsureColumnExists(conn, "tickets", "description", "TEXT DEFAULT ''");
             EnsureColumnExists(conn, "tickets", "date", "TEXT DEFAULT ''");
             EnsureColumnExists(conn, "tickets", "status", "TEXT DEFAULT 'Açık'");
+            EnsureColumnExists(conn, "tickets", "resolution_note", "TEXT DEFAULT ''");
 
             EnsureColumnExists(conn, "inventory", "department", "TEXT DEFAULT ''");
             EnsureColumnExists(conn, "inventory", "unit", "TEXT DEFAULT ''");
@@ -130,6 +131,19 @@ namespace UltimateToolkit.Modern.Services
 
             // Sync/Migrate data from Vanguard database if available
             TryMigrateVanguardData(conn);
+
+            // Auto-heal any existing records with Hyper-V virtual adapter IP (192.168.128.1)
+            try
+            {
+                string realIp = GetPrimaryActiveIpAddress();
+                if (realIp != "-" && realIp != "192.168.128.1")
+                {
+                    using var fixIpCmd = new SqliteCommand("UPDATE inventory SET ip_address=@newIp WHERE ip_address='192.168.128.1';", conn);
+                    fixIpCmd.Parameters.AddWithValue("@newIp", realIp);
+                    fixIpCmd.ExecuteNonQuery();
+                }
+            }
+            catch { }
         }
 
         private void EnsureColumnExists(SqliteConnection conn, string table, string column, string typeDef)
@@ -268,6 +282,10 @@ namespace UltimateToolkit.Modern.Services
         {
             using var conn = new SqliteConnection(_connectionString);
             conn.Open();
+            using var cmdUnits = new SqliteCommand("DELETE FROM units WHERE department_id=@id;", conn);
+            cmdUnits.Parameters.AddWithValue("@id", id);
+            cmdUnits.ExecuteNonQuery();
+
             using var cmd = new SqliteCommand("DELETE FROM departments WHERE id=@id;", conn);
             cmd.Parameters.AddWithValue("@id", id);
             cmd.ExecuteNonQuery();
@@ -325,7 +343,7 @@ namespace UltimateToolkit.Modern.Services
             using var conn = new SqliteConnection(_connectionString);
             conn.Open();
 
-            using var cmd = new SqliteCommand("SELECT id, department, unit, personnel_name, internal_number, issue_type, priority, description, date, status FROM tickets ORDER BY id DESC;", conn);
+            using var cmd = new SqliteCommand("SELECT id, department, unit, personnel_name, internal_number, issue_type, priority, description, date, status, resolution_note FROM tickets ORDER BY id DESC;", conn);
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -340,7 +358,8 @@ namespace UltimateToolkit.Modern.Services
                     Priority = reader.IsDBNull(6) ? "Normal" : reader.GetString(6),
                     Description = reader.IsDBNull(7) ? "" : reader.GetString(7),
                     Date = reader.IsDBNull(8) ? "-" : reader.GetString(8),
-                    Status = reader.IsDBNull(9) ? "Açık" : reader.GetString(9)
+                    Status = reader.IsDBNull(9) ? "Açık" : reader.GetString(9),
+                    ResolutionNote = reader.FieldCount > 10 && !reader.IsDBNull(10) ? reader.GetString(10) : ""
                 });
             }
 
@@ -353,8 +372,8 @@ namespace UltimateToolkit.Modern.Services
             conn.Open();
 
             using var cmd = new SqliteCommand(@"
-                INSERT INTO tickets (department, unit, personnel_name, internal_number, issue_type, priority, description, date, status)
-                VALUES (@dep, @unit, @pname, @inum, @itype, @prio, @desc, @date, @status);
+                INSERT INTO tickets (department, unit, personnel_name, internal_number, issue_type, priority, description, date, status, resolution_note)
+                VALUES (@dep, @unit, @pname, @inum, @itype, @prio, @desc, @date, @status, @note);
             ", conn);
 
             cmd.Parameters.AddWithValue("@dep", ticket.Department);
@@ -366,6 +385,7 @@ namespace UltimateToolkit.Modern.Services
             cmd.Parameters.AddWithValue("@desc", ticket.Description);
             cmd.Parameters.AddWithValue("@date", DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
             cmd.Parameters.AddWithValue("@status", ticket.Status);
+            cmd.Parameters.AddWithValue("@note", ticket.ResolutionNote ?? "");
 
             cmd.ExecuteNonQuery();
         }
@@ -380,9 +400,23 @@ namespace UltimateToolkit.Modern.Services
             cmd.ExecuteNonQuery();
         }
 
-        public void ResolveTicket(int id)
+        public void ResolveTicket(int id, string? resolutionNote = null)
         {
-            UpdateTicketStatus(id, "Çözüldü");
+            using var conn = new SqliteConnection(_connectionString);
+            conn.Open();
+            if (!string.IsNullOrWhiteSpace(resolutionNote))
+            {
+                using var cmd = new SqliteCommand("UPDATE tickets SET status='Çözüldü', resolution_note=@note WHERE id=@id;", conn);
+                cmd.Parameters.AddWithValue("@note", resolutionNote.Trim());
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.ExecuteNonQuery();
+            }
+            else
+            {
+                using var cmd = new SqliteCommand("UPDATE tickets SET status='Çözüldü' WHERE id=@id;", conn);
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.ExecuteNonQuery();
+            }
         }
 
         public void DeleteTicket(int id)
@@ -488,18 +522,7 @@ namespace UltimateToolkit.Modern.Services
             }
             catch { }
 
-            try
-            {
-                foreach (var addr in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
-                {
-                    if (addr.AddressFamily == AddressFamily.InterNetwork && !IPAddress.IsLoopback(addr))
-                    {
-                        ip = addr.ToString();
-                        break;
-                    }
-                }
-            }
-            catch { }
+            ip = GetPrimaryActiveIpAddress();
 
             AddInventory(new InventoryItem
             {
@@ -513,6 +536,81 @@ namespace UltimateToolkit.Modern.Services
                 UserName = Environment.UserName,
                 Date = DateTime.Now.ToString("yyyy-MM-dd")
             });
+        }
+
+        public static string GetPrimaryActiveIpAddress()
+        {
+            string ip = "-";
+
+            // 1. Socket Routing Test (Active Default Gateway / Outgoing Interface)
+            try
+            {
+                using var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0);
+                socket.Connect("8.8.8.8", 65530);
+                if (socket.LocalEndPoint is IPEndPoint ep && !IPAddress.IsLoopback(ep.Address))
+                {
+                    string candidate = ep.Address.ToString();
+                    if (!candidate.StartsWith("192.168.128.") && !candidate.StartsWith("169.254.") && !candidate.StartsWith("127."))
+                    {
+                        return candidate;
+                    }
+                }
+            }
+            catch { }
+
+            // 2. IP Tarama panelindeki gerçek fiziksel ağ kartlarından çek
+            try
+            {
+                var adapters = ToolkitEngine.Instance.GetNetworkAdapters();
+                var physical = adapters.FirstOrDefault(a =>
+                    !string.IsNullOrWhiteSpace(a.IPAddress) &&
+                    a.IPAddress != "-" &&
+                    !a.IPAddress.StartsWith("169.254") &&
+                    !a.IPAddress.StartsWith("127.") &&
+                    !a.IPAddress.StartsWith("192.168.128.") && // Hyper-V vEthernet
+                    !a.Name.Contains("vEthernet", StringComparison.OrdinalIgnoreCase) &&
+                    !a.Name.Contains("VMware", StringComparison.OrdinalIgnoreCase) &&
+                    !a.Name.Contains("VirtualBox", StringComparison.OrdinalIgnoreCase) &&
+                    !a.Name.Contains("Loopback", StringComparison.OrdinalIgnoreCase) &&
+                    !a.Description.Contains("Virtual", StringComparison.OrdinalIgnoreCase) &&
+                    !a.Description.Contains("Hyper-V", StringComparison.OrdinalIgnoreCase) &&
+                    !a.Description.Contains("VMware", StringComparison.OrdinalIgnoreCase) &&
+                    !a.Description.Contains("Filter", StringComparison.OrdinalIgnoreCase) &&
+                    a.Gateway != "-" && a.Gateway != "0.0.0.0"
+                ) ?? adapters.FirstOrDefault(a =>
+                    !string.IsNullOrWhiteSpace(a.IPAddress) &&
+                    a.IPAddress != "-" &&
+                    !a.IPAddress.StartsWith("169.254") &&
+                    !a.IPAddress.StartsWith("192.168.128.") &&
+                    !a.Description.Contains("Virtual", StringComparison.OrdinalIgnoreCase) &&
+                    !a.Description.Contains("Hyper-V", StringComparison.OrdinalIgnoreCase)
+                );
+
+                if (physical != null && !string.IsNullOrWhiteSpace(physical.IPAddress))
+                {
+                    return physical.IPAddress;
+                }
+            }
+            catch { }
+
+            // 3. Fallback DNS AddressList with virtual IP filtering
+            try
+            {
+                foreach (var addr in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
+                {
+                    if (addr.AddressFamily == AddressFamily.InterNetwork && !IPAddress.IsLoopback(addr))
+                    {
+                        string s = addr.ToString();
+                        if (!s.StartsWith("192.168.128.") && !s.StartsWith("169.254."))
+                        {
+                            return s;
+                        }
+                    }
+                }
+            }
+            catch { }
+
+            return ip;
         }
 
         #endregion

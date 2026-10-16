@@ -131,19 +131,25 @@
                     <ItemsControl x:Name="ListDisks">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="#1E1E1E" Padding="10,6" Margin="0,2" CornerRadius="4">
+                                <Border Background="#1E1E1E" Padding="12,7" Margin="0,2" CornerRadius="4">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" MinWidth="220"/>
+                                            <ColumnDefinition Width="340" />
                                         </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <TextBlock Text="{Binding Model}" FontWeight="SemiBold" Foreground="#FFFFFF"/>
-                                            <TextBlock Text="{Binding InterfaceType}" FontSize="11" Foreground="#888888"/>
+                                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Model}" FontWeight="SemiBold" Foreground="#FFFFFF" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding InterfaceType, StringFormat='Bağlantı: {0}'}" FontSize="11" Foreground="#888888"/>
                                         </StackPanel>
-                                        <StackPanel Grid.Column="1" HorizontalAlignment="Right">
-                                            <TextBlock Text="{Binding SizeGB, StringFormat='{}{0} GB'}" FontWeight="Bold" Foreground="#38BDF8"/>
-                                            <TextBlock Text="{Binding SerialNumber}" FontSize="11" Foreground="#AAAAAA" FontFamily="Consolas"/>
+                                        <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                            <TextBlock HorizontalAlignment="Left">
+                                                <Run Text="Boyut: " Foreground="#888888" FontSize="11"/>
+                                                <Run Text="{Binding SizeGB, StringFormat='{}{0} GB'}" FontWeight="Bold" Foreground="#38BDF8"/>
+                                            </TextBlock>
+                                            <TextBlock HorizontalAlignment="Left" FontFamily="Consolas" FontSize="11">
+                                                <Run Text="Seri No: " Foreground="#888888"/>
+                                                <Run Text="{Binding SerialNumber}" Foreground="#CBD5E1"/>
+                                            </TextBlock>
                                         </StackPanel>
                                     </Grid>
                                 </Border>
@@ -155,23 +161,31 @@
                     <ItemsControl x:Name="ListRam">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="#1E1E1E" Padding="10,6" Margin="0,2" CornerRadius="4">
+                                <Border Background="#1E1E1E" Padding="12,7" Margin="0,2" CornerRadius="4">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" MinWidth="220"/>
+                                            <ColumnDefinition Width="340" />
                                         </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <TextBlock>
+                                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                            <TextBlock TextTrimming="CharacterEllipsis">
                                                 <Run Text="{Binding BankLabel}" FontWeight="Bold" Foreground="#FFFFFF"/>
                                                 <Run Text=" - " Foreground="#666666"/>
                                                 <Run Text="{Binding Manufacturer}" Foreground="#DDDDDD"/>
                                             </TextBlock>
-                                            <TextBlock Text="{Binding PartNumber}" FontSize="11" Foreground="#888888"/>
+                                            <TextBlock Text="{Binding PartNumber, StringFormat='Parça No: {0}'}" FontSize="11" Foreground="#888888"/>
                                         </StackPanel>
-                                        <StackPanel Grid.Column="1" HorizontalAlignment="Right">
-                                            <TextBlock Text="{Binding CapacityGB, StringFormat='{}{0} GB'}" FontWeight="Bold" Foreground="#107C41"/>
-                                            <TextBlock Text="{Binding SerialNumber}" FontSize="11" Foreground="#AAAAAA" FontFamily="Consolas"/>
+                                        <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                            <TextBlock HorizontalAlignment="Left">
+                                                <Run Text="Kapasite: " Foreground="#888888" FontSize="11"/>
+                                                <Run Text="{Binding CapacityGB, StringFormat='{}{0} GB'}" FontWeight="Bold" Foreground="#107C41"/>
+                                                <Run Text="  Hız: " Foreground="#888888" FontSize="11"/>
+                                                <Run Text="{Binding SpeedMHz, StringFormat='{}{0} MHz'}" Foreground="#94A3B8" FontSize="11"/>
+                                            </TextBlock>
+                                            <TextBlock HorizontalAlignment="Left" FontFamily="Consolas" FontSize="11">
+                                                <Run Text="Seri No: " Foreground="#888888"/>
+                                                <Run Text="{Binding SerialNumber}" Foreground="#CBD5E1"/>
+                                            </TextBlock>
                                         </StackPanel>
                                     </Grid>
                                 </Border>

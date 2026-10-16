@@ -29,6 +29,8 @@ namespace UltimateToolkit.Modern.Models
         public string Description { get; set; } = "";
         public string Date { get; set; } = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
         public string Status { get; set; } = "Açık";
+        public string ResolutionNote { get; set; } = "";
+        public bool HasResolutionNote => !string.IsNullOrWhiteSpace(ResolutionNote);
     }
 
     public class InventoryItem

@@ -121,20 +121,80 @@ namespace UltimateToolkit.Modern.Services
                     return;
                 }
 
-                // 2. GET: Resolve Ticket
+                // 2. POST: Create Department
+                if (req.HttpMethod == "POST" && path == "/api/departments/create")
+                {
+                    using var reader = new StreamReader(req.InputStream, req.ContentEncoding);
+                    string body = await reader.ReadToEndAsync();
+                    var nvc = System.Web.HttpUtility.ParseQueryString(body);
+                    string name = (nvc["name"] ?? "").Trim();
+                    if (!string.IsNullOrWhiteSpace(name))
+                    {
+                        ITServiceDatabase.Instance.AddDepartment(name);
+                    }
+                    res.Redirect("/?msg=dept_created");
+                    res.Close();
+                    return;
+                }
+
+                // 3. GET: Delete Department
+                if (path == "/api/departments/delete")
+                {
+                    string idStr = req.QueryString["id"] ?? "";
+                    if (int.TryParse(idStr, out int deptId))
+                    {
+                        ITServiceDatabase.Instance.DeleteDepartment(deptId);
+                    }
+                    res.Redirect("/?msg=dept_deleted");
+                    res.Close();
+                    return;
+                }
+
+                // 4. POST: Create Unit
+                if (req.HttpMethod == "POST" && path == "/api/units/create")
+                {
+                    using var reader = new StreamReader(req.InputStream, req.ContentEncoding);
+                    string body = await reader.ReadToEndAsync();
+                    var nvc = System.Web.HttpUtility.ParseQueryString(body);
+                    string deptIdStr = (nvc["dept_id"] ?? "").Trim();
+                    string name = (nvc["name"] ?? "").Trim();
+                    if (int.TryParse(deptIdStr, out int deptId) && !string.IsNullOrWhiteSpace(name))
+                    {
+                        ITServiceDatabase.Instance.AddUnit(deptId, name);
+                    }
+                    res.Redirect("/?msg=unit_created");
+                    res.Close();
+                    return;
+                }
+
+                // 5. GET: Delete Unit
+                if (path == "/api/units/delete")
+                {
+                    string idStr = req.QueryString["id"] ?? "";
+                    if (int.TryParse(idStr, out int unitId))
+                    {
+                        ITServiceDatabase.Instance.DeleteUnit(unitId);
+                    }
+                    res.Redirect("/?msg=unit_deleted");
+                    res.Close();
+                    return;
+                }
+
+                // 6. GET: Resolve Ticket
                 if (path == "/api/tickets/resolve")
                 {
                     string idStr = req.QueryString["id"] ?? "";
+                    string note = req.QueryString["note"] ?? "";
                     if (int.TryParse(idStr, out int ticketId))
                     {
-                        ITServiceDatabase.Instance.ResolveTicket(ticketId);
+                        ITServiceDatabase.Instance.ResolveTicket(ticketId, note);
                     }
                     res.Redirect("/?msg=resolved");
                     res.Close();
                     return;
                 }
 
-                // 3. GET: Delete Ticket
+                // 7. GET: Delete Ticket
                 if (path == "/api/tickets/delete")
                 {
                     string idStr = req.QueryString["id"] ?? "";
@@ -170,6 +230,22 @@ namespace UltimateToolkit.Modern.Services
                 else if (msg == "deleted")
                 {
                     toastHtml = "<div class='toast toast-warning'>🗑️ Kayıt başarıyla silindi.</div>";
+                }
+                else if (msg == "dept_created")
+                {
+                    toastHtml = "<div class='toast toast-success'>🏢 Yeni müdürlük başarıyla eklendi.</div>";
+                }
+                else if (msg == "dept_deleted")
+                {
+                    toastHtml = "<div class='toast toast-warning'>🗑️ Müdürlük ve bağlı alt birimleri başarıyla silindi.</div>";
+                }
+                else if (msg == "unit_created")
+                {
+                    toastHtml = "<div class='toast toast-success'>🏢 Yeni alt birim başarıyla eklendi.</div>";
+                }
+                else if (msg == "unit_deleted")
+                {
+                    toastHtml = "<div class='toast toast-warning'>🗑️ Alt birim silindi.</div>";
                 }
 
                 var sb = new StringBuilder();
@@ -218,10 +294,14 @@ namespace UltimateToolkit.Modern.Services
                 sb.AppendLine(".chip-open { background: rgba(245,158,11,0.2); color: #FBBF24; border: 1px solid rgba(245,158,11,0.4); }");
                 sb.AppendLine(".chip-done { background: rgba(16,124,65,0.2); color: #4ADE80; border: 1px solid rgba(16,124,65,0.4); }");
                 sb.AppendLine(".chip-priority { background: #2A2A2A; border: 1px solid var(--border); color: #CBD5E1; }");
-                sb.AppendLine(".action-link { text-decoration: none; font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 5px; margin-right: 6px; transition: opacity 0.15s; }");
+                sb.AppendLine(".action-link { text-decoration: none; font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 5px; margin-right: 6px; transition: opacity 0.15s; cursor: pointer; display: inline-block; }");
                 sb.AppendLine(".action-resolve { background: #107C41; color: #fff; }");
                 sb.AppendLine(".action-delete { background: #383838; color: #EF4444; }");
                 sb.AppendLine(".action-link:hover { opacity: 0.85; }");
+                sb.AppendLine(".dept-card { background: #181818; border: 1px solid #333; border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; }");
+                sb.AppendLine(".dept-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }");
+                sb.AppendLine(".unit-pill { display: inline-flex; align-items: center; gap: 6px; background: #262626; border: 1px solid #3A3A3A; border-radius: 4px; padding: 3px 8px; font-size: 12px; color: #E2E8F0; margin-right: 6px; margin-bottom: 6px; }");
+                sb.AppendLine(".unit-del { color: #F87171; text-decoration: none; font-size: 11px; font-weight: bold; cursor: pointer; }");
                 sb.AppendLine(".footer { text-align: center; color: #64748B; font-size: 12px; margin-top: 36px; padding-top: 18px; border-top: 1px solid #262626; }");
                 sb.AppendLine("</style>");
                 sb.AppendLine("<script>");
@@ -240,6 +320,12 @@ namespace UltimateToolkit.Modern.Services
                 sb.AppendLine("    var text = row.textContent.toLowerCase();");
                 sb.AppendLine("    row.style.display = text.indexOf(filter) > -1 ? '' : 'none';");
                 sb.AppendLine("  });");
+                sb.AppendLine("}");
+                sb.AppendLine("function resolveTicket(id) {");
+                sb.AppendLine("  var note = prompt('Yapılan işlem veya arıza çözüm açıklamasını giriniz (İsteğe bağlı):', '');");
+                sb.AppendLine("  if (note !== null) {");
+                sb.AppendLine("    window.location.href = '/api/tickets/resolve?id=' + id + '&note=' + encodeURIComponent(note);");
+                sb.AppendLine("  }");
                 sb.AppendLine("}");
                 sb.AppendLine("</script>");
                 sb.AppendLine("</head><body><div class='container'>");
@@ -266,7 +352,60 @@ namespace UltimateToolkit.Modern.Services
                 sb.AppendLine($"  <div class='kpi-card'><div class='kpi-title' style='color:#8B5CF6;'>Kayıtlı Cihaz Envanteri</div><div class='kpi-num' style='color:#A78BFA;'>{inventoryCount}</div></div>");
                 sb.AppendLine("</div>");
 
-                // 1. New Ticket Form Card
+                // 1. Department & Unit Management Card
+                sb.AppendLine("<div class='card'>");
+                sb.AppendLine("  <div class='card-header'><div class='card-title'>🏢 Müdürlük &amp; Alt Birim Yönetimi</div><span style='font-size:12px;color:var(--text-muted);'>Müdürlük ekleme, birim bağlama ve silme işlemleri</span></div>");
+                sb.AppendLine("  <div style='display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:20px;'>");
+                
+                // Add Dept form
+                sb.AppendLine("    <form method='POST' action='/api/departments/create' style='display:flex;gap:8px;align-items:flex-end;'>");
+                sb.AppendLine("      <div style='flex:1;'><label>Yeni Müdürlük Adı</label><input type='text' name='name' placeholder='Örn: İnsan Kaynakları Müdürlüğü' required/></div>");
+                sb.AppendLine("      <button type='submit' class='btn-primary' style='height:42px;padding:0 16px;white-space:nowrap;'>➕ Müdürlük Ekle</button>");
+                sb.AppendLine("    </form>");
+
+                // Add Unit form with target department select
+                sb.AppendLine("    <form method='POST' action='/api/units/create' style='display:flex;gap:8px;align-items:flex-end;'>");
+                sb.AppendLine("      <div style='flex:1;'><label>Hedef Müdürlük</label><select name='dept_id' required>");
+                foreach (var d in departments)
+                {
+                    sb.AppendLine($"        <option value='{d.Id}'>{d.Name}</option>");
+                }
+                sb.AppendLine("      </select></div>");
+                sb.AppendLine("      <div style='flex:1;'><label>Yeni Alt Birim Adı</label><input type='text' name='name' placeholder='Örn: Özlük İşleri' required/></div>");
+                sb.AppendLine("      <button type='submit' class='btn-primary' style='height:42px;padding:0 16px;background:#383838;white-space:nowrap;'>➕ Birim Ekle</button>");
+                sb.AppendLine("    </form>");
+                sb.AppendLine("  </div>");
+
+                // Existing Departments List with Delete buttons
+                if (departments.Count == 0)
+                {
+                    sb.AppendLine("  <div style='color:var(--text-muted);font-size:13px;'>Henüz kayıtlı müdürlük bulunmuyor.</div>");
+                }
+                else
+                {
+                    foreach (var d in departments)
+                    {
+                        sb.AppendLine("  <div class='dept-card'>");
+                        sb.AppendLine("    <div class='dept-header'>");
+                        sb.AppendLine($"      <div><strong style='color:#38BDF8;'>🏢 {d.Name}</strong> <span style='font-size:11.5px;color:var(--text-muted);margin-left:6px;'>({d.Units.Count} Alt Birim)</span></div>");
+                        sb.AppendLine($"      <a href='/api/departments/delete?id={d.Id}' class='action-link action-delete' onclick='return confirm(\"{d.Name} müdürlüğünü ve tüm alt birimlerini silmek istediğinize emin misiniz?\")'>🗑️ Müdürlüğü Sil</a>");
+                        sb.AppendLine("    </div>");
+
+                        if (d.Units.Count > 0)
+                        {
+                            sb.AppendLine("    <div style='display:flex;flex-wrap:wrap;'>");
+                            foreach (var u in d.Units)
+                            {
+                                sb.AppendLine($"      <span class='unit-pill'>{u.Name} <a href='/api/units/delete?id={u.Id}' class='unit-del' onclick='return confirm(\"{u.Name} birimini silmek istediğinize emin misiniz?\")'>✕</a></span>");
+                            }
+                            sb.AppendLine("    </div>");
+                        }
+                        sb.AppendLine("  </div>");
+                    }
+                }
+                sb.AppendLine("</div>");
+
+                // 2. New Ticket Form Card
                 sb.AppendLine("<div class='card'>");
                 sb.AppendLine("  <div class='card-header'><div class='card-title'>➕ Yeni Arıza / Teknik Destek Talebi Oluştur</div><span style='font-size:12px;color:var(--text-muted);'>Ağdaki tüm personeller buradan kayıt bırakabilir</span></div>");
                 sb.AppendLine("  <form method='POST' action='/api/tickets/create'>");
@@ -298,7 +437,7 @@ namespace UltimateToolkit.Modern.Services
                 sb.AppendLine("  </form>");
                 sb.AppendLine("</div>");
 
-                // 2. Tickets List Card
+                // 3. Tickets List Card
                 sb.AppendLine("<div class='card'>");
                 sb.AppendLine("  <div class='card-header'><div class='card-title'>🎫 Arıza &amp; Destek Talepleri Listesi</div><span style='font-size:12px;color:var(--text-muted);'>Toplam " + totalTickets + " kayıt listeleniyor</span></div>");
                 sb.AppendLine("  <div class='search-box'><input type='text' id='ticketSearch' class='search-input' onkeyup='filterTickets()' placeholder='🔍 Personel, müdürlük, kategori veya açıklama ara...'/></div>");
@@ -314,19 +453,23 @@ namespace UltimateToolkit.Modern.Services
                     foreach (var t in tickets)
                     {
                         string chipClass = t.Status == "Çözüldü" ? "chip-done" : "chip-open";
+                        string resolutionHtml = string.IsNullOrWhiteSpace(t.ResolutionNote) 
+                            ? "" 
+                            : $"<div style='margin-top:6px;padding:4px 8px;background:rgba(16,124,65,0.15);border-left:3px solid #107C41;border-radius:3px;font-size:11.5px;color:#86EFAC;'><strong>💡 Çözüm:</strong> {t.ResolutionNote}</div>";
+
                         sb.AppendLine($"      <tr>");
                         sb.AppendLine($"        <td><strong>#{t.Id}</strong></td>");
                         sb.AppendLine($"        <td><strong>{t.PersonnelName}</strong></td>");
                         sb.AppendLine($"        <td>{t.Department}<br/><span style='font-size:11px;color:var(--text-muted);'>{t.Unit}</span></td>");
                         sb.AppendLine($"        <td>{t.IssueType}</td>");
                         sb.AppendLine($"        <td><span class='chip chip-priority'>{t.Priority}</span></td>");
-                        sb.AppendLine($"        <td style='max-width:320px;'>{t.Description}</td>");
+                        sb.AppendLine($"        <td style='max-width:320px;'>{t.Description}{resolutionHtml}</td>");
                         sb.AppendLine($"        <td style='font-size:12px;color:var(--text-muted);'>{t.Date}</td>");
                         sb.AppendLine($"        <td><span class='chip {chipClass}'>{t.Status}</span></td>");
                         sb.AppendLine($"        <td>");
                         if (t.Status != "Çözüldü")
                         {
-                            sb.AppendLine($"          <a href='/api/tickets/resolve?id={t.Id}' class='action-link action-resolve'>✓ Çözüldü</a>");
+                            sb.AppendLine($"          <a href='javascript:void(0)' onclick='resolveTicket({t.Id})' class='action-link action-resolve'>✓ Çözüldü</a>");
                         }
                         sb.AppendLine($"          <a href='/api/tickets/delete?id={t.Id}' class='action-link action-delete' onclick='return confirm(\"Bu kaydı silmek istediğinize emin misiniz?\")'>🗑️</a>");
                         sb.AppendLine($"        </td>");

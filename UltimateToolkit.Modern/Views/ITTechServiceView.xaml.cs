@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -80,8 +80,29 @@ namespace UltimateToolkit.Modern.Views
                 // Departments
                 var depts = ITServiceDatabase.Instance.GetDepartments();
                 ListDepartments.ItemsSource = depts;
+
+                // Explicit target department combo for adding units
+                var prevTargetDeptId = (CmbUnitTargetDept.SelectedItem as DepartmentItem)?.Id;
+                CmbUnitTargetDept.ItemsSource = null;
+                CmbUnitTargetDept.ItemsSource = depts;
+                if (prevTargetDeptId.HasValue && depts.Any(d => d.Id == prevTargetDeptId.Value))
+                {
+                    CmbUnitTargetDept.SelectedItem = depts.FirstOrDefault(d => d.Id == prevTargetDeptId.Value);
+                }
+                else if (depts.Count > 0)
+                {
+                    CmbUnitTargetDept.SelectedIndex = 0;
+                }
+
+                // Ticket form department combo
+                var prevDeptId = (CmbDepts.SelectedItem as DepartmentItem)?.Id;
+                CmbDepts.ItemsSource = null;
                 CmbDepts.ItemsSource = depts;
-                if (depts.Count > 0 && CmbDepts.SelectedIndex < 0)
+                if (prevDeptId.HasValue && depts.Any(d => d.Id == prevDeptId.Value))
+                {
+                    CmbDepts.SelectedItem = depts.FirstOrDefault(d => d.Id == prevDeptId.Value);
+                }
+                else if (depts.Count > 0)
                 {
                     CmbDepts.SelectedIndex = 0;
                 }
@@ -128,7 +149,7 @@ namespace UltimateToolkit.Modern.Views
         {
             if (sender is Button btn && btn.Tag is int deptId)
             {
-                if (MessageBox.Show("Bu müdürlüğü ve bağlı alt birimlerini silmek istiyor musunuz?", "Onay", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Bu müdürlüğü ve bağlı tüm alt birimlerini silmek istiyor musunuz?", "Onay", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     ITServiceDatabase.Instance.DeleteDepartment(deptId);
                     RefreshData();
@@ -138,9 +159,9 @@ namespace UltimateToolkit.Modern.Views
 
         private void BtnAddUnit_Click(object sender, RoutedEventArgs e)
         {
-            if (CmbDepts.SelectedItem is not DepartmentItem selDept)
+            if (CmbUnitTargetDept.SelectedItem is not DepartmentItem selDept)
             {
-                MessageBox.Show("Lütfen önce sol açılır kutudan bir müdürlük seçin.", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Lütfen alt birimin ekleneceği hedef müdürlüğü açılır kutudan seçin.", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -155,11 +176,27 @@ namespace UltimateToolkit.Modern.Views
             {
                 ITServiceDatabase.Instance.AddUnit(selDept.Id, unitName);
                 TxtNewUnitName.Text = "";
+                int savedDeptId = selDept.Id;
                 RefreshData();
+                // Retain selected department in target combo
+                var reloaded = ITServiceDatabase.Instance.GetDepartments();
+                CmbUnitTargetDept.SelectedItem = reloaded.FirstOrDefault(d => d.Id == savedDeptId);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Birim eklenemedi: {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void BtnDeleteUnit_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int unitId)
+            {
+                if (MessageBox.Show("Bu alt birimi silmek istediğinizden emin misiniz?", "Onay", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    ITServiceDatabase.Instance.DeleteUnit(unitId);
+                    RefreshData();
+                }
             }
         }
 
@@ -207,9 +244,106 @@ namespace UltimateToolkit.Modern.Views
         {
             if (sender is Button btn && btn.Tag is int ticketId)
             {
-                ITServiceDatabase.Instance.UpdateTicketStatus(ticketId, "Çözüldü");
+                string? note = ShowResolutionPrompt();
+                if (note == null)
+                {
+                    // İptal edildi
+                    return;
+                }
+
+                ITServiceDatabase.Instance.ResolveTicket(ticketId, note);
                 RefreshData();
             }
+        }
+
+        private string? ShowResolutionPrompt()
+        {
+            var promptWin = new Window
+            {
+                Title = "Arıza Çözüm Açıklaması",
+                Width = 460,
+                Height = 260,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(30, 30, 30)),
+                Foreground = System.Windows.Media.Brushes.White,
+                ResizeMode = ResizeMode.NoResize,
+                WindowStyle = WindowStyle.ToolWindow
+            };
+
+            var grid = new Grid { Margin = new Thickness(16) };
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            var lbl = new TextBlock
+            {
+                Text = "Yapılan müdahale ve çözüm açıklamasını giriniz (İsteğe bağlı):",
+                FontSize = 13,
+                Foreground = System.Windows.Media.Brushes.LightGray,
+                Margin = new Thickness(0, 0, 0, 10),
+                TextWrapping = TextWrapping.Wrap
+            };
+            Grid.SetRow(lbl, 0);
+
+            var txt = new TextBox
+            {
+                AcceptsReturn = true,
+                TextWrapping = TextWrapping.Wrap,
+                Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(42, 42, 42)),
+                Foreground = System.Windows.Media.Brushes.White,
+                BorderBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(65, 65, 65)),
+                Padding = new Thickness(8),
+                FontSize = 13
+            };
+            Grid.SetRow(txt, 1);
+
+            var btnPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Margin = new Thickness(0, 12, 0, 0)
+            };
+            Grid.SetRow(btnPanel, 2);
+
+            var btnCancel = new Button
+            {
+                Content = "İptal",
+                Width = 80,
+                Height = 32,
+                Margin = new Thickness(0, 0, 8, 0),
+                Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(55, 55, 55)),
+                Foreground = System.Windows.Media.Brushes.White,
+                BorderThickness = new Thickness(0)
+            };
+            btnCancel.Click += (s, e) => promptWin.DialogResult = false;
+
+            var btnOk = new Button
+            {
+                Content = "Arızayı Kapat",
+                Width = 110,
+                Height = 32,
+                Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(16, 124, 65)),
+                Foreground = System.Windows.Media.Brushes.White,
+                FontWeight = FontWeights.Bold,
+                BorderThickness = new Thickness(0)
+            };
+            btnOk.Click += (s, e) => promptWin.DialogResult = true;
+
+            btnPanel.Children.Add(btnCancel);
+            btnPanel.Children.Add(btnOk);
+
+            grid.Children.Add(lbl);
+            grid.Children.Add(txt);
+            grid.Children.Add(btnPanel);
+
+            promptWin.Content = grid;
+            promptWin.Loaded += (s, e) => txt.Focus();
+
+            if (promptWin.ShowDialog() == true)
+            {
+                return txt.Text.Trim();
+            }
+            return null;
         }
 
         private void BtnDeleteTicket_Click(object sender, RoutedEventArgs e)

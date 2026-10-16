@@ -73,19 +73,21 @@
                 </Border>
             </Grid>
 
-            <!-- 3. Departments & Units Management (Müdürlük & Birim Ekleme) -->
+            <!-- 3. Departments & Units Management (Müdürlük & Birim Yönetimi) -->
             <Border Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
                 <StackPanel>
                     <TextBlock Text="🏢 Müdürlük &amp; Alt Birim Yönetimi" FontSize="15" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" Margin="0,0,0,10"/>
                     
-                    <Grid Margin="0,0,0,10">
+                    <Grid Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1.5*" />
-                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="8" />
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="18" />
+                            <ColumnDefinition Width="1.4*" />
+                            <ColumnDefinition Width="8" />
                             <ColumnDefinition Width="1.5*" />
-                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="8" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
@@ -105,9 +107,12 @@
                         </TextBlock>
                         <Button Grid.Column="2" Content="➕ Müdürlük Ekle" Style="{StaticResource PtPrimaryButton}" Height="34" Click="BtnAddDept_Click"/>
 
+                        <!-- Target Department for Unit (Explicit selection) -->
+                        <ComboBox x:Name="CmbUnitTargetDept" Grid.Column="4" Height="34" Style="{StaticResource PtComboBox}" DisplayMemberPath="Name"/>
+
                         <!-- Add Unit -->
-                        <TextBox x:Name="TxtNewUnitName" Grid.Column="4" Height="34" Style="{StaticResource PtTextBox}" VerticalContentAlignment="Center"/>
-                        <TextBlock Text="Seçili Müdürlüğe Alt Birim..." Grid.Column="4" Foreground="#777777" Margin="10,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False">
+                        <TextBox x:Name="TxtNewUnitName" Grid.Column="6" Height="34" Style="{StaticResource PtTextBox}" VerticalContentAlignment="Center"/>
+                        <TextBlock Text="Seçili Müdürlüğe Alt Birim..." Grid.Column="6" Foreground="#777777" Margin="10,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed" />
@@ -119,23 +124,42 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <Button Grid.Column="6" Content="➕ Birim Ekle" Style="{StaticResource PtSecondaryButton}" Height="34" Click="BtnAddUnit_Click"/>
+                        <Button Grid.Column="8" Content="➕ Birim Ekle" Style="{StaticResource PtSecondaryButton}" Height="34" Click="BtnAddUnit_Click"/>
                     </Grid>
 
-                    <!-- Departments list badges -->
+                    <!-- Departments & Units Detailed List with Delete Support -->
                     <ItemsControl x:Name="ListDepartments">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="#1C1C1C" BorderBrush="#383838" BorderThickness="1" CornerRadius="6" Padding="10,6" Margin="0,0,8,8">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" Foreground="#38BDF8" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{Binding Units.Count, StringFormat=' ({0} Birim)'}" FontSize="11" Foreground="#888888" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                        <Button Content="✕" Tag="{Binding Id}" Style="{StaticResource PtSecondaryButton}" Padding="4,1" FontSize="10" Foreground="#EF4444" Click="BtnDeleteDept_Click"/>
+                                <Border Background="#1A1A1A" BorderBrush="#333333" BorderThickness="1" CornerRadius="6" Padding="12,10" Margin="0,0,0,8">
+                                    <StackPanel>
+                                        <Grid Margin="0,0,0,6">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="🏢" FontSize="13" Margin="0,0,6,0"/>
+                                                <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="#38BDF8" FontSize="13"/>
+                                                <TextBlock Text="{Binding Units.Count, StringFormat=' ({0} Alt Birim)'}" FontSize="11" Foreground="#888888" VerticalAlignment="Center" Margin="6,0,0,0"/>
+                                            </StackPanel>
+                                            <Button Content="🗑️ Müdürlüğü Sil" Tag="{Binding Id}" Style="{StaticResource PtSecondaryButton}" HorizontalAlignment="Right" Padding="8,2" FontSize="11" Foreground="#F87171" Click="BtnDeleteDept_Click"/>
+                                        </Grid>
+                                        
+                                        <!-- Units under this department -->
+                                        <ItemsControl ItemsSource="{Binding Units}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Margin="20,0,0,0"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="#262626" BorderBrush="#3A3A3A" BorderThickness="1" CornerRadius="4" Padding="8,3" Margin="0,0,6,4">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Text="{Binding Name}" Foreground="#E2E8F0" FontSize="11.5" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                            <Button Content="✕" Tag="{Binding Id}" Style="{StaticResource PtSecondaryButton}" Padding="4,0" FontSize="10" Foreground="#FCA5A5" Click="BtnDeleteUnit_Click" ToolTip="Bu birimi sil"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
@@ -247,7 +271,21 @@
                                         <TextBlock Grid.Column="1" Text="{Binding PersonnelName}" FontWeight="SemiBold" Foreground="#FFFFFF" VerticalAlignment="Center"/>
                                         <TextBlock Grid.Column="2" Text="{Binding Department}" Foreground="#A0A0A0" VerticalAlignment="Center"/>
                                         <TextBlock Grid.Column="3" Text="{Binding IssueType}" Foreground="#E2E8F0" VerticalAlignment="Center"/>
-                                        <TextBlock Grid.Column="4" Text="{Binding Description}" Foreground="#888888" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="4" VerticalAlignment="Center" Margin="0,0,8,0">
+                                            <TextBlock Text="{Binding Description}" Foreground="#CCCCCC" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding ResolutionNote, StringFormat='💡 Çözüm: {0}'}" FontSize="11" Foreground="#34D399" TextTrimming="CharacterEllipsis" Margin="0,2,0,0">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasResolutionNote}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
 
                                         <Border Grid.Column="5" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" VerticalAlignment="Center">
                                             <Border.Style>
