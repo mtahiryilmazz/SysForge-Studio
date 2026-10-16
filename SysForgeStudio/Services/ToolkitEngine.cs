@@ -2001,7 +2001,7 @@ namespace SysForgeStudio.Services
             sb.AppendLine("<html lang='tr'>");
             sb.AppendLine("<head>");
             sb.AppendLine("<meta charset='utf-8'/>");
-            sb.AppendLine("<title>Ultimate Printer Toolkit - Sistem Raporu</title>");
+            sb.AppendLine("<title>SysForge Studio - Sistem &amp; Donanım Raporu</title>");
             sb.AppendLine("<style>");
             sb.AppendLine("body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 24px; }");
             sb.AppendLine(".container { max-width: 1000px; margin: 0 auto; background: #1e293b; padding: 32px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }");
@@ -2016,7 +2016,7 @@ namespace SysForgeStudio.Services
             sb.AppendLine("</head>");
             sb.AppendLine("<body>");
             sb.AppendLine("<div class='container'>");
-            sb.AppendLine("<h1>🖨️ Ultimate Printer Toolkit - Sistem Raporu</h1>");
+            sb.AppendLine("<h1>🛠️ SysForge Studio - Sistem &amp; Donanım Raporu</h1>");
             sb.AppendLine($"<p>Oluşturulma Tarihi: <b>{DateTime.Now:dd.MM.yyyy HH:mm:ss}</b></p>");
 
             sb.AppendLine("<h2>1. Sistem Teşhis Özeti</h2>");

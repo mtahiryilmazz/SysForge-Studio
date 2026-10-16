@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -453,7 +453,7 @@ namespace SysForgeStudio.Services
             }
             sb.AppendLine("</table>");
 
-            sb.AppendLine("<p style='font-size:12px; color:#64748b; text-align:center; margin-top:30px;'>Bu rapor Ultimate Enterprise Toolkit Donanım Ekspertiz Motoru tarafından üretilmiştir.</p>");
+            sb.AppendLine("<p style='font-size:12px; color:#64748b; text-align:center; margin-top:30px;'>Bu rapor SysForge Studio Donanım Ekspertiz Motoru tarafından üretilmiştir.</p>");
             sb.AppendLine("</div></body></html>");
 
             await File.WriteAllTextAsync(reportFile, sb.ToString(), Encoding.UTF8);

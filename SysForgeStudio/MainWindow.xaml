@@ -74,27 +74,27 @@
                         <RadioButton x:Name="NavDashboard" Content="📊  Genel Bakış &amp; Durum" Style="{StaticResource PtNavButtonStyle}" IsChecked="True" Checked="Nav_Checked"/>
 
                         <TextBlock Text="YAZICI &amp; AĞ YÖNETİMİ" FontSize="10.5" FontWeight="Bold" Foreground="#666666" Margin="18,12,16,4"/>
-                        <RadioButton x:Name="NavPrinters" Content="🖨️  Yazıcı Bağla &amp; Keşif" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
-                        <RadioButton x:Name="NavNetwork" Content="🌐  IP Tarama &amp; Uzak Masaüstü" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
-                        <RadioButton x:Name="NavDrivers" Content="🧹  Sürücü Temizliği" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
+                        <RadioButton x:Name="NavPrinters" Content="🖨️  Yazıcı Bağlantısı &amp; Keşif" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
+                        <RadioButton x:Name="NavNetwork" Content="🌐  IP Tarama &amp; Ağ Keşfi (RDP)" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
+                        <RadioButton x:Name="NavDrivers" Content="🧹  Sürücü Temizliği &amp; Paketler" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
 
-                        <TextBlock Text="ONARIM &amp; TWEAKS" FontSize="10.5" FontWeight="Bold" Foreground="#666666" Margin="18,12,16,4"/>
-                        <RadioButton x:Name="NavFixes" Content="⚡  Yazıcı Hızlı Onarım" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
-                        <RadioButton x:Name="NavSysRepair" Content="🔧  Windows Çekirdek Onarım" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
-                        <RadioButton x:Name="NavDiag" Content="🔍  Sistem Teşhisi" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
-                        <RadioButton x:Name="NavTools" Content="🛠️  Sistem Araçları" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
+                        <TextBlock Text="ONARIM &amp; OPTİMİZASYON" FontSize="10.5" FontWeight="Bold" Foreground="#666666" Margin="18,12,16,4"/>
+                        <RadioButton x:Name="NavFixes" Content="⚡  Yazıcı &amp; Spooler Hızlı Onarım" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
+                        <RadioButton x:Name="NavSysRepair" Content="🔧  Windows Çekirdek Onarımı" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
+                        <RadioButton x:Name="NavDiag" Content="🔍  Sistem Servis &amp; İlke Teşhisi" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
+                        <RadioButton x:Name="NavTools" Content="🛠️  Windows BT Sistem Araçları" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
 
-                        <TextBlock Text="GELİŞMİŞ MOTORLAR &amp; V5 / V6" FontSize="10.5" FontWeight="Bold" Foreground="#666666" Margin="18,12,16,4"/>
-                        <RadioButton x:Name="NavModules" Content="🚀  Entegre Motorlar (v6 / v5)" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
+                        <TextBlock Text="GELİŞMİŞ MOTORLAR" FontSize="10.5" FontWeight="Bold" Foreground="#666666" Margin="18,12,16,4"/>
+                        <RadioButton x:Name="NavModules" Content="🚀  SysForge Entegre Motor Merkezi" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
 
                         <TextBlock Text="DONANIM &amp; BT TEKNİK SERVİS" FontSize="10.5" FontWeight="Bold" Foreground="#666666" Margin="18,12,16,4"/>
-                        <RadioButton x:Name="NavAIDiag" Content="🤖  Yapay Zeka Teşhis &amp; Onarım" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
-                        <RadioButton x:Name="NavExpertise" Content="🛡️  Donanım Ekspertizi &amp; Hash" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
-                        <RadioButton x:Name="NavITService" Content="💼  BT Servis Portali &amp; Vanguard" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
+                        <RadioButton x:Name="NavAIDiag" Content="🤖  Yapay Zeka Arıza Teşhis &amp; Onarım" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
+                        <RadioButton x:Name="NavExpertise" Content="🛡️  Donanım Ekspertizi &amp; HWID Hash" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
+                        <RadioButton x:Name="NavITService" Content="💼  BT Servis Masası &amp; Zimmet" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
 
                         <TextBlock Text="GÜNLÜK &amp; YEDEKLEME" FontSize="10.5" FontWeight="Bold" Foreground="#666666" Margin="18,12,16,4"/>
-                        <RadioButton x:Name="NavLogs" Content="📋  Canlı Çıktı &amp; Terminal" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
-                        <RadioButton x:Name="NavBackup" Content="💾  Yedekleme Havuzu" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
+                        <RadioButton x:Name="NavLogs" Content="📋  Canlı Terminal &amp; Çıktı Günlüğü" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
+                        <RadioButton x:Name="NavBackup" Content="💾  Kayıt Defteri &amp; Yapılandırma Yedeği" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
                     </StackPanel>
                 </ScrollViewer>
 

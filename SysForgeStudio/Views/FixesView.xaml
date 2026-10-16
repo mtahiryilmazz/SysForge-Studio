@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SysForgeStudio.Views.FixesView"
+<UserControl x:Class="SysForgeStudio.Views.FixesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -63,7 +63,7 @@
                     <CheckBox x:Name="ChkFix709Lsa" Style="{StaticResource PtToggleSwitch}" IsChecked="True">
                         <StackPanel>
                             <TextBlock Text="0x00000709 LSA Anonim Erişim (restrictanonymous)" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap"/>
-                            <TextBlock Text="Vanguard it_tech_service'den: LSA restrictanonymous ayarlarını gevşeterek ağ yazıcısı 709 hatasını giderir." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                            <TextBlock Text="LSA restrictanonymous güvenlik ayarlarını yapılandırarak ağ yazıcısı 0x00000709 bağlantı hatasını giderir." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
                         </StackPanel>
                     </CheckBox>
                 </Border>

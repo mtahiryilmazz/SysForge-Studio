@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SysForgeStudio.Views.DashboardView"
+<UserControl x:Class="SysForgeStudio.Views.DashboardView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -18,12 +18,12 @@
 
                     <StackPanel Grid.Column="0" Margin="0,0,16,0">
                         <DockPanel LastChildFill="False" Margin="0,0,0,6">
-                            <TextBlock DockPanel.Dock="Left" Text="⚡ Ultimate Printer Toolkit" FontSize="20" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap" Margin="0,0,10,4"/>
+                            <TextBlock DockPanel.Dock="Left" Text="⚡ SysForge Studio" FontSize="20" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap" Margin="0,0,10,4"/>
                             <Border DockPanel.Dock="Left" Style="{StaticResource PtBadge}" VerticalAlignment="Center" Margin="0,0,0,4">
                                 <TextBlock Text="v6.0" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource PtAccent}"/>
                             </Border>
                         </DockPanel>
-                        <TextBlock Text="Kurumsal Windows yazdırma, ağ yazıcısı paylaşımı, RPC 0x0000011b, 709 ve sürücü yönetim konsolu" FontSize="12.5" Foreground="{StaticResource PtTextSecondary}" TextWrapping="Wrap"/>
+                        <TextBlock Text="Kurumsal BT, donanım envanteri, yazdırma altyapısı ve sistem mühendisliği konsolu" FontSize="12.5" Foreground="{StaticResource PtTextSecondary}" TextWrapping="Wrap"/>
 
                         <!-- Status Badges Row -->
                         <WrapPanel Margin="0,14,0,0">

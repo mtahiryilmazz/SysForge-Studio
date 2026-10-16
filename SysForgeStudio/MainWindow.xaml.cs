@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using SysForgeStudio.Services;
@@ -135,79 +135,79 @@ namespace SysForgeStudio
                     break;
 
                 case nameof(NavPrinters):
-                    TxtHeaderTitle.Text = "Yazıcı Bağla & Keşif";
+                    TxtHeaderTitle.Text = "Ağ Yazıcısı Bağlantısı & Keşif";
                     TxtHeaderSubtitle.Text = "Ağdaki paylaşılan yazıcıları tara, UNC adresi ile bağla ve yönet";
                     if (_printersView != null) MainContent.Content = _printersView;
                     break;
 
                 case nameof(NavNetwork):
-                    TxtHeaderTitle.Text = "IP Tarama, Ağ Keşfi & Uzak Masaüstü";
+                    TxtHeaderTitle.Text = "IP Tarama & Ağ Keşfi (RDP)";
                     TxtHeaderSubtitle.Text = "Ağ kartından IP altyapısını tespit et, 254 cihazı tara, açık portları bul ve RDP ile bağlan";
                     if (_networkView != null) MainContent.Content = _networkView;
                     break;
 
                 case nameof(NavDrivers):
-                    TxtHeaderTitle.Text = "Sürücü Temizliği & Yönetimi";
-                    TxtHeaderSubtitle.Text = "Yüklü yazıcı sürücülerini marka bazlı filtrele, bozuk paketleri temizle";
+                    TxtHeaderTitle.Text = "Sürücü Temizliği & Paket Yönetimi";
+                    TxtHeaderSubtitle.Text = "Yüklü yazıcı sürücülerini marka bazlı filtrele, artık ve bozuk paketleri temizle";
                     if (_driversView != null) MainContent.Content = _driversView;
                     break;
 
                 case nameof(NavFixes):
-                    TxtHeaderTitle.Text = "Yazıcı Hızlı Onarım & Tweaks";
+                    TxtHeaderTitle.Text = "Yazıcı & Spooler Hızlı Onarım";
                     TxtHeaderSubtitle.Text = "0x0000011b, 709, Point&Print, Spooler ve SMB paylaşımlarını tek tıkla onar";
                     if (_fixesView != null) MainContent.Content = _fixesView;
                     break;
 
                 case nameof(NavSysRepair):
-                    TxtHeaderTitle.Text = "Windows Çekirdek Onarım & Performans";
+                    TxtHeaderTitle.Text = "Windows Çekirdek Onarımı";
                     TxtHeaderSubtitle.Text = "SFC, DISM, TCP/IP ağ sıfırlama, Windows Update onarımı ve disk temizliği";
                     if (_sysRepairView != null) MainContent.Content = _sysRepairView;
                     break;
 
                 case nameof(NavDiag):
-                    TxtHeaderTitle.Text = "Sistem Teşhisi & Doğrulama";
+                    TxtHeaderTitle.Text = "Sistem Servis & İlke Teşhisi";
                     TxtHeaderSubtitle.Text = "Kayıt defteri, güvenlik ilkeleri ve servis durumlarını tarayarak sorunları tespit et";
                     if (_diagView != null) MainContent.Content = _diagView;
                     break;
 
                 case nameof(NavTools):
-                    TxtHeaderTitle.Text = "Windows Yazıcı ve Sistem Araçları";
-                    TxtHeaderSubtitle.Text = "Klasik yazıcı konsolları, servisler, kuyruk klasörü ve yönetim araçları";
+                    TxtHeaderTitle.Text = "Windows BT Sistem Araçları";
+                    TxtHeaderSubtitle.Text = "Klasik yazıcı konsolları, servisler, kuyruk klasörü ve IT yönetim araçları";
                     if (_toolsView != null) MainContent.Content = _toolsView;
                     break;
 
                 case nameof(NavModules):
-                    TxtHeaderTitle.Text = "Entegre Gelişmiş Motorlar (v6, v5, Printer Pro)";
-                    TxtHeaderSubtitle.Text = "v6 Web Dashboard (Port 9999), 37 modüllü v5 IT konsolu, Printer Analyzer ve sandbox temizliği";
+                    TxtHeaderTitle.Text = "SysForge Entegre Motor Merkezi";
+                    TxtHeaderSubtitle.Text = "SysForge Web Paneli (Port 9999), 37 modüllü IT motoru, Yazıcı Analizörü ve sistem temizliği";
                     if (_legacyView != null) MainContent.Content = _legacyView;
                     break;
 
                 case nameof(NavAIDiag):
-                    TxtHeaderTitle.Text = "Yapay Zeka Teşhis & Hızlı Onarım";
-                    TxtHeaderSubtitle.Text = "Hata kodları ve arızalar için kök neden analizi ve tek tıkla otomatik onarım komutları";
+                    TxtHeaderTitle.Text = "Yapay Zeka Arıza Teşhis & Onarım";
+                    TxtHeaderSubtitle.Text = "Hata kodları ve donanım arızaları için kök neden analizi ve tek tıkla otomatik onarım komutları";
                     if (_aiDiagView != null) MainContent.Content = _aiDiagView;
                     break;
 
                 case nameof(NavExpertise):
-                    TxtHeaderTitle.Text = "Donanım Ekspertizi & Kimlik Doğrulama";
+                    TxtHeaderTitle.Text = "Donanım Ekspertizi & HWID Hash";
                     TxtHeaderSubtitle.Text = "Anakart, BIOS, RAM, Disk ve GPU seri numaraları, SHA-256 hash ve donanım değişikliği tespiti";
                     if (_expertiseView != null) MainContent.Content = _expertiseView;
                     break;
 
                 case nameof(NavITService):
-                    TxtHeaderTitle.Text = "BT Teknik Servis & Vanguard Portali";
+                    TxtHeaderTitle.Text = "BT Servis Masası & Donanım Zimmet";
                     TxtHeaderSubtitle.Text = "Arıza çağrıları (Tickets), donanım zimmet takibi, teknisyen logları ve yerel web konsolu";
                     if (_itServiceView != null) MainContent.Content = _itServiceView;
                     break;
 
                 case nameof(NavLogs):
-                    TxtHeaderTitle.Text = "Canlı Çıktı & Terminal";
+                    TxtHeaderTitle.Text = "Canlı Terminal & Çıktı Günlüğü";
                     TxtHeaderSubtitle.Text = "Çalıştırılan onarımların ve komutların anlık terminal çıktısı";
                     if (_logsView != null) MainContent.Content = _logsView;
                     break;
 
                 case nameof(NavBackup):
-                    TxtHeaderTitle.Text = "Sistem & Yazıcı Yedeği";
+                    TxtHeaderTitle.Text = "Kayıt Defteri & Yapılandırma Yedeği";
                     TxtHeaderSubtitle.Text = "Kayıt defteri yazdırma yapılandırmalarını yedekleyin ve geri yükleyin";
                     if (_backupView != null) MainContent.Content = _backupView;
                     break;
