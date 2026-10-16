@@ -151,6 +151,26 @@ namespace UltimateToolkit.Modern.Services
                 }
             }
             catch { }
+
+            // Auto-heal any existing records with invalid Serial Number ('Default string', etc.)
+            try
+            {
+                string realHwid = GetMachineHardwareId();
+                if (!string.IsNullOrWhiteSpace(realHwid))
+                {
+                    using var fixSnCmd = new SqliteCommand(@"
+                        UPDATE inventory 
+                        SET serial_no = @newHwid 
+                        WHERE LOWER(serial_no) LIKE '%default string%' 
+                           OR LOWER(serial_no) LIKE '%to be filled%' 
+                           OR serial_no = '-' 
+                           OR serial_no = '';
+                    ", conn);
+                    fixSnCmd.Parameters.AddWithValue("@newHwid", realHwid);
+                    fixSnCmd.ExecuteNonQuery();
+                }
+            }
+            catch { }
         }
 
         private void EnsureColumnExists(SqliteConnection conn, string table, string column, string typeDef)
@@ -514,20 +534,83 @@ namespace UltimateToolkit.Modern.Services
             string brand = "-";
             string model = "-";
             string serial = "-";
+            string cpuName = "";
+            string ramGbStr = "";
             string ip = "-";
 
+            // 1. Computer System & Memory
             try
             {
-                using var searcher = new ManagementObjectSearcher("SELECT Manufacturer, Model FROM Win32_ComputerSystem");
+                using var searcher = new ManagementObjectSearcher("SELECT Manufacturer, Model, TotalPhysicalMemory FROM Win32_ComputerSystem");
                 foreach (ManagementObject obj in searcher.Get())
                 {
                     brand = obj["Manufacturer"]?.ToString()?.Trim() ?? "-";
                     model = obj["Model"]?.ToString()?.Trim() ?? "-";
+                    if (obj["TotalPhysicalMemory"] != null && double.TryParse(obj["TotalPhysicalMemory"].ToString(), out double ramBytes))
+                    {
+                        ramGbStr = $"{Math.Round(ramBytes / (1024 * 1024 * 1024))}GB RAM";
+                    }
                     break;
                 }
             }
             catch { }
 
+            // 2. BaseBoard fallback if Manufacturer/Model are generic or default
+            try
+            {
+                using var bbSearcher = new ManagementObjectSearcher("SELECT Manufacturer, Product FROM Win32_BaseBoard");
+                foreach (ManagementObject obj in bbSearcher.Get())
+                {
+                    string bbMfr = obj["Manufacturer"]?.ToString()?.Trim() ?? "";
+                    string bbProd = obj["Product"]?.ToString()?.Trim() ?? "";
+                    if ((IsInvalidSerial(brand) || brand == "System manufacturer" || brand == "-") && !string.IsNullOrWhiteSpace(bbMfr))
+                    {
+                        brand = bbMfr;
+                    }
+                    if ((IsInvalidSerial(model) || model == "System Product Name" || model == "-") && !string.IsNullOrWhiteSpace(bbProd))
+                    {
+                        model = bbProd;
+                    }
+                    break;
+                }
+            }
+            catch { }
+
+            // 3. CPU details
+            try
+            {
+                using var cpuSearcher = new ManagementObjectSearcher("SELECT Name FROM Win32_Processor");
+                foreach (ManagementObject obj in cpuSearcher.Get())
+                {
+                    string rawCpu = obj["Name"]?.ToString()?.Trim() ?? "";
+                    if (rawCpu.Contains("Core(TM) "))
+                    {
+                        var parts = rawCpu.Split(new[] { "Core(TM) " }, StringSplitOptions.None);
+                        if (parts.Length > 1)
+                        {
+                            cpuName = parts[1].Split('@')[0].Trim();
+                        }
+                    }
+                    else if (!string.IsNullOrWhiteSpace(rawCpu))
+                    {
+                        cpuName = rawCpu.Split('@')[0].Trim();
+                    }
+                    break;
+                }
+            }
+            catch { }
+
+            // Combine model with CPU and RAM context if not already present
+            if (!string.IsNullOrWhiteSpace(cpuName) || !string.IsNullOrWhiteSpace(ramGbStr))
+            {
+                var specs = string.Join(" / ", new[] { cpuName, ramGbStr }.Where(x => !string.IsNullOrWhiteSpace(x)));
+                if (!string.IsNullOrWhiteSpace(specs) && !model.Contains(specs, StringComparison.OrdinalIgnoreCase))
+                {
+                    model = $"{model} ({specs})";
+                }
+            }
+
+            // 4. BIOS Serial Number
             try
             {
                 using var searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BIOS");
@@ -538,6 +621,31 @@ namespace UltimateToolkit.Modern.Services
                 }
             }
             catch { }
+
+            // Fallback to Motherboard Serial if BIOS serial is invalid / default string
+            if (IsInvalidSerial(serial))
+            {
+                try
+                {
+                    using var bbSearcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BaseBoard");
+                    foreach (ManagementObject obj in bbSearcher.Get())
+                    {
+                        string bbSerial = obj["SerialNumber"]?.ToString()?.Trim() ?? "-";
+                        if (!IsInvalidSerial(bbSerial))
+                        {
+                            serial = bbSerial;
+                            break;
+                        }
+                    }
+                }
+                catch { }
+            }
+
+            // Fallback to Hardware ID (HWID) if serial is still invalid / default string
+            if (IsInvalidSerial(serial))
+            {
+                serial = GetMachineHardwareId();
+            }
 
             ip = GetPrimaryActiveIpAddress();
 
@@ -553,6 +661,86 @@ namespace UltimateToolkit.Modern.Services
                 UserName = Environment.UserName,
                 Date = DateTime.Now.ToString("yyyy-MM-dd")
             });
+        }
+
+        public static bool IsInvalidSerial(string? s)
+        {
+            if (string.IsNullOrWhiteSpace(s)) return true;
+            string clean = s.Trim().ToLowerInvariant();
+            return clean == "-" ||
+                   clean == "0" ||
+                   clean == "none" ||
+                   clean == "n/a" ||
+                   clean == "null" ||
+                   clean == "123456789" ||
+                   clean.Contains("default string") ||
+                   clean.Contains("to be filled") ||
+                   clean.Contains("system serial") ||
+                   clean.Contains("chassis serial") ||
+                   clean.Contains("base board serial") ||
+                   clean == "ffffffff-ffff-ffff-ffff-ffffffffffff" ||
+                   clean == "00000000-0000-0000-0000-000000000000";
+        }
+
+        public static string GetMachineHardwareId()
+        {
+            string uuid = "";
+            try
+            {
+                using var cspSearcher = new ManagementObjectSearcher("SELECT UUID FROM Win32_ComputerSystemProduct");
+                foreach (ManagementObject obj in cspSearcher.Get())
+                {
+                    string val = obj["UUID"]?.ToString()?.Trim() ?? "";
+                    if (!IsInvalidSerial(val))
+                    {
+                        uuid = val;
+                        break;
+                    }
+                }
+            }
+            catch { }
+
+            if (!string.IsNullOrWhiteSpace(uuid))
+            {
+                return $"HWID-{uuid}";
+            }
+
+            // Fallback: SHA256 hardware hash
+            try
+            {
+                var parts = new List<string>();
+                using var cpuSearcher = new ManagementObjectSearcher("SELECT ProcessorId, Name FROM Win32_Processor");
+                foreach (ManagementObject obj in cpuSearcher.Get())
+                {
+                    parts.Add(obj["ProcessorId"]?.ToString()?.Trim() ?? "");
+                    parts.Add(obj["Name"]?.ToString()?.Trim() ?? "");
+                }
+
+                using var bbSearcher = new ManagementObjectSearcher("SELECT Manufacturer, Product FROM Win32_BaseBoard");
+                foreach (ManagementObject obj in bbSearcher.Get())
+                {
+                    parts.Add(obj["Manufacturer"]?.ToString()?.Trim() ?? "");
+                    parts.Add(obj["Product"]?.ToString()?.Trim() ?? "");
+                }
+
+                using var diskSearcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_DiskDrive");
+                foreach (ManagementObject obj in diskSearcher.Get())
+                {
+                    parts.Add(obj["SerialNumber"]?.ToString()?.Trim() ?? "");
+                }
+
+                parts.Add(Environment.MachineName);
+
+                string raw = string.Join("|", parts.Where(p => !string.IsNullOrWhiteSpace(p)));
+                using var sha = System.Security.Cryptography.SHA256.Create();
+                byte[] hash = sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(raw));
+                string hashStr = BitConverter.ToString(hash).Replace("-", "");
+                return $"HWID-{hashStr.Substring(0, Math.Min(24, hashStr.Length))}";
+            }
+            catch
+            {
+                return $"HWID-{Environment.MachineName}";
+            }
         }
 
         public static string GetPrimaryActiveIpAddress()
