@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UltimateToolkit.Modern"
         mc:Ignorable="d"
-        Title="Ultimate Toolkit - Enterprise Unified Suite" 
+        Title="SysForge Studio - Enterprise IT &amp; Hardware Suite" 
         Height="800" Width="1240"
         MinHeight="640" MinWidth="960"
         WindowStartupLocation="CenterScreen"
@@ -38,8 +38,8 @@
                             <TextBlock Text="🛠️" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                            <TextBlock Text="Ultimate Toolkit" FontSize="15" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" />
-                            <TextBlock Text="Enterprise Unified Suite" FontSize="11" Foreground="{StaticResource PtTextSecondary}" />
+                            <TextBlock Text="SysForge Studio" FontSize="15" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" />
+                            <TextBlock Text="Enterprise IT &amp; Hardware Suite" FontSize="11" Foreground="{StaticResource PtTextSecondary}" />
                         </StackPanel>
                     </Grid>
 
@@ -104,7 +104,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="PowerToys Style v6.0" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource PtTextSecondary}"/>
+                            <TextBlock Text="SysForge Studio v6.0" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource PtTextSecondary}"/>
                             <TextBlock Text="Windows 11 / 10 / Server" FontSize="10" Foreground="#606060"/>
                         </StackPanel>
                         <Border Grid.Column="1" Style="{StaticResource PtBadge}">

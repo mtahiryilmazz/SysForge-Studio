@@ -7,11 +7,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <AssemblyName>UltimateToolkit</AssemblyName>
+    <AssemblyName>SysForgeStudio</AssemblyName>
     <RootNamespace>UltimateToolkit.Modern</RootNamespace>
-    <ApplicationTitle>Ultimate Enterprise Toolkit - Unified Modern Edition</ApplicationTitle>
-    <Company>Ultimate Enterprise IT Suite</Company>
-    <Product>Ultimate Enterprise Toolkit</Product>
+    <ApplicationTitle>SysForge Studio - Enterprise IT &amp; Hardware Suite</ApplicationTitle>
+    <Company>SysForge Enterprise IT Suite</Company>
+    <Product>SysForge Studio</Product>
     <Version>6.0.0</Version>
     <FileVersion>6.0.0.0</FileVersion>
     <AssemblyVersion>6.0.0.0</AssemblyVersion>
