@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -399,6 +399,18 @@ namespace SysForgeStudio.Views
             catch (Exception ex)
             {
                 MessageBox.Show($"Kayıt hatası: {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void BtnShowInventoryDetail_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is InventoryItem item)
+            {
+                var win = new InventoryDetailWindow(item)
+                {
+                    Owner = Window.GetWindow(this)
+                };
+                win.ShowDialog();
             }
         }
 

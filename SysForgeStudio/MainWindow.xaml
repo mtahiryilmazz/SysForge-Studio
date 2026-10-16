@@ -1,4 +1,4 @@
-﻿<Window x:Class="SysForgeStudio.MainWindow"
+<Window x:Class="SysForgeStudio.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,7 +10,8 @@
         MinHeight="640" MinWidth="960"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource PtWindowBg}"
-        FontFamily="{StaticResource PtFont}">
+        FontFamily="{StaticResource PtFont}"
+        Icon="Assets/app_icon.png">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -34,8 +35,8 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" Background="{StaticResource PtAccentGradient}" Width="36" Height="36" CornerRadius="8" Margin="0,0,10,0">
-                            <TextBlock Text="🛠️" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Border Grid.Column="0" Width="36" Height="36" CornerRadius="8" Margin="0,0,10,0" ClipToBounds="True">
+                            <Image Source="Assets/app_icon.png" Width="36" Height="36" RenderOptions.BitmapScalingMode="HighQuality" />
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                             <TextBlock Text="SysForge Studio" FontSize="15" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" />

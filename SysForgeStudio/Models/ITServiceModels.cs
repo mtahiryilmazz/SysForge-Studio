@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace SysForgeStudio.Models
@@ -39,12 +39,28 @@ namespace SysForgeStudio.Models
         public string Brand { get; set; } = "-";
         public string Model { get; set; } = "-";
         public string SerialNo { get; set; } = "-";
+        public string Motherboard { get; set; } = "-";
+        public string Processor { get; set; } = "-";
+        public string Ram { get; set; } = "-";
+        public string Disk { get; set; } = "-";
+        public string Gpu { get; set; } = "-";
+        public string OsVersion { get; set; } = "-";
+        public string MacAddress { get; set; } = "-";
         public string IpAddress { get; set; } = "-";
         public string Department { get; set; } = "-";
         public string Unit { get; set; } = "-";
         public string Location { get; set; } = "-";
         public string UserName { get; set; } = "-";
         public string Date { get; set; } = DateTime.Now.ToString("yyyy-MM-dd");
+
+        // Helper getters for clean display
+        public string DisplayMotherboard => string.IsNullOrWhiteSpace(Motherboard) || Motherboard == "-" ? "Belirtilmedi" : Motherboard;
+        public string DisplayProcessor => string.IsNullOrWhiteSpace(Processor) || Processor == "-" ? "Belirtilmedi" : Processor;
+        public string DisplayRam => string.IsNullOrWhiteSpace(Ram) || Ram == "-" ? "Belirtilmedi" : Ram;
+        public string DisplayDisk => string.IsNullOrWhiteSpace(Disk) || Disk == "-" ? "Belirtilmedi" : Disk;
+        public string DisplayGpu => string.IsNullOrWhiteSpace(Gpu) || Gpu == "-" ? "Belirtilmedi" : Gpu;
+        public string DisplayOsVersion => string.IsNullOrWhiteSpace(OsVersion) || OsVersion == "-" ? "Belirtilmedi" : OsVersion;
+        public string DisplayMacAddress => string.IsNullOrWhiteSpace(MacAddress) || MacAddress == "-" ? "Belirtilmedi" : MacAddress;
     }
 
     public class ITLogItem

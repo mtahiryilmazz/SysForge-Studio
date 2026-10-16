@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Management;
@@ -115,6 +115,13 @@ namespace SysForgeStudio.Services
             EnsureColumnExists(conn, "inventory", "location", "TEXT DEFAULT ''");
             EnsureColumnExists(conn, "inventory", "user_name", "TEXT DEFAULT ''");
             EnsureColumnExists(conn, "inventory", "date", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "motherboard", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "processor", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "ram", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "disk", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "gpu", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "os_version", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "mac_address", "TEXT DEFAULT ''");
 
             // Seed default departments & units if empty
             using var countCmd = new SqliteCommand("SELECT COUNT(*) FROM departments;", conn);
@@ -473,7 +480,11 @@ namespace SysForgeStudio.Services
             using var conn = new SqliteConnection(_connectionString);
             conn.Open();
 
-            using var cmd = new SqliteCommand("SELECT id, brand, model, serial_no, ip_address, department, unit, location, user_name, date FROM inventory ORDER BY id DESC;", conn);
+            using var cmd = new SqliteCommand(@"
+                SELECT id, brand, model, serial_no, ip_address, department, unit, location, user_name, date,
+                       motherboard, processor, ram, disk, gpu, os_version, mac_address
+                FROM inventory ORDER BY id DESC;
+            ", conn);
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -488,7 +499,14 @@ namespace SysForgeStudio.Services
                     Unit = reader.IsDBNull(6) ? "-" : reader.GetString(6),
                     Location = reader.IsDBNull(7) ? "-" : reader.GetString(7),
                     UserName = reader.IsDBNull(8) ? "-" : reader.GetString(8),
-                    Date = reader.IsDBNull(9) ? "-" : reader.GetString(9)
+                    Date = reader.IsDBNull(9) ? "-" : reader.GetString(9),
+                    Motherboard = reader.FieldCount > 10 && !reader.IsDBNull(10) ? reader.GetString(10) : "-",
+                    Processor = reader.FieldCount > 11 && !reader.IsDBNull(11) ? reader.GetString(11) : "-",
+                    Ram = reader.FieldCount > 12 && !reader.IsDBNull(12) ? reader.GetString(12) : "-",
+                    Disk = reader.FieldCount > 13 && !reader.IsDBNull(13) ? reader.GetString(13) : "-",
+                    Gpu = reader.FieldCount > 14 && !reader.IsDBNull(14) ? reader.GetString(14) : "-",
+                    OsVersion = reader.FieldCount > 15 && !reader.IsDBNull(15) ? reader.GetString(15) : "-",
+                    MacAddress = reader.FieldCount > 16 && !reader.IsDBNull(16) ? reader.GetString(16) : "-"
                 });
             }
 
@@ -501,19 +519,30 @@ namespace SysForgeStudio.Services
             conn.Open();
 
             using var cmd = new SqliteCommand(@"
-                INSERT OR REPLACE INTO inventory (brand, model, serial_no, ip_address, department, unit, location, user_name, date)
-                VALUES (@brand, @model, @serial, @ip, @dep, @unit, @loc, @user, @date);
+                INSERT OR REPLACE INTO inventory 
+                (brand, model, serial_no, ip_address, department, unit, location, user_name, date,
+                 motherboard, processor, ram, disk, gpu, os_version, mac_address)
+                VALUES 
+                (@brand, @model, @serial, @ip, @dep, @unit, @loc, @user, @date,
+                 @mb, @cpu, @ram, @disk, @gpu, @os, @mac);
             ", conn);
 
-            cmd.Parameters.AddWithValue("@brand", item.Brand);
-            cmd.Parameters.AddWithValue("@model", item.Model);
-            cmd.Parameters.AddWithValue("@serial", item.SerialNo);
-            cmd.Parameters.AddWithValue("@ip", item.IpAddress);
-            cmd.Parameters.AddWithValue("@dep", item.Department);
-            cmd.Parameters.AddWithValue("@unit", item.Unit);
-            cmd.Parameters.AddWithValue("@loc", item.Location);
-            cmd.Parameters.AddWithValue("@user", item.UserName);
-            cmd.Parameters.AddWithValue("@date", DateTime.Now.ToString("yyyy-MM-dd"));
+            cmd.Parameters.AddWithValue("@brand", item.Brand ?? "-");
+            cmd.Parameters.AddWithValue("@model", item.Model ?? "-");
+            cmd.Parameters.AddWithValue("@serial", item.SerialNo ?? "-");
+            cmd.Parameters.AddWithValue("@ip", item.IpAddress ?? "-");
+            cmd.Parameters.AddWithValue("@dep", item.Department ?? "-");
+            cmd.Parameters.AddWithValue("@unit", item.Unit ?? "-");
+            cmd.Parameters.AddWithValue("@loc", item.Location ?? "-");
+            cmd.Parameters.AddWithValue("@user", item.UserName ?? "-");
+            cmd.Parameters.AddWithValue("@date", string.IsNullOrWhiteSpace(item.Date) ? DateTime.Now.ToString("yyyy-MM-dd") : item.Date);
+            cmd.Parameters.AddWithValue("@mb", item.Motherboard ?? "-");
+            cmd.Parameters.AddWithValue("@cpu", item.Processor ?? "-");
+            cmd.Parameters.AddWithValue("@ram", item.Ram ?? "-");
+            cmd.Parameters.AddWithValue("@disk", item.Disk ?? "-");
+            cmd.Parameters.AddWithValue("@gpu", item.Gpu ?? "-");
+            cmd.Parameters.AddWithValue("@os", item.OsVersion ?? "-");
+            cmd.Parameters.AddWithValue("@mac", item.MacAddress ?? "-");
 
             cmd.ExecuteNonQuery();
             NotifyDataChanged();
@@ -534,8 +563,15 @@ namespace SysForgeStudio.Services
             string brand = "-";
             string model = "-";
             string serial = "-";
-            string cpuName = "";
-            string ramGbStr = "";
+            string motherboard = "-";
+            string processor = "-";
+            string ram = "-";
+            string disk = "-";
+            string gpu = "-";
+            string osVersion = "-";
+            string macAddress = "-";
+            string cpuShort = "";
+            string ramShort = "";
             string ip = "-";
 
             // 1. Computer System & Memory
@@ -548,21 +584,26 @@ namespace SysForgeStudio.Services
                     model = obj["Model"]?.ToString()?.Trim() ?? "-";
                     if (obj["TotalPhysicalMemory"] != null && double.TryParse(obj["TotalPhysicalMemory"].ToString(), out double ramBytes))
                     {
-                        ramGbStr = $"{Math.Round(ramBytes / (1024 * 1024 * 1024))}GB RAM";
+                        double totalGb = Math.Round(ramBytes / (1024 * 1024 * 1024));
+                        ramShort = $"{totalGb}GB RAM";
+                        ram = $"{totalGb} GB";
                     }
                     break;
                 }
             }
             catch { }
 
-            // 2. BaseBoard fallback if Manufacturer/Model are generic or default
+            // 2. BaseBoard (Motherboard)
             try
             {
-                using var bbSearcher = new ManagementObjectSearcher("SELECT Manufacturer, Product FROM Win32_BaseBoard");
+                using var bbSearcher = new ManagementObjectSearcher("SELECT Manufacturer, Product, SerialNumber FROM Win32_BaseBoard");
                 foreach (ManagementObject obj in bbSearcher.Get())
                 {
                     string bbMfr = obj["Manufacturer"]?.ToString()?.Trim() ?? "";
                     string bbProd = obj["Product"]?.ToString()?.Trim() ?? "";
+                    motherboard = $"{bbMfr} {bbProd}".Trim();
+                    if (string.IsNullOrWhiteSpace(motherboard)) motherboard = "-";
+
                     if ((IsInvalidSerial(brand) || brand == "System manufacturer" || brand == "-") && !string.IsNullOrWhiteSpace(bbMfr))
                     {
                         brand = bbMfr;
@@ -576,41 +617,139 @@ namespace SysForgeStudio.Services
             }
             catch { }
 
-            // 3. CPU details
+            // 3. Processor (CPU)
             try
             {
-                using var cpuSearcher = new ManagementObjectSearcher("SELECT Name FROM Win32_Processor");
+                using var cpuSearcher = new ManagementObjectSearcher("SELECT Name, MaxClockSpeed, NumberOfCores, NumberOfLogicalProcessors FROM Win32_Processor");
                 foreach (ManagementObject obj in cpuSearcher.Get())
                 {
                     string rawCpu = obj["Name"]?.ToString()?.Trim() ?? "";
+                    processor = rawCpu;
                     if (rawCpu.Contains("Core(TM) "))
                     {
                         var parts = rawCpu.Split(new[] { "Core(TM) " }, StringSplitOptions.None);
                         if (parts.Length > 1)
                         {
-                            cpuName = parts[1].Split('@')[0].Trim();
+                            cpuShort = parts[1].Split('@')[0].Trim();
                         }
                     }
                     else if (!string.IsNullOrWhiteSpace(rawCpu))
                     {
-                        cpuName = rawCpu.Split('@')[0].Trim();
+                        cpuShort = rawCpu.Split('@')[0].Trim();
                     }
                     break;
                 }
             }
             catch { }
 
-            // Combine model with CPU and RAM context if not already present
-            if (!string.IsNullOrWhiteSpace(cpuName) || !string.IsNullOrWhiteSpace(ramGbStr))
+            // 4. Memory Details (Slots & Speed)
+            try
             {
-                var specs = string.Join(" / ", new[] { cpuName, ramGbStr }.Where(x => !string.IsNullOrWhiteSpace(x)));
+                var memSlots = new List<string>();
+                using var pmSearcher = new ManagementObjectSearcher("SELECT Capacity, Speed FROM Win32_PhysicalMemory");
+                foreach (ManagementObject obj in pmSearcher.Get())
+                {
+                    if (obj["Capacity"] != null && double.TryParse(obj["Capacity"].ToString(), out double capBytes))
+                    {
+                        int slotGb = (int)Math.Round(capBytes / (1024 * 1024 * 1024));
+                        string speed = obj["Speed"]?.ToString()?.Trim() ?? "";
+                        memSlots.Add($"{slotGb}GB" + (!string.IsNullOrWhiteSpace(speed) ? $"@{speed}MHz" : ""));
+                    }
+                }
+                if (memSlots.Count > 0)
+                {
+                    ram = $"{ram} ({string.Join(" + ", memSlots)})";
+                }
+            }
+            catch { }
+
+            // 5. Storage (Disk Drives)
+            try
+            {
+                var diskList = new List<string>();
+                using var ddSearcher = new ManagementObjectSearcher("SELECT Model, Size FROM Win32_DiskDrive");
+                foreach (ManagementObject obj in ddSearcher.Get())
+                {
+                    string dModel = obj["Model"]?.ToString()?.Trim() ?? "";
+                    string dSize = "";
+                    if (obj["Size"] != null && double.TryParse(obj["Size"].ToString(), out double sizeBytes))
+                    {
+                        double gb = Math.Round(sizeBytes / (1024 * 1024 * 1024));
+                        dSize = gb >= 1000 ? $"{Math.Round(gb / 1000, 1)} TB" : $"{gb} GB";
+                    }
+                    if (!string.IsNullOrWhiteSpace(dModel))
+                    {
+                        diskList.Add(string.IsNullOrWhiteSpace(dSize) ? dModel : $"{dModel} ({dSize})");
+                    }
+                }
+                if (diskList.Count > 0)
+                {
+                    disk = string.Join(" | ", diskList);
+                }
+            }
+            catch { }
+
+            // 6. Graphics (GPU)
+            try
+            {
+                var gpuList = new List<string>();
+                using var vcSearcher = new ManagementObjectSearcher("SELECT Name FROM Win32_VideoController");
+                foreach (ManagementObject obj in vcSearcher.Get())
+                {
+                    string gName = obj["Name"]?.ToString()?.Trim() ?? "";
+                    if (!string.IsNullOrWhiteSpace(gName) && !gpuList.Contains(gName))
+                    {
+                        gpuList.Add(gName);
+                    }
+                }
+                if (gpuList.Count > 0)
+                {
+                    gpu = string.Join(" / ", gpuList);
+                }
+            }
+            catch { }
+
+            // 7. Operating System
+            try
+            {
+                using var osSearcher = new ManagementObjectSearcher("SELECT Caption, OSArchitecture FROM Win32_OperatingSystem");
+                foreach (ManagementObject obj in osSearcher.Get())
+                {
+                    string cap = obj["Caption"]?.ToString()?.Trim() ?? "";
+                    string arch = obj["OSArchitecture"]?.ToString()?.Trim() ?? "";
+                    osVersion = $"{cap} ({arch})".Trim();
+                    break;
+                }
+            }
+            catch { }
+
+            // 8. Primary MAC Address
+            try
+            {
+                using var netSearcher = new ManagementObjectSearcher("SELECT MACAddress, IPEnabled FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = TRUE");
+                foreach (ManagementObject obj in netSearcher.Get())
+                {
+                    string mac = obj["MACAddress"]?.ToString()?.Trim() ?? "";
+                    if (!string.IsNullOrWhiteSpace(mac))
+                    {
+                        macAddress = mac;
+                        break;
+                    }
+                }
+            }
+            catch { }
+
+            // Combine model with CPU and RAM context if not already present
+            if (!string.IsNullOrWhiteSpace(cpuShort) || !string.IsNullOrWhiteSpace(ramShort))
+            {
+                var specs = string.Join(" / ", new[] { cpuShort, ramShort }.Where(x => !string.IsNullOrWhiteSpace(x)));
                 if (!string.IsNullOrWhiteSpace(specs) && !model.Contains(specs, StringComparison.OrdinalIgnoreCase))
                 {
                     model = $"{model} ({specs})";
                 }
             }
 
-            // 4. BIOS Serial Number
+            // 9. BIOS Serial Number & HWID Fallbacks
             try
             {
                 using var searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BIOS");
@@ -622,7 +761,6 @@ namespace SysForgeStudio.Services
             }
             catch { }
 
-            // Fallback to Motherboard Serial if BIOS serial is invalid / default string
             if (IsInvalidSerial(serial))
             {
                 try
@@ -641,7 +779,6 @@ namespace SysForgeStudio.Services
                 catch { }
             }
 
-            // Fallback to Hardware ID (HWID) if serial is still invalid / default string
             if (IsInvalidSerial(serial))
             {
                 serial = GetMachineHardwareId();
@@ -655,6 +792,13 @@ namespace SysForgeStudio.Services
                 Model = model,
                 SerialNo = serial,
                 IpAddress = ip,
+                Motherboard = motherboard,
+                Processor = processor,
+                Ram = ram,
+                Disk = disk,
+                Gpu = gpu,
+                OsVersion = osVersion,
+                MacAddress = macAddress,
                 Department = department,
                 Unit = unit,
                 Location = Environment.MachineName,

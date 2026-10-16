@@ -35,6 +35,13 @@ install_log.txt
 sandbox_warnings.log
 toolkit_startup_debug.log
 
+# --- Heavy Binaries & Large Archives ---
+*.exe
+*.dll
+*.pkg
+*.pyz
+Archive/
+
 # --- IDE & OS ---
 .vs/
 .vscode/
