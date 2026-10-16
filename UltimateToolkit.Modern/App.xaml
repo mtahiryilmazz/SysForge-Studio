@@ -219,11 +219,14 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
                         <Border x:Name="tbBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5" TextElement.Foreground="{TemplateBinding Foreground}">
-                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" VerticalAlignment="Center" Margin="0" />
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="0" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsFocused" Value="True">
                                 <Setter TargetName="tbBorder" Property="BorderBrush" Value="{StaticResource PtAccent}" />
+                            </Trigger>
+                            <Trigger Property="AcceptsReturn" Value="True">
+                                <Setter Property="VerticalContentAlignment" Value="Top" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

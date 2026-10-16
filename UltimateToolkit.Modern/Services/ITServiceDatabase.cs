@@ -16,6 +16,13 @@ namespace UltimateToolkit.Modern.Services
         public string DbPath { get; }
         private readonly string _connectionString;
 
+        public event Action? DataChanged;
+
+        public void NotifyDataChanged()
+        {
+            try { DataChanged?.Invoke(); } catch { }
+        }
+
         public ITServiceDatabase()
         {
             string appData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "SysForgeStudio");
@@ -276,6 +283,7 @@ namespace UltimateToolkit.Modern.Services
             using var cmd = new SqliteCommand("INSERT OR IGNORE INTO departments (name) VALUES (@name);", conn);
             cmd.Parameters.AddWithValue("@name", name.Trim());
             cmd.ExecuteNonQuery();
+            NotifyDataChanged();
         }
 
         public void DeleteDepartment(int id)
@@ -289,6 +297,7 @@ namespace UltimateToolkit.Modern.Services
             using var cmd = new SqliteCommand("DELETE FROM departments WHERE id=@id;", conn);
             cmd.Parameters.AddWithValue("@id", id);
             cmd.ExecuteNonQuery();
+            NotifyDataChanged();
         }
 
         public List<UnitItem> GetUnits(int departmentId)
@@ -322,6 +331,7 @@ namespace UltimateToolkit.Modern.Services
             cmd.Parameters.AddWithValue("@depId", departmentId);
             cmd.Parameters.AddWithValue("@name", name.Trim());
             cmd.ExecuteNonQuery();
+            NotifyDataChanged();
         }
 
         public void DeleteUnit(int id)
@@ -331,6 +341,7 @@ namespace UltimateToolkit.Modern.Services
             using var cmd = new SqliteCommand("DELETE FROM units WHERE id=@id;", conn);
             cmd.Parameters.AddWithValue("@id", id);
             cmd.ExecuteNonQuery();
+            NotifyDataChanged();
         }
 
         #endregion
@@ -388,6 +399,7 @@ namespace UltimateToolkit.Modern.Services
             cmd.Parameters.AddWithValue("@note", ticket.ResolutionNote ?? "");
 
             cmd.ExecuteNonQuery();
+            NotifyDataChanged();
         }
 
         public void UpdateTicketStatus(int id, string newStatus)
@@ -398,6 +410,7 @@ namespace UltimateToolkit.Modern.Services
             cmd.Parameters.AddWithValue("@status", newStatus);
             cmd.Parameters.AddWithValue("@id", id);
             cmd.ExecuteNonQuery();
+            NotifyDataChanged();
         }
 
         public void ResolveTicket(int id, string? resolutionNote = null)
@@ -417,6 +430,7 @@ namespace UltimateToolkit.Modern.Services
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
             }
+            NotifyDataChanged();
         }
 
         public void DeleteTicket(int id)
@@ -426,6 +440,7 @@ namespace UltimateToolkit.Modern.Services
             using var cmd = new SqliteCommand("DELETE FROM tickets WHERE id=@id;", conn);
             cmd.Parameters.AddWithValue("@id", id);
             cmd.ExecuteNonQuery();
+            NotifyDataChanged();
         }
 
         #endregion
@@ -481,6 +496,7 @@ namespace UltimateToolkit.Modern.Services
             cmd.Parameters.AddWithValue("@date", DateTime.Now.ToString("yyyy-MM-dd"));
 
             cmd.ExecuteNonQuery();
+            NotifyDataChanged();
         }
 
         public void DeleteInventory(int id)
@@ -490,6 +506,7 @@ namespace UltimateToolkit.Modern.Services
             using var cmd = new SqliteCommand("DELETE FROM inventory WHERE id=@id;", conn);
             cmd.Parameters.AddWithValue("@id", id);
             cmd.ExecuteNonQuery();
+            NotifyDataChanged();
         }
 
         public void AutoRegisterCurrentMachine(string department = "Bilgi İşlem", string unit = "Kullanıcı Destek")

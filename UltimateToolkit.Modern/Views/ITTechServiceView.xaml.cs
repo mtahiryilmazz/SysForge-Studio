@@ -10,6 +10,8 @@ namespace UltimateToolkit.Modern.Views
 {
     public partial class ITTechServiceView : UserControl
     {
+        private System.Windows.Threading.DispatcherTimer? _syncTimer;
+
         public ITTechServiceView()
         {
             InitializeComponent();
@@ -17,12 +19,36 @@ namespace UltimateToolkit.Modern.Views
             {
                 RefreshData();
                 UpdateWebStatus();
+                StartSyncTimer();
+            };
+
+            Unloaded += (s, e) =>
+            {
+                _syncTimer?.Stop();
             };
 
             ITWebDashboardService.Instance.StateChanged += isRunning =>
             {
                 Dispatcher.Invoke(UpdateWebStatus);
             };
+
+            ITServiceDatabase.Instance.DataChanged += () =>
+            {
+                Dispatcher.InvokeAsync(RefreshData);
+            };
+        }
+
+        private void StartSyncTimer()
+        {
+            if (_syncTimer == null)
+            {
+                _syncTimer = new System.Windows.Threading.DispatcherTimer
+                {
+                    Interval = TimeSpan.FromSeconds(2.5)
+                };
+                _syncTimer.Tick += (s, e) => RefreshData();
+            }
+            _syncTimer.Start();
         }
 
         private void UpdateWebStatus()
@@ -289,6 +315,9 @@ namespace UltimateToolkit.Modern.Views
             {
                 AcceptsReturn = true,
                 TextWrapping = TextWrapping.Wrap,
+                VerticalContentAlignment = VerticalAlignment.Top,
+                HorizontalContentAlignment = HorizontalAlignment.Left,
+                TextAlignment = TextAlignment.Left,
                 Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(42, 42, 42)),
                 Foreground = System.Windows.Media.Brushes.White,
                 BorderBrush = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(65, 65, 65)),

@@ -207,7 +207,24 @@ namespace UltimateToolkit.Modern.Services
                     return;
                 }
 
-                // 4. Render Windows 11 Fluent Dark Web Portal
+                // 8. GET: Live Sync State Check
+                if (path == "/api/sync/state")
+                {
+                    var allTickets = ITServiceDatabase.Instance.GetTickets();
+                    var allInventory = ITServiceDatabase.Instance.GetInventory();
+                    var allDepts = ITServiceDatabase.Instance.GetDepartments();
+                    int opCount = allTickets.Count(t => t.Status != "Çözüldü");
+                    int resCount = allTickets.Count(t => t.Status == "Çözüldü");
+                    string json = $"{{\"total\":{allTickets.Count},\"open\":{opCount},\"resolved\":{resCount},\"inventory\":{allInventory.Count},\"depts\":{allDepts.Count}}}";
+                    byte[] jsonBytes = Encoding.UTF8.GetBytes(json);
+                    res.ContentType = "application/json; charset=utf-8";
+                    res.ContentLength64 = jsonBytes.Length;
+                    await res.OutputStream.WriteAsync(jsonBytes, 0, jsonBytes.Length);
+                    res.Close();
+                    return;
+                }
+
+                // 9. Render Windows 11 Fluent Dark Web Portal
                 var tickets = ITServiceDatabase.Instance.GetTickets();
                 var inventory = ITServiceDatabase.Instance.GetInventory();
                 var departments = ITServiceDatabase.Instance.GetDepartments();
@@ -302,6 +319,13 @@ namespace UltimateToolkit.Modern.Services
                 sb.AppendLine(".dept-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }");
                 sb.AppendLine(".unit-pill { display: inline-flex; align-items: center; gap: 6px; background: #262626; border: 1px solid #3A3A3A; border-radius: 4px; padding: 3px 8px; font-size: 12px; color: #E2E8F0; margin-right: 6px; margin-bottom: 6px; }");
                 sb.AppendLine(".unit-del { color: #F87171; text-decoration: none; font-size: 11px; font-weight: bold; cursor: pointer; }");
+                sb.AppendLine(".modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 10000; }");
+                sb.AppendLine(".modal-card { background: #202020; border: 1px solid #383838; border-radius: 12px; width: 90%; max-width: 520px; padding: 24px; box-shadow: 0 16px 40px rgba(0,0,0,0.7); animation: fadeIn 0.15s ease-out; }");
+                sb.AppendLine(".modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }");
+                sb.AppendLine(".modal-title { font-size: 17px; font-weight: 700; color: #4ADE80; display: flex; align-items: center; gap: 8px; }");
+                sb.AppendLine(".modal-close { background: none; border: none; font-size: 18px; color: #888; cursor: pointer; padding: 4px; }");
+                sb.AppendLine(".modal-close:hover { color: #fff; }");
+                sb.AppendLine("@keyframes fadeIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }");
                 sb.AppendLine(".footer { text-align: center; color: #64748B; font-size: 12px; margin-top: 36px; padding-top: 18px; border-top: 1px solid #262626; }");
                 sb.AppendLine("</style>");
                 sb.AppendLine("<script>");
@@ -321,14 +345,55 @@ namespace UltimateToolkit.Modern.Services
                 sb.AppendLine("    row.style.display = text.indexOf(filter) > -1 ? '' : 'none';");
                 sb.AppendLine("  });");
                 sb.AppendLine("}");
+                sb.AppendLine("var activeResolveId = null;");
                 sb.AppendLine("function resolveTicket(id) {");
-                sb.AppendLine("  var note = prompt('Yapılan işlem veya arıza çözüm açıklamasını giriniz (İsteğe bağlı):', '');");
-                sb.AppendLine("  if (note !== null) {");
-                sb.AppendLine("    window.location.href = '/api/tickets/resolve?id=' + id + '&note=' + encodeURIComponent(note);");
-                sb.AppendLine("  }");
+                sb.AppendLine("  activeResolveId = id;");
+                sb.AppendLine("  document.getElementById('resolveNoteText').value = '';");
+                sb.AppendLine("  document.getElementById('resolveModal').style.display = 'flex';");
+                sb.AppendLine("  setTimeout(function() { document.getElementById('resolveNoteText').focus(); }, 100);");
                 sb.AppendLine("}");
+                sb.AppendLine("function closeResolveModal() {");
+                sb.AppendLine("  document.getElementById('resolveModal').style.display = 'none';");
+                sb.AppendLine("  activeResolveId = null;");
+                sb.AppendLine("}");
+                sb.AppendLine("function confirmResolveModal() {");
+                sb.AppendLine("  if (!activeResolveId) return;");
+                sb.AppendLine("  var note = document.getElementById('resolveNoteText').value.trim();");
+                sb.AppendLine("  window.location.href = '/api/tickets/resolve?id=' + activeResolveId + '&note=' + encodeURIComponent(note);");
+                sb.AppendLine("}");
+                sb.AppendLine($"var currentSyncState = 'T:{totalTickets}|O:{openTickets}|R:{resolvedTickets}|I:{inventoryCount}|D:{departments.Count}';");
+                sb.AppendLine("setInterval(function() {");
+                sb.AppendLine("  var isModalVisible = document.getElementById('resolveModal') && document.getElementById('resolveModal').style.display === 'flex';");
+                sb.AppendLine("  var isFieldFocused = document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA');");
+                sb.AppendLine("  if (isModalVisible || isFieldFocused) return;");
+                sb.AppendLine("  fetch('/api/sync/state')");
+                sb.AppendLine("    .then(function(res) { return res.json(); })");
+                sb.AppendLine("    .then(function(data) {");
+                sb.AppendLine("      var newState = 'T:' + data.total + '|O:' + data.open + '|R:' + data.resolved + '|I:' + data.inventory + '|D:' + data.depts;");
+                sb.AppendLine("      if (newState !== currentSyncState) {");
+                sb.AppendLine("        window.location.reload();");
+                sb.AppendLine("      }");
+                sb.AppendLine("    })");
+                sb.AppendLine("    .catch(function(err) {});");
+                sb.AppendLine("}, 2500);");
                 sb.AppendLine("</script>");
                 sb.AppendLine("</head><body><div class='container'>");
+
+                // Modal Popup for Ticket Resolution
+                sb.AppendLine("<div id='resolveModal' class='modal-overlay'>");
+                sb.AppendLine("  <div class='modal-card'>");
+                sb.AppendLine("    <div class='modal-header'>");
+                sb.AppendLine("      <div class='modal-title'>✓ Arıza Kaydını Çöz ve Kapat</div>");
+                sb.AppendLine("      <button type='button' class='modal-close' onclick='closeResolveModal()'>✕</button>");
+                sb.AppendLine("    </div>");
+                sb.AppendLine("    <div style='font-size:13px;color:var(--text-muted);margin-bottom:12px;'>Yapılan işlem ve arıza çözüm açıklamasını giriniz (İsteğe bağlı):</div>");
+                sb.AppendLine("    <textarea id='resolveNoteText' rows='4' placeholder='Örn: Yapılan teknik müdahale, parça değişimi veya uygulanan çözüm detayı...' style='margin-bottom:16px;'></textarea>");
+                sb.AppendLine("    <div style='display:flex;justify-content:flex-end;gap:10px;'>");
+                sb.AppendLine("      <button type='button' onclick='closeResolveModal()' style='background:#333;color:#fff;border:none;padding:10px 18px;border-radius:6px;cursor:pointer;font-weight:600;'>Vazgeç</button>");
+                sb.AppendLine("      <button type='button' onclick='confirmResolveModal()' class='btn-primary' style='background:#107C41;'>✓ Arızayı Çözüldü Olarak Kapat</button>");
+                sb.AppendLine("    </div>");
+                sb.AppendLine("  </div>");
+                sb.AppendLine("</div>");
 
                 // Header
                 sb.AppendLine("<div class='header-bar'>");
