@@ -1,0 +1,185 @@
+<UserControl x:Class="UltimateToolkit.Modern.Views.HardwareExpertiseView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="900">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="24">
+            <!-- Header -->
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="🛡️ Donanım Ekspertizi &amp; Kimlik Kıyaslama" FontSize="22" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" />
+                    <TextBlock Text="Cihaz parçalarının seri numaralarını ve SHA-256 parmak izini çıkarır, referans ile kıyaslayarak donanım değişikliklerini tespit eder." 
+                               FontSize="13" Foreground="{StaticResource PtTextSecondary}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                </StackPanel>
+                <Button Grid.Column="1" Content="📂 Arşiv Klasörü" Style="{StaticResource PtSecondaryButton}" Click="BtnOpenArchive_Click" VerticalAlignment="Center"/>
+            </Grid>
+
+            <!-- Actions Bar -->
+            <Border Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,18">
+                <WrapPanel>
+                    <Button Content="🔍 Donanımı Tara &amp; Parmak İzi Al" Style="{StaticResource PtPrimaryButton}" Margin="0,0,10,8" Click="BtnScan_Click"/>
+                    <Button Content="💾 Referans (Baseline) Kaydet" Style="{StaticResource PtSecondaryButton}" Margin="0,0,10,8" Click="BtnSaveBaseline_Click"/>
+                    <Button Content="⚖️ Değişiklikleri Kıyasla" Style="{StaticResource PtSecondaryButton}" Margin="0,0,10,8" Click="BtnCompare_Click"/>
+                    <Button Content="📄 HTML Raporu Aç" Style="{StaticResource PtSecondaryButton}" Margin="0,0,10,8" Click="BtnGenerateReport_Click"/>
+                </WrapPanel>
+            </Border>
+
+            <!-- Status & Comparison Banner -->
+            <Border x:Name="BannerComparison" Background="#1E293B" BorderBrush="#334155" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,18" Visibility="Collapsed">
+                <StackPanel>
+                    <TextBlock x:Name="TxtComparisonTitle" Text="Kıyaslama Durumu" FontSize="16" FontWeight="Bold" Foreground="#38BDF8"/>
+                    <TextBlock x:Name="TxtComparisonSummary" Text="Sonuç bilgisi..." FontSize="13" Foreground="#E2E8F0" Margin="0,4,0,10" TextWrapping="Wrap"/>
+                    
+                    <ItemsControl x:Name="ListDifferences">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#0F172A" BorderBrush="#EF4444" BorderThickness="1,0,0,0" Padding="10,6" Margin="0,4" CornerRadius="4">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="140" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding Component}" FontWeight="Bold" Foreground="#F87171" VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding Description}" Foreground="#FFFFFF" FontWeight="SemiBold"/>
+                                            <TextBlock Foreground="#94A3B8" FontSize="11">
+                                                <Run Text="Önceki: "/>
+                                                <Run Text="{Binding OldValue}" Foreground="#CBD5E1"/>
+                                                <Run Text=" ➔ Yeni: "/>
+                                                <Run Text="{Binding NewValue}" Foreground="#FCA5A5" FontWeight="Bold"/>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- Hardware Hash Card -->
+            <Border Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,18">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="🔐 Donanım Bütünlük Hash (SHA-256)" FontSize="13" FontWeight="Bold" Foreground="{StaticResource PtTextSecondary}"/>
+                        <TextBlock x:Name="TxtHardwareHash" Text="Tarama bekleniyor..." FontSize="14" FontWeight="SemiBold" Foreground="#38BDF8" TextWrapping="Wrap" Margin="0,4,0,0" FontFamily="Consolas"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="1" x:Name="TxtScanTimestamp" Text="" FontSize="11" Foreground="{StaticResource PtTextSecondary}" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- Summary Cards Grid -->
+            <Grid Margin="0,0,0,18">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="12" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: Motherboard & CPU -->
+                <Border Grid.Column="0" Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16">
+                    <StackPanel>
+                        <TextBlock Text="💻 Anakart, BIOS &amp; İşlemci" FontSize="15" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" Margin="0,0,0,10"/>
+                        <TextBlock Text="Anakart:" FontSize="11" Foreground="{StaticResource PtTextSecondary}"/>
+                        <TextBlock x:Name="TxtMotherboard" Text="-" FontSize="13" Foreground="{StaticResource PtTextPrimary}" Margin="0,0,0,8"/>
+
+                        <TextBlock Text="Anakart Seri No:" FontSize="11" Foreground="{StaticResource PtTextSecondary}"/>
+                        <TextBlock x:Name="TxtMBSN" Text="-" FontSize="13" Foreground="#38BDF8" FontFamily="Consolas" Margin="0,0,0,8"/>
+
+                        <TextBlock Text="BIOS &amp; UUID:" FontSize="11" Foreground="{StaticResource PtTextSecondary}"/>
+                        <TextBlock x:Name="TxtBiosUuid" Text="-" FontSize="13" Foreground="{StaticResource PtTextPrimary}" FontFamily="Consolas" Margin="0,0,0,8"/>
+
+                        <TextBlock Text="İşlemci (CPU):" FontSize="11" Foreground="{StaticResource PtTextSecondary}"/>
+                        <TextBlock x:Name="TxtCpu" Text="-" FontSize="13" Foreground="{StaticResource PtTextPrimary}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Right: Memory & Disks -->
+                <Border Grid.Column="2" Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16">
+                    <StackPanel>
+                        <TextBlock Text="🧠 RAM &amp; Depolama" FontSize="15" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" Margin="0,0,0,10"/>
+                        <TextBlock Text="Bellek (RAM) Modülleri:" FontSize="11" Foreground="{StaticResource PtTextSecondary}"/>
+                        <TextBlock x:Name="TxtRamSummary" Text="-" FontSize="13" Foreground="{StaticResource PtTextPrimary}" Margin="0,0,0,8"/>
+
+                        <TextBlock Text="Diskler:" FontSize="11" Foreground="{StaticResource PtTextSecondary}"/>
+                        <TextBlock x:Name="TxtDiskSummary" Text="-" FontSize="13" Foreground="{StaticResource PtTextPrimary}" Margin="0,0,0,8"/>
+
+                        <TextBlock Text="Ekran Kartı:" FontSize="11" Foreground="{StaticResource PtTextSecondary}"/>
+                        <TextBlock x:Name="TxtGpuSummary" Text="-" FontSize="13" Foreground="{StaticResource PtTextPrimary}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Detailed Hardware Lists -->
+            <Border Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16">
+                <StackPanel>
+                    <TextBlock Text="📋 Donanım Bileşen Detayları" FontSize="15" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" Margin="0,0,0,12"/>
+
+                    <TextBlock Text="Disk Detayları" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource PtTextSecondary}" Margin="0,4,0,4"/>
+                    <ItemsControl x:Name="ListDisks">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#1E1E1E" Padding="10,6" Margin="0,2" CornerRadius="4">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="{Binding Model}" FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                                            <TextBlock Text="{Binding InterfaceType}" FontSize="11" Foreground="#888888"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                                            <TextBlock Text="{Binding SizeGB, StringFormat='{}{0} GB'}" FontWeight="Bold" Foreground="#38BDF8"/>
+                                            <TextBlock Text="{Binding SerialNumber}" FontSize="11" Foreground="#AAAAAA" FontFamily="Consolas"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <TextBlock Text="RAM Modül Detayları" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource PtTextSecondary}" Margin="0,14,0,4"/>
+                    <ItemsControl x:Name="ListRam">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#1E1E1E" Padding="10,6" Margin="0,2" CornerRadius="4">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock>
+                                                <Run Text="{Binding BankLabel}" FontWeight="Bold" Foreground="#FFFFFF"/>
+                                                <Run Text=" - " Foreground="#666666"/>
+                                                <Run Text="{Binding Manufacturer}" Foreground="#DDDDDD"/>
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding PartNumber}" FontSize="11" Foreground="#888888"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                                            <TextBlock Text="{Binding CapacityGB, StringFormat='{}{0} GB'}" FontWeight="Bold" Foreground="#107C41"/>
+                                            <TextBlock Text="{Binding SerialNumber}" FontSize="11" Foreground="#AAAAAA" FontFamily="Consolas"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

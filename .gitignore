@@ -1,0 +1,44 @@
+# ===============================================
+# Ultimate Enterprise IT Toolkit - .gitignore
+# ===============================================
+
+# --- Secrets & Sensitive Data ---
+.env
+.env.*
+.github_token
+.github_settings.json
+*.cer
+*.pfx
+
+# --- Build Outputs ---
+bin/
+obj/
+publish_output/
+*.user
+*.suo
+
+# --- Python Environments & Caches ---
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.spec
+
+# --- Temporary & Database WAL Files ---
+*.db-shm
+*.db-wal
+app.log
+*.log
+install_log.txt
+sandbox_warnings.log
+toolkit_startup_debug.log
+
+# --- IDE & OS ---
+.vs/
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
+.DS_Store

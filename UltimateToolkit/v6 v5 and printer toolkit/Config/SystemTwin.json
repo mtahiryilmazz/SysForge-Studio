@@ -1,0 +1,4384 @@
+﻿{
+    "startupCount":  8,
+    "services":  [
+                     {
+                         "Name":  "AarSvc_3f18eab7",
+                         "DisplayName":  "Agent Activation Runtime_3f18eab7",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "ADPSvc",
+                         "DisplayName":  "Aggregated Data Platform Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "ALG",
+                         "DisplayName":  "Application Layer Gateway Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "AnyDesk",
+                         "DisplayName":  "AnyDesk Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "AppIDSvc",
+                         "DisplayName":  "Application Identity",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "Appinfo",
+                         "DisplayName":  "Application Information",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "AppMgmt",
+                         "DisplayName":  "Application Management",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "AppReadiness",
+                         "DisplayName":  "App Readiness",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "AppVClient",
+                         "DisplayName":  "Microsoft App-V Client",
+                         "Status":  1,
+                         "StartType":  4
+                     },
+                     {
+                         "Name":  "AppXSvc",
+                         "DisplayName":  "AppX Deployment Service (AppXSVC)",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "ApxSvc",
+                         "DisplayName":  "Windows Virtual Audio Device Proxy Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "AssignedAccessManagerSvc",
+                         "DisplayName":  "AssignedAccessManager Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "AudioEndpointBuilder",
+                         "DisplayName":  "Windows Audio Endpoint Builder",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "Audiosrv",
+                         "DisplayName":  "Windows Audio",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "autotimesvc",
+                         "DisplayName":  "Cellular Time",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "AxInstSV",
+                         "DisplayName":  "ActiveX Installer (AxInstSV)",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "BcastDVRUserService_3f18eab7",
+                         "DisplayName":  "GameDVR and Broadcast User Service_3f18eab7",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "BDESVC",
+                         "DisplayName":  "BitLocker Drive Encryption Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "BFE",
+                         "DisplayName":  "Base Filtering Engine",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "BITS",
+                         "DisplayName":  "Background Intelligent Transfer Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "BluetoothUserService_3f18eab7",
+                         "DisplayName":  "Bluetooth User Support Service_3f18eab7",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "BrokerInfrastructure",
+                         "DisplayName":  "Background Tasks Infrastructure Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "BTAGService",
+                         "DisplayName":  "Bluetooth Audio Gateway Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "BthAvctpSvc",
+                         "DisplayName":  "AVCTP service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "bthserv",
+                         "DisplayName":  "Bluetooth Support Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "camsvc",
+                         "DisplayName":  "Capability Access Manager Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "CaptureService_3f18eab7",
+                         "DisplayName":  "CaptureService_3f18eab7",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "cbdhsvc_3f18eab7",
+                         "DisplayName":  "Clipboard User Service_3f18eab7",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "CDPSvc",
+                         "DisplayName":  "Connected Devices Platform Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "CDPUserSvc_3f18eab7",
+                         "DisplayName":  "Connected Devices Platform User Service_3f18eab7",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "CertPropSvc",
+                         "DisplayName":  "Certificate Propagation",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "ClickToRunSvc",
+                         "DisplayName":  "Microsoft Office Click-to-Run Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "ClipSVC",
+                         "DisplayName":  "Client License Service (ClipSVC)",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "CloudBackupRestoreSvc_3f18eab7",
+                         "DisplayName":  "Cloud Backup and Restore Service_3f18eab7",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "cloudidsvc",
+                         "DisplayName":  "Microsoft Cloud Identity Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "COMSysApp",
+                         "DisplayName":  "COM+ System Application",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "ConsentUxUserSvc_3f18eab7",
+                         "DisplayName":  "ConsentUX User Service_3f18eab7",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "CoreMessagingRegistrar",
+                         "DisplayName":  "CoreMessaging",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "cplspcon",
+                         "DisplayName":  "Intel(R) Content Protection HDCP Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "CredentialEnrollmentManagerUserSvc_3f18eab7",
+                         "DisplayName":  "CredentialEnrollmentManagerUserSvc_3f18eab7",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "CryptSvc",
+                         "DisplayName":  "Cryptographic Services",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "CscService",
+                         "DisplayName":  "Offline Files",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "DcomLaunch",
+                         "DisplayName":  "DCOM Server Process Launcher",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "dcsvc",
+                         "DisplayName":  "Declared Configuration(DC) service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "defragsvc",
+                         "DisplayName":  "Optimize drives",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "DeviceAssociationBrokerSvc_3f18eab7",
+                         "DisplayName":  "DeviceAssociationBroker_3f18eab7",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "DeviceAssociationService",
+                         "DisplayName":  "Device Association Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "DeviceInstall",
+                         "DisplayName":  "Device Install Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "DevicePickerUserSvc_3f18eab7",
+                         "DisplayName":  "DevicePicker_3f18eab7",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "DevicesFlowUserSvc_3f18eab7",
+                         "DisplayName":  "DevicesFlow_3f18eab7",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "DevQueryBroker",
+                         "DisplayName":  "DevQuery Background Discovery Broker",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "Dhcp",
+                         "DisplayName":  "DHCP Client",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "diagsvc",
+                         "DisplayName":  "Diagnostic Execution Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "DiagTrack",
+                         "DisplayName":  "Connected User Experiences and Telemetry",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "DialogBlockingService",
+                         "DisplayName":  "DialogBlockingService",
+                         "Status":  1,
+                         "StartType":  4
+                     },
+                     {
+                         "Name":  "DispBrokerDesktopSvc",
+                         "DisplayName":  "Display Policy Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "DisplayEnhancementService",
+                         "DisplayName":  "Display Enhancement Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "DmEnrollmentSvc",
+                         "DisplayName":  "Device Management Enrollment Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "dmwappushservice",
+                         "DisplayName":  "Device Management Wireless Application Protocol (WAP) Push message Routing Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "Dnscache",
+                         "DisplayName":  "DNS Client",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "DoSvc",
+                         "DisplayName":  "Delivery Optimization",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "dot3svc",
+                         "DisplayName":  "Wired AutoConfig",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "DPS",
+                         "DisplayName":  "Diagnostic Policy Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "DsmSvc",
+                         "DisplayName":  "Device Setup Manager",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "DsSvc",
+                         "DisplayName":  "Data Sharing Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "DusmSvc",
+                         "DisplayName":  "Data Usage",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "EapHost",
+                         "DisplayName":  "Extensible Authentication Protocol",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "edgeupdate",
+                         "DisplayName":  "Microsoft Edge Update Service (edgeupdate)",
+                         "Status":  1,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "edgeupdatem",
+                         "DisplayName":  "Microsoft Edge Update Service (edgeupdatem)",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "EFS",
+                         "DisplayName":  "Encrypting File System (EFS)",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "embeddedmode",
+                         "DisplayName":  "Embedded Mode",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "EntAppSvc",
+                         "DisplayName":  "Enterprise App Management Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "esifsvc",
+                         "DisplayName":  "Intel(R) Dynamic Tuning service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "EventLog",
+                         "DisplayName":  "Windows Event Log",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "EventSystem",
+                         "DisplayName":  "COM+ Event System",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "fdPHost",
+                         "DisplayName":  "Function Discovery Provider Host",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "FDResPub",
+                         "DisplayName":  "Function Discovery Resource Publication",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "fhsvc",
+                         "DisplayName":  "File History Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "FontCache",
+                         "DisplayName":  "Windows Font Cache Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "FontCache3.0.0.0",
+                         "DisplayName":  "Windows Presentation Foundation Font Cache 3.0.0.0",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "FrameServer",
+                         "DisplayName":  "Windows Camera Frame Server",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "FrameServerMonitor",
+                         "DisplayName":  "Windows Camera Frame Server Monitor",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "GameInputSvc",
+                         "DisplayName":  "GameInput Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "GoogleChromeElevationService",
+                         "DisplayName":  "Google Chrome Elevation Service (GoogleChromeElevationService)",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "GoogleUpdaterInternalService149.0.7814.0",
+                         "DisplayName":  "Google Updater Internal Service (GoogleUpdaterInternalService149.0.7814.0)",
+                         "Status":  1,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "GoogleUpdaterService149.0.7814.0",
+                         "DisplayName":  "Google Updater Service (GoogleUpdaterService149.0.7814.0)",
+                         "Status":  1,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "gpsvc",
+                         "DisplayName":  "Group Policy Client",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "GraphicsPerfSvc",
+                         "DisplayName":  "GraphicsPerfSvc",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "hidserv",
+                         "DisplayName":  "Human Interface Device Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "hpatchmon",
+                         "DisplayName":  "Hotpatch Monitoring Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "HvHost",
+                         "DisplayName":  "HV Host Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "icssvc",
+                         "DisplayName":  "Windows Mobile Hotspot Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "igfxCUIService2.0.0.0",
+                         "DisplayName":  "Intel(R) HD Graphics Control Panel Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "IKEEXT",
+                         "DisplayName":  "IKE and AuthIP IPsec Keying Modules",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "InstallService",
+                         "DisplayName":  "Microsoft Store Install Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "IntelAudioService",
+                         "DisplayName":  "Intel(R) Audio Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "IntelGraphicsSoftwareService",
+                         "DisplayName":  "Intel® Graphics Software",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "InventorySvc",
+                         "DisplayName":  "Inventory and Compatibility Appraisal service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "iphlpsvc",
+                         "DisplayName":  "IP Helper",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "IpxlatCfgSvc",
+                         "DisplayName":  "IP Translation Configuration Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "jhi_service",
+                         "DisplayName":  "Intel(R) Dynamic Application Loader Host Interface Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "KeyIso",
+                         "DisplayName":  "CNG Key Isolation",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "KtmRm",
+                         "DisplayName":  "KtmRm for Distributed Transaction Coordinator",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "LanmanServer",
+                         "DisplayName":  "Server",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "LanmanWorkstation",
+                         "DisplayName":  "Workstation",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "lfsvc",
+                         "DisplayName":  "Geolocation Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "LicenseManager",
+                         "DisplayName":  "Windows License Manager Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "lltdsvc",
+                         "DisplayName":  "Link-Layer Topology Discovery Mapper",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "lmhosts",
+                         "DisplayName":  "TCP/IP NetBIOS Helper",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "LocalKdc",
+                         "DisplayName":  "Kerberos Local Key Distribution Center",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "LSM",
+                         "DisplayName":  "Local Session Manager",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "LxpSvc",
+                         "DisplayName":  "Language Experience Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "MapsBroker",
+                         "DisplayName":  "Downloaded Maps Manager",
+                         "Status":  1,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "McmSvc",
+                         "DisplayName":  "Mobile Connectivity Management Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "McpManagementService",
+                         "DisplayName":  "McpManagementService",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "MDCoreSvc",
+                         "DisplayName":  "Microsoft Defender Core Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "MessagingService_3f18eab7",
+                         "DisplayName":  "MessagingService_3f18eab7",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "MicrosoftEdgeElevationService",
+                         "DisplayName":  "Microsoft Edge Elevation Service (MicrosoftEdgeElevationService)",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "midisrv",
+                         "DisplayName":  "Windows MIDI Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "MozillaMaintenance",
+                         "DisplayName":  "Mozilla Maintenance Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "mpssvc",
+                         "DisplayName":  "Windows Defender Firewall",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "MSDTC",
+                         "DisplayName":  "Distributed Transaction Coordinator",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "MSiSCSI",
+                         "DisplayName":  "Microsoft iSCSI Initiator Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "msiserver",
+                         "DisplayName":  "Windows Installer",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "MsKeyboardFilter",
+                         "DisplayName":  "Microsoft Keyboard Filter",
+                         "Status":  1,
+                         "StartType":  4
+                     },
+                     {
+                         "Name":  "NativePushService",
+                         "DisplayName":  "Wondershare Native Push Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "NaturalAuthentication",
+                         "DisplayName":  "Natural Authentication",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "NcaSvc",
+                         "DisplayName":  "Network Connectivity Assistant",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "NcbService",
+                         "DisplayName":  "Network Connection Broker",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "NcdAutoSetup",
+                         "DisplayName":  "Network Connected Devices Auto-Setup",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "Netlogon",
+                         "DisplayName":  "Netlogon",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "Netman",
+                         "DisplayName":  "Network Connections",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "netprofm",
+                         "DisplayName":  "Network List Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "NetSetupSvc",
+                         "DisplayName":  "Network Setup Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "NetTcpPortSharing",
+                         "DisplayName":  "Net.Tcp Port Sharing Service",
+                         "Status":  1,
+                         "StartType":  4
+                     },
+                     {
+                         "Name":  "NgcCtnrSvc",
+                         "DisplayName":  "Microsoft Passport Container",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "NgcSvc",
+                         "DisplayName":  "Microsoft Passport",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "NlaSvc",
+                         "DisplayName":  "Network Location Awareness",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "NPSMSvc_3f18eab7",
+                         "DisplayName":  "Now Playing Session Manager Service_3f18eab7",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "nsi",
+                         "DisplayName":  "Network Store Interface Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "OneSyncSvc_3f18eab7",
+                         "DisplayName":  "Sync Host_3f18eab7",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "P9RdrService_3f18eab7",
+                         "DisplayName":  "P9RdrService_3f18eab7",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "PcaSvc",
+                         "DisplayName":  "Program Compatibility Assistant Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "PeerDistSvc",
+                         "DisplayName":  "BranchCache",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "PenService_3f18eab7",
+                         "DisplayName":  "PenService_3f18eab7",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "perceptionsimulation",
+                         "DisplayName":  "Windows Perception Simulation Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "PerfHost",
+                         "DisplayName":  "Performance Counter DLL Host",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "PhoneSvc",
+                         "DisplayName":  "Phone Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "PimIndexMaintenanceSvc_3f18eab7",
+                         "DisplayName":  "Contact Data_3f18eab7",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "pla",
+                         "DisplayName":  "Performance Logs \u0026 Alerts",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "PlugPlay",
+                         "DisplayName":  "Plug and Play",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "PolicyAgent",
+                         "DisplayName":  "IPsec Policy Agent",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "Power",
+                         "DisplayName":  "Power",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "PrintDeviceConfigurationService",
+                         "DisplayName":  "Print Device Configuration Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "PrintNotify",
+                         "DisplayName":  "Printer Extensions and Notifications",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "PrintScanBrokerService",
+                         "DisplayName":  "PrintScanBrokerService",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "PrintWorkflowUserSvc_3f18eab7",
+                         "DisplayName":  "PrintWorkflow_3f18eab7",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "ProfSvc",
+                         "DisplayName":  "User Profile Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "PushToInstall",
+                         "DisplayName":  "Windows PushToInstall Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "QWAVE",
+                         "DisplayName":  "Quality Windows Audio Video Experience",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "RasAuto",
+                         "DisplayName":  "Remote Access Auto Connection Manager",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "RasMan",
+                         "DisplayName":  "Remote Access Connection Manager",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "refsdedupsvc",
+                         "DisplayName":  "ReFS Dedup Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "RemoteAccess",
+                         "DisplayName":  "Routing and Remote Access",
+                         "Status":  1,
+                         "StartType":  4
+                     },
+                     {
+                         "Name":  "RemoteRegistry",
+                         "DisplayName":  "Remote Registry",
+                         "Status":  1,
+                         "StartType":  4
+                     },
+                     {
+                         "Name":  "RetailDemo",
+                         "DisplayName":  "Retail Demo Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "RmSvc",
+                         "DisplayName":  "Radio Management Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "RpcEptMapper",
+                         "DisplayName":  "RPC Endpoint Mapper",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "RpcLocator",
+                         "DisplayName":  "Remote Procedure Call (RPC) Locator",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "RpcSs",
+                         "DisplayName":  "Remote Procedure Call (RPC)",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "RtkAudioUniversalService",
+                         "DisplayName":  "Realtek Audio Universal Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "SamSs",
+                         "DisplayName":  "Security Accounts Manager",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "SCardSvr",
+                         "DisplayName":  "Smart Card",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "ScDeviceEnum",
+                         "DisplayName":  "Smart Card Device Enumeration Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "Schedule",
+                         "DisplayName":  "Task Scheduler",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "SCPolicySvc",
+                         "DisplayName":  "Smart Card Removal Policy",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "SDRSVC",
+                         "DisplayName":  "Windows Backup",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "seclogon",
+                         "DisplayName":  "Secondary Logon",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "SecurityHealthService",
+                         "DisplayName":  "Windows Security Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "SEMgrSvc",
+                         "DisplayName":  "Payments and NFC/SE Manager",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "SENS",
+                         "DisplayName":  "System Event Notification Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "Sense",
+                         "DisplayName":  "Windows Defender Advanced Threat Protection Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "SensorDataService",
+                         "DisplayName":  "Sensor Data Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "SensorService",
+                         "DisplayName":  "Sensor Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "SensrSvc",
+                         "DisplayName":  "Sensor Monitoring Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "SessionEnv",
+                         "DisplayName":  "Remote Desktop Configuration",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "SharedAccess",
+                         "DisplayName":  "Internet Connection Sharing (ICS)",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "ShellHWDetection",
+                         "DisplayName":  "Shell Hardware Detection",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "shpamsvc",
+                         "DisplayName":  "Shared PC Account Manager",
+                         "Status":  1,
+                         "StartType":  4
+                     },
+                     {
+                         "Name":  "smphost",
+                         "DisplayName":  "Microsoft Storage Spaces SMP",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "SmsRouter",
+                         "DisplayName":  "Microsoft Windows SMS Router Service.",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "SNMPTrap",
+                         "DisplayName":  "SNMP Trap",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "Spooler",
+                         "DisplayName":  "Print Spooler",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "sppsvc",
+                         "DisplayName":  "Software Protection",
+                         "Status":  1,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "SSDPSRV",
+                         "DisplayName":  "SSDP Discovery",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "ssh-agent",
+                         "DisplayName":  "OpenSSH Authentication Agent",
+                         "Status":  1,
+                         "StartType":  4
+                     },
+                     {
+                         "Name":  "SstpSvc",
+                         "DisplayName":  "Secure Socket Tunneling Protocol Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "StateRepository",
+                         "DisplayName":  "State Repository Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "StiSvc",
+                         "DisplayName":  "Windows Image Acquisition (WIA)",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "StorSvc",
+                         "DisplayName":  "Storage Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "SU10Guard",
+                         "DisplayName":  "StopUpdates10 Guard",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "svsvc",
+                         "DisplayName":  "Spot Verifier",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "swprv",
+                         "DisplayName":  "Microsoft Software Shadow Copy Provider",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "SysMain",
+                         "DisplayName":  "SysMain",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "SystemEventsBroker",
+                         "DisplayName":  "System Events Broker",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "TapiSrv",
+                         "DisplayName":  "Telephony",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "TbtP2pShortcutService",
+                         "DisplayName":  "Thunderbolt(TM) Peer to Peer Shortcut",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "TermService",
+                         "DisplayName":  "Remote Desktop Services",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "TextInputManagementService",
+                         "DisplayName":  "Text Input Management Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "Themes",
+                         "DisplayName":  "Themes",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "TieringEngineService",
+                         "DisplayName":  "Storage Tiers Management",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "TimeBrokerSvc",
+                         "DisplayName":  "Time Broker",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "TokenBroker",
+                         "DisplayName":  "Web Account Manager",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "TrkWks",
+                         "DisplayName":  "Distributed Link Tracking Client",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "TroubleshootingSvc",
+                         "DisplayName":  "Recommended Troubleshooting Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "TrustedInstaller",
+                         "DisplayName":  "Windows Modules Installer",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "tzautoupdate",
+                         "DisplayName":  "Auto Time Zone Updater",
+                         "Status":  1,
+                         "StartType":  4
+                     },
+                     {
+                         "Name":  "UdkUserSvc_3f18eab7",
+                         "DisplayName":  "Udk User Service_3f18eab7",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "UevAgentService",
+                         "DisplayName":  "User Experience Virtualization Service",
+                         "Status":  1,
+                         "StartType":  4
+                     },
+                     {
+                         "Name":  "UmRdpService",
+                         "DisplayName":  "Remote Desktop Services UserMode Port Redirector",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "UnistoreSvc_3f18eab7",
+                         "DisplayName":  "User Data Storage_3f18eab7",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "upnphost",
+                         "DisplayName":  "UPnP Device Host",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "UserDataSvc_3f18eab7",
+                         "DisplayName":  "User Data Access_3f18eab7",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "UserManager",
+                         "DisplayName":  "User Manager",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "UsoSvc",
+                         "DisplayName":  "Update Orchestrator Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "VaultSvc",
+                         "DisplayName":  "Credential Manager",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "vds",
+                         "DisplayName":  "Virtual Disk",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "vmicguestinterface",
+                         "DisplayName":  "Hyper-V Guest Service Interface",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "vmicheartbeat",
+                         "DisplayName":  "Hyper-V Heartbeat Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "vmickvpexchange",
+                         "DisplayName":  "Hyper-V Data Exchange Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "vmicrdv",
+                         "DisplayName":  "Hyper-V Remote Desktop Virtualization Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "vmicshutdown",
+                         "DisplayName":  "Hyper-V Guest Shutdown Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "vmictimesync",
+                         "DisplayName":  "Hyper-V Time Synchronization Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "vmicvmsession",
+                         "DisplayName":  "Hyper-V PowerShell Direct Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "vmicvss",
+                         "DisplayName":  "Hyper-V Volume Shadow Copy Requestor",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "VSS",
+                         "DisplayName":  "Volume Shadow Copy",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "W32Time",
+                         "DisplayName":  "Windows Time",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WaaSMedicSvc",
+                         "DisplayName":  "WaaSMedicSvc",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WalletService",
+                         "DisplayName":  "WalletService",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WarpJITSvc",
+                         "DisplayName":  "Warp JIT Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WavesAudioService",
+                         "DisplayName":  "Waves Audio Universal Services",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "WavesSysSvc",
+                         "DisplayName":  "Waves Audio Services",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "wbengine",
+                         "DisplayName":  "Block Level Backup Engine Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WbioSrvc",
+                         "DisplayName":  "Windows Biometric Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "Wcmsvc",
+                         "DisplayName":  "Windows Connection Manager",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "wcncsvc",
+                         "DisplayName":  "Windows Connect Now - Config Registrar",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WdiServiceHost",
+                         "DisplayName":  "Diagnostic Service Host",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WdiSystemHost",
+                         "DisplayName":  "Diagnostic System Host",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WdNisSvc",
+                         "DisplayName":  "Microsoft Defender Antivirus Network Inspection Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WebClient",
+                         "DisplayName":  "WebClient",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "webthreatdefsvc",
+                         "DisplayName":  "Web Threat Defense Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "webthreatdefusersvc_3f18eab7",
+                         "DisplayName":  "Web Threat Defense User Service_3f18eab7",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "Wecsvc",
+                         "DisplayName":  "Windows Event Collector",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WEPHOSTSVC",
+                         "DisplayName":  "Windows Encryption Provider Host Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "wercplsupport",
+                         "DisplayName":  "Problem Reports Control Panel Support",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WerSvc",
+                         "DisplayName":  "Windows Error Reporting Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WFDSConMgrSvc",
+                         "DisplayName":  "Wi-Fi Direct Services Connection Manager Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "whesvc",
+                         "DisplayName":  "Windows Health and Optimized Experiences",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "WiaRpc",
+                         "DisplayName":  "Still Image Acquisition Events",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WinDefend",
+                         "DisplayName":  "Microsoft Defender Antivirus Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "WinHttpAutoProxySvc",
+                         "DisplayName":  "WinHTTP Web Proxy Auto-Discovery Service",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "Winmgmt",
+                         "DisplayName":  "Windows Management Instrumentation",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "WinRM",
+                         "DisplayName":  "Windows Remote Management (WS-Management)",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "wisvc",
+                         "DisplayName":  "Windows Insider Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WlanSvc",
+                         "DisplayName":  "WLAN AutoConfig",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "wlidsvc",
+                         "DisplayName":  "Microsoft Account Sign-in Assistant",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "wlpasvc",
+                         "DisplayName":  "Local Profile Assistant Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WManSvc",
+                         "DisplayName":  "Windows Management Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "wmiApSrv",
+                         "DisplayName":  "WMI Performance Adapter",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WMIRegistrationService",
+                         "DisplayName":  "Intel(R) Management Engine WMI Provider Registration",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "WMPNetworkSvc",
+                         "DisplayName":  "Windows Media Player Network Sharing Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "workfolderssvc",
+                         "DisplayName":  "Work Folders",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WpcMonSvc",
+                         "DisplayName":  "Parental Controls",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WPDBusEnum",
+                         "DisplayName":  "Portable Device Enumerator Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WpnService",
+                         "DisplayName":  "Windows Push Notifications System Service",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "WpnUserService_3f18eab7",
+                         "DisplayName":  "Windows Push Notifications User Service_3f18eab7",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "WSAIFabricSvc",
+                         "DisplayName":  "WSAIFabricSvc",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "wscsvc",
+                         "DisplayName":  "Security Center",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "WSearch",
+                         "DisplayName":  "Windows Search",
+                         "Status":  4,
+                         "StartType":  2
+                     },
+                     {
+                         "Name":  "wuauserv",
+                         "DisplayName":  "Windows Update",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "wuqisvc",
+                         "DisplayName":  "Microsoft Usage and Quality Insights",
+                         "Status":  4,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "WwanSvc",
+                         "DisplayName":  "WWAN AutoConfig",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "XblAuthManager",
+                         "DisplayName":  "Xbox Live Auth Manager",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "XblGameSave",
+                         "DisplayName":  "Xbox Live Game Save",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "XboxGipSvc",
+                         "DisplayName":  "Xbox Accessory Management Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "XboxNetApiSvc",
+                         "DisplayName":  "Xbox Live Networking Service",
+                         "Status":  1,
+                         "StartType":  3
+                     },
+                     {
+                         "Name":  "ZTHELPER",
+                         "DisplayName":  "ZTDNS Helper service",
+                         "Status":  1,
+                         "StartType":  3
+                     }
+                 ],
+    "timestamp":  "2026-06-03T16:10:03.7433837+05:30",
+    "startup":  [
+                    {
+                        "path":  "\"C:\\Users\\Ansh\\AppData\\Local\\Microsoft\\OneDrive\\OneDrive.exe\" /background",
+                        "name":  "OneDrive",
+                        "location":  {
+                                         "Value":  "\"C:\\Users\\Ansh\\AppData\\Local\\Microsoft\\OneDrive\\OneDrive.exe\" /background",
+                                         "MemberType":  8,
+                                         "IsSettable":  true,
+                                         "IsGettable":  true,
+                                         "TypeNameOfValue":  "System.String",
+                                         "Name":  "OneDrive",
+                                         "IsInstance":  true
+                                     },
+                        "enabled":  true
+                    },
+                    {
+                        "path":  "\"C:\\Program Files\\Softdeluxe\\Free Download Manager\\fdm.exe\" --hidden",
+                        "name":  "Free Download Manager",
+                        "location":  {
+                                         "Value":  "\"C:\\Program Files\\Softdeluxe\\Free Download Manager\\fdm.exe\" --hidden",
+                                         "MemberType":  8,
+                                         "IsSettable":  true,
+                                         "IsGettable":  true,
+                                         "TypeNameOfValue":  "System.String",
+                                         "Name":  "Free Download Manager",
+                                         "IsInstance":  true
+                                     },
+                        "enabled":  true
+                    },
+                    {
+                        "path":  "\"C:\\Users\\Ansh\\AppData\\Local\\Wondershare\\Wondershare Filmora\\15.5.3.19727\\FilmoraTray.exe\" --autostart",
+                        "name":  "FilmoraTray",
+                        "location":  {
+                                         "Value":  "\"C:\\Users\\Ansh\\AppData\\Local\\Wondershare\\Wondershare Filmora\\15.5.3.19727\\FilmoraTray.exe\" --autostart",
+                                         "MemberType":  8,
+                                         "IsSettable":  true,
+                                         "IsGettable":  true,
+                                         "TypeNameOfValue":  "System.String",
+                                         "Name":  "FilmoraTray",
+                                         "IsInstance":  true
+                                     },
+                        "enabled":  true
+                    },
+                    {
+                        "path":  "\"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe\" --no-startup-window /prefetch:5",
+                        "name":  "GoogleChromeAutoLaunch_0595E4484C9BFBCC59EC1F13B55F828E",
+                        "location":  {
+                                         "Value":  "\"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe\" --no-startup-window /prefetch:5",
+                                         "MemberType":  8,
+                                         "IsSettable":  true,
+                                         "IsGettable":  true,
+                                         "TypeNameOfValue":  "System.String",
+                                         "Name":  "GoogleChromeAutoLaunch_0595E4484C9BFBCC59EC1F13B55F828E",
+                                         "IsInstance":  true
+                                     },
+                        "enabled":  true
+                    },
+                    {
+                        "path":  "\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\" --win-session-start",
+                        "name":  "MicrosoftEdgeAutoLaunch_39F49FEB01667EAB0CF3DA3798A8F0A8",
+                        "location":  {
+                                         "Value":  "\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\" --win-session-start",
+                                         "MemberType":  8,
+                                         "IsSettable":  true,
+                                         "IsGettable":  true,
+                                         "TypeNameOfValue":  "System.String",
+                                         "Name":  "MicrosoftEdgeAutoLaunch_39F49FEB01667EAB0CF3DA3798A8F0A8",
+                                         "IsInstance":  true
+                                     },
+                        "enabled":  true
+                    },
+                    {
+                        "path":  "C:\\Windows\\system32\\SecurityHealthSystray.exe",
+                        "name":  "SecurityHealth",
+                        "location":  {
+                                         "Value":  "C:\\Windows\\system32\\SecurityHealthSystray.exe",
+                                         "MemberType":  8,
+                                         "IsSettable":  true,
+                                         "IsGettable":  true,
+                                         "TypeNameOfValue":  "System.String",
+                                         "Name":  "SecurityHealth",
+                                         "IsInstance":  true
+                                     },
+                        "enabled":  true
+                    },
+                    {
+                        "path":  "\"C:\\Windows\\System32\\DriverStore\\FileRepository\\wavesapo10de.inf_amd64_db3f3288eba6a142\\WavesSvc64.exe\" -Jack",
+                        "name":  "WavesSvc",
+                        "location":  {
+                                         "Value":  "\"C:\\Windows\\System32\\DriverStore\\FileRepository\\wavesapo10de.inf_amd64_db3f3288eba6a142\\WavesSvc64.exe\" -Jack",
+                                         "MemberType":  8,
+                                         "IsSettable":  true,
+                                         "IsGettable":  true,
+                                         "TypeNameOfValue":  "System.String",
+                                         "Name":  "WavesSvc",
+                                         "IsInstance":  true
+                                     },
+                        "enabled":  true
+                    },
+                    {
+                        "path":  "\"C:\\Windows\\System32\\DriverStore\\FileRepository\\realtekservice.inf_amd64_434f4faf6aa034b3\\RtkAudUService64.exe\" -background",
+                        "name":  "RtkAudUService",
+                        "location":  {
+                                         "Value":  "\"C:\\Windows\\System32\\DriverStore\\FileRepository\\realtekservice.inf_amd64_434f4faf6aa034b3\\RtkAudUService64.exe\" -background",
+                                         "MemberType":  8,
+                                         "IsSettable":  true,
+                                         "IsGettable":  true,
+                                         "TypeNameOfValue":  "System.String",
+                                         "Name":  "RtkAudUService",
+                                         "IsInstance":  true
+                                     },
+                        "enabled":  true
+                    }
+                ],
+    "servicesCount":  287,
+    "drivers":  [
+                    {
+                        "Name":  "1394ohci",
+                        "DisplayName":  "1394 OHCI Compliant Host Controller",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "3ware",
+                        "DisplayName":  "3ware",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ACPI",
+                        "DisplayName":  "Microsoft ACPI Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "AcpiAudioCompositorInbox",
+                        "DisplayName":  "ACPI Audio Compositor Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "AcpiDev",
+                        "DisplayName":  "ACPI Devices driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "acpiex",
+                        "DisplayName":  "Microsoft ACPIEx Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "acpipagr",
+                        "DisplayName":  "ACPI Processor Aggregator Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "AcpiPmi",
+                        "DisplayName":  "ACPI Power Meter Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "acpitime",
+                        "DisplayName":  "ACPI Wake Alarm Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Acx01000",
+                        "DisplayName":  "Acx01000",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ADP80XX",
+                        "DisplayName":  "ADP80XX",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "AFD",
+                        "DisplayName":  "Ancillary Function Driver for Winsock",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "afunix",
+                        "DisplayName":  "afunix",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "ahcache",
+                        "DisplayName":  "Application Compatibility Cache",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "amdgpio2",
+                        "DisplayName":  "AMD GPIO Client Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "amdi2c",
+                        "DisplayName":  "AMD I2C Controller Service",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "AmdK8",
+                        "DisplayName":  "AMD K8 Processor Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "AmdPPM",
+                        "DisplayName":  "AMD Processor Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "amdsata",
+                        "DisplayName":  "amdsata",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "amdsbs",
+                        "DisplayName":  "amdsbs",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "amdwps",
+                        "DisplayName":  "AMD Workload Profiling Scheduling Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "amdxata",
+                        "DisplayName":  "amdxata",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "AppID",
+                        "DisplayName":  "AppID Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "AppleSSD",
+                        "DisplayName":  "Apple Solid State Drive Device",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "applockerfltr",
+                        "DisplayName":  "Smartlocker Filter Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "AppvStrm",
+                        "DisplayName":  "AppvStrm",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "AppvVemgr",
+                        "DisplayName":  "AppvVemgr",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "AppvVfs",
+                        "DisplayName":  "AppvVfs",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "arcsas",
+                        "DisplayName":  "Adaptec SAS/SATA-II RAID Storport\u0027s Miniport Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "AsyncMac",
+                        "DisplayName":  "RAS Asynchronous Media Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "atapi",
+                        "DisplayName":  "IDE Channel",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "b06bdrv",
+                        "DisplayName":  "QLogic Network Adapter VBD",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "bam",
+                        "DisplayName":  "Background Activity Moderator Driver",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "BasicDisplay",
+                        "DisplayName":  "BasicDisplay",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "BasicRender",
+                        "DisplayName":  "BasicRender",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "bcmfn2",
+                        "DisplayName":  "bcmfn2 Service",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Beep",
+                        "DisplayName":  "Beep",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "bfs",
+                        "DisplayName":  "Brokering File System",
+                        "State":  "Running",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "bindflt",
+                        "DisplayName":  "Windows Bind Filter Driver",
+                        "State":  "Running",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "bowser",
+                        "DisplayName":  "Browser",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "BthA2dp",
+                        "DisplayName":  "Microsoft Bluetooth A2dp driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "BthEnum",
+                        "DisplayName":  "Bluetooth Enumerator Service",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "BthHFEnum",
+                        "DisplayName":  "Microsoft Bluetooth Hands-Free Profile driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "BthLEEnum",
+                        "DisplayName":  "Bluetooth Low Energy Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "BthMini",
+                        "DisplayName":  "Bluetooth Radio Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "BTHMODEM",
+                        "DisplayName":  "Bluetooth Modem Communications Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "BthPan",
+                        "DisplayName":  "Bluetooth Device (Personal Area Network)",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "BTHPORT",
+                        "DisplayName":  "Bluetooth Port Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "BTHUSB",
+                        "DisplayName":  "Bluetooth Radio USB Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "bttflt",
+                        "DisplayName":  "Microsoft Hyper-V VHDPMEM BTT Filter",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "buttonconverter",
+                        "DisplayName":  "Service for Portable Device Control devices",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "CAD",
+                        "DisplayName":  "Charge Arbitration Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "CDD",
+                        "DisplayName":  "Canonical Display Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "cdfs",
+                        "DisplayName":  "CD/DVD File System Reader",
+                        "State":  "Stopped",
+                        "StartMode":  "Disabled"
+                    },
+                    {
+                        "Name":  "cdrom",
+                        "DisplayName":  "CD-ROM Driver",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "cht4iscsi",
+                        "DisplayName":  "cht4iscsi",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "cht4vbd",
+                        "DisplayName":  "Chelsio Virtual Bus Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "CimFS",
+                        "DisplayName":  "CimFS",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "circlass",
+                        "DisplayName":  "Consumer IR Devices",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "CldFlt",
+                        "DisplayName":  "Windows Cloud Files Filter Driver",
+                        "State":  "Running",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "CLFS",
+                        "DisplayName":  "Common Log (CLFS)",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "CmBatt",
+                        "DisplayName":  "Microsoft ACPI Control Method Battery Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "CNG",
+                        "DisplayName":  "CNG",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "cnghwassist",
+                        "DisplayName":  "CNG Hardware Assist algorithm provider",
+                        "State":  "Stopped",
+                        "StartMode":  "Disabled"
+                    },
+                    {
+                        "Name":  "CompositeBus",
+                        "DisplayName":  "Composite Bus Enumerator Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "condrv",
+                        "DisplayName":  "Console Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "CSC",
+                        "DisplayName":  "Offline Files Driver",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "dam",
+                        "DisplayName":  "Desktop Activity Moderator Driver",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "devmap",
+                        "DisplayName":  "Usermode Device Mapper Service",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Dfsc",
+                        "DisplayName":  "DFS Namespace Client Driver",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "disk",
+                        "DisplayName":  "Disk Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "DisplayMux",
+                        "DisplayName":  "Microsoft DisplayMux",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "dmvsc",
+                        "DisplayName":  "dmvsc",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "dptf_acpi",
+                        "DisplayName":  "dptf_acpi",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "dptf_cpu",
+                        "DisplayName":  "dptf_cpu",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "drmkaud",
+                        "DisplayName":  "Microsoft Trusted Audio Drivers",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "DXGKrnl",
+                        "DisplayName":  "LDDM Graphics Subsystem",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "ebdrv",
+                        "DisplayName":  "QLogic 10 Gigabit Ethernet Adapter VBD",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ebdrv0",
+                        "DisplayName":  "QLogic Legacy Ethernet Adapter VBD",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "EhStorClass",
+                        "DisplayName":  "Enhanced Storage Filter Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "EhStorTcgDrv",
+                        "DisplayName":  "Microsoft driver for storage devices supporting IEEE 1667 and TCG protocols",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ErrDev",
+                        "DisplayName":  "Microsoft Hardware Error Device Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "esif_lf",
+                        "DisplayName":  "esif_lf",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ExecutionContext",
+                        "DisplayName":  "CPU Scheduler for High Performance I/O",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "exfat",
+                        "DisplayName":  "exFAT File System Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "fastfat",
+                        "DisplayName":  "FAT12/16/32 File System Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "fdc",
+                        "DisplayName":  "Floppy Disk Controller Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "FileCrypt",
+                        "DisplayName":  "FileCrypt",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "FileInfo",
+                        "DisplayName":  "File Information FS MiniFilter",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "Filetrace",
+                        "DisplayName":  "Filetrace",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "flpydisk",
+                        "DisplayName":  "Floppy Disk Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "FltMgr",
+                        "DisplayName":  "FltMgr",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "FsDepends",
+                        "DisplayName":  "File System Dependency Minifilter",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "fvevol",
+                        "DisplayName":  "BitLocker Drive Encryption Filter Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "gencounter",
+                        "DisplayName":  "Microsoft Hyper-V Generation Counter",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "genericusbfn",
+                        "DisplayName":  "Generic USB Function Class",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "GenPass",
+                        "DisplayName":  "Microsoft GenPass Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "GPIOClx0101",
+                        "DisplayName":  "Microsoft GPIO Class Extension Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "HdAudAddService",
+                        "DisplayName":  "Microsoft 1.1 UAA Function Driver for High Definition Audio Service",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "HDAudBus",
+                        "DisplayName":  "Microsoft UAA Bus Driver for High Definition Audio",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "HidBatt",
+                        "DisplayName":  "HID UPS Battery Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "HidBth",
+                        "DisplayName":  "Microsoft Bluetooth HID Miniport",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "HidEventFilter",
+                        "DisplayName":  "Intel(R) HID Event Filter",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "hidi2c",
+                        "DisplayName":  "Microsoft I2C HID Miniport Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "hidinterrupt",
+                        "DisplayName":  "Common Driver for HID Buttons implemented with interrupts",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "HidIr",
+                        "DisplayName":  "Microsoft Infrared HID Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "hidspi",
+                        "DisplayName":  "Microsoft SPI HID Miniport Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "HidSpiCx",
+                        "DisplayName":  "HidSpi KMDF Class Extension",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "HidUsb",
+                        "DisplayName":  "Microsoft HID Class Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "HID_PCI",
+                        "DisplayName":  "HID PCI Minidriver for ISS",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "HpSAMD",
+                        "DisplayName":  "HpSAMD",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Hsp",
+                        "DisplayName":  "Microsoft Pluton Service",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "HTTP",
+                        "DisplayName":  "HTTP Service",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "hvcrash",
+                        "DisplayName":  "hvcrash",
+                        "State":  "Stopped",
+                        "StartMode":  "Disabled"
+                    },
+                    {
+                        "Name":  "hvservice",
+                        "DisplayName":  "Microsoft Hypervisor Service Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "HwNClx0101",
+                        "DisplayName":  "Microsoft Hardware Notifications Class Extension Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "hwpolicy",
+                        "DisplayName":  "Hardware Policy Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "hyperkbd",
+                        "DisplayName":  "hyperkbd",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "HyperVideo",
+                        "DisplayName":  "HyperVideo",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "I3CHost",
+                        "DisplayName":  "I3C Host Controller Service",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "i8042prt",
+                        "DisplayName":  "i8042 Keyboard and PS/2 Mouse Port Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iagpio",
+                        "DisplayName":  "Intel Serial IO GPIO Controller Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iai2c",
+                        "DisplayName":  "Intel(R) Serial IO I2C Host Controller",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iaLPSS2i_GPIO2",
+                        "DisplayName":  "Intel(R) Serial IO GPIO Driver v2",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iaLPSS2i_GPIO2_BXT_P",
+                        "DisplayName":  "Intel(R) Serial IO GPIO Driver v2",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iaLPSS2i_GPIO2_CNL",
+                        "DisplayName":  "Intel(R) Serial IO GPIO Driver v2",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iaLPSS2i_GPIO2_GLK",
+                        "DisplayName":  "Intel(R) Serial IO GPIO Driver v2",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iaLPSS2i_I2C",
+                        "DisplayName":  "Intel(R) Serial IO I2C Driver v2",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iaLPSS2i_I2C_BXT_P",
+                        "DisplayName":  "Intel(R) Serial IO I2C Driver v2",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iaLPSS2i_I2C_CNL",
+                        "DisplayName":  "Intel(R) Serial IO I2C Driver v2",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iaLPSS2i_I2C_GLK",
+                        "DisplayName":  "Intel(R) Serial IO I2C Driver v2",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iaLPSS2_GPIO2_TGL",
+                        "DisplayName":  "Intel(R) Serial IO GPIO Driver v2",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iaLPSS2_I2C_TGL",
+                        "DisplayName":  "Intel(R) Serial IO I2C Driver v2",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iaLPSSi_GPIO",
+                        "DisplayName":  "Intel(R) Serial IO GPIO Controller Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iaLPSSi_I2C",
+                        "DisplayName":  "Intel(R) Serial IO I2C Controller Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iaStorAVC",
+                        "DisplayName":  "Intel Chipset SATA RAID Controller",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iaStorV",
+                        "DisplayName":  "Intel RAID Controller Windows 7",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ibbus",
+                        "DisplayName":  "Mellanox InfiniBand Bus/AL (Filter Driver)",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ibtusb",
+                        "DisplayName":  "Intel(R) Wireless Bluetooth(R)",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "igfxn",
+                        "DisplayName":  "igfxn",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "IndirectKmd",
+                        "DisplayName":  "Indirect Displays Kernel-Mode Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "IntcAudioBus",
+                        "DisplayName":  "Intel® Smart Sound Technology BUS",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "IntcAzAudAddService",
+                        "DisplayName":  "Service for Realtek HD Audio (WDM)",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "IntcDMic",
+                        "DisplayName":  "Intel® Smart Sound Technology for Digital Microphones",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "IntcOED",
+                        "DisplayName":  "Intel® Smart Sound Technology OED",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "IntcUSB",
+                        "DisplayName":  "Intel® Smart Sound Technology for USB Audio",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "intelide",
+                        "DisplayName":  "intelide",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "intelpep",
+                        "DisplayName":  "Intel(R) Power Engine Plug-in Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "intelpmax",
+                        "DisplayName":  "Intel(R) Dynamic Device Peak Power Manager Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "IntelPMT",
+                        "DisplayName":  "Intel(R) Platform Monitoring Technology Service",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "intelppm",
+                        "DisplayName":  "Intel Processor Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iorate",
+                        "DisplayName":  "Disk I/O Rate Filter Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "IpFilterDriver",
+                        "DisplayName":  "IP Traffic Filter Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "IPMIDRV",
+                        "DisplayName":  "IPMIDRV",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "IPNAT",
+                        "DisplayName":  "IP Network Address Translator",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "IPT",
+                        "DisplayName":  "IPT",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "isapnp",
+                        "DisplayName":  "isapnp",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "iScsiPrt",
+                        "DisplayName":  "iScsiPort Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ISH",
+                        "DisplayName":  "Intel(R) Integrated Sensor Solution",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ISH_BusDriver",
+                        "DisplayName":  " ISS Bus Enumerator",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ItSas35i",
+                        "DisplayName":  "ItSas35i",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "kbdclass",
+                        "DisplayName":  "Keyboard Class Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "kbdhid",
+                        "DisplayName":  "Keyboard HID Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "kbldfltr",
+                        "DisplayName":  "kbldfltr",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "kdnic",
+                        "DisplayName":  "Microsoft Kernel Debug Network Miniport",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "kdnic_legacy",
+                        "DisplayName":  "Microsoft Kernel Debug Network Miniport (NDIS 6.20)",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "KSecDD",
+                        "DisplayName":  "KSecDD",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "KSecPkg",
+                        "DisplayName":  "KSecPkg",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "KslD",
+                        "DisplayName":  "KslD",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ksthunk",
+                        "DisplayName":  "Kernel Streaming Thunks",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "lltdio",
+                        "DisplayName":  "Link-Layer Topology Discovery Mapper I/O Driver",
+                        "State":  "Running",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "LSI_SAS",
+                        "DisplayName":  "LSI_SAS",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "LSI_SAS2i",
+                        "DisplayName":  "LSI_SAS2i",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "LSI_SAS3i",
+                        "DisplayName":  "LSI_SAS3i",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "luafv",
+                        "DisplayName":  "UAC File Virtualization",
+                        "State":  "Running",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "mausbhost",
+                        "DisplayName":  "MA-USB Host Controller Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "mausbip",
+                        "DisplayName":  "MA-USB IP Filter Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "MbbCx",
+                        "DisplayName":  "MBB Network Adapter Class Extension",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "megasas2i",
+                        "DisplayName":  "megasas2i",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "megasas35i",
+                        "DisplayName":  "megasas35i",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "megasr",
+                        "DisplayName":  "megasr",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "MEIx64",
+                        "DisplayName":  "Intel(R) Management Engine Interface ",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Microsoft_Bluetooth_AvrcpTransport",
+                        "DisplayName":  "Microsoft Bluetooth Avrcp Transport Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "mlx4_bus",
+                        "DisplayName":  "Mellanox ConnectX Bus Enumerator",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "MMCSS",
+                        "DisplayName":  "Multimedia Class Scheduler",
+                        "State":  "Running",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "Modem",
+                        "DisplayName":  "Modem",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "monitor",
+                        "DisplayName":  "Microsoft Monitor Class Function Driver Service",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "mouclass",
+                        "DisplayName":  "Mouse Class Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "mouhid",
+                        "DisplayName":  "Mouse HID Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "mountmgr",
+                        "DisplayName":  "Mount Point Manager",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "mpi3drvi",
+                        "DisplayName":  "mpi3drvi",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "mpsdrv",
+                        "DisplayName":  "Windows Defender Firewall Authorization Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "MRxDAV",
+                        "DisplayName":  "WebDav Client Redirector Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "mrxsmb",
+                        "DisplayName":  "SMB MiniRedirector Wrapper and Engine",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "mrxsmb20",
+                        "DisplayName":  "SMB 2.0 MiniRedirector",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "MsBridge",
+                        "DisplayName":  "Microsoft MAC Bridge",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Msfs",
+                        "DisplayName":  "Msfs",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "msgpiowin32",
+                        "DisplayName":  "Common Driver for Buttons, DockMode and Laptop/Slate Indicator",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "mshidkmdf",
+                        "DisplayName":  "Pass-through HID to KMDF Filter Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "mshidumdf",
+                        "DisplayName":  "Pass-through HID to UMDF Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "msisadrv",
+                        "DisplayName":  "msisadrv",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "MSKSSRV",
+                        "DisplayName":  "Microsoft Streaming Service Proxy",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "MsLldp",
+                        "DisplayName":  "Microsoft Link-Layer Discovery Protocol",
+                        "State":  "Running",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "MSPCLOCK",
+                        "DisplayName":  "Microsoft Streaming Clock Proxy",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "MSPQM",
+                        "DisplayName":  "Microsoft Streaming Quality Manager Proxy",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "MsQuic",
+                        "DisplayName":  "MsQuic",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "MsQuicPrev",
+                        "DisplayName":  "MSQUIC",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "MsRPC",
+                        "DisplayName":  "MsRPC",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "MsSecCore",
+                        "DisplayName":  "Microsoft Security Core Boot Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "MsSecFlt",
+                        "DisplayName":  "Microsoft Security Events Component Minifilter",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "MsSecWfp",
+                        "DisplayName":  "Microsoft Security WFP Callout Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "mssmbios",
+                        "DisplayName":  "Microsoft System Management BIOS Driver",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "MSTEE",
+                        "DisplayName":  "Microsoft Streaming Tee/Sink-to-Sink Converter",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "MTConfig",
+                        "DisplayName":  "Microsoft Input Configuration Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Mup",
+                        "DisplayName":  "Mup",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "mvumis",
+                        "DisplayName":  "mvumis",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "NativeWifiP",
+                        "DisplayName":  "NativeWiFi Filter",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ndfltr",
+                        "DisplayName":  "NetworkDirect Service",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "NDIS",
+                        "DisplayName":  "NDIS System Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "NdisCap",
+                        "DisplayName":  "Microsoft NDIS Capture",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "NdisImPlatform",
+                        "DisplayName":  "Microsoft Network Adapter Multiplexor Protocol",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "NdisTapi",
+                        "DisplayName":  "Remote Access NDIS TAPI Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Ndisuio",
+                        "DisplayName":  "NDIS Usermode I/O Protocol",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "NdisVirtualBus",
+                        "DisplayName":  "Microsoft Virtual Network Adapter Enumerator",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "NdisWan",
+                        "DisplayName":  "Remote Access NDIS WAN Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ndiswanlegacy",
+                        "DisplayName":  "Remote Access LEGACY NDIS WAN Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "NDKPerf",
+                        "DisplayName":  "NDKPerf Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "NDKPing",
+                        "DisplayName":  "NDKPing Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ndproxy",
+                        "DisplayName":  "NDIS Proxy Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Ndu",
+                        "DisplayName":  "Windows Network Data Usage Monitoring Driver",
+                        "State":  "Running",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "NetAdapterCx",
+                        "DisplayName":  "Network Adapter WDF Class Extension Library",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "NetBIOS",
+                        "DisplayName":  "NetBIOS Interface",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "NetBT",
+                        "DisplayName":  "NetBT",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "netvsc",
+                        "DisplayName":  "netvsc",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "NetworkPrivacyPolicy",
+                        "DisplayName":  "Microsoft Network Privacy Policy Service",
+                        "State":  "Stopped",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "Netwtw10",
+                        "DisplayName":  "___ Intel(R) Wireless Adapter Driver for Windows 10 - 64 Bit",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Netwtw14",
+                        "DisplayName":  "___ Intel(R) Wireless Adapter Driver for Windows 10 - 64 Bit",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "nhi",
+                        "DisplayName":  "Thunderbolt(TM) Controller",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Npfs",
+                        "DisplayName":  "Npfs",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "npsvctrig",
+                        "DisplayName":  "Named pipe service trigger provider",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "nsiproxy",
+                        "DisplayName":  "NSI Proxy Service Driver",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "Ntfs",
+                        "DisplayName":  "Ntfs",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Null",
+                        "DisplayName":  "Null",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "nvdimm",
+                        "DisplayName":  "Microsoft NVDIMM device driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "nvmedisk",
+                        "DisplayName":  "Microsoft NVMe disk driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "nvraid",
+                        "DisplayName":  "nvraid",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "nvstor",
+                        "DisplayName":  "nvstor",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "P9Rdr",
+                        "DisplayName":  "Plan 9 Redirector Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Parport",
+                        "DisplayName":  "Parallel port driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "partmgr",
+                        "DisplayName":  "Partition driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "pci",
+                        "DisplayName":  "PCI Bus Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "pciide",
+                        "DisplayName":  "pciide",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "pcmcia",
+                        "DisplayName":  "pcmcia",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "pcw",
+                        "DisplayName":  "Performance Counters for Windows Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "pdc",
+                        "DisplayName":  "pdc",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "PEAUTH",
+                        "DisplayName":  "PEAUTH",
+                        "State":  "Running",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "percsas2i",
+                        "DisplayName":  "percsas2i",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "percsas3i",
+                        "DisplayName":  "percsas3i",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "PktMon",
+                        "DisplayName":  "Packet Monitor Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "PktMonApi",
+                        "DisplayName":  "Packet Monitor Export Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "PlutonHeci",
+                        "DisplayName":  "Microsoft Pluton Security Service",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "PlutonHsp2",
+                        "DisplayName":  "Microsoft Pluton Service",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "pmem",
+                        "DisplayName":  "Microsoft persistent memory disk driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "PNPMEM",
+                        "DisplayName":  "Microsoft Memory Module Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "portcfg",
+                        "DisplayName":  "portcfg",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "PptpMiniport",
+                        "DisplayName":  "WAN Miniport (PPTP)",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "PRM",
+                        "DisplayName":  "Microsoft PRM Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "Processor",
+                        "DisplayName":  "Processor Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Psched",
+                        "DisplayName":  "QoS Packet Scheduler",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "pvscsi",
+                        "DisplayName":  "pvscsi Storage Controller Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "QWAVEdrv",
+                        "DisplayName":  "QWAVE driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Ramdisk",
+                        "DisplayName":  "Windows RAM Disk Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "RasAcd",
+                        "DisplayName":  "Remote Access Auto Connection Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "RasAgileVpn",
+                        "DisplayName":  "WAN Miniport (IKEv2)",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Rasl2tp",
+                        "DisplayName":  "WAN Miniport (L2TP)",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "RasPppoe",
+                        "DisplayName":  "Remote Access PPPOE Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "RasSstp",
+                        "DisplayName":  "WAN Miniport (SSTP)",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "rdbss",
+                        "DisplayName":  "Redirected Buffering Sub System",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "rdpbus",
+                        "DisplayName":  "Remote Desktop Device Redirector Bus Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "RDPDR",
+                        "DisplayName":  "Remote Desktop Device Redirector Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "rdyboost",
+                        "DisplayName":  "ReadyBoost",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "ReFS",
+                        "DisplayName":  "ReFS",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ReFSv1",
+                        "DisplayName":  "ReFSv1",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "RFCOMM",
+                        "DisplayName":  "Bluetooth Device (RFCOMM Protocol TDI)",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "rhproxy",
+                        "DisplayName":  "Resource Hub proxy driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "RoutePolicy",
+                        "DisplayName":  "Microsoft Route Policy Service",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "rspndr",
+                        "DisplayName":  "Link-Layer Topology Discovery Responder",
+                        "State":  "Running",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "rt68cx21",
+                        "DisplayName":  "Realtek NetAdapter Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "rtcx21",
+                        "DisplayName":  "Realtek NetAdapter Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "s3cap",
+                        "DisplayName":  "s3cap",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "sbp2port",
+                        "DisplayName":  "SBP-2 Transport/Protocol Bus Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "scfilter",
+                        "DisplayName":  "Smart card PnP Class Filter Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "scmbus",
+                        "DisplayName":  "Microsoft Storage Class Memory Bus Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "sdbus",
+                        "DisplayName":  "sdbus",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "SdcaHidInbox",
+                        "DisplayName":  "SoundWire HID Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "SdcaMfdInbox",
+                        "DisplayName":  "SoundWire Audio Multifunction Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "sdstor",
+                        "DisplayName":  "SD Storage Port Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "SerCx",
+                        "DisplayName":  "Serial UART Support Library",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "SerCx2",
+                        "DisplayName":  "Serial UART Support Library",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Serenum",
+                        "DisplayName":  "Serenum Filter Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Serial",
+                        "DisplayName":  "Serial port driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "sermouse",
+                        "DisplayName":  "Serial Mouse Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "sfloppy",
+                        "DisplayName":  "High-Capacity Floppy Disk Drive",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "SiSRaid2",
+                        "DisplayName":  "SiSRaid2",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "SiSRaid4",
+                        "DisplayName":  "SiSRaid4",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "SmartSAMD",
+                        "DisplayName":  "SmartSAMD",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "smbdirect",
+                        "DisplayName":  "smbdirect",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "spaceparser",
+                        "DisplayName":  "spaceparser",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "spaceport",
+                        "DisplayName":  "Storage Spaces Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "SpbCx",
+                        "DisplayName":  "Simple Peripheral Bus Support Library",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "srv2",
+                        "DisplayName":  "Server SMB 2.xxx Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "srvnet",
+                        "DisplayName":  "srvnet",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "stexstor",
+                        "DisplayName":  "stexstor",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "storahci",
+                        "DisplayName":  "Microsoft Standard SATA AHCI Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "storflt",
+                        "DisplayName":  "Microsoft Hyper-V Storage Accelerator",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "stornvme",
+                        "DisplayName":  "Microsoft Standard NVM Express Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "storqosflt",
+                        "DisplayName":  "Storage QoS Filter Driver",
+                        "State":  "Running",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "storufs",
+                        "DisplayName":  "Microsoft Universal Flash Storage (UFS) Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "storvsc",
+                        "DisplayName":  "storvsc",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "swenum",
+                        "DisplayName":  "Software Bus Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Tcpip",
+                        "DisplayName":  "TCP/IP Protocol Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "Tcpip6",
+                        "DisplayName":  "@todo.dll,-100;Microsoft IPv6 Protocol Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "tcpipreg",
+                        "DisplayName":  "@%SystemRoot%\\System32\\drivers\\tcpipreg.sys,-10110,",
+                        "State":  "Running",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "tdx",
+                        "DisplayName":  "NetIO Legacy TDI Support Driver",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "terminpt",
+                        "DisplayName":  "Microsoft Remote Desktop Input Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ThermalFilter",
+                        "DisplayName":  "Microsoft Thermal Filter Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "TPM",
+                        "DisplayName":  "TPM",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "TsUsbFlt",
+                        "DisplayName":  "Remote Desktop USB Hub Class Filter Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "TsUsbGD",
+                        "DisplayName":  "Remote Desktop Generic USB Device",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "tsusbhub",
+                        "DisplayName":  "Remote Desktop USB Hub",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "tunnel",
+                        "DisplayName":  "Microsoft Tunnel Miniport Adapter Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "UASPStor",
+                        "DisplayName":  "USB Attached SCSI (UAS) Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "UcmCx0101",
+                        "DisplayName":  "USB Connector Manager KMDF Class Extension",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "UcmTcpciCx0101",
+                        "DisplayName":  "UCM-TCPCI KMDF Class Extension",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "UcmUcsiAcpiClient",
+                        "DisplayName":  "UCM-UCSI ACPI Client",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "UcmUcsiCx0101",
+                        "DisplayName":  "UCM-UCSI KMDF Class Extension",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "UCPD",
+                        "DisplayName":  "UCPD",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "Ucx01000",
+                        "DisplayName":  "USB Host Support Library",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "UdeCx",
+                        "DisplayName":  "USB Device Emulation Support Library",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "udfs",
+                        "DisplayName":  "udfs",
+                        "State":  "Stopped",
+                        "StartMode":  "Disabled"
+                    },
+                    {
+                        "Name":  "UEFI",
+                        "DisplayName":  "Microsoft UEFI Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "UevAgentDriver",
+                        "DisplayName":  "UevAgentDriver",
+                        "State":  "Stopped",
+                        "StartMode":  "Disabled"
+                    },
+                    {
+                        "Name":  "Ufx01000",
+                        "DisplayName":  "USB Function Class Extension",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "UfxChipidea",
+                        "DisplayName":  "USB Chipidea Controller",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ufxsynopsys",
+                        "DisplayName":  "USB Synopsys Controller",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "uiomap",
+                        "DisplayName":  "Microsoft UIO Mapper Driver Service",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "umbus",
+                        "DisplayName":  "UMBus Enumerator Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "UmPass",
+                        "DisplayName":  "Microsoft UMPass Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "UnionFS",
+                        "DisplayName":  "UnionFS",
+                        "State":  "Running",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "UrsChipidea",
+                        "DisplayName":  "Chipidea USB Role-Switch Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "UrsCx01000",
+                        "DisplayName":  "USB Role-Switch Support Library",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "UrsSynopsys",
+                        "DisplayName":  "Synopsys USB Role-Switch Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "usb-platformdetection",
+                        "DisplayName":  "Usb Platform Detection Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Usb4DeviceRouter",
+                        "DisplayName":  "USB4 Device Router Service",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Usb4HostRouter",
+                        "DisplayName":  "USB4 Host Router Service",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "usbaudio",
+                        "DisplayName":  "USB Audio Driver (WDM)",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "usbaudio2",
+                        "DisplayName":  "USB Audio 2.0 Service",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "usbccgp",
+                        "DisplayName":  "Microsoft USB Generic Parent Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "usbcir",
+                        "DisplayName":  "eHome Infrared Receiver (USBCIR)",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "usbehci",
+                        "DisplayName":  "Microsoft USB 2.0 Enhanced Host Controller Miniport Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "usbhub",
+                        "DisplayName":  "Microsoft USB Standard Hub Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "USBHUB3",
+                        "DisplayName":  "SuperSpeed Hub",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "usbohci",
+                        "DisplayName":  "Microsoft USB Open Host Controller Miniport Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "usbprint",
+                        "DisplayName":  "Microsoft USB PRINTER Class",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "usbser",
+                        "DisplayName":  "Microsoft USB Serial Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "USBSTOR",
+                        "DisplayName":  "USB Mass Storage Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "usbuhci",
+                        "DisplayName":  "Microsoft USB Universal Host Controller Miniport Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "usbvideo",
+                        "DisplayName":  "USB Video Device (WDM)",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "USBXHCI",
+                        "DisplayName":  "USB xHCI Compliant Host Controller",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "vdrvroot",
+                        "DisplayName":  "Microsoft Virtual Drive Enumerator",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "VerifierExt",
+                        "DisplayName":  "Driver Verifier Extension",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "vhdmp",
+                        "DisplayName":  "vhdmp",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "vhf",
+                        "DisplayName":  "Virtual HID Framework (VHF) Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Vid",
+                        "DisplayName":  "Vid",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "VirtualRender",
+                        "DisplayName":  "VirtualRender",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "vmbus",
+                        "DisplayName":  "Virtual Machine Bus",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "VMBusHID",
+                        "DisplayName":  "VMBusHID",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "vmgid",
+                        "DisplayName":  "Microsoft Hyper-V Guest Infrastructure Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "volmgr",
+                        "DisplayName":  "Volume Manager Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "volmgrx",
+                        "DisplayName":  "Dynamic Volume Manager",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "volsnap",
+                        "DisplayName":  "Volume Shadow Copy driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "volume",
+                        "DisplayName":  "Volume driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "vpci",
+                        "DisplayName":  "Microsoft Hyper-V Virtual PCI Bus",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "vsmraid",
+                        "DisplayName":  "vsmraid",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "VSTXRAID",
+                        "DisplayName":  "VIA StorX Storage RAID Controller Windows Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "vwifibus",
+                        "DisplayName":  "Virtual Wireless Bus Driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "vwififlt",
+                        "DisplayName":  "Virtual WiFi Filter Driver",
+                        "State":  "Running",
+                        "StartMode":  "System"
+                    },
+                    {
+                        "Name":  "vwifimp",
+                        "DisplayName":  "Virtual WiFi Miniport Service",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "WacomPen",
+                        "DisplayName":  "Wacom Serial Pen HID Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "wanarp",
+                        "DisplayName":  "Remote Access IP ARP Driver",
+                        "State":  "Running",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "wanarpv6",
+                        "DisplayName":  "Remote Access IPv6 ARP Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "wcifs",
+                        "DisplayName":  "Windows Container Isolation",
+                        "State":  "Running",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "WdBoot",
+                        "DisplayName":  "Microsoft Defender Antivirus Boot Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "Wdf01000",
+                        "DisplayName":  "Kernel Mode Driver Frameworks service",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "WdFilter",
+                        "DisplayName":  "Microsoft Defender Antivirus Mini-Filter Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "wdiwifi",
+                        "DisplayName":  "WDI Driver Framework",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "WdmCompanionFilter",
+                        "DisplayName":  "WdmCompanionFilter",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "WdNisDrv",
+                        "DisplayName":  "Microsoft Defender Antivirus Network Inspection System Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "WFPLWFS",
+                        "DisplayName":  "Microsoft Windows Filtering Platform",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "Wificx",
+                        "DisplayName":  "Wifi Network Adapter Class Extension",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "WiManH",
+                        "DisplayName":  "WiMan Service",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "WIMMount",
+                        "DisplayName":  "WIMMount",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "WinAccelCx0101",
+                        "DisplayName":  "Microsoft Accelerator Class Extension Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "WindowsTrustedRT",
+                        "DisplayName":  "Windows Trusted Execution Environment Class Extension",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "WindowsTrustedRTProxy",
+                        "DisplayName":  "Microsoft Windows Trusted Runtime Secure Service",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "wini3ctarget",
+                        "DisplayName":  "Generic driver for I3C Target Devices",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "WinMad",
+                        "DisplayName":  "WinMad Service",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "WinNat",
+                        "DisplayName":  "Windows NAT Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "WINUSB",
+                        "DisplayName":  "WinUsb Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "WinVerbs",
+                        "DisplayName":  "WinVerbs Service",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "WmiAcpi",
+                        "DisplayName":  "Microsoft Windows Management Interface for ACPI",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "Wof",
+                        "DisplayName":  "Windows Overlay File System Filter Driver",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    },
+                    {
+                        "Name":  "WpdUpFltr",
+                        "DisplayName":  "WPD Upper Class Filter Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ws2ifsl",
+                        "DisplayName":  "Winsock IFS Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Disabled"
+                    },
+                    {
+                        "Name":  "wtd",
+                        "DisplayName":  "wtd",
+                        "State":  "Running",
+                        "StartMode":  "Auto"
+                    },
+                    {
+                        "Name":  "WudfPf",
+                        "DisplayName":  "User Mode Driver Frameworks Platform Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "WUDFRd",
+                        "DisplayName":  "Windows Driver Foundation - User-mode Driver Framework Reflector",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "WUDFWpdFs",
+                        "DisplayName":  "WPD File System driver",
+                        "State":  "Running",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "xboxgip",
+                        "DisplayName":  "Xbox Game Input Protocol Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "xinputhid",
+                        "DisplayName":  "XINPUT HID Filter Driver",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "ZTDNS",
+                        "DisplayName":  "ZTDNS",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "pwdspio",
+                        "DisplayName":  "pwdspio",
+                        "State":  "Stopped",
+                        "StartMode":  "Manual"
+                    },
+                    {
+                        "Name":  "pwdrvio",
+                        "DisplayName":  "pwdrvio",
+                        "State":  "Running",
+                        "StartMode":  "Boot"
+                    }
+                ],
+    "driversCount":  423
+}

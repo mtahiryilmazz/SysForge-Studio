@@ -1,0 +1,170 @@
+<UserControl x:Class="UltimateToolkit.Modern.Views.FixesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="920">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Top Header & Quick Buttons (WinScript / PowerToys Style) -->
+        <Border Grid.Row="0" Style="{StaticResource PtSettingsCard}" Margin="0,0,0,12">
+            <StackPanel>
+                <TextBlock Text="⚡ WinScript &amp; PowerToys Hızlı Onarım Merkezi" FontSize="16" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" Margin="0,0,0,2" TextWrapping="Wrap"/>
+                <TextBlock Text="Windows yazdırma hatalarını, RPC uyuşmazlıklarını ve erişim kısıtlamalarını tek tıkla giderin." FontSize="12" Foreground="{StaticResource PtTextSecondary}" TextWrapping="Wrap"/>
+                <WrapPanel Margin="0,12,0,0">
+                    <Button Content="⭐ Önerilenleri Seç" Style="{StaticResource PtPrimaryButton}" Margin="0,0,6,6" Click="BtnSelectRecommended_Click"/>
+                    <Button Content="Tümünü Seç" Style="{StaticResource PtSecondaryButton}" Margin="0,0,6,6" Click="BtnSelectAll_Click"/>
+                    <Button Content="Temizle" Style="{StaticResource PtSecondaryButton}" Margin="0,0,6,6" Click="BtnClearSelection_Click"/>
+                </WrapPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Scrollable PowerToys Settings Cards -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,10">
+            <StackPanel>
+
+                <!-- Section: RPC & Hata Kodları -->
+                <TextBlock Text="RPC &amp; BAĞLANTI HATALARI (0x0000011b, 709)" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="4,8,0,6"/>
+
+                <Border Style="{StaticResource PtSettingsCard}">
+                    <CheckBox x:Name="ChkRpcAuth" Style="{StaticResource PtToggleSwitch}" IsChecked="True">
+                        <StackPanel>
+                            <TextBlock Text="RPC Gizlilik Kimlik Doğrulaması (0x0000011b Çözümü)" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap"/>
+                            <TextBlock Text="RpcAuthnLevelPrivacyEnabled = 0 yaparak ağ yazıcılarına bağlanırken oluşan 11b hatasını onarır." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </CheckBox>
+                </Border>
+
+                <Border Style="{StaticResource PtSettingsCard}">
+                    <CheckBox x:Name="ChkRestrictAdmin" Style="{StaticResource PtToggleSwitch}" IsChecked="True">
+                        <StackPanel>
+                            <TextBlock Text="Sürücü Yükleme Yetki Kısıtlaması (RestrictDriverInstallation)" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap"/>
+                            <TextBlock Text="İstemci kullanıcıların yazıcı sürücüsü indirirken yerel yönetici parolası istemesini engeller." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </CheckBox>
+                </Border>
+
+                <Border Style="{StaticResource PtSettingsCard}">
+                    <CheckBox x:Name="ChkNamedPipes" Style="{StaticResource PtToggleSwitch}" IsChecked="True">
+                        <StackPanel>
+                            <TextBlock Text="Named Pipes RPC Protokol Desteği" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap"/>
+                            <TextBlock Text="Windows 11 / 10 sistemlerde Named Pipes yazdırma protokolünü etkinleştirir (RpcProtocols = 7)." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </CheckBox>
+                </Border>
+
+                <Border Style="{StaticResource PtSettingsCard}">
+                    <CheckBox x:Name="ChkFix709Lsa" Style="{StaticResource PtToggleSwitch}" IsChecked="True">
+                        <StackPanel>
+                            <TextBlock Text="0x00000709 LSA Anonim Erişim (restrictanonymous)" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap"/>
+                            <TextBlock Text="Vanguard it_tech_service'den: LSA restrictanonymous ayarlarını gevşeterek ağ yazıcısı 709 hatasını giderir." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </CheckBox>
+                </Border>
+
+                <!-- Section: Point & Print -->
+                <TextBlock Text="POINT &amp; PRINT POLİTİKALARI" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="4,14,0,6"/>
+
+                <Border Style="{StaticResource PtSettingsCard}">
+                    <CheckBox x:Name="ChkPointPrint" Style="{StaticResource PtToggleSwitch}" IsChecked="True">
+                        <StackPanel>
+                            <TextBlock Text="Uyarısız ve Yükseltmesiz Sürücü Yükleme (NoWarningNoElevation)" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap"/>
+                            <TextBlock Text="Paylaşılan sunucudan sürücü çekerken güvenlik uyarılarını ve UAC bildirimlerini esnetir." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </CheckBox>
+                </Border>
+
+                <Border Style="{StaticResource PtSettingsCard}">
+                    <CheckBox x:Name="ChkUpdatePrompt" Style="{StaticResource PtToggleSwitch}" IsChecked="True">
+                        <StackPanel>
+                            <TextBlock Text="Sürücü Güncelleme İstemi Ayarları (UpdatePromptSettings)" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap"/>
+                            <TextBlock Text="Yeni sürücü olduğunda arka planda sessizce yüklenmesine izin verir (Değer: 2)." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </CheckBox>
+                </Border>
+
+                <!-- Section: Spooler & Kuyruk -->
+                <TextBlock Text="YAZDIRMA BİRİKTİRİCİSİ (SPOOLER)" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="4,14,0,6"/>
+
+                <Border Style="{StaticResource PtSettingsCard}">
+                    <CheckBox x:Name="ChkSpoolerReset" Style="{StaticResource PtToggleSwitch}" IsChecked="True">
+                        <StackPanel>
+                            <TextBlock Text="Spooler Servisini ve Takılı Kuyruğu Sıfırla" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap"/>
+                            <TextBlock Text="Spooler servisini durdurur, C:\Windows\System32\spool\PRINTERS klasöründeki bozuk işleri siler ve yeniden başlatır." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </CheckBox>
+                </Border>
+
+                <!-- Section: Ağ & Güvenlik Duvarı -->
+                <TextBlock Text="AĞ &amp; GÜVENLİK DUVARI" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="4,14,0,6"/>
+
+                <Border Style="{StaticResource PtSettingsCard}">
+                    <CheckBox x:Name="ChkFirewall" Style="{StaticResource PtToggleSwitch}" IsChecked="True">
+                        <StackPanel>
+                            <TextBlock Text="Dosya ve Yazıcı Paylaşımı Güvenlik Duvarı Kuralları" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap"/>
+                            <TextBlock Text="Gelen ve giden kuralları (Port 445, 139, RPC) otomatik olarak etkinleştirir." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </CheckBox>
+                </Border>
+
+                <Border Style="{StaticResource PtSettingsCard}">
+                    <CheckBox x:Name="ChkPrivateNetwork" Style="{StaticResource PtToggleSwitch}" IsChecked="True">
+                        <StackPanel>
+                            <TextBlock Text="Ağ Profilini 'Özel (Private)' Olarak Yapılandır" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap"/>
+                            <TextBlock Text="Ortak ağ profillerinde Windows tarafından engellenen yazıcı paylaşımlarına izin verir." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </CheckBox>
+                </Border>
+
+                <!-- Section: SMB & Servisler -->
+                <TextBlock Text="SMB UYUMLULUĞU &amp; HİZMETLER" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="4,14,0,6"/>
+
+                <Border Style="{StaticResource PtSettingsCard}">
+                    <CheckBox x:Name="ChkSmbGuest" Style="{StaticResource PtToggleSwitch}" IsChecked="True">
+                        <StackPanel>
+                            <TextBlock Text="SMB Güvensiz Konuk (Guest) Oturumu İzni" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap"/>
+                            <TextBlock Text="Şifresiz paylaşılan yazıcılara ve eski ağ aygıtlarına bağlanmayı sağlar (AllowInsecureGuestAuth = 1)." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </CheckBox>
+                </Border>
+
+                <Border Style="{StaticResource PtSettingsCard}">
+                    <CheckBox x:Name="ChkServices" Style="{StaticResource PtToggleSwitch}" IsChecked="True">
+                        <StackPanel>
+                            <TextBlock Text="Gerekli Yazdırma ve Keşif Servislerini Otomatik Başlat" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap"/>
+                            <TextBlock Text="Spooler, LanmanServer, LanmanWorkstation ve FDResPub (İşlev Keşfi) servislerini Otomatik moda alır." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </CheckBox>
+                </Border>
+
+                <Border Style="{StaticResource PtSettingsCard}">
+                    <CheckBox x:Name="ChkNtlm" Style="{StaticResource PtToggleSwitch}">
+                        <StackPanel>
+                            <TextBlock Text="NTLMv1 Uyumluluk Modu (Geniş Ağ Desteği)" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap"/>
+                            <TextBlock Text="Eski Windows veya Samba yazıcı sunucuları için LmCompatibilityLevel = 1 ayarlar." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </CheckBox>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Bottom Action Bar (PowerToys Style) -->
+        <Border Grid.Row="2" Style="{StaticResource PtSettingsCard}" Margin="0" Padding="14">
+            <DockPanel LastChildFill="True">
+                <WrapPanel DockPanel.Dock="Right" VerticalAlignment="Center" Margin="12,0,0,0">
+                    <Button Content="🔄 Fabrika Ayarlarına Dön" Style="{StaticResource PtSecondaryButton}" Margin="0,0,8,4" Click="BtnRestoreDefaults_Click"/>
+                    <Button Content="🚀 Seçilen Onarımları Uygula" Style="{StaticResource PtSuccessButton}" Padding="20,9" FontSize="13.5" Margin="0,0,0,4" Click="BtnApplyFixes_Click"/>
+                </WrapPanel>
+                <TextBlock Text="🛡️ Güvenlik Notu: Değişiklikler uygulanmadan önce otomatik sistem yedeği alınır." FontSize="12" Foreground="{StaticResource PtTextSecondary}" VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,4"/>
+            </DockPanel>
+        </Border>
+
+    </Grid>
+</UserControl>

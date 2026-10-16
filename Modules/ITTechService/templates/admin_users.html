@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h1>Web İzleme Paneli (Admin)</h1>
+    
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+        <!-- Aktif Kullanıcılar -->
+        <div class="glass-panel" style="flex: 1; min-width: 300px;">
+            <h3 style="margin-top:0; color:var(--success);">🟢 Şuan Aktif (Online) Personeller</h3>
+            <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Son 5 dakika içerisinde sayfada gezinen kullanıcılar canlı izlenmektedir.</p>
+            
+            <div style="overflow-x: auto;">
+                <table style="margin-bottom: 0;">
+                    <thead>
+                        <tr>
+                            <th>Personel</th>
+                            <th>Rol</th>
+                            <th>Durum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for au in active_users %}
+                        <tr>
+                            <td style="font-weight:bold; color:#fff;">{{ au.username }}</td>
+                            <td>{{ au.role }}</td>
+                            <td style="color:var(--success);">
+                            {% if au.platform == 'desktop' %}
+                                💻 Masaüstü
+                            {% elif au.platform == 'web' %}
+                                🌐 Web Portalı
+                            {% else %}
+                                ✔️ Aktif
+                            {% endif %}
+                            <span style="color: var(--text-muted); font-size: 12px; margin-left: 5px;">({{ au.diff_str }})</span>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="3" style="text-align:center;">Şu an çevrimiçi kimse bulunmuyor.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tüm Kayıtlı Kullanıcılar -->
+        <div class="glass-panel" style="flex: 2; min-width: 400px;">
+            <h3 style="margin-top:0; color:var(--text-muted);">Tüm Kayıtlı Personeller</h3>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Kullanıcı Adı</th>
+                            <th>Açık Şifre</th>
+                            <th>Rol</th>
+                            <th>Yetkiler (Web)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in users %}
+                        <tr>
+                            <td>#{{ u.id }}</td>
+                            <td style="font-weight:bold;">{{ u.username }}</td>
+                            <td style="font-family: monospace; color:#facc15;">{{ u.password }}</td>
+                            <td>{{ u.role }}</td>
+                            <td style="font-size: 12px; color:var(--text-muted);">{{ u.permissions }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size: 12px; color: var(--info); margin-top: 15px;">* Yeni personel ekleme, şifre değiştirme veya yetki (izin) tanımlamaları işlemleri, sadece <b>Masaüstü (EXE)</b> programındaki "Kullanıcı Yönetimi" panelinden yapılmalıdır. Bu sayfa izleme ve denetleme amaçlıdır.</p>
+        </div>
+    </div>
+{% endblock %}

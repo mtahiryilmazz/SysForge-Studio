@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>🏢 Müdürlük & Birim Yönetimi</h1>
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:32px;">
+
+  <!-- Müdürlükler -->
+  <div class="glass-panel">
+    <h3 style="margin-top:0; color:var(--text-muted);">Müdürlükler</h3>
+    <form method="POST" style="display:flex; gap:10px; margin-bottom:16px;">
+      <input type="hidden" name="action" value="add_dept">
+      <input type="text" name="dept_name" placeholder="Müdürlük adı…" required style="flex:1;">
+      <button type="submit" class="btn" style="width:auto; padding:8px 18px;">Ekle</button>
+    </form>
+    <table>
+      <thead><tr><th>ID</th><th>Müdürlük Adı</th><th>İşlem</th></tr></thead>
+      <tbody>
+        {% for d in depts %}
+        <tr>
+          <td style="color:var(--text-muted); font-size:12px;">#{{ d.id }}</td>
+          <td>{{ d.name }}</td>
+          <td>
+            <form method="POST" onsubmit="return confirm('Bu müdürlük ve tüm birimleri silinecek!')" style="margin:0;">
+              <input type="hidden" name="action" value="del_dept">
+              <input type="hidden" name="dept_id" value="{{ d.id }}">
+              <button type="submit" style="background:#e74c3c;color:white;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:12px;">Sil</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3" style="text-align:center;color:var(--text-muted);">Henüz müdürlük yok.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Birimler -->
+  <div class="glass-panel">
+    <h3 style="margin-top:0; color:var(--text-muted);">Birimler</h3>
+    <form method="POST" style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+      <input type="hidden" name="action" value="add_unit">
+      <select name="dept_id" required style="flex:1; min-width:140px;">
+        <option value="">Müdürlük seç…</option>
+        {% for d in depts %}
+        <option value="{{ d.id }}">{{ d.name }}</option>
+        {% endfor %}
+      </select>
+      <input type="text" name="unit_name" placeholder="Birim adı…" required style="flex:1;">
+      <button type="submit" class="btn" style="width:auto; padding:8px 18px;">Ekle</button>
+    </form>
+    <table>
+      <thead><tr><th>Müdürlük</th><th>Birim</th><th>İşlem</th></tr></thead>
+      <tbody>
+        {% for u in units %}
+        <tr>
+          <td style="color:var(--text-muted); font-size:12px;">{{ u.dept_name }}</td>
+          <td>{{ u.name }}</td>
+          <td>
+            <form method="POST" onsubmit="return confirm('Bu birim silinecek!')" style="margin:0;">
+              <input type="hidden" name="action" value="del_unit">
+              <input type="hidden" name="unit_id" value="{{ u.id }}">
+              <button type="submit" style="background:#e74c3c;color:white;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:12px;">Sil</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3" style="text-align:center;color:var(--text-muted);">Henüz birim yok.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

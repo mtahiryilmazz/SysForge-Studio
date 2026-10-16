@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h1>Dashboard Özeti</h1>
+    
+    <div class="grid-cards" style="margin-top: 30px;">
+        <a href="{{ url_for('tickets') }}" style="text-decoration:none; color:inherit;">
+            <div class="glass-panel stat-card">
+                <h3>Toplam Arıza Kaydı</h3>
+                <div class="value">{{ stats.total_tickets }}</div>
+            </div>
+        </a>
+        
+        <a href="{{ url_for('tickets') }}" style="text-decoration:none; color:inherit;">
+            <div class="glass-panel stat-card">
+                <h3>Açık Arızalar</h3>
+                <div class="value">{{ stats.open_tickets }}</div>
+            </div>
+        </a>
+        
+        <a href="{{ url_for('inventory') }}" style="text-decoration:none; color:inherit;">
+            <div class="glass-panel stat-card">
+                <h3>Envanter Cihaz Sayısı</h3>
+                <div class="value">{{ stats.total_inventory }}</div>
+            </div>
+        </a>
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h1>Profil Ayarları</h1>
+    
+    <div class="glass-panel" style="max-width: 500px; margin-top: 30px;">
+        <h3 style="margin-top:0; color:var(--text-muted);">Giriş Bilgilerinizi Güncelleyin</h3>
+        
+        <form method="POST" style="display:flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+            <div>
+                <label style="color: var(--text-muted); font-size: 14px; font-weight: 600;">Kullanıcı Adı</label>
+                <input type="text" name="username" value="{{ user.username }}" required>
+            </div>
+            
+            <div>
+                <label style="color: var(--text-muted); font-size: 14px; font-weight: 600;">Giriş Şifresi</label>
+                <input type="text" name="password" value="{{ user.password }}" required>
+            </div>
+            
+            <button type="submit" class="btn" style="margin-top: 10px;">Bilgilerimi Kaydet</button>
+        </form>
+    </div>
+{% endblock %}

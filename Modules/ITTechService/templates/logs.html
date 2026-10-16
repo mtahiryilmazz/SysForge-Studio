@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>📝 Sistem Log Kayıtları</h1>
+
+<div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; align-items:center;">
+  <a href="{{ url_for('logs') }}" class="btn btn-nav-small {% if action_filter %}btn-active{% endif %}">Tümü</a>
+  {% for a in ['EKLE','SİL','GÜNCELLE','GİRİŞ','KRİTİK_UYARI'] %}
+    <a href="{{ url_for('logs', action=a) }}" 
+       class="btn btn-nav-small {% if action_filter==a %}btn-active{% endif %}" 
+       style="{% if a == 'KRİTİK_UYARI' %}background:#ef4444; color:white; font-weight:bold;{% else %}color:#1e1e2e;{% endif %}">
+       {% if a == 'KRİTİK_UYARI' %}🚨 {{ a }}{% else %}{{ a }}{% endif %}
+    </a>
+  {% endfor %}
+  <div style="flex:1;"></div>
+  <form method="POST" action="{{ url_for('clear_logs') }}" onsubmit="return confirm('⚠️ TÜM SİSTEM LOGLARI KALICI OLARAK SİLİNECEK! Emin misiniz?')">
+    <button type="submit" class="btn btn-danger" style="width:auto; padding:8px 20px; font-size:13px; font-weight:bold;">
+        🗑️ Logları Temizle
+    </button>
+  </form>
+</div>
+
+<div class="glass-panel">
+  <table>
+    <thead>
+      <tr><th>#</th><th>Kullanıcı</th><th>Tarih/Saat</th><th>İşlem</th><th>Detay</th></tr>
+    </thead>
+    <tbody>
+      {% for l in logs %}
+      <tr {% if l.action_type == 'KRİTİK_UYARI' %}style="background:rgba(239,68,68,0.15); border-left: 3px solid #ef4444;"{% endif %}>
+        <td style="color:var(--text-muted); font-size:12px;">{{ l.id }}</td>
+        <td style="font-weight:500;">{{ l.user_info }}</td>
+        <td style="font-size:12px; color:var(--text-muted);">{{ l.timestamp }}</td>
+        <td>
+          {% if l.action_type == 'KRİTİK_UYARI' %}
+          <span style="background:#ef4444; color:white; padding:3px 8px; border-radius:4px; font-weight:bold; font-size:11px;">
+            🚨 {{ l.action_type }}
+          </span>
+          {% else %}
+          <span class="badge badge-{{ l.action_type.lower() | replace('i','i') | replace('ü','u') | replace('ş','s') }}">
+            {{ l.action_type }}
+          </span>
+          {% endif %}
+        </td>
+        <td style="font-size:12px; {% if l.action_type == 'KRİTİK_UYARI' %}color:#f38ba8; font-weight:bold;{% endif %}">{{ l.result }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:20px;">Henüz log kaydı yok.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

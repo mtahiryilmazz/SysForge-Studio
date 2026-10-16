@@ -1,0 +1,46 @@
+# ID|Name|Type|RelativeOrAbsolutePath|Notes
+# Types: exe, script, folder, url, separator
+# Keep paths relative to Toolkit.bat for WinRAR SFX portability.
+# Only real existing EXE launchers are listed here. Placeholder folders without EXE are omitted.
+01|Battery Optimizer|exe|Tools\Battery Optimizer 3.2.3.6\Battery Optimizer.exe|Battery health and optimization portable tool
+02|BlueScreenView|exe|Tools\bluescreenview-x64\BlueScreenView.exe|Analyze BSOD minidump crash files
+03|Duplicate Cleaner Pro|exe|Tools\Duplicate Cleaner Pro v5.26.0\Duplicate Cleaner.exe|Find and remove duplicate files
+04|Glary Utilities Pro|exe|Tools\Glary Utilities Pro\GlaryUtilitiesPortable.exe|PC cleanup and maintenance utilities
+05|Hard Disk Sentinel Pro|exe|Tools\Hard Disk Sentinel Pro\Hard Disk Sentinel.exe|Hard disk and SSD health monitor
+06|Lazesoft Recovery Suite Technician|exe|Tools\Lazesoft Recovery Suite 5.0.0.1 Technician\Lazesoft Recovery Suite.exe|Windows recovery and repair suite
+07|Macrium Reflect Technician|exe|Tools\Macrium Reflect Technician's\Macrium Reflect.exe|Disk imaging and backup tool
+08|Malware Hunter Pro|exe|Tools\Malware.Hunter.Pro\MalwareHunterPortable.exe|Malware scan and cleanup utility
+09|MiniTool Partition Wizard Technician|exe|Tools\MiniTool Partition Wizard Technician Edition\MiniTool Partition Wizard Technician Edition v13.5\App\partitionwizard.exe|Partition management portable tool
+10|OCCT|exe|Tools\OCCT\OCCT (x64).exe|CPU/GPU/power stability testing
+11|Quick CPU Pro|exe|Tools\Quick CPU Pro v5.2.0\Quick CPU Pro\QuickCPUPortable.exe|CPU power and performance tuning
+12|WhoCrashed|exe|Tools\Whocrashed\WhoCrashed\WhoCrashedEx.exe|Crash dump analysis helper
+13|WSCC - Windows System Control Center|exe|Tools\WSCC - Windows System Control Center\Windows System Control Center.exe|Sysinternals/NirSoft control center
+14|PortableApps Platform Setup|exe|Tools\PortableApps.com_Platform_Setup_30.1.3.paf.exe|PortableApps platform installer
+15|Block Internet in Apps|exe|Tools\block internet in apps\Fab_x64.exe|Block applications from accessing the internet using Windows Firewall
+90|System Inventory Full Report|script|Modules\SystemInventory.cmd|Create complete HTML PC inventory report
+91|Battery Report|script|Modules\BatteryReport.cmd|Generate Windows battery report
+16|WirelessKeyView WiFi Recover|exe|Tools\Feel Like Hacker\wirelesskeyview.exe|Recover all stored WiFi security keys and passwords natively
+17|WebBrowserPassView Password Scan|exe|Tools\Feel Like Hacker\webbrowserpassview.exe|Reveal usernames and passwords saved inside Chrome, Edge, and Firefox
+18|ProduKey License Scanner|exe|Tools\Feel Like Hacker\produkey.exe|Recover Windows operating system and MS Office product license keys
+19|USBDeview Connection Audit|exe|Tools\Feel Like Hacker\usbdeview.exe|List and manage all current and historical USB connection logs
+20|PasswordFox Firefox Recovery|exe|Tools\Feel Like Hacker\passwordfox.exe|Recover saved usernames and passwords specifically from Firefox
+21|VaultPasswordView Vault Decrypt|exe|Tools\Feel Like Hacker\vaultpasswordview.exe|Decrypt Windows Credential Manager and secure Vault passwords
+22|AnyDesk Remote Support|exe|Tools\AnyDesk\AnyDesk.exe|Fast and secure remote control and screen sharing application
+23|Advanced IP Scanner|exe|Tools\IPScanner\ipscan.exe|Fast and easy-to-use network scanner for LAN analysis
+24|PowerISO Portable|exe|Tools\PowerISO_9.2\PowerISO.exe|Powerful CD/DVD/BD image file processing tool to open/extract/burn ISOs
+25|RouterPassView Router Decrypter|exe|Tools\Feel Like Hacker\routerpassview.exe|Recover lost router passwords and configuration credentials
+26|USBDriveLog USB History|exe|Tools\Feel Like Hacker\usbdrivelog.exe|View detailed historical log of all USB flash drives connected to this PC
+27|WifiInfoView WiFi Analyzer|exe|Tools\Feel Like Hacker\wifiinfoview.exe|Analyze surrounding wireless networks with signal strength and channel details
+28|LastActivityView Action Logger|exe|Tools\Feel Like Hacker\lastactivityview.exe|View a chronological log of recent actions and events occurred on this computer
+29|UninstallView Software Manager|exe|Tools\Feel Like Hacker\uninstallview.exe|Advanced alternative to Windows Add/Remove programs with deep registry info
+30|SearchMyFiles Smart Search|exe|Tools\Feel Like Hacker\searchmyfiles.exe|Ultra-precise alternative to Windows Search with advanced size and date filters
+31|CurrPorts Connections|exe|Tools\Feel Like Hacker\cports.exe|Real-time TCP/IP connections monitor showing process owner and ports
+32|Network Password Recovery|exe|Tools\Feel Like Hacker\netpass.exe|Recover credentials and network passwords stored inside Windows Credential Manager
+33|WhatInStartup Manager|exe|Tools\Feel Like Hacker\whatinstartup.exe|Enable, disable, or delete programs that run automatically at Windows startup
+34|OpenedFilesView Monitor|exe|Tools\Feel Like Hacker\openedfilesview.exe|Display list of all opened files on your system with options to close or unlock them
+35|RegScanner Registry Search|exe|Tools\Feel Like Hacker\regscanner.exe|Advanced alternative to Regedit Search with exact matching and wildcards
+36|TaskSchedulerView Manager|exe|Tools\Feel Like Hacker\taskschedulerview.exe|Comprehensive view and control panel for all scheduled tasks on Windows
+37|DevManView Device Manager|exe|Tools\Feel Like Hacker\devmanview.exe|Advanced alternative to Windows Device Manager with remote PC management support
+38|WinCrashReport Diagnostic|exe|Tools\Feel Like Hacker\wincrashreport.exe|Generates detailed crash reports for hung or crashed programs
+39|Wireless Network Watcher|exe|Tools\Feel Like Hacker\wnetwatcher.exe|Scan your local network and display list of all currently connected computers and devices
+

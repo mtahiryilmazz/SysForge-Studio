@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>IT Yönetim Portalı</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="main-layout">
+        <aside class="sidebar">
+            <h2>IT Portal</h2>
+            <p>Hoşgeldin, {{ session['username'] }}<br><span style="color:var(--primary-color);">({{ session['role'] }})</span></p>
+            
+            <div class="nav-links">
+                {% if '*' in session.get('permissions', '') or 'dashboard' in session.get('permissions', '') %}
+                <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint == 'dashboard' else '' }}">Dashboard</a>
+                {% endif %}
+                
+                {% if '*' in session.get('permissions', '') or 'tickets' in session.get('permissions', '') %}
+                <a href="{{ url_for('tickets') }}" class="{{ 'active' if request.endpoint == 'tickets' else '' }}">Arıza Kayıtları</a>
+                {% endif %}
+                
+                {% if '*' in session.get('permissions', '') or 'inventory' in session.get('permissions', '') %}
+                <a href="{{ url_for('inventory') }}" class="{{ 'active' if request.endpoint == 'inventory' else '' }}">Donanım Envanteri</a>
+                {% endif %}
+                
+                {% if session.get('role') == 'Admin' %}
+                <a href="{{ url_for('departments') }}" class="{{ 'active' if request.endpoint == 'departments' else '' }}">🏢 Müdürlük / Birim</a>
+                <a href="{{ url_for('logs') }}" class="{{ 'active' if request.endpoint == 'logs' else '' }}">📝 Sistem Logları</a>
+                {% endif %}
+                
+                {% if '*' in session.get('permissions', '') or 'profile' in session.get('permissions', '') %}
+                <a href="{{ url_for('profile') }}" class="{{ 'active' if request.endpoint == 'profile' else '' }}">Profil Ayarları</a>
+                {% endif %}
+            
+                {% if session.get('role') == 'Admin' %}
+                <hr style="border-color: #333; margin: 15px 0;">
+                <a href="{{ url_for('admin_users') }}" class="{{ 'active' if request.endpoint == 'admin_users' else '' }}" style="color: #facc15;">Web İzleme Paneli</a>
+                {% endif %}
+            </div>
+            
+            <div style="margin-top:auto; padding: 20px;">
+                <a href="{{ url_for('logout') }}" class="btn btn-danger" style="width: 100%; text-align: center; border-left: none;">Çıkış Yap</a>
+            </div>
+        </aside>
+        
+        <main class="content-area">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <ul class="flashes">
+                {% for category, message in messages %}
+                  <li class="flash-msg {{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+
+            {% if session.get('recovery_mode') %}
+            <div style="
+                background: #ef4444;
+                color: white;
+                padding: 18px 24px;
+                border-radius: 10px;
+                margin-bottom: 20px;
+                font-weight: bold;
+                font-size: 15px;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                animation: pulse-red 1.5s infinite;
+                box-shadow: 0 0 20px rgba(239,68,68,0.6);
+            ">
+                <span style="font-size: 28px;">🚨</span>
+                <div>
+                    <div style="font-size: 18px; margin-bottom: 4px;">SİSTEM KURTARMA MODUNDA ÇALIŞIYOR</div>
+                    <div style="font-size: 13px; opacity: 0.9;">
+                        Acil Durum Kurtarma Hesabı (Recovery) etkin. 
+                        Hesabı kurtardıktan sonra Sentinel Toolkit'ten kalkanı kapatmayı unutmayın.
+                    </div>
+                </div>
+                <a href="{{ url_for('logs') }}" style="margin-left:auto; color:white; text-decoration:underline; white-space:nowrap;">📋 Logları Gör</a>
+            </div>
+            <style>
+            @keyframes pulse-red {
+                0%, 100% { box-shadow: 0 0 20px rgba(239,68,68,0.6); }
+                50% { box-shadow: 0 0 40px rgba(239,68,68,1); }
+            }
+            </style>
+            {% endif %}
+            
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

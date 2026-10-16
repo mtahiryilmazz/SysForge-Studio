@@ -1,0 +1,125 @@
+<UserControl x:Class="UltimateToolkit.Modern.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="750" d:DesignWidth="920">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="28,20">
+            
+            <!-- PowerToys Hero Banner -->
+            <Border Style="{StaticResource PtSettingsCard}" Background="#272727" Padding="20" Margin="0,0,0,16">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                        <DockPanel LastChildFill="False" Margin="0,0,0,6">
+                            <TextBlock DockPanel.Dock="Left" Text="⚡ Ultimate Printer Toolkit" FontSize="20" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap" Margin="0,0,10,4"/>
+                            <Border DockPanel.Dock="Left" Style="{StaticResource PtBadge}" VerticalAlignment="Center" Margin="0,0,0,4">
+                                <TextBlock Text="v6.0" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource PtAccent}"/>
+                            </Border>
+                        </DockPanel>
+                        <TextBlock Text="Kurumsal Windows yazdırma, ağ yazıcısı paylaşımı, RPC 0x0000011b, 709 ve sürücü yönetim konsolu" FontSize="12.5" Foreground="{StaticResource PtTextSecondary}" TextWrapping="Wrap"/>
+
+                        <!-- Status Badges Row -->
+                        <WrapPanel Margin="0,14,0,0">
+                            <Border Style="{StaticResource PtBadge}" Margin="0,0,8,6">
+                                <TextBlock x:Name="TxtAdminStatus" Text="🛡️ Yönetici: Kontrol ediliyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="#38BDF8"/>
+                            </Border>
+                            <Border Style="{StaticResource PtBadge}" Margin="0,0,8,6">
+                                <TextBlock x:Name="TxtSpoolerStatus" Text="🖨️ Spooler: Kontrol ediliyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="#4ADE80"/>
+                            </Border>
+                            <Border Style="{StaticResource PtBadge}" Margin="0,0,8,6">
+                                <TextBlock x:Name="TxtRoleStatus" Text="🌐 Rol: Algılanıyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="#FDE047"/>
+                            </Border>
+                        </WrapPanel>
+                    </StackPanel>
+
+                    <Button x:Name="BtnSmartWorkflow" Grid.Column="1" Content="⚡ Tek Tıkla Akıllı Onar" Style="{StaticResource PtSuccessButton}" Padding="18,10" FontSize="13.5" VerticalAlignment="Top" Click="BtnSmartWorkflow_Click"/>
+                </Grid>
+            </Border>
+
+            <!-- Quick Metrics Row -->
+            <UniformGrid Columns="3" Margin="0,0,0,16">
+                
+                <Border Style="{StaticResource PtSettingsCard}" Margin="0,0,8,0">
+                    <StackPanel>
+                        <TextBlock Text="YÜKLÜ YAZICILAR" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="0,0,0,6"/>
+                        <TextBlock x:Name="TxtPrinterCount" Text="0" FontSize="26" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}"/>
+                        <TextBlock Text="Sistemde tanımlı toplam aygıt" FontSize="11.5" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,10"/>
+                        <Button Content="Yazıcıları Yönet" Style="{StaticResource PtSecondaryButton}" HorizontalAlignment="Left" Click="BtnGoPrinters_Click"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource PtSettingsCard}" Margin="4,0,4,0">
+                    <StackPanel>
+                        <TextBlock Text="SPOOLER &amp; KUYRUK" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="0,0,0,6"/>
+                        <TextBlock Text="Çalışıyor" FontSize="26" FontWeight="Bold" Foreground="{StaticResource PtSuccess}"/>
+                        <TextBlock Text="Takılı yazdırma işlerini sıfırla" FontSize="11.5" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,10"/>
+                        <Button x:Name="BtnResetSpooler" Content="Spooler'ı Sıfırla" Style="{StaticResource PtSecondaryButton}" HorizontalAlignment="Left" Click="BtnResetSpooler_Click"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource PtSettingsCard}" Margin="8,0,0,0">
+                    <StackPanel>
+                        <TextBlock Text="SİSTEM YEDEĞİ" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="0,0,0,6"/>
+                        <TextBlock Text="Kayıt Defteri" FontSize="26" FontWeight="Bold" Foreground="{StaticResource PtAccent}"/>
+                        <TextBlock Text="HKLM\Print yapılandırmasını sakla" FontSize="11.5" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,10"/>
+                        <Button x:Name="BtnQuickBackup" Content="Şimdi Yedek Al" Style="{StaticResource PtSecondaryButton}" HorizontalAlignment="Left" Click="BtnQuickBackup_Click"/>
+                    </StackPanel>
+                </Border>
+
+            </UniformGrid>
+
+            <!-- Recommended Quick Fixes (PowerToys Settings Cards) -->
+            <TextBlock Text="ÖNERİLEN HIZLI EYLEMLER" FontSize="11" FontWeight="Bold" Foreground="#888888" Margin="4,4,0,8"/>
+
+            <Border Style="{StaticResource PtSettingsCard}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="🔴 RPC 0x0000011b &amp; 0x00000709 Kayıt Defteri Onarımı" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}"/>
+                        <TextBlock Text="Windows güncellemeleri sonrası ağ yazıcılarına bağlanırken oluşan 11b uyuşmazlığını tek tıkla giderir." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,12,0" TextWrapping="Wrap"/>
+                    </StackPanel>
+                    <Button Grid.Column="1" Content="Onar" Style="{StaticResource PtPrimaryButton}" VerticalAlignment="Center" Click="BtnFixRpc_Click"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource PtSettingsCard}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="🟢 Point &amp; Print Sürücü İndirme İzinleri" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}"/>
+                        <TextBlock Text="İstemci kullanıcıların yönetici parolası olmadan sunucudan sürücü çekebilmesini sağlar." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,12,0" TextWrapping="Wrap"/>
+                    </StackPanel>
+                    <Button Grid.Column="1" Content="Onar" Style="{StaticResource PtPrimaryButton}" VerticalAlignment="Center" Click="BtnFixPointPrint_Click"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource PtSettingsCard}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="🔵 Güvenlik Duvarı ve Paylaşım İzinleri" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}"/>
+                        <TextBlock Text="Yazıcı ve dosya paylaşım portlarını (Port 445/139) açar ve ağı 'Özel' profil yapar." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,12,0" TextWrapping="Wrap"/>
+                    </StackPanel>
+                    <Button Grid.Column="1" Content="Yapılandır" Style="{StaticResource PtPrimaryButton}" VerticalAlignment="Center" Click="BtnFixFirewall_Click"/>
+                </Grid>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

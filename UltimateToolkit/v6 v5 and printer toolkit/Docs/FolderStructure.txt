@@ -1,0 +1,45 @@
+UltimateToolkit
+|-- README.md
+|-- Toolkit.bat
+|-- Toolkit-GUI.cmd
+|-- Toolkit-GUI-Debug.cmd
+|-- Assets
+|   `-- README.txt
+|-- Backups
+|   `-- OriginalToolkitSnapshot.cmd
+|-- Config
+|   |-- gui.catalog
+|   `-- tools.catalog
+|-- Docs
+|   |-- Add-Portable-Software-Guide.md
+|   |-- AllLabels.txt
+|   |-- BatchFilesAudit.md
+|   |-- FolderStructure.txt
+|   |-- GUI-Pro-Guide.md
+|   |-- GUI-Pro-Audit.md
+|   |-- LabelAudit.md
+|   `-- MenuMap.md
+|-- Logs
+|   `-- README.txt
+|-- Modules
+|   |-- BatteryReport.cmd
+|   |-- PortableToolsMenu.cmd
+|   |-- SystemInventory.cmd
+|   |-- SystemInventoryReport.ps1
+|   |-- Toolkit-GUI-Pro.ps1
+|   `-- ToolkitReportCenter.ps1
+|-- SFX
+|   |-- SFX-Comment.txt
+|   `-- WinRAR-SFX-Setup-Notes.txt
+`-- Tools
+    |-- _README.txt
+    |-- AnyDesk
+    |   `-- PUT_ANYDESK_EXE_HERE.txt
+    |-- Custom
+    |   `-- PUT_CUSTOM_TOOLS_HERE.txt
+    |-- HDSentinel
+    |   `-- PUT_HDSENTINEL_EXE_HERE.txt
+    |-- IPScanner
+    |   `-- PUT_IP_SCANNER_EXE_HERE.txt
+    `-- NirSoft
+        `-- PUT_NIRSOFT_TOOLS_HERE.txt

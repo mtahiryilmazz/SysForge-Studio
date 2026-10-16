@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>IT Service Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="login-container">
+        <div class="glass-panel login-box">
+            <h2 style="text-align: center; font-weight: 800; margin-top: 0;">IT Service Portal</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Yetkili Personel Girişi</p>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <ul class="flashes">
+                {% for category, message in messages %}
+                  <li class="flash-msg {{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+            
+            <form method="POST" action="{{ url_for('login') }}">
+                <label>Kullanıcı Adı</label>
+                <input type="text" name="username" required>
+                
+                <label>Şifre</label>
+                <input type="password" name="password" required>
+                
+                <button type="submit" class="btn" style="width: 100%; margin-top: 20px;">Giriş Yap</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

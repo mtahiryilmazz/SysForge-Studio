@@ -1,0 +1,110 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>📦 Donanım Envanteri</h1>
+
+<div class="glass-panel" style="margin-bottom:32px;">
+  <h3 style="margin-top:0; color:var(--text-muted);">Yeni Cihaz(lar) Ekle</h3>
+  <form method="POST" id="invForm" style="display:flex; flex-direction:column; gap:14px;">
+
+    <!-- Kişi + Müdürlük + Birim -->
+    <div style="display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end;">
+      <div style="display:flex; flex-direction:column; gap:4px; flex:1; min-width:150px;">
+        <label style="font-size:12px; color:var(--text-muted);">Müdürlük</label>
+        <select id="inv_dept" name="department_id" style="padding:10px; border-radius:6px; background:#2a2a2a; border:1px solid #444; color:white;" onchange="loadUnits(this.value, 'inv_unit')">
+          <option value="">— Seçin —</option>
+          {% for d in depts %}
+          <option value="{{ d.id }}">{{ d.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:4px; flex:1; min-width:150px;">
+        <label style="font-size:12px; color:var(--text-muted);">Birim</label>
+        <select id="inv_unit" name="unit_id" style="padding:10px; border-radius:6px; background:#2a2a2a; border:1px solid #444; color:white;">
+          <option value="">— Önce müdürlük —</option>
+        </select>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:4px; flex:2; min-width:180px;">
+        <label style="font-size:12px; color:var(--text-muted);">Personel Adı *</label>
+        <input type="text" name="user" placeholder="Ad Soyad" required>
+      </div>
+    </div>
+
+    <!-- Cihaz satırları -->
+    <div style="border-top:1px solid #333; padding-top:10px;">
+      <p style="font-size:11px; color:var(--text-muted); margin:0 0 8px 0; letter-spacing:0.5px;">CİHAZLAR</p>
+      <div id="deviceRows" style="display:flex; flex-direction:column; gap:8px;">
+        <div class="device-row" style="display:flex; gap:10px; align-items:center;">
+          <input type="text" name="brand[]" placeholder="Marka *" required style="flex:1;">
+          <input type="text" name="model[]" placeholder="Model" style="flex:1;">
+          <input type="text" name="ip[]" placeholder="IP / Özellik" style="flex:1;">
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:10px;">
+      <button type="button" class="btn" onclick="addRow()" style="width:auto; background:#444; padding:8px 16px;">+ Cihaz Satırı Ekle</button>
+      <button type="submit" class="btn" style="width:auto; padding:8px 20px;">💾 Envantere Kaydet</button>
+    </div>
+  </form>
+</div>
+
+<div class="glass-panel">
+  <h3 style="margin-top:0; color:var(--text-muted);">Kayıtlı Donanımlar</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>Müdürlük</th><th>Birim</th><th>Personel</th>
+        <th>Marka / Model</th><th>IP / Özellik</th><th>Tarih</th><th>İşlem</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for d in inventory %}
+      <tr>
+        <td style="color:var(--text-muted); font-size:12px;">#{{ d.id }}</td>
+        <td style="font-size:12px;">{{ d.dept_name }}</td>
+        <td style="font-size:12px;">{{ d.unit_name }}</td>
+        <td>{{ d.user_name }}</td>
+        <td><strong>{{ d.brand }}</strong> {{ d.model }}</td>
+        <td>{{ d.ip_address }}</td>
+        <td style="font-size:11px; color:var(--text-muted);">{{ d.date or '—' }}</td>
+        <td>
+          <form action="{{ url_for('delete_device', device_id=d.id) }}" method="POST"
+                onsubmit="return confirm('Bu cihazı envanterden silmek istediğinize emin misiniz?')" style="margin:0;">
+            <button type="submit" style="background:#e74c3c;color:white;border:none;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:12px;">Sil</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:20px;">Henüz kayıt yok.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<script>
+function loadUnits(deptId, targetId) {
+  const sel = document.getElementById(targetId);
+  sel.innerHTML = '<option value="">Yükleniyor…</option>';
+  if (!deptId) { sel.innerHTML = '<option value="">— Önce müdürlük —</option>'; return; }
+  fetch(`/api/units/${deptId}`)
+    .then(r => r.json())
+    .then(units => {
+      sel.innerHTML = '<option value="">— Birim seçin —</option>';
+      units.forEach(u => sel.innerHTML += `<option value="${u.id}">${u.name}</option>`);
+    });
+}
+function addRow() {
+  const row = document.createElement('div');
+  row.className = 'device-row';
+  row.style = 'display:flex; gap:10px; align-items:center;';
+  row.innerHTML = `
+    <input type="text" name="brand[]" placeholder="Marka *" required style="flex:1;">
+    <input type="text" name="model[]" placeholder="Model" style="flex:1;">
+    <input type="text" name="ip[]" placeholder="IP / Özellik" style="flex:1;">
+    <button type="button" onclick="this.parentElement.remove()"
+      style="padding:8px 12px;background:#e74c3c;color:white;border:none;border-radius:5px;cursor:pointer;">✕</button>
+  `;
+  document.getElementById('deviceRows').appendChild(row);
+}
+</script>
+{% endblock %}

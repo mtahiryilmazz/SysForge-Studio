@@ -1,0 +1,1 @@
+﻿@{value=java; PSPath=C:\Users\Ansh\Desktop\fresh\Config\custom_bundle.txt; PSParentPath=C:\Users\Ansh\Desktop\fresh\Config; PSChildName=custom_bundle.txt; PSDrive=; PSProvider=; ReadCount=1}
