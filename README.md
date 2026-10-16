@@ -1,11 +1,11 @@
-# 🛠️ SysForge Studio / Ultimate Enterprise IT Suite
+# 🛠️ SysForge Studio
 
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011%20%7C%20Server-0078D4?logo=windows)](https://microsoft.com/windows)
 [![Architecture](https://img.shields.io/badge/Arch-x86%20%7C%20x64-107C41)]()
 [![Framework](https://img.shields.io/badge/.NET-8.0%20WPF%20Fluent-512BD4?logo=dotnet)]()
 [![Design](https://img.shields.io/badge/Design-PowerToys%20%2F%20DevToys%20Dark-202020)]()
 
-SysForge Studio (Ultimate Enterprise IT Suite), sistem yöneticileri, bilgi işlem personeli ve teknik servis teknisyenleri için tasarlanmış modern, hepsi bir arada Windows bakım, donanım kimlik doğrulama ve BT operasyon yönetim merkezidir.
+SysForge Studio, sistem yöneticileri, bilgi işlem personeli ve teknik servis teknisyenleri için tasarlanmış modern, hepsi bir arada Windows bakım, donanım kimlik doğrulama ve BT operasyon yönetim merkezidir.
 
 ---
 

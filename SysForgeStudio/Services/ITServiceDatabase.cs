@@ -218,8 +218,7 @@ namespace SysForgeStudio.Services
             {
                 string[] candidates = {
                     @"D:\YILMAZApp\it_tech_service\it_tech_service.db",
-                    @"D:\YILMAZApp\UltimateToolkit\3-it_tech_service\it_tech_service.db",
-                    @"C:\ProgramData\VanguardIT\it_tech_service.db",
+                    @"C:\ProgramData\SysForgeStudio\it_tech_service.db",
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "it_tech_service.db")
                 };
 

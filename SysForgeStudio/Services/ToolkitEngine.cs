@@ -54,12 +54,12 @@ namespace SysForgeStudio.Services
 
             // Detect legacy toolkit root relative to this exe
             string exeDir = AppDomain.CurrentDomain.BaseDirectory;
-            string possibleLegacy = Path.Combine(exeDir, "..", "UltimateToolkit", "v6 v5 and printer toolkit");
+            string possibleLegacy = Path.Combine(exeDir, "..", "SysForgeStudio", "Modules");
             if (Directory.Exists(possibleLegacy))
                 LegacyToolkitRoot = Path.GetFullPath(possibleLegacy);
             else
             {
-                possibleLegacy = Path.Combine(exeDir, "UltimateToolkit", "v6 v5 and printer toolkit");
+                possibleLegacy = Path.Combine(exeDir, "Modules");
                 if (Directory.Exists(possibleLegacy))
                     LegacyToolkitRoot = Path.GetFullPath(possibleLegacy);
                 else
@@ -1577,9 +1577,8 @@ namespace SysForgeStudio.Services
             // Search relative paths for legacy files
             string[] searchPaths = {
                 Path.Combine(exeDir, ".."),
-                Path.Combine(exeDir, "..", "UltimateToolkit"),
-                Path.Combine(exeDir, "..", "UltimateToolkit", "v6 v5 and printer toolkit"),
-                Path.Combine(exeDir, "..", "UltimateToolkit", "Old_Version"),
+                Path.Combine(exeDir, "..", "Modules"),
+                Path.Combine(exeDir, "..", "Archive"),
                 exeDir,
             };
 
@@ -1593,7 +1592,7 @@ namespace SysForgeStudio.Services
                 {
                     modules.Add(new LegacyModule
                     {
-                        Name = "Ultimate Toolkit v5 (Tam Konsol)",
+                        Name = "SysForge Konsolu v5 (Tam Yönetim)",
                         Description = "37 modüllü kurumsal IT admin konsolu - CMD tabanlı",
                         Icon = "🖥️",
                         LaunchLabel = "Konsolu Aç",
@@ -1612,7 +1611,7 @@ namespace SysForgeStudio.Services
                 {
                     modules.Add(new LegacyModule
                     {
-                        Name = "Ultimate Printer Toolkit v3",
+                        Name = "SysForge Yazıcı Teşhis & Onarım v3",
                         Description = "Yazıcı onarım, teşhis, host/client algılama - PowerShell GUI",
                         Icon = "🖨️",
                         LaunchLabel = "Başlat",
@@ -1673,7 +1672,7 @@ namespace SysForgeStudio.Services
                 {
                     modules.Add(new LegacyModule
                     {
-                        Name = "UltimateToolkit V5 (EXE)",
+                        Name = "SysForge Entegre Konsol (EXE)",
                         Description = "Derlenmiş V5 araç kutusu",
                         Icon = "📦",
                         LaunchLabel = "Başlat",
@@ -1801,9 +1800,9 @@ namespace SysForgeStudio.Services
                 string scriptPath = "";
                 string[] candidates = {
                     Path.Combine(LegacyToolkitRoot, "Modules", "WebBridgeServer.ps1"),
-                    @"C:\ProgramData\UltimateToolkitSuite\Modules\WebBridgeServer.ps1",
+                    @"C:\ProgramData\SysForgeStudio\Modules\WebBridgeServer.ps1",
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Modules", "WebBridgeServer.ps1"),
-                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "UltimateToolkit", "v6 v5 and printer toolkit", "Modules", "WebBridgeServer.ps1")
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "Modules", "WebBridgeServer.ps1")
                 };
 
                 foreach (var c in candidates)
@@ -1834,7 +1833,7 @@ namespace SysForgeStudio.Services
                         var psiFw = new ProcessStartInfo
                         {
                             FileName = "netsh.exe",
-                            Arguments = "advfirewall firewall add rule name=\"UltimateToolkit Web Bridge\" dir=in action=allow protocol=TCP localport=9999",
+                            Arguments = "advfirewall firewall add rule name=\"SysForge Studio Web Bridge\" dir=in action=allow protocol=TCP localport=9999",
                             CreateNoWindow = true,
                             UseShellExecute = false
                         };
@@ -1897,9 +1896,9 @@ namespace SysForgeStudio.Services
             {
                 string[] candidates = {
                     Path.Combine(LegacyToolkitRoot, "Printer_Analyzer_Pro.exe"),
-                    @"C:\ProgramData\UltimateToolkitSuite\Printer_Analyzer_Pro.exe",
+                    @"C:\ProgramData\SysForgeStudio\Printer_Analyzer_Pro.exe",
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Printer_Analyzer_Pro.exe"),
-                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "UltimateToolkit", "v6 v5 and printer toolkit", "Printer_Analyzer_Pro.exe")
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "Modules", "Printer_Analyzer_Pro.exe")
                 };
 
                 string exePath = candidates.FirstOrDefault(File.Exists) ?? "";
@@ -1929,10 +1928,10 @@ namespace SysForgeStudio.Services
         {
             var list = new List<string>();
             string[] paths = {
-                @"C:\ProgramData\UltimateToolkitSuite",
-                @"C:\Users\Public\UltimateToolkit_Run",
+                @"C:\ProgramData\SysForgeStudio",
+                @"C:\Users\Public\SysForgeStudio_Run",
                 @"C:\ProgramData\U",
-                Path.Combine(Path.GetTempPath(), "UltimateToolkit"),
+                Path.Combine(Path.GetTempPath(), "SysForgeStudio"),
                 Path.Combine(LegacyToolkitRoot, "scratch")
             };
 
@@ -1958,9 +1957,9 @@ namespace SysForgeStudio.Services
         public void CleanSandboxDirectories()
         {
             string[] paths = {
-                @"C:\Users\Public\UltimateToolkit_Run",
+                @"C:\Users\Public\SysForgeStudio_Run",
                 @"C:\ProgramData\U",
-                Path.Combine(Path.GetTempPath(), "UltimateToolkit"),
+                Path.Combine(Path.GetTempPath(), "SysForgeStudio"),
                 Path.Combine(LegacyToolkitRoot, "scratch")
             };
 
