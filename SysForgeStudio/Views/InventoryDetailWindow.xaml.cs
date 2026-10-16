@@ -17,21 +17,33 @@ namespace SysForgeStudio.Views
 
         private void PopulateData()
         {
-            TxtHeaderTitle.Text = $"🖥️ {_item.Location} - Donanım Detayı";
-            TxtHeaderSub.Text = $"Kayıt Tarihi: {_item.Date} | Zimmet: {_item.UserName}";
+            TxtHeaderTitle.Text = $"💻 {_item.Location} - Donanım & Yazılım Detayı";
+            TxtHeaderSub.Text = $"Kayıt Tarihi: {_item.Date} | Zimmetli Personel: {_item.UserName} ({_item.Department})";
 
+            // 1. Identity
             TxtBrandModel.Text = $"{_item.Brand} {_item.Model}".Trim();
             TxtSerialNo.Text = string.IsNullOrWhiteSpace(_item.SerialNo) ? "-" : _item.SerialNo;
             TxtIpAddress.Text = string.IsNullOrWhiteSpace(_item.IpAddress) ? "-" : _item.IpAddress;
             TxtMacAddress.Text = _item.DisplayMacAddress;
 
+            // 2. Hardware
             TxtMotherboard.Text = _item.DisplayMotherboard;
             TxtProcessor.Text = _item.DisplayProcessor;
             TxtRam.Text = _item.DisplayRam;
             TxtDisk.Text = _item.DisplayDisk;
             TxtGpu.Text = _item.DisplayGpu;
-            TxtOsVersion.Text = _item.DisplayOsVersion;
 
+            // 3. Software & OS
+            TxtOsVersion.Text = _item.DisplayOsVersion;
+            TxtWindowsBuild.Text = _item.DisplayWindowsBuild;
+            TxtBios.Text = _item.DisplayBios;
+            TxtDomainWorkgroup.Text = _item.DisplayDomainWorkgroup;
+            TxtNetworkDetails.Text = _item.DisplayNetworkDetails;
+            TxtSecurity.Text = _item.DisplaySecurity;
+            TxtInstalledSoftware.Text = _item.DisplayInstalledSoftware;
+            TxtUptime.Text = _item.DisplayUptime;
+
+            // 4. Assignment
             TxtUserName.Text = string.IsNullOrWhiteSpace(_item.UserName) ? "-" : _item.UserName;
             TxtDepartmentUnit.Text = $"{_item.Department} / {_item.Unit}".Trim(' ', '/');
             TxtLocation.Text = string.IsNullOrWhiteSpace(_item.Location) ? "-" : _item.Location;
@@ -43,7 +55,7 @@ namespace SysForgeStudio.Views
             try
             {
                 Clipboard.SetText(_item.SerialNo);
-                TxtCopyStatus.Text = "✓ Seri No panoya kopyalandı!";
+                TxtCopyStatus.Text = "✓ Seri Numarası / HWID panoya kopyalandı!";
             }
             catch (Exception ex)
             {

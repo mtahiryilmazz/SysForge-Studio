@@ -324,13 +324,96 @@
                 </StackPanel>
             </Border>
 
-            <!-- 5. Hardware Inventory Section -->
+            <!-- 5. Hardware & Software Inventory Section -->
             <Border Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16">
                 <StackPanel>
-                    <Grid Margin="0,0,0,10">
-                        <TextBlock Text="🖥️ Cihaz &amp; Donanım Zimmet Envanteri" FontSize="15" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}"/>
-                        <Button Content="⚡ Bu Bilgisayarı Envantere Otomatik Ekle" Style="{StaticResource PtPrimaryButton}" HorizontalAlignment="Right" Click="BtnAutoRegisterPc_Click"/>
-                    </Grid>
+                    <TextBlock Text="🖥️ Cihaz Donanım &amp; Yazılım Zimmet Envanteri" FontSize="15" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" Margin="0,0,0,12"/>
+
+                    <!-- Live Machine Hardware & Software Information Card (Bilgi Kutucuğu) -->
+                    <Border Background="#202020" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,14">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!-- Top Header & Actions -->
+                            <Grid Grid.Row="0" Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Border Background="{StaticResource PtAccentGradient}" Width="34" Height="34" CornerRadius="6" Margin="0,0,10,0">
+                                        <TextBlock Text="💻" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Bu Bilgisayarın Donanım &amp; Yazılım Bilgi Kartı" FontSize="13.5" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}"/>
+                                            <Border Style="{StaticResource PtBadge}" Margin="8,0,0,0" Padding="6,1">
+                                                <TextBlock Text="Canlı Sistem" FontSize="10" FontWeight="SemiBold" Foreground="#4ADE80"/>
+                                            </Border>
+                                        </StackPanel>
+                                        <TextBlock x:Name="TxtLiveMachineHeader" Text="Cihaz: Algılanıyor... | IP: Algılanıyor..." FontSize="11.5" Foreground="{StaticResource PtTextSecondary}" Margin="0,1,0,0"/>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button x:Name="BtnShowLiveSpecsPopup" Content="🔍 Detaylı Donanım &amp; Yazılım Bilgileri" Style="{StaticResource PtPrimaryButton}" Padding="12,6" FontSize="12" FontWeight="SemiBold" Margin="0,0,8,0" Click="BtnShowLiveSpecsPopup_Click"/>
+                                    <Button Content="⚡ Bu Bilgisayarı Envantere Kaydet" Style="{StaticResource PtSuccessButton}" Padding="12,6" FontSize="12" Click="BtnAutoRegisterPc_Click"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Specs Summary Grid (Bilgi Kutucuğu Özet Verileri) -->
+                            <Border Grid.Row="1" Background="#161616" BorderBrush="#333333" BorderThickness="1" CornerRadius="6" Padding="12,10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="12" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="12" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Col 1: Hardware Summary -->
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="⚙️ DONANIM BİLEŞENLERİ" FontSize="10" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,4"/>
+                                        <TextBlock x:Name="TxtLiveBrandModel" Text="Model: Algılanıyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="#FFFFFF" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock x:Name="TxtLiveCpuRam" Text="CPU / RAM: Algılanıyor..." FontSize="11" Foreground="#CBD5E1" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                        <TextBlock x:Name="TxtLiveMotherboard" Text="Anakart: Algılanıyor..." FontSize="10.5" Foreground="#94A3B8" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                    </StackPanel>
+
+                                    <!-- Col 2: Software & OS Summary -->
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="🪟 YAZILIM &amp; İŞLETİM SİSTEMİ" FontSize="10" FontWeight="Bold" Foreground="#4ADE80" Margin="0,0,0,4"/>
+                                        <TextBlock x:Name="TxtLiveOsBuild" Text="İşletim Sistemi: Algılanıyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="#FFFFFF" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock x:Name="TxtLiveSecurity" Text="Güvenlik: Defender Aktif" FontSize="11" Foreground="#CBD5E1" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                        <TextBlock x:Name="TxtLiveBios" Text="BIOS: Algılanıyor..." FontSize="10.5" Foreground="#94A3B8" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                    </StackPanel>
+
+                                    <!-- Col 3: Network & Assignment -->
+                                    <StackPanel Grid.Column="4">
+                                        <TextBlock Text="🌐 AĞ &amp; KULLANICI BİLGİSİ" FontSize="10" FontWeight="Bold" Foreground="#F59E0B" Margin="0,0,0,4"/>
+                                        <TextBlock x:Name="TxtLiveIpMac" Text="IP / MAC: Algılanıyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="#FFFFFF" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock x:Name="TxtLiveUser" Text="Kullanıcı: Algılanıyor..." FontSize="11" Foreground="#CBD5E1" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                        <TextBlock x:Name="TxtLiveSerial" Text="Seri No / HWID: Algılanıyor..." FontSize="10.5" FontFamily="Consolas" Foreground="#38BDF8" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- Saved Inventory Records List Header -->
+                    <TextBlock Text="📋 Kayıtlı Zimmet Envanteri Listesi" FontSize="13" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" Margin="0,4,0,6"/>
+
+                    <!-- Empty State Banner -->
+                    <Border x:Name="PnlEmptyInventory" Background="#1C1C1C" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="6" Padding="20" Margin="0,2,0,6" Visibility="Collapsed">
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="ℹ️ Henüz kayıtlı donanım zimmeti bulunmuyor." FontSize="13" FontWeight="SemiBold" Foreground="#CBD5E1" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Yukarıdaki bilgi kutucuğundan 'Bu Bilgisayarı Envantere Kaydet' butonuna tıklayarak ilk donanım zimmet kaydını ekleyebilirsiniz." FontSize="11.5" Foreground="{StaticResource PtTextSecondary}" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
 
                     <ItemsControl x:Name="ListInventory">
                         <ItemsControl.ItemTemplate>

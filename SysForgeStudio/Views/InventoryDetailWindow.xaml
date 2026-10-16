@@ -4,205 +4,279 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Bilgisayar Donanım &amp; Zimmet Detayı" 
-        Width="680" 
-        SizeToContent="Height"
+        Title="Bilgisayar Donanım &amp; Yazılım Envanter Detayı" 
+        Width="720" Height="740"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"
-        ResizeMode="NoResize"
         Background="#181818"
         Icon="../Assets/app_icon.png"
         FontFamily="{StaticResource PtFont}">
 
-    <Border BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Background="#1E1E1E" Padding="20">
-        <StackPanel>
+    <Border BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Background="#1E1E1E">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
             <!-- Header Bar -->
-            <Grid Margin="0,0,0,16">
+            <Grid Grid.Row="0" Margin="0,0,0,16">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0" Background="{StaticResource PtAccentGradient}" Width="40" Height="40" CornerRadius="8" Margin="0,0,12,0">
-                    <TextBlock Text="🖥️" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <Border Grid.Column="0" Background="{StaticResource PtAccentGradient}" Width="42" Height="42" CornerRadius="8" Margin="0,0,12,0">
+                    <TextBlock Text="💻" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Border>
 
                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                    <TextBlock x:Name="TxtHeaderTitle" Text="Bilgisayar Donanım &amp; Zimmet Detayı" FontSize="16" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" />
-                    <TextBlock x:Name="TxtHeaderSub" Text="Cihaz Kimliği ve Bileşen Listesi" FontSize="12" Foreground="{StaticResource PtTextSecondary}" />
+                    <TextBlock x:Name="TxtHeaderTitle" Text="Bilgisayar Donanım &amp; Yazılım Detayı" FontSize="17" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" />
+                    <TextBlock x:Name="TxtHeaderSub" Text="Tam Sistem Envanteri ve Teşhis Özeti" FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0"/>
                 </StackPanel>
 
-                <Button Grid.Column="2" Content="✕" Width="32" Height="32" FontSize="14" FontWeight="Bold"
+                <Button Grid.Column="2" Content="✕" Width="34" Height="34" FontSize="15" FontWeight="Bold"
                         Style="{StaticResource PtSecondaryButton}" Padding="0" Click="BtnClose_Click" />
             </Grid>
 
-            <!-- Card 1: Kimlik & Seri Numarası -->
-            <Border Background="#252525" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+            <!-- Scrollable Content Body -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,14">
                 <StackPanel>
-                    <TextBlock Text="🏷️ CİHAZ VE KİMLİK BİLGİSİ" FontSize="11" FontWeight="Bold" Foreground="{StaticResource PtAccent}" Margin="0,0,0,8"/>
-                    
-                    <Grid Margin="0,0,0,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Marka / Model:" Foreground="{StaticResource PtTextSecondary}" FontSize="12"/>
-                        <TextBlock Grid.Column="1" x:Name="TxtBrandModel" Text="-" FontWeight="SemiBold" Foreground="{StaticResource PtTextPrimary}" FontSize="13" TextWrapping="Wrap"/>
-                    </Grid>
+                    <!-- 1. Cihaz & Kimlik Kartı -->
+                    <Border Background="#252525" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="🏷️ CİHAZ VE DONANIM KİMLİĞİ" FontSize="11" FontWeight="Bold" Foreground="{StaticResource PtAccent}" Margin="0,0,0,10"/>
+                            
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Marka / Model:" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtBrandModel" Text="-" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" FontSize="13" TextWrapping="Wrap"/>
+                            </Grid>
 
-                    <Grid Margin="0,0,0,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Seri No / HWID:" Foreground="{StaticResource PtTextSecondary}" FontSize="12" VerticalAlignment="Center"/>
-                        <Border Grid.Column="1" Background="#181818" CornerRadius="4" Padding="8,4" Margin="0,0,8,0">
-                            <TextBlock x:Name="TxtSerialNo" Text="-" FontFamily="Consolas" Foreground="#38BDF8" FontSize="12" TextWrapping="Wrap" VerticalAlignment="Center"/>
-                        </Border>
-                        <Button Grid.Column="2" Content="📋 Kopyala" Style="{StaticResource PtSecondaryButton}" Padding="8,3" FontSize="11" Click="BtnCopySerial_Click"/>
-                    </Grid>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Seri No / HWID:" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5" VerticalAlignment="Center"/>
+                                <Border Grid.Column="1" Background="#161616" BorderBrush="#333" BorderThickness="1" CornerRadius="4" Padding="8,4" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtSerialNo" Text="-" FontFamily="Consolas" Foreground="#38BDF8" FontSize="12" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                </Border>
+                                <Button Grid.Column="2" Content="📋 Kopyala" Style="{StaticResource PtSecondaryButton}" Padding="10,4" FontSize="11" Click="BtnCopySerial_Click"/>
+                            </Grid>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="60" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="IP Adresi:" Foreground="{StaticResource PtTextSecondary}" FontSize="12"/>
-                        <TextBlock Grid.Column="1" x:Name="TxtIpAddress" Text="-" FontFamily="Consolas" Foreground="#A78BFA" FontSize="12"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="IP Adresi:" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtIpAddress" Text="-" FontFamily="Consolas" Foreground="#A78BFA" FontSize="12.5" FontWeight="SemiBold"/>
 
-                        <TextBlock Grid.Column="2" Text="MAC:" Foreground="{StaticResource PtTextSecondary}" FontSize="12"/>
-                        <TextBlock Grid.Column="3" x:Name="TxtMacAddress" Text="-" FontFamily="Consolas" Foreground="#A6A6A6" FontSize="12"/>
-                    </Grid>
+                                <TextBlock Grid.Column="2" Text="Fiziksel MAC:" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="3" x:Name="TxtMacAddress" Text="-" FontFamily="Consolas" Foreground="#CBD5E1" FontSize="12.5"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 2. Donanım Bileşen Detayları -->
+                    <Border Background="#252525" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="⚙️ DONANIM BİLEŞENLERİ (HARDWARE)" FontSize="11" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,10"/>
+
+                            <!-- Anakart -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="🧩 Anakart (Motherboard):" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtMotherboard" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12.5" TextWrapping="Wrap"/>
+                            </Grid>
+
+                            <!-- İşlemci -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="⚡ İşlemci (CPU):" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtProcessor" Text="-" Foreground="#4ADE80" FontWeight="SemiBold" FontSize="12.5" TextWrapping="Wrap"/>
+                            </Grid>
+
+                            <!-- Bellek (RAM) -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="💾 Bellek (RAM):" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtRam" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12.5" TextWrapping="Wrap"/>
+                            </Grid>
+
+                            <!-- Depolama (Disk) -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="💽 Depolama (Disk/SSD):" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtDisk" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12.5" TextWrapping="Wrap"/>
+                            </Grid>
+
+                            <!-- Ekran Kartı -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="🎮 Ekran Kartı (GPU):" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtGpu" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12.5" TextWrapping="Wrap"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 3. Yazılım & İşletim Sistemi Detayları -->
+                    <Border Background="#252525" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="🪟 YAZILIM, SİSTEM VE AĞ ALTYAPISI (SOFTWARE &amp; OS)" FontSize="11" FontWeight="Bold" Foreground="#4ADE80" Margin="0,0,0,10"/>
+
+                            <!-- Windows Sürümü & Build -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="🪟 İşletim Sistemi:" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtOsVersion" Text="-" Foreground="#38BDF8" FontWeight="SemiBold" FontSize="12.5" TextWrapping="Wrap"/>
+                            </Grid>
+
+                            <!-- Build & Mimari -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="🔢 Derleme / Build No:" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtWindowsBuild" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12.5"/>
+                            </Grid>
+
+                            <!-- BIOS / UEFI -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="⚙️ BIOS / Firmware:" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtBios" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12.5" TextWrapping="Wrap"/>
+                            </Grid>
+
+                            <!-- Domain / Workgroup -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="🏢 Ağ Çalışma Grubu:" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtDomainWorkgroup" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12.5"/>
+                            </Grid>
+
+                            <!-- Ağ Detayları -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="🌐 Ağ Altyapısı:" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtNetworkDetails" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12" TextWrapping="Wrap"/>
+                            </Grid>
+
+                            <!-- Güvenlik / Antivirüs -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="🛡️ Güvenlik / Antivirüs:" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtSecurity" Text="-" Foreground="#4ADE80" FontSize="12.5"/>
+                            </Grid>
+
+                            <!-- Kurulu Programlar -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="📦 Yüklü Yazılımlar:" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtInstalledSoftware" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12" TextWrapping="Wrap"/>
+                            </Grid>
+
+                            <!-- Uptime -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="🕒 Çalışma Süresi (Uptime):" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtUptime" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12.5"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 4. Zimmet & Kullanıcı Bilgisi -->
+                    <Border Background="#252525" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14">
+                        <StackPanel>
+                            <TextBlock Text="👤 ZİMMET VE KULLANICI BİLGİSİ" FontSize="11" FontWeight="Bold" Foreground="#F59E0B" Margin="0,0,0,10"/>
+
+                            <Grid Margin="0,0,0,6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Zimmetli Personel:" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtUserName" Text="-" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" FontSize="13"/>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Müdürlük &amp; Birim:" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtDepartmentUnit" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12.5"/>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Konum / Cihaz:" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtLocation" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12.5"/>
+
+                                <TextBlock Grid.Column="2" Text="Kayıt Tarihi:" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                                <TextBlock Grid.Column="3" x:Name="TxtDate" Text="-" Foreground="{StaticResource PtTextSecondary}" FontSize="12.5"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
-            </Border>
+            </ScrollViewer>
 
-            <!-- Card 2: Donanım Bileşenleri -->
-            <Border Background="#252525" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
-                <StackPanel>
-                    <TextBlock Text="⚙️ DONANIM BİLEŞEN DETAYLARI" FontSize="11" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,10"/>
-
-                    <!-- Anakart -->
-                    <Grid Margin="0,0,0,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <TextBlock Text="🧩 Anakart:" Foreground="{StaticResource PtTextSecondary}" FontSize="12"/>
-                        </StackPanel>
-                        <TextBlock Grid.Column="1" x:Name="TxtMotherboard" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12" TextWrapping="Wrap"/>
-                    </Grid>
-
-                    <!-- İşlemci -->
-                    <Grid Margin="0,0,0,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <TextBlock Text="⚡ İşlemci (CPU):" Foreground="{StaticResource PtTextSecondary}" FontSize="12"/>
-                        </StackPanel>
-                        <TextBlock Grid.Column="1" x:Name="TxtProcessor" Text="-" Foreground="#4ADE80" FontWeight="SemiBold" FontSize="12" TextWrapping="Wrap"/>
-                    </Grid>
-
-                    <!-- Bellek -->
-                    <Grid Margin="0,0,0,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <TextBlock Text="💾 Bellek (RAM):" Foreground="{StaticResource PtTextSecondary}" FontSize="12"/>
-                        </StackPanel>
-                        <TextBlock Grid.Column="1" x:Name="TxtRam" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12" TextWrapping="Wrap"/>
-                    </Grid>
-
-                    <!-- Depolama -->
-                    <Grid Margin="0,0,0,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <TextBlock Text="💽 Depolama (Disk):" Foreground="{StaticResource PtTextSecondary}" FontSize="12"/>
-                        </StackPanel>
-                        <TextBlock Grid.Column="1" x:Name="TxtDisk" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12" TextWrapping="Wrap"/>
-                    </Grid>
-
-                    <!-- Ekran Kartı -->
-                    <Grid Margin="0,0,0,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <TextBlock Text="🎮 Ekran Kartı:" Foreground="{StaticResource PtTextSecondary}" FontSize="12"/>
-                        </StackPanel>
-                        <TextBlock Grid.Column="1" x:Name="TxtGpu" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12" TextWrapping="Wrap"/>
-                    </Grid>
-
-                    <!-- İşletim Sistemi -->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <TextBlock Text="🪟 İşletim Sistemi:" Foreground="{StaticResource PtTextSecondary}" FontSize="12"/>
-                        </StackPanel>
-                        <TextBlock Grid.Column="1" x:Name="TxtOsVersion" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12" TextWrapping="Wrap"/>
-                    </Grid>
-                </StackPanel>
-            </Border>
-
-            <!-- Card 3: Zimmet Bilgisi -->
-            <Border Background="#252525" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,16">
-                <StackPanel>
-                    <TextBlock Text="👤 ZİMMET VE KULLANICI BİLGİSİ" FontSize="11" FontWeight="Bold" Foreground="#F59E0B" Margin="0,0,0,8"/>
-
-                    <Grid Margin="0,0,0,6">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Zimmetli Personel:" Foreground="{StaticResource PtTextSecondary}" FontSize="12"/>
-                        <TextBlock Grid.Column="1" x:Name="TxtUserName" Text="-" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" FontSize="13"/>
-                    </Grid>
-
-                    <Grid Margin="0,0,0,6">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Müdürlük &amp; Birim:" Foreground="{StaticResource PtTextSecondary}" FontSize="12"/>
-                        <TextBlock Grid.Column="1" x:Name="TxtDepartmentUnit" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12"/>
-                    </Grid>
-
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="120" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="80" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Konum / Cihaz:" Foreground="{StaticResource PtTextSecondary}" FontSize="12"/>
-                        <TextBlock Grid.Column="1" x:Name="TxtLocation" Text="-" Foreground="{StaticResource PtTextPrimary}" FontSize="12"/>
-
-                        <TextBlock Grid.Column="2" Text="Kayıt Tarihi:" Foreground="{StaticResource PtTextSecondary}" FontSize="12"/>
-                        <TextBlock Grid.Column="3" x:Name="TxtDate" Text="-" Foreground="{StaticResource PtTextSecondary}" FontSize="12"/>
-                    </Grid>
-                </StackPanel>
-            </Border>
-
-            <!-- Actions Bar -->
-            <Grid>
-                <TextBlock x:Name="TxtCopyStatus" Text="" Foreground="#4ADE80" FontSize="12" VerticalAlignment="Center"/>
-                <Button Content="Tamam / Kapat" HorizontalAlignment="Right" Style="{StaticResource PtPrimaryButton}" Width="120" Click="BtnClose_Click"/>
+            <!-- Bottom Actions Bar -->
+            <Grid Grid.Row="2" Margin="0,4,0,0">
+                <TextBlock x:Name="TxtCopyStatus" Text="" Foreground="#4ADE80" FontSize="12.5" VerticalAlignment="Center"/>
+                <Button Content="Tamam / Kapat" HorizontalAlignment="Right" Style="{StaticResource PtPrimaryButton}" Width="130" Height="36" Click="BtnClose_Click"/>
             </Grid>
-        </StackPanel>
+        </Grid>
     </Border>
 </Window>

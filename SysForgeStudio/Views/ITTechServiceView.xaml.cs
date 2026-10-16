@@ -11,6 +11,7 @@ namespace SysForgeStudio.Views
     public partial class ITTechServiceView : UserControl
     {
         private System.Windows.Threading.DispatcherTimer? _syncTimer;
+        private InventoryItem? _liveMachineItem;
 
         public ITTechServiceView()
         {
@@ -143,6 +144,10 @@ namespace SysForgeStudio.Views
                 var inventory = ITServiceDatabase.Instance.GetInventory();
                 ListInventory.ItemsSource = inventory;
                 TxtInventoryCount.Text = inventory.Count.ToString();
+                PnlEmptyInventory.Visibility = inventory.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+                ListInventory.Visibility = inventory.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+
+                LoadLiveMachineSpecsAsync();
             }
             catch (Exception ex)
             {
@@ -387,14 +392,58 @@ namespace SysForgeStudio.Views
             }
         }
 
+        private async void LoadLiveMachineSpecsAsync()
+        {
+            try
+            {
+                if (_liveMachineItem == null)
+                {
+                    _liveMachineItem = await System.Threading.Tasks.Task.Run(() =>
+                        ITServiceDatabase.CollectLiveMachineSpecs());
+                }
+                UpdateLiveMachineInfoBox(_liveMachineItem);
+            }
+            catch
+            {
+                // Ignore collection errors in background
+            }
+        }
+
+        private void UpdateLiveMachineInfoBox(InventoryItem item)
+        {
+            if (item == null) return;
+
+            TxtLiveMachineHeader.Text = $"Cihaz: {item.DeviceName} | IP: {item.IpAddress} | Domain: {item.DomainWorkgroup}";
+            TxtLiveBrandModel.Text = $"{item.Brand} {item.Model}";
+            TxtLiveCpuRam.Text = $"CPU: {item.Processor} | RAM: {item.Ram}";
+            TxtLiveMotherboard.Text = $"Anakart: {item.Motherboard} | Disk: {item.Disk}";
+            TxtLiveOsBuild.Text = $"{item.OperatingSystem} (Build: {item.WindowsBuild})";
+            TxtLiveSecurity.Text = $"Güvenlik: {item.SecuritySoftware} | Uptime: {item.Uptime}";
+            TxtLiveBios.Text = $"BIOS: {item.BiosVersion}";
+            TxtLiveIpMac.Text = $"IP: {item.IpAddress} | MAC: {item.MacAddress}";
+            TxtLiveUser.Text = $"Kullanıcı: {item.AssignedPersonnel} ({item.Department})";
+            TxtLiveSerial.Text = $"Seri: {item.SerialNumber} | HWID: {item.HardwareId}";
+        }
+
+        private void BtnShowLiveSpecsPopup_Click(object sender, RoutedEventArgs e)
+        {
+            var targetItem = _liveMachineItem ?? ITServiceDatabase.CollectLiveMachineSpecs();
+            var win = new InventoryDetailWindow(targetItem)
+            {
+                Owner = Window.GetWindow(this)
+            };
+            win.ShowDialog();
+        }
+
         private void BtnAutoRegisterPc_Click(object sender, RoutedEventArgs e)
         {
             string dept = (CmbDepts.SelectedItem as DepartmentItem)?.Name ?? "Bilgi İşlem";
             try
             {
                 ITServiceDatabase.Instance.AutoRegisterCurrentMachine(dept);
+                _liveMachineItem = null;
                 RefreshData();
-                MessageBox.Show("Bu bilgisayarın donanım kimliği (Marka, Model, BIOS Seri No, IP) başarıyla envantere eklendi!", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Bu bilgisayarın detaylı donanım ve yazılım bilgileri (Marka, Model, BIOS Seri No, HWID, Anakart, CPU, RAM, OS Build, Ağ) başarıyla envantere eklendi!", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {

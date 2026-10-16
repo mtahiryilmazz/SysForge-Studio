@@ -122,6 +122,13 @@ namespace SysForgeStudio.Services
             EnsureColumnExists(conn, "inventory", "gpu", "TEXT DEFAULT ''");
             EnsureColumnExists(conn, "inventory", "os_version", "TEXT DEFAULT ''");
             EnsureColumnExists(conn, "inventory", "mac_address", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "windows_build", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "bios_version", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "domain_workgroup", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "network_details", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "security_software", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "installed_software", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "uptime", "TEXT DEFAULT ''");
 
             // Seed default departments & units if empty
             using var countCmd = new SqliteCommand("SELECT COUNT(*) FROM departments;", conn);
@@ -482,7 +489,8 @@ namespace SysForgeStudio.Services
 
             using var cmd = new SqliteCommand(@"
                 SELECT id, brand, model, serial_no, ip_address, department, unit, location, user_name, date,
-                       motherboard, processor, ram, disk, gpu, os_version, mac_address
+                       motherboard, processor, ram, disk, gpu, os_version, mac_address,
+                       windows_build, bios_version, domain_workgroup, network_details, security_software, installed_software, uptime
                 FROM inventory ORDER BY id DESC;
             ", conn);
             using var reader = cmd.ExecuteReader();
@@ -506,7 +514,14 @@ namespace SysForgeStudio.Services
                     Disk = reader.FieldCount > 13 && !reader.IsDBNull(13) ? reader.GetString(13) : "-",
                     Gpu = reader.FieldCount > 14 && !reader.IsDBNull(14) ? reader.GetString(14) : "-",
                     OsVersion = reader.FieldCount > 15 && !reader.IsDBNull(15) ? reader.GetString(15) : "-",
-                    MacAddress = reader.FieldCount > 16 && !reader.IsDBNull(16) ? reader.GetString(16) : "-"
+                    MacAddress = reader.FieldCount > 16 && !reader.IsDBNull(16) ? reader.GetString(16) : "-",
+                    WindowsBuild = reader.FieldCount > 17 && !reader.IsDBNull(17) ? reader.GetString(17) : "-",
+                    BiosVersion = reader.FieldCount > 18 && !reader.IsDBNull(18) ? reader.GetString(18) : "-",
+                    DomainWorkgroup = reader.FieldCount > 19 && !reader.IsDBNull(19) ? reader.GetString(19) : "-",
+                    NetworkDetails = reader.FieldCount > 20 && !reader.IsDBNull(20) ? reader.GetString(20) : "-",
+                    SecuritySoftware = reader.FieldCount > 21 && !reader.IsDBNull(21) ? reader.GetString(21) : "-",
+                    InstalledSoftwareSummary = reader.FieldCount > 22 && !reader.IsDBNull(22) ? reader.GetString(22) : "-",
+                    Uptime = reader.FieldCount > 23 && !reader.IsDBNull(23) ? reader.GetString(23) : "-"
                 });
             }
 
@@ -521,10 +536,12 @@ namespace SysForgeStudio.Services
             using var cmd = new SqliteCommand(@"
                 INSERT OR REPLACE INTO inventory 
                 (brand, model, serial_no, ip_address, department, unit, location, user_name, date,
-                 motherboard, processor, ram, disk, gpu, os_version, mac_address)
+                 motherboard, processor, ram, disk, gpu, os_version, mac_address,
+                 windows_build, bios_version, domain_workgroup, network_details, security_software, installed_software, uptime)
                 VALUES 
                 (@brand, @model, @serial, @ip, @dep, @unit, @loc, @user, @date,
-                 @mb, @cpu, @ram, @disk, @gpu, @os, @mac);
+                 @mb, @cpu, @ram, @disk, @gpu, @os, @mac,
+                 @wbuild, @bios, @dom, @net, @sec, @soft, @up);
             ", conn);
 
             cmd.Parameters.AddWithValue("@brand", item.Brand ?? "-");
@@ -543,6 +560,13 @@ namespace SysForgeStudio.Services
             cmd.Parameters.AddWithValue("@gpu", item.Gpu ?? "-");
             cmd.Parameters.AddWithValue("@os", item.OsVersion ?? "-");
             cmd.Parameters.AddWithValue("@mac", item.MacAddress ?? "-");
+            cmd.Parameters.AddWithValue("@wbuild", item.WindowsBuild ?? "-");
+            cmd.Parameters.AddWithValue("@bios", item.BiosVersion ?? "-");
+            cmd.Parameters.AddWithValue("@dom", item.DomainWorkgroup ?? "-");
+            cmd.Parameters.AddWithValue("@net", item.NetworkDetails ?? "-");
+            cmd.Parameters.AddWithValue("@sec", item.SecuritySoftware ?? "-");
+            cmd.Parameters.AddWithValue("@soft", item.InstalledSoftwareSummary ?? "-");
+            cmd.Parameters.AddWithValue("@up", item.Uptime ?? "-");
 
             cmd.ExecuteNonQuery();
             NotifyDataChanged();
@@ -558,7 +582,7 @@ namespace SysForgeStudio.Services
             NotifyDataChanged();
         }
 
-        public void AutoRegisterCurrentMachine(string department = "Bilgi İşlem", string unit = "Kullanıcı Destek")
+        public static InventoryItem CollectLiveMachineSpecs(string department = "Bilgi İşlem", string unit = "Kullanıcı Destek")
         {
             string brand = "-";
             string model = "-";
@@ -709,33 +733,130 @@ namespace SysForgeStudio.Services
             }
             catch { }
 
-            // 7. Operating System
+            // 7. Operating System & Windows Build
+            string winBuild = "";
             try
             {
-                using var osSearcher = new ManagementObjectSearcher("SELECT Caption, OSArchitecture FROM Win32_OperatingSystem");
+                using var osSearcher = new ManagementObjectSearcher("SELECT Caption, OSArchitecture, Version, BuildNumber FROM Win32_OperatingSystem");
                 foreach (ManagementObject obj in osSearcher.Get())
                 {
                     string cap = obj["Caption"]?.ToString()?.Trim() ?? "";
                     string arch = obj["OSArchitecture"]?.ToString()?.Trim() ?? "";
                     osVersion = $"{cap} ({arch})".Trim();
+                    winBuild = $"Derleme {obj["BuildNumber"] ?? obj["Version"]}";
                     break;
                 }
             }
             catch { }
 
-            // 8. Primary MAC Address
+            // 8. BIOS Version & Date
+            string biosInfo = "-";
             try
             {
-                using var netSearcher = new ManagementObjectSearcher("SELECT MACAddress, IPEnabled FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = TRUE");
+                using var bioSearcher = new ManagementObjectSearcher("SELECT Manufacturer, SMBIOSBIOSVersion, ReleaseDate FROM Win32_BIOS");
+                foreach (ManagementObject obj in bioSearcher.Get())
+                {
+                    string bm = obj["Manufacturer"]?.ToString()?.Trim() ?? "";
+                    string bv = obj["SMBIOSBIOSVersion"]?.ToString()?.Trim() ?? "";
+                    string bd = obj["ReleaseDate"]?.ToString()?.Trim() ?? "";
+                    if (bd.Length >= 8) bd = $"{bd.Substring(0, 4)}-{bd.Substring(4, 2)}-{bd.Substring(6, 2)}";
+                    biosInfo = $"{bm} {bv} ({bd})".Trim();
+                    break;
+                }
+            }
+            catch { }
+
+            // 9. Domain / Workgroup
+            string domain = Environment.UserDomainName;
+            try
+            {
+                using var cs = new ManagementObjectSearcher("SELECT Domain, PartOfDomain FROM Win32_ComputerSystem");
+                foreach (ManagementObject obj in cs.Get())
+                {
+                    string d = obj["Domain"]?.ToString()?.Trim() ?? "";
+                    bool pod = Convert.ToBoolean(obj["PartOfDomain"] ?? false);
+                    domain = pod ? $"Domain: {d}" : $"İş Grubu: {d}";
+                    break;
+                }
+            }
+            catch { }
+
+            // 10. Network Infrastructure & Primary MAC
+            string netDetails = "-";
+            try
+            {
+                using var netSearcher = new ManagementObjectSearcher("SELECT MACAddress, IPEnabled, DefaultIPGateway, IPSubnet, DNSServerSearchOrder FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = TRUE");
                 foreach (ManagementObject obj in netSearcher.Get())
                 {
                     string mac = obj["MACAddress"]?.ToString()?.Trim() ?? "";
-                    if (!string.IsNullOrWhiteSpace(mac))
+                    if (!string.IsNullOrWhiteSpace(mac) && macAddress == "-")
                     {
                         macAddress = mac;
-                        break;
+                    }
+                    var gateways = obj["DefaultIPGateway"] as string[];
+                    var subnets = obj["IPSubnet"] as string[];
+                    var dns = obj["DNSServerSearchOrder"] as string[];
+                    string gw = gateways != null && gateways.Length > 0 ? gateways[0] : "-";
+                    string mask = subnets != null && subnets.Length > 0 ? subnets[0] : "-";
+                    string dn = dns != null && dns.Length > 0 ? string.Join(", ", dns.Take(2)) : "-";
+                    netDetails = $"Ağ Geçidi: {gw} | Alt Ağ: {mask} | DNS: {dn}";
+                    break;
+                }
+            }
+            catch { }
+
+            // 11. Security Software / Defender Status
+            string securityStatus = "Windows Defender (Aktif)";
+            try
+            {
+                using var scSearcher = new ManagementObjectSearcher(@"root\SecurityCenter2", "SELECT displayName FROM AntiVirusProduct");
+                var avs = new List<string>();
+                foreach (ManagementObject obj in scSearcher.Get())
+                {
+                    string av = obj["displayName"]?.ToString()?.Trim() ?? "";
+                    if (!string.IsNullOrWhiteSpace(av)) avs.Add(av);
+                }
+                if (avs.Count > 0) securityStatus = string.Join(", ", avs);
+            }
+            catch { }
+
+            // 12. Installed Software Summary
+            string softwareSummary = "-";
+            try
+            {
+                int appCount = 0;
+                var sampleApps = new List<string>();
+                string[] regKeys = {
+                    @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+                    @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
+                };
+                foreach (var rk in regKeys)
+                {
+                    using var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(rk);
+                    if (key != null)
+                    {
+                        foreach (var subKeyName in key.GetSubKeyNames())
+                        {
+                            using var subKey = key.OpenSubKey(subKeyName);
+                            string? name = subKey?.GetValue("DisplayName")?.ToString()?.Trim();
+                            if (!string.IsNullOrWhiteSpace(name) && !name.StartsWith("KB") && !sampleApps.Contains(name))
+                            {
+                                appCount++;
+                                if (sampleApps.Count < 4) sampleApps.Add(name);
+                            }
+                        }
                     }
                 }
+                softwareSummary = $"{appCount} Yüklü Uygulama ({string.Join(", ", sampleApps)}...)";
+            }
+            catch { }
+
+            // 13. System Uptime
+            string uptime = "-";
+            try
+            {
+                var bootSpan = TimeSpan.FromMilliseconds(Environment.TickCount64);
+                uptime = $"{bootSpan.Days} gün, {bootSpan.Hours} saat, {bootSpan.Minutes} dakika";
             }
             catch { }
 
@@ -749,7 +870,7 @@ namespace SysForgeStudio.Services
                 }
             }
 
-            // 9. BIOS Serial Number & HWID Fallbacks
+            // 14. BIOS Serial Number & HWID Fallbacks
             try
             {
                 using var searcher = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BIOS");
@@ -786,7 +907,7 @@ namespace SysForgeStudio.Services
 
             ip = GetPrimaryActiveIpAddress();
 
-            AddInventory(new InventoryItem
+            return new InventoryItem
             {
                 Brand = brand,
                 Model = model,
@@ -798,13 +919,26 @@ namespace SysForgeStudio.Services
                 Disk = disk,
                 Gpu = gpu,
                 OsVersion = osVersion,
+                WindowsBuild = winBuild,
+                BiosVersion = biosInfo,
+                DomainWorkgroup = domain,
+                NetworkDetails = netDetails,
+                SecuritySoftware = securityStatus,
+                InstalledSoftwareSummary = softwareSummary,
+                Uptime = uptime,
                 MacAddress = macAddress,
                 Department = department,
                 Unit = unit,
                 Location = Environment.MachineName,
                 UserName = Environment.UserName,
                 Date = DateTime.Now.ToString("yyyy-MM-dd")
-            });
+            };
+        }
+
+        public void AutoRegisterCurrentMachine(string department = "Bilgi İşlem", string unit = "Kullanıcı Destek")
+        {
+            var item = CollectLiveMachineSpecs(department, unit);
+            AddInventory(item);
         }
 
         public static bool IsInvalidSerial(string? s)

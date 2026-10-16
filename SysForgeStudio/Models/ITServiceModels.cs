@@ -45,6 +45,13 @@ namespace SysForgeStudio.Models
         public string Disk { get; set; } = "-";
         public string Gpu { get; set; } = "-";
         public string OsVersion { get; set; } = "-";
+        public string WindowsBuild { get; set; } = "-";
+        public string BiosVersion { get; set; } = "-";
+        public string DomainWorkgroup { get; set; } = "-";
+        public string NetworkDetails { get; set; } = "-";
+        public string SecuritySoftware { get; set; } = "-";
+        public string InstalledSoftwareSummary { get; set; } = "-";
+        public string Uptime { get; set; } = "-";
         public string MacAddress { get; set; } = "-";
         public string IpAddress { get; set; } = "-";
         public string Department { get; set; } = "-";
@@ -53,6 +60,13 @@ namespace SysForgeStudio.Models
         public string UserName { get; set; } = "-";
         public string Date { get; set; } = DateTime.Now.ToString("yyyy-MM-dd");
 
+        // Aliases for compatibility
+        public string DeviceName => !string.IsNullOrWhiteSpace(Model) && Model.Contains(" - ") ? Model.Split(" - ")[0] : Environment.MachineName;
+        public string HardwareId => SerialNo;
+        public string SerialNumber => SerialNo;
+        public string OperatingSystem => OsVersion;
+        public string AssignedPersonnel => UserName;
+
         // Helper getters for clean display
         public string DisplayMotherboard => string.IsNullOrWhiteSpace(Motherboard) || Motherboard == "-" ? "Belirtilmedi" : Motherboard;
         public string DisplayProcessor => string.IsNullOrWhiteSpace(Processor) || Processor == "-" ? "Belirtilmedi" : Processor;
@@ -60,6 +74,13 @@ namespace SysForgeStudio.Models
         public string DisplayDisk => string.IsNullOrWhiteSpace(Disk) || Disk == "-" ? "Belirtilmedi" : Disk;
         public string DisplayGpu => string.IsNullOrWhiteSpace(Gpu) || Gpu == "-" ? "Belirtilmedi" : Gpu;
         public string DisplayOsVersion => string.IsNullOrWhiteSpace(OsVersion) || OsVersion == "-" ? "Belirtilmedi" : OsVersion;
+        public string DisplayWindowsBuild => string.IsNullOrWhiteSpace(WindowsBuild) || WindowsBuild == "-" ? "Belirtilmedi" : WindowsBuild;
+        public string DisplayBios => string.IsNullOrWhiteSpace(BiosVersion) || BiosVersion == "-" ? "Belirtilmedi" : BiosVersion;
+        public string DisplayDomainWorkgroup => string.IsNullOrWhiteSpace(DomainWorkgroup) || DomainWorkgroup == "-" ? "WORKGROUP" : DomainWorkgroup;
+        public string DisplayNetworkDetails => string.IsNullOrWhiteSpace(NetworkDetails) || NetworkDetails == "-" ? "Belirtilmedi" : NetworkDetails;
+        public string DisplaySecurity => string.IsNullOrWhiteSpace(SecuritySoftware) || SecuritySoftware == "-" ? "Windows Defender (Aktif)" : SecuritySoftware;
+        public string DisplayInstalledSoftware => string.IsNullOrWhiteSpace(InstalledSoftwareSummary) || InstalledSoftwareSummary == "-" ? "Sistem Uygulamaları" : InstalledSoftwareSummary;
+        public string DisplayUptime => string.IsNullOrWhiteSpace(Uptime) || Uptime == "-" ? "Normal" : Uptime;
         public string DisplayMacAddress => string.IsNullOrWhiteSpace(MacAddress) || MacAddress == "-" ? "Belirtilmedi" : MacAddress;
     }
 
