@@ -61,28 +61,51 @@ namespace UltimateToolkit.Modern.Services
                     var cloudResult = await QueryGeminiApiAsync(query);
                     if (cloudResult != null && !string.IsNullOrWhiteSpace(cloudResult.Title))
                     {
+                        PopulateSmartAlternatives(cloudResult, query);
                         return cloudResult;
                     }
                 }
                 catch { }
             }
 
-            // 2. High-precision offline rule engine with Turkish tokenization and score weighting
+            // 2. Start background web research concurrently
+            var webResearchTask = QueryWebResearchAsync(query);
+
+            // 3. High-precision offline rule engine with Turkish tokenization and score weighting
             var local = GetLocalExpertSolution(query);
+
+            // 4. Wait up to 3.5 seconds for background web research to complete
+            AISolutionResult? webResult = null;
+            try
+            {
+                var completed = await Task.WhenAny(webResearchTask, Task.Delay(3500));
+                if (completed == webResearchTask)
+                {
+                    webResult = await webResearchTask;
+                }
+            }
+            catch { }
+
             if (local != null)
             {
+                if (webResult != null && !string.IsNullOrWhiteSpace(webResult.RootCause))
+                {
+                    local.WebInsights = webResult.RootCause;
+                }
+                PopulateSmartAlternatives(local, query);
                 return local;
             }
 
-            // 3. Online Web Research Fallback
-            var webResult = await QueryWebResearchAsync(query);
             if (webResult != null)
             {
+                PopulateSmartAlternatives(webResult, query);
                 return webResult;
             }
 
-            // 4. Contextual System Log Fallback
-            return GetDefaultFallbackSolution(query);
+            // 5. Contextual System Log & Smart Domain Fallback
+            var fallback = GetDefaultFallbackSolution(query);
+            PopulateSmartAlternatives(fallback, query);
+            return fallback;
         }
 
         public static string NormalizeText(string text)
@@ -220,22 +243,127 @@ namespace UltimateToolkit.Modern.Services
             return new AISolutionResult
             {
                 Title = $"Sistem Tanılama Analizi: {q}",
-                RootCause = $"'{q}' ile ilgili sistem yapılandırması, kayıt defteri ve olay günlükleri denetlenmelidir.",
+                Category = "Sistem & Hata Günlüğü",
+                RootCause = $"'{q}' ile ilgili sistem yapılandırması, kayıt defteri, grup ilkeleri veya donanım sürücüsü durumu denetlenmelidir.",
                 Severity = "Normal",
                 Steps = new List<string>
                 {
                     "Windows Olay Görüntüleyicisi (eventvwr.msc) altında 'Sistem' ve 'Uygulama' günlüklerini inceleyin.",
-                    "İlgili Windows ayarını (Win + I) veya Denetim Masası seçeneklerini kontrol edin.",
-                    "Aşağıdaki tanılama komutunu çalıştırarak makinedeki son sistem hata kayıtlarını raporlayın."
+                    "İlgili ayarın Grup İlkesi (GPO) veya Kayıt Defteri kısıtlaması altında olup olmadığını doğrulayın.",
+                    "Aşağıdaki alternatif onarım seçeneklerinden probleminize en uygun olanı seçip uygulayın."
                 },
                 AutoFixScript = $"# '{q}' konusu için sistem hata günlüğü taraması\nGet-EventLog -LogName System -Newest 10 -EntryType Error,Warning | Select-Object TimeGenerated, Source, Message"
             };
+        }
+
+        private void PopulateSmartAlternatives(AISolutionResult result, string query)
+        {
+            if (result.Alternatives == null)
+            {
+                result.Alternatives = new List<AISolutionAlternative>();
+            }
+
+            if (result.Alternatives.Count > 0)
+                return;
+
+            string norm = NormalizeText(query);
+
+            if (norm.Contains("ekran") || norm.Contains("gpu") || norm.Contains("surucu") || norm.Contains("goruntu") || norm.Contains("cozunurluk"))
+            {
+                result.Alternatives.Add(new AISolutionAlternative
+                {
+                    Title = "DirectX Shader & Grafik Önbelleği Temizliği",
+                    Category = "Ekran Kartı",
+                    Description = "Grafik sürücüsü kilitlenmelerinde bozuk derlenmiş DirectX shader dosyalarını sıfırlar.",
+                    Script = "Remove-Item -Path \"$env:LOCALAPPDATA\\D3DSCache\\*\" -Recurse -Force -ErrorAction SilentlyContinue; Remove-Item -Path \"$env:LOCALAPPDATA\\NVIDIA\\DXCache\\*\" -Recurse -Force -ErrorAction SilentlyContinue; Write-Host 'Shader önbellekleri temizlendi.'"
+                });
+                result.Alternatives.Add(new AISolutionAlternative
+                {
+                    Title = "Donanım Hızlandırma Kayıt Defteri Bayraklarını Sıfırla",
+                    Category = "Kayıt Defteri",
+                    Description = "Kayıt defterindeki donanım hızlandırma çakışmalarını kaldırır.",
+                    Script = "reg add \"HKCU\\Software\\Microsoft\\Avalon.Graphics\" /v DisableHWAcceleration /t REG_DWORD /d 0 /f"
+                });
+                result.Alternatives.Add(new AISolutionAlternative
+                {
+                    Title = "Grafik Alt Sistemini Hızlı Yeniden Başlat (DWM Reset)",
+                    Category = "Grafik Sürücüsü",
+                    Description = "Windows Grafik Arayüz Yöneticisini (DWM) yeniden başlatarak siyah ekran ve takılmaları çözer.",
+                    Script = "Stop-Process -Name dwm -Force"
+                });
+            }
+            else if (norm.Contains("grup") || norm.Contains("gpo") || norm.Contains("ilke") || norm.Contains("yonetici") || norm.Contains("engel"))
+            {
+                result.Alternatives.Add(new AISolutionAlternative
+                {
+                    Title = "Tüm Yerel GPO Politikalarını Sıfırla (registry.pol Silme)",
+                    Category = "Grup İlkesi (GPO)",
+                    Description = "İstemcide takılı kalmış yerel grup ilkesi dosyalarını sıfırlar ve temiz ilke indirir.",
+                    Script = "Remove-Item \"C:\\Windows\\System32\\GroupPolicy\\Machine\\registry.pol\" -Force -ErrorAction SilentlyContinue; Remove-Item \"C:\\Windows\\System32\\GroupPolicy\\User\\registry.pol\" -Force -ErrorAction SilentlyContinue; gpupdate /force"
+                });
+                result.Alternatives.Add(new AISolutionAlternative
+                {
+                    Title = "Görev Yöneticisi & Kayıt Defteri Kilitlerini Aç",
+                    Category = "Kayıt Defteri",
+                    Description = "İlkeler tarafından kilitlenen Görev Yöneticisi ve Regedit erişimini açar.",
+                    Script = "reg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\" /v DisableTaskMgr /f -ErrorAction SilentlyContinue; reg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\" /v DisableRegistryTools /f -ErrorAction SilentlyContinue; gpupdate /force"
+                });
+            }
+            else if (norm.Contains("uzanti") || norm.Contains("dosya") || norm.Contains("gizli") || norm.Contains("explorer") || norm.Contains("gezgin"))
+            {
+                result.Alternatives.Add(new AISolutionAlternative
+                {
+                    Title = "Grup İlkesi Klasör Seçenekleri Kilidini Aç (NoFolderOptions)",
+                    Category = "Grup İlkesi (GPO)",
+                    Description = "Grup ilkesi engeli nedeniyle gizlenen veya grileşen dosya uzantısı ayarını serbest bırakır.",
+                    Script = "reg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\" /v NoFolderOptions /f -ErrorAction SilentlyContinue; reg delete \"HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\" /v NoFolderOptions /f -ErrorAction SilentlyContinue; gpupdate /force; Stop-Process -Name explorer -Force"
+                });
+                result.Alternatives.Add(new AISolutionAlternative
+                {
+                    Title = "Korumalı Sistem Dosyaları & Gizli Dosyaları Göster",
+                    Category = "Kayıt Defteri",
+                    Description = "Gizli klasörleri ve korunan sistem dosyalarını (.sys, Desktop.ini vb.) tam görünür yapar.",
+                    Script = "Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced' -Name 'Hidden' -Value 1; Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced' -Name 'ShowSuperHidden' -Value 1; Stop-Process -Name explorer -Force"
+                });
+                result.Alternatives.Add(new AISolutionAlternative
+                {
+                    Title = "Simge ve Gezgin Önbelleğini Sıfırla (IconCache.db)",
+                    Category = "Dosya Gezgini",
+                    Description = "Uzantılar değiştiğinde simgeler bozuk görünüyorsa IconCache veritabanını yeniler.",
+                    Script = "Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Remove-Item -Path \"$env:LOCALAPPDATA\\IconCache.db\" -Force -ErrorAction SilentlyContinue; Start-Process explorer"
+                });
+            }
+            else
+            {
+                result.Alternatives.Add(new AISolutionAlternative
+                {
+                    Title = "Sistem Dosyası Bütünlük Onarımı (SFC /scannow)",
+                    Category = "Sistem Dosyaları",
+                    Description = "Bozulmuş temel Windows DLL ve sistem bileşenlerini otomatik onarır.",
+                    Script = "sfc /scannow"
+                });
+                result.Alternatives.Add(new AISolutionAlternative
+                {
+                    Title = "Bileşen Deposu İmaj Onarımı (DISM RestoreHealth)",
+                    Category = "Windows İmajı",
+                    Description = "Windows Update sunucuları üzerinden bozuk sistem paketlerini yeniler.",
+                    Script = "DISM /Online /Cleanup-Image /RestoreHealth"
+                });
+                result.Alternatives.Add(new AISolutionAlternative
+                {
+                    Title = "Grup İlkelerini ve Ağ Politikalarını Yenile (gpupdate)",
+                    Category = "Grup İlkesi",
+                    Description = "Domain veya yerel ilkeleri anında yeniden uygular.",
+                    Script = "gpupdate /force"
+                });
+            }
         }
 
         private async Task<AISolutionResult?> QueryWebResearchAsync(string query)
         {
             try
             {
+                // 1. DuckDuckGo Instant Answer API
                 string searchUrl = $"https://api.duckduckgo.com/?q={Uri.EscapeDataString(query + " windows cozum")}&format=json&no_html=1";
                 var response = await _http.GetAsync(searchUrl);
                 if (response.IsSuccessStatusCode)
@@ -246,21 +374,67 @@ namespace UltimateToolkit.Modern.Services
                     string abstractText = doc.RootElement.TryGetProperty("AbstractText", out var a) ? a.GetString() ?? "" : "";
                     string abstractSource = doc.RootElement.TryGetProperty("AbstractSource", out var s) ? s.GetString() ?? "" : "";
 
+                    if (string.IsNullOrWhiteSpace(abstractText) && doc.RootElement.TryGetProperty("RelatedTopics", out var rel) && rel.ValueKind == JsonValueKind.Array)
+                    {
+                        foreach (var item in rel.EnumerateArray())
+                        {
+                            if (item.TryGetProperty("Text", out var t) && !string.IsNullOrWhiteSpace(t.GetString()))
+                            {
+                                abstractText = t.GetString() ?? "";
+                                abstractSource = "Teknik Çözüm Forumu";
+                                break;
+                            }
+                        }
+                    }
+
                     if (!string.IsNullOrWhiteSpace(abstractText))
                     {
                         return new AISolutionResult
                         {
                             Title = $"🌐 Web Araştırması Teşhisi: {(string.IsNullOrEmpty(heading) ? query : heading)}",
+                            Category = "Web & Topluluk Araştırması",
                             RootCause = $"Kaynak ({abstractSource}): {abstractText}",
                             Severity = "Normal",
                             Steps = new List<string>
                             {
                                 "Web teknik dokümantasyonuna göre ilgili Windows ayarını veya kayıt defteri politikasını inceleyin.",
                                 "Olay Görüntüleyicisi (Event Viewer) altında ilişkili uygulama loglarını kontrol edin.",
-                                "Aşağıdaki PowerShell tanılama komutunu çalıştırarak sistem durumu çıktısını alın."
+                                "Aşağıdaki alternatif veya ana PowerShell onarım komutunu çalıştırın."
                             },
                             AutoFixScript = $"# Web Teşhisi: {query}\nGet-EventLog -LogName System -Newest 5 -EntryType Error,Warning | Select-Object TimeGenerated, Message"
                         };
+                    }
+                }
+
+                // 2. DuckDuckGo HTML Lite Fallback
+                string htmlUrl = $"https://html.duckduckgo.com/html/?q={Uri.EscapeDataString(query + " windows cozum")}";
+                using var req = new HttpRequestMessage(HttpMethod.Get, htmlUrl);
+                req.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
+                var htmlResp = await _http.SendAsync(req);
+                if (htmlResp.IsSuccessStatusCode)
+                {
+                    string html = await htmlResp.Content.ReadAsStringAsync();
+                    var match = Regex.Match(html, @"<a class=""result__snippet[^""]*""[^>]*>(.*?)</a>", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                    if (match.Success)
+                    {
+                        string snippet = Regex.Replace(match.Groups[1].Value, "<.*?>", "").Trim();
+                        snippet = System.Net.WebUtility.HtmlDecode(snippet);
+                        if (!string.IsNullOrWhiteSpace(snippet))
+                        {
+                            return new AISolutionResult
+                            {
+                                Title = $"🌐 Web Canlı Araştırma: {query}",
+                                Category = "Web Canlı Veritabanı",
+                                RootCause = $"Web Canlı Arama Bulgusu: {snippet}",
+                                Severity = "Normal",
+                                Steps = new List<string>
+                                {
+                                    "Web teknik kaynaklarından tespit edilen çözüme göre ilgili sistem bileşenini doğrulayın.",
+                                    "Aşağıdaki otomatik tanılama ve onarım komutunu çalıştırın."
+                                },
+                                AutoFixScript = $"# Web Tabanlı Çözüm İpucu: {query}\nGet-Service | Where-Object {{ $_.Status -eq 'Running' -and ($_.DisplayName -like '*{query}*' -or $_.Name -like '*{query}*') }}"
+                            };
+                        }
                     }
                 }
             }
@@ -782,15 +956,41 @@ namespace UltimateToolkit.Modern.Services
                     Solution = new AISolutionResult
                     {
                         Title = "Windows Dosya Gezgini Dosya Uzantılarını Gösterme (.exe, .txt, .pdf)",
-                        RootCause = "Windows Dosya Gezgini varsayılan olarak güvenlik ve sadelik gerekçesiyle bilinen dosya türlerinin uzantılarını (HideFileExt) gizlemektedir. Bu nedenle dosya isimlerinin sonundaki .txt, .exe, .bat uzantıları görünmez.",
+                        Category = "Dosya Gezgini & Kayıt Defteri",
+                        RootCause = "Windows Dosya Gezgini varsayılan olarak güvenlik ve sadelik gerekçesiyle bilinen dosya türlerinin uzantılarını (HideFileExt) gizlemektedir. Bazı sistemlerde ise Grup İlkesi (GPO) 'NoFolderOptions' ayarı kullanıcıların uzantıları açmasını kilitler.",
                         Severity = "Normal",
                         Steps = new List<string>
                         {
                             "Kayıt defterinde HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced altındaki HideFileExt değerini 0 (Göster) yapın.",
-                            "Windows Gezgini (explorer.exe) sürecini yeniden başlatarak değişikliği anında etkinleştirin.",
-                            "Artık tüm dosya adlarının sonunda gerçek dosya uzantıları net şekilde listelenecektir."
+                            "Grup ilkesi engeli varsa NoFolderOptions kısıtlamasını kaldırın.",
+                            "Windows Gezgini (explorer.exe) sürecini yeniden başlatarak değişikliği anında etkinleştirin."
                         },
-                        AutoFixScript = "Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced' -Name 'HideFileExt' -Value 0; Stop-Process -Name explorer -Force"
+                        AutoFixScript = "Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced' -Name 'HideFileExt' -Value 0; Stop-Process -Name explorer -Force",
+                        TargetRegistryBackupPath = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
+                        Alternatives = new List<AISolutionAlternative>
+                        {
+                            new()
+                            {
+                                Title = "Grup İlkesi Klasör Seçenekleri Kilidini Aç (NoFolderOptions)",
+                                Category = "Grup İlkesi (GPO)",
+                                Description = "Eğer dosya uzantısı seçeneği grileşmişse veya 'Bu ayar yöneticiniz tarafından yönetilir' yazıyorsa ilkeyi temizler.",
+                                Script = @"reg delete ""HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"" /v NoFolderOptions /f -ErrorAction SilentlyContinue; reg delete ""HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"" /v NoFolderOptions /f -ErrorAction SilentlyContinue; gpupdate /force; Stop-Process -Name explorer -Force"
+                            },
+                            new()
+                            {
+                                Title = "Korumalı Sistem & Gizli Dosyaları da Göster (ShowSuperHidden)",
+                                Category = "Kayıt Defteri",
+                                Description = "Gizli sistem dosyalarını (.sys, Desktop.ini vb.) ve gizli klasörleri de aynı anda tam görünür yapar.",
+                                Script = @"Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name 'Hidden' -Value 1; Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name 'ShowSuperHidden' -Value 1; Stop-Process -Name explorer -Force"
+                            },
+                            new()
+                            {
+                                Title = "Simge ve Gezgin Önbelleğini Sıfırla (IconCache)",
+                                Category = "Dosya Gezgini",
+                                Description = "Uzantılar değiştiğinde simgeler bozuk veya beyaz görünüyorsa IconCache veritabanını yeniler.",
+                                Script = @"Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue; Remove-Item -Path ""$env:LOCALAPPDATA\IconCache.db"" -Force -ErrorAction SilentlyContinue; Start-Process explorer"
+                            }
+                        }
                     }
                 },
 
@@ -808,6 +1008,7 @@ namespace UltimateToolkit.Modern.Services
                     Solution = new AISolutionResult
                     {
                         Title = "Gizli Dosya ve Klasörleri Görünür Yapma (AppData, ProgramData)",
+                        Category = "Dosya Gezgini & Kayıt Defteri",
                         RootCause = "Windows Dosya Gezgini gizli ve sistem dosyalarını görüntüleme ayarı (Hidden / ShowSuperHidden) kapalı durumdadır.",
                         Severity = "Normal",
                         Steps = new List<string>
@@ -815,7 +1016,25 @@ namespace UltimateToolkit.Modern.Services
                             "Explorer Advanced anahtarında 'Hidden' değerini 1 yapın.",
                             "Windows Gezginini yeniden başlatarak gizli öğeleri görünür kılın."
                         },
-                        AutoFixScript = "Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced' -Name 'Hidden' -Value 1; Stop-Process -Name explorer -Force"
+                        AutoFixScript = "Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced' -Name 'Hidden' -Value 1; Stop-Process -Name explorer -Force",
+                        TargetRegistryBackupPath = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
+                        Alternatives = new List<AISolutionAlternative>
+                        {
+                            new()
+                            {
+                                Title = "Korumalı Sistem Dosyalarını da Göster (ShowSuperHidden = 1)",
+                                Category = "Kayıt Defteri",
+                                Description = "Sistem klasörlerindeki gizli dosyaları ve yapılandırma dosyalarını gösterir.",
+                                Script = "Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced' -Name 'ShowSuperHidden' -Value 1; Stop-Process -Name explorer -Force"
+                            },
+                            new()
+                            {
+                                Title = "AppData / ProgramData Klasörlerini Doğrudan Aç",
+                                Category = "Kısayol",
+                                Description = "Gizli AppData ve ProgramData sistem klasörlerini doğrudan Gezgin penceresinde açar.",
+                                Script = "explorer.exe \"$env:APPDATA\"; explorer.exe \"$env:ProgramData\""
+                            }
+                        }
                     }
                 },
 
@@ -912,6 +1131,231 @@ namespace UltimateToolkit.Modern.Services
                             "WSearch servisini durdurup başlatın."
                         },
                         AutoFixScript = "Stop-Process -Name SearchApp -Force -ErrorAction SilentlyContinue; Restart-Service -Name WSearch -Force"
+                    }
+                },
+
+                // 25. Ekran Kartı / GPU / Görüntü Sürücüsü Kilitlenmesi
+                new()
+                {
+                    ErrorCodes = new[] { "nvlddmkm", "amdkmdag", "igfx", "0x00000116", "VIDEO_TDR_FAILURE" },
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "ekran", "karti" },
+                        new[] { "gpu" },
+                        new[] { "goruntu", "surucusu" },
+                        new[] { "siyah", "ekran" },
+                        new[] { "ekran", "karardi" },
+                        new[] { "ekran", "titriyor" },
+                        new[] { "cozunurluk" }
+                    },
+                    Keywords = new[] { "ekran", "karti", "gpu", "nvidia", "amd", "radeon", "intel", "cozunurluk", "surucu", "goruntu", "siyah", "karardi", "titriyor", "fps", "driver" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Ekran Kartı / Grafik Sürücüsü Kilitlenmesi & Donanım Hızlandırma",
+                        Category = "Ekran Kartı & Grafik",
+                        RootCause = "Ekran kartı sürücüsü (NVIDIA, AMD veya Intel) DWM veya DirectX çağrısında zaman aşımına uğramış (TDR çökmesi), grafik önbelleği bozulmuş veya sürücü kilitlenmiş.",
+                        Severity = "Orta",
+                        Steps = new List<string>
+                        {
+                            "Windows Grafik Aygıt Yöneticisini (DWM & GPU PnP) anında yeniden başlatın.",
+                            "DirectX ve Shader önbelleğini temizleyin.",
+                            "Donanım hızlandırma kayıt defteri değerlerini sıfırlayın.",
+                            "Sorun sürerse DDU ile temiz sürücü kurulumu gerçekleştirin."
+                        },
+                        AutoFixScript = @"Stop-Process -Name dwm -Force -ErrorAction SilentlyContinue; Get-PnpDevice -Class 'Display' | Where-Object { $_.Status -eq 'OK' } | ForEach-Object { Disable-PnpDevice -InstanceId $_.InstanceId -Confirm:$false -ErrorAction SilentlyContinue; Start-Sleep -Milliseconds 400; Enable-PnpDevice -InstanceId $_.InstanceId -Confirm:$false -ErrorAction SilentlyContinue }; Write-Host 'Grafik bağdaştırıcısı ve DWM sıfırlandı.'",
+                        TargetRegistryBackupPath = @"HKEY_CURRENT_USER\Software\Microsoft\Avalon.Graphics",
+                        Alternatives = new List<AISolutionAlternative>
+                        {
+                            new()
+                            {
+                                Title = "DirectX Shader & Grafik Önbelleği Temizliği",
+                                Category = "Ekran Kartı",
+                                Description = "Oyun veya program açılırken oluşan kilitlenmelerde bozuk shader önbelleğini temizler.",
+                                Script = "Remove-Item -Path \"$env:LOCALAPPDATA\\D3DSCache\\*\" -Recurse -Force -ErrorAction SilentlyContinue; Remove-Item -Path \"$env:LOCALAPPDATA\\NVIDIA\\DXCache\\*\" -Recurse -Force -ErrorAction SilentlyContinue; Write-Host 'Grafik önbellekleri temizlendi.'"
+                            },
+                            new()
+                            {
+                                Title = "Donanım Hızlandırmasını Devre Dışı Bırak / Sıfırla",
+                                Category = "Kayıt Defteri",
+                                Description = "Pencerelerde beyaz kalma veya takılma oluyorsa donanım hızlandırma bayrağını sıfırlar.",
+                                Script = "reg add \"HKCU\\Software\\Microsoft\\Avalon.Graphics\" /v DisableHWAcceleration /t REG_DWORD /d 0 /f"
+                            },
+                            new()
+                            {
+                                Title = "Grafik Sürücüsünü Hızlı Sıfırla (Win+Ctrl+Shift+B Simülasyonu)",
+                                Category = "Sürücü",
+                                Description = "Ekran kararması durumunda grafik alt sistemini anında yeniden başlatır.",
+                                Script = "Stop-Process -Name dwm -Force"
+                            }
+                        }
+                    }
+                },
+
+                // 26. Grup İlkesi (GPO) ve Sistem Kısıtlaması Engeli
+                new()
+                {
+                    ErrorCodes = new[] { "gpo", "gpedit", "gpupdate" },
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "grup", "ilkesi" },
+                        new[] { "gpo" },
+                        new[] { "yonetici", "engellendi" },
+                        new[] { "yetkiniz", "yok" },
+                        new[] { "kurulusunuz", "tarafindan" },
+                        new[] { "yoneticiniz", "tarafindan" }
+                    },
+                    Keywords = new[] { "grup", "ilkesi", "gpo", "yonetici", "engellendi", "yetkiniz", "yok", "kurulusunuz", "yoneticiniz", "gorev", "yoneticisi", "kayit", "defteri", "ilke", "gpupdate" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Grup İlkesi (GPO) ve Sistem Kısıtlaması Engeli",
+                        Category = "Grup İlkesi (GPO)",
+                        RootCause = "Windows yerel veya etki alanı (Domain GPO) politikaları, kayıt defterinde 'Policies' anahtarları altına kısıtlayıcı güvenlik kuralları yazarak kullanıcı erişimini engellemiş.",
+                        Severity = "Orta",
+                        Steps = new List<string>
+                        {
+                            "Kayıt defterindeki kullanıcı ve makine ilke kısıtlama anahtarlarını temizleyin.",
+                            "gpupdate /force komutu ile ilkeleri anında yenileyin.",
+                            "Engellenen yönetim araçlarının (Görev Yöneticisi, Kayıt Defteri, Klasör Seçenekleri) kilitlerini açın."
+                        },
+                        AutoFixScript = @"reg delete ""HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System"" /v DisableTaskMgr /f -ErrorAction SilentlyContinue; reg delete ""HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System"" /v DisableRegistryTools /f -ErrorAction SilentlyContinue; reg delete ""HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"" /v NoFolderOptions /f -ErrorAction SilentlyContinue; gpupdate /force",
+                        TargetRegistryBackupPath = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies",
+                        Alternatives = new List<AISolutionAlternative>
+                        {
+                            new()
+                            {
+                                Title = "Tüm Yerel GPO Politikalarını Sıfırla (registry.pol Silme)",
+                                Category = "Grup İlkesi (GPO)",
+                                Description = "Takılı kalmış yerel grup ilkesi dosyalarını tamamen sıfırlar.",
+                                Script = "Remove-Item \"C:\\Windows\\System32\\GroupPolicy\\Machine\\registry.pol\" -Force -ErrorAction SilentlyContinue; Remove-Item \"C:\\Windows\\System32\\GroupPolicy\\User\\registry.pol\" -Force -ErrorAction SilentlyContinue; gpupdate /force"
+                            },
+                            new()
+                            {
+                                Title = "GPO Tanılama Raporu Çıkar (gpresult HTML)",
+                                Category = "Tanılama",
+                                Description = "Hangi ilkenin neyi engellediğini gösteren detaylı HTML raporu üretir.",
+                                Script = "gpresult /h \"$env:USERPROFILE\\Desktop\\GPO_Raporu.html\" /f; Start-Process \"$env:USERPROFILE\\Desktop\\GPO_Raporu.html\""
+                            }
+                        }
+                    }
+                },
+
+                // 27. Kayıt Defteri Hatası & .EXE / .LNK Dosya İlişkilendirme Onarımı
+                new()
+                {
+                    ErrorCodes = new[] { "regedit", "regsvr32" },
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "kayit", "defteri", "hatasi" },
+                        new[] { "reg", "hatasi" },
+                        new[] { "exe", "acilmiyor" },
+                        new[] { "lnk", "acilmiyor" },
+                        new[] { "dosya", "iliskilendirme" }
+                    },
+                    Keywords = new[] { "kayit", "defteri", "reg", "hatasi", "exe", "lnk", "acilmiyor", "calismiyor", "iliskilendirme", "birlikte", "ac", "userchoice" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Kayıt Defteri & .EXE / .LNK Dosya İlişkilendirme Onarımı",
+                        Category = "Kayıt Defteri & Kabuk Bütünlüğü",
+                        RootCause = "Windows Registry altında .exe, .lnk veya temel kabuk uzantılarının ilişkilendirme anahtarları bozulmuş veya silinmiş.",
+                        Severity = "Yüksek",
+                        Steps = new List<string>
+                        {
+                            "Temel dosya türü ilişkilendirmelerini (assoc / ftype) varsayılana çekin.",
+                            "UserChoice bozuk anahtarlarını sıfırlayın.",
+                            "Sistem DLL bileşen kayıtlarını tazeleyin."
+                        },
+                        AutoFixScript = "cmd.exe /c \"assoc .exe=exefile && ftype exefile=\"\"%1\"\" %*\"; reg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.exe\\UserChoice\" /f -ErrorAction SilentlyContinue; reg delete \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.lnk\\UserChoice\" /f -ErrorAction SilentlyContinue; Stop-Process -Name explorer -Force",
+                        TargetRegistryBackupPath = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts",
+                        Alternatives = new List<AISolutionAlternative>
+                        {
+                            new()
+                            {
+                                Title = "Temel Windows DLL Dosyalarını Yeniden Kaydet (regsvr32)",
+                                Category = "Kayıt Defteri",
+                                Description = "Kabuk ve tarayıcı bileşen DLL kayıtlarını yeniden kaydeder.",
+                                Script = "regsvr32 /s atl.dll; regsvr32 /s urlmon.dll; regsvr32 /s mshtml.dll; regsvr32 /s shell32.dll"
+                            },
+                            new()
+                            {
+                                Title = "User Shell Klasörlerini Sıfırla (Masaüstü, Belgeler)",
+                                Category = "Kabuk",
+                                Description = "Masaüstü veya Belgeler klasörü kaybolduysa kayıt defteri yollarını varsayılana döndürür.",
+                                Script = "reg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders\" /v Desktop /t REG_EXPAND_SZ /d \"%USERPROFILE%\\Desktop\" /f; Stop-Process -Name explorer -Force"
+                            }
+                        }
+                    }
+                },
+
+                // 28. Windows Update Yükleme Hatası (SoftwareDistribution Sıfırlama)
+                new()
+                {
+                    ErrorCodes = new[] { "0x80070002", "0x80240020", "0x80070422", "wuauserv" },
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "windows", "update" },
+                        new[] { "guncellestirme", "hatasi" },
+                        new[] { "guncelleme", "yapilamiyor" }
+                    },
+                    Keywords = new[] { "windows", "update", "guncellestirme", "guncelleme", "0x80070002", "0x80240020", "indirilemiyor", "yuklenemiyor" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Windows Update İndirme ve Yükleme Hatası Onarımı",
+                        Category = "Windows Update",
+                        RootCause = "C:\\Windows\\SoftwareDistribution indirme önbelleği bozulmuş veya wuauserv/BITS servisleri yanıt vermiyor.",
+                        Severity = "Orta",
+                        Steps = new List<string>
+                        {
+                            "Windows Update ve BITS hizmetlerini geçici olarak durdurun.",
+                            "SoftwareDistribution\\Download klasöründeki bozuk paketleri temizleyin.",
+                            "Hizmetleri yeniden başlatıp güncelleme denetimini tetikleyin."
+                        },
+                        AutoFixScript = "Stop-Service -Name wuauserv, bits, cryptsvc -Force -ErrorAction SilentlyContinue; Remove-Item 'C:\\Windows\\SoftwareDistribution\\Download\\*' -Recurse -Force -ErrorAction SilentlyContinue; Start-Service -Name wuauserv, bits, cryptsvc; usoclient StartScan",
+                        Alternatives = new List<AISolutionAlternative>
+                        {
+                            new()
+                            {
+                                Title = "Windows Update Servislerini Tam Baştan Başlat",
+                                Category = "Servisler",
+                                Description = "Tüm güncelleme arka plan servislerini zorla yeniden başlatır.",
+                                Script = "Restart-Service -Name wuauserv, bits, cryptsvc, trustedinstaller -Force"
+                            }
+                        }
+                    }
+                },
+
+                // 29. Ses Hizmeti (AudioSrv) & Hoparlör / Mikrofon Kilitlenmesi
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "ses", "yok" },
+                        new[] { "hoparlor" },
+                        new[] { "mikrofon" },
+                        new[] { "audiosrv" }
+                    },
+                    Keywords = new[] { "ses", "hoparlor", "mikrofon", "calismiyor", "gelmiyor", "audiosrv", "kulaklik" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Windows Ses Hizmeti (AudioSrv) ve Çıkış Aygıtı Onarımı",
+                        Category = "Ses & Donanım",
+                        RootCause = "Windows Audio (AudioSrv) veya Windows Audio Endpoint Builder servisleri çökmüş veya aygıt askıya alınmış.",
+                        Severity = "Normal",
+                        Steps = new List<string>
+                        {
+                            "AudioSrv ve AudioEndpointBuilder hizmetlerini durdurup yeniden başlatın.",
+                            "Kullanıcı oturumu ses sürücüsü iş parçacığını tazeleyin."
+                        },
+                        AutoFixScript = "Restart-Service -Name AudioEndpointBuilder, Audiosrv -Force",
+                        Alternatives = new List<AISolutionAlternative>
+                        {
+                            new()
+                            {
+                                Title = "Ses Denetim Masasını Aç (mmsys.cpl)",
+                                Category = "Denetim Masası",
+                                Description = "Varsayılan ses çalma ve kayıt aygıtlarını doğrudan yapılandırmak için açar.",
+                                Script = "mmsys.cpl"
+                            }
+                        }
                     }
                 }
             };

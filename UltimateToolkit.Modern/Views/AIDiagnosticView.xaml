@@ -5,25 +5,54 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UltimateToolkit.Modern.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="850" d:DesignWidth="950">
+             d:DesignHeight="950" d:DesignWidth="980">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="24">
             <!-- Header -->
-            <Grid Margin="0,0,0,18">
+            <Grid Margin="0,0,0,14">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
-                    <TextBlock Text="🤖 BT Yapay Zeka Teşhis &amp; Çözüm Motoru" FontSize="22" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" />
-                    <TextBlock Text="Windows arızaları, hata kodları ve ağ kilitlenmeleri için yapay zeka destekli kök neden analizi ve tek tıkla otomatik onarım." 
+                    <TextBlock Text="🤖 BT Yapay Zeka Teşhis, Çoklu Çözüm &amp; Güvenlik Motoru" FontSize="22" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" />
+                    <TextBlock Text="Windows arızaları, ekran kartı kilitlenmeleri, grup ilkeleri ve kayıt defteri bozulmaları için çok katmanlı yapay zeka tespiti, otomatik web araştırması ve sistem yedek koruması." 
                                FontSize="13" Foreground="{StaticResource PtTextSecondary}" Margin="0,3,0,0"/>
                 </StackPanel>
                 <Border Grid.Column="1" Background="#0284C7" CornerRadius="6" Padding="12,5" VerticalAlignment="Center">
-                    <TextBlock Text="AI Powered" FontSize="11" FontWeight="Bold" Foreground="#FFFFFF"/>
+                    <TextBlock Text="AI Powered + Safe Restore" FontSize="11" FontWeight="Bold" Foreground="#FFFFFF"/>
                 </Border>
             </Grid>
+
+            <!-- 0. Safety & Backup Control Bar -->
+            <Border Background="#1E293B" BorderBrush="#3B82F6" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,16">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <Grid Grid.Row="0" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="🛡️ SİSTEM GÜVENLİK &amp; GERİ YÜKLEME KORUMASI" FontSize="12" FontWeight="Bold" Foreground="#60A5FA" VerticalAlignment="Center" Margin="0,0,14,0"/>
+                            <CheckBox x:Name="ChkAutoBackup" Content="Onarım öncesi otomatik güvenlik yedeği al (Kayıt Defteri &amp; Geri Yükleme Noktası)" 
+                                      IsChecked="True" Foreground="#E2E8F0" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <WrapPanel Grid.Row="1">
+                        <Button x:Name="BtnCreateRestorePoint" Content="🛡️ Geri Yükleme Noktası Oluştur" Style="{StaticResource PtSecondaryButton}" Height="32" Padding="10,0" FontSize="11.5" Margin="0,0,8,4" Click="BtnCreateRestorePoint_Click"/>
+                        <Button x:Name="BtnLaunchSystemRestore" Content="↩️ Sistem Geri Yüklemeyi Başlat (rstrui)" Style="{StaticResource PtSecondaryButton}" Height="32" Padding="10,0" FontSize="11.5" Margin="0,0,8,4" Click="BtnLaunchSystemRestore_Click"/>
+                        <Button x:Name="BtnOpenBackupsFolder" Content="📂 Reg Yedekleri Klasörü" Style="{StaticResource PtSecondaryButton}" Height="32" Padding="10,0" FontSize="11.5" Margin="0,0,8,4" Click="BtnOpenBackupsFolder_Click"/>
+                        <Button x:Name="BtnRestoreLastBackup" Content="↺ Son Reg Yedeğini Geri Yükle" Style="{StaticResource PtSecondaryButton}" Height="32" Padding="10,0" FontSize="11.5" Margin="0,0,8,4" Click="BtnRestoreLastBackup_Click"/>
+                    </WrapPanel>
+                </Grid>
+            </Border>
 
             <!-- 1. Query Input Card -->
             <Border Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
@@ -38,7 +67,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBox x:Name="TxtIssueQuery" Grid.Column="0" MinHeight="46" Style="{StaticResource PtTextBox}" FontSize="13.5"
                                  Padding="14,0" VerticalContentAlignment="Center" KeyDown="TxtIssueQuery_KeyDown"/>
-                        <TextBlock Text="Örn: 0x0000011b, dosya uzantısı görünmüyor, DNS yanıt vermiyor, mavi ekran..." Grid.Column="0" Foreground="#777777" Margin="14,0,0,0"
+                        <TextBlock Text="Örn: ekran kartı çöktü, dosya uzantısı görünmüyor, grup ilkesi engellendi, reg hatası..." Grid.Column="0" Foreground="#777777" Margin="14,0,0,0"
                                    VerticalAlignment="Center" IsHitTestVisible="False">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
@@ -57,11 +86,12 @@
                     <!-- Quick Suggestions -->
                     <WrapPanel Margin="0,4,0,0">
                         <TextBlock Text="Hızlı Örnekler:" FontSize="11" Foreground="#888888" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <Button Content="Dosya Uzantıları Görünmüyor" Style="{StaticResource PtSecondaryButton}" Padding="8,3" FontSize="11" Margin="0,0,6,4" Click="BtnPreset_Click"/>
+                        <Button Content="Ekran Kartı Sürücüsü Kilitlendi" Style="{StaticResource PtSecondaryButton}" Padding="8,3" FontSize="11" Margin="0,0,6,4" Click="BtnPreset_Click"/>
+                        <Button Content="Grup İlkesi (GPO) Engellendi" Style="{StaticResource PtSecondaryButton}" Padding="8,3" FontSize="11" Margin="0,0,6,4" Click="BtnPreset_Click"/>
+                        <Button Content="Kayıt Defteri &amp; EXE Açılmıyor" Style="{StaticResource PtSecondaryButton}" Padding="8,3" FontSize="11" Margin="0,0,6,4" Click="BtnPreset_Click"/>
                         <Button Content="0x0000011b Yazıcı RPC" Style="{StaticResource PtSecondaryButton}" Padding="8,3" FontSize="11" Margin="0,0,6,4" Click="BtnPreset_Click"/>
-                        <Button Content="0x00000709 Varsayılan Aygıt" Style="{StaticResource PtSecondaryButton}" Padding="8,3" FontSize="11" Margin="0,0,6,4" Click="BtnPreset_Click"/>
-                        <Button Content="Spooler Kuyruk Kilitlenmesi" Style="{StaticResource PtSecondaryButton}" Padding="8,3" FontSize="11" Margin="0,0,6,4" Click="BtnPreset_Click"/>
                         <Button Content="DNS &amp; Ağ Yığını Sıfırlama" Style="{StaticResource PtSecondaryButton}" Padding="8,3" FontSize="11" Margin="0,0,6,4" Click="BtnPreset_Click"/>
-                        <Button Content="DISM / SFC Sistem Bozulması" Style="{StaticResource PtSecondaryButton}" Padding="8,3" FontSize="11" Margin="0,0,6,4" Click="BtnPreset_Click"/>
                     </WrapPanel>
                 </StackPanel>
             </Border>
@@ -74,14 +104,29 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="TxtSolutionTitle" Text="Arıza Başlığı" FontSize="17" FontWeight="Bold" Foreground="#38BDF8"/>
-                        <Border Grid.Column="1" x:Name="BadgeSeverity" Background="#B45309" CornerRadius="4" Padding="8,3">
-                            <TextBlock x:Name="TxtSeverity" Text="Risk: Normal" FontSize="11" FontWeight="Bold" Foreground="#FFFFFF"/>
-                        </Border>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock x:Name="TxtSolutionTitle" Text="Arıza Başlığı" FontSize="17" FontWeight="Bold" Foreground="#38BDF8"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                <Border Background="#0369A1" CornerRadius="4" Padding="6,2" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtCategoryBadge" Text="Alan: Genel" FontSize="11" FontWeight="Bold" Foreground="#FFFFFF"/>
+                                </Border>
+                                <Border x:Name="BadgeSeverity" Background="#B45309" CornerRadius="4" Padding="6,2">
+                                    <TextBlock x:Name="TxtSeverity" Text="Risk: Normal" FontSize="11" FontWeight="Bold" Foreground="#FFFFFF"/>
+                                </Border>
+                            </StackPanel>
+                        </StackPanel>
                     </Grid>
 
-                    <TextBlock Text="KÖK NEDEN ANALİZİ" FontSize="11" FontWeight="Bold" Foreground="#94A3B8" Margin="0,4,0,4"/>
-                    <TextBlock x:Name="TxtRootCause" Text="Kök neden açıklaması..." FontSize="13" Foreground="#E2E8F0" TextWrapping="Wrap" Margin="0,0,0,14"/>
+                    <TextBlock Text="KÖK NEDEN &amp; ÇOKLU İHTİMAL ANALİZİ" FontSize="11" FontWeight="Bold" Foreground="#94A3B8" Margin="0,4,0,4"/>
+                    <TextBlock x:Name="TxtRootCause" Text="Kök neden açıklaması..." FontSize="13" Foreground="#E2E8F0" TextWrapping="Wrap" Margin="0,0,0,12"/>
+
+                    <!-- Web Live Insights Card -->
+                    <Border x:Name="CardWebInsights" Background="#0C4A6E" BorderBrush="#0284C7" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,12" Visibility="Collapsed">
+                        <StackPanel>
+                            <TextBlock Text="🌐 ARKA PLAN WEB ARAŞTIRMASI &amp; TOPLULUK TAVSİYESİ" FontSize="11" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,4"/>
+                            <TextBlock x:Name="TxtWebInsights" Text="Web bulgusu..." FontSize="12.5" Foreground="#F0F9FF" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
 
                     <TextBlock Text="ÖNERİLEN ÇÖZÜM ADIMLARI" FontSize="11" FontWeight="Bold" Foreground="#94A3B8" Margin="0,0,0,4"/>
                     <ItemsControl x:Name="ListSteps" Margin="0,0,0,14">
@@ -92,15 +137,55 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
+                    <!-- Alternative Solutions Matrix (GPO, Reg, Driver) -->
+                    <Border x:Name="CardAlternatives" Background="#0F172A" BorderBrush="#475569" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,0,14" Visibility="Collapsed">
+                        <StackPanel>
+                            <TextBlock Text="🔀 DİĞER OLASI NEDENLER &amp; ALTERNATİF ÇÖZÜMLER (Tıklayarak Seçin):" FontSize="11" FontWeight="Bold" Foreground="#F59E0B" Margin="0,0,0,8"/>
+                            <ItemsControl x:Name="ListAlternatives">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#1E293B" BorderBrush="#334155" BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,6">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel Grid.Column="0">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Border Background="#D97706" CornerRadius="3" Padding="5,1" Margin="0,0,6,0">
+                                                            <TextBlock Text="{Binding Category}" FontSize="10" FontWeight="Bold" Foreground="#FFFFFF"/>
+                                                        </Border>
+                                                        <TextBlock Text="{Binding Title}" FontSize="12.5" FontWeight="Bold" Foreground="#F1F5F9"/>
+                                                    </StackPanel>
+                                                    <TextBlock Text="{Binding Description}" FontSize="11.5" Foreground="#94A3B8" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                                                </StackPanel>
+                                                <Button Grid.Column="1" Content="Seç ve Komuta Yükle" Style="{StaticResource PtSecondaryButton}" Height="28" Padding="8,0" FontSize="11" VerticalAlignment="Center" Click="BtnSelectAlternative_Click" Tag="{Binding}"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
                     <!-- Auto Fix Command Box -->
                     <Border Background="#0F172A" BorderBrush="#38BDF8" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,4,0,0">
                         <StackPanel>
                             <Grid Margin="0,0,0,6">
-                                <TextBlock Text="⚡ TEK TIKLA OTOMATİK ONARIM KOMUTU (POWERSHELL)" FontSize="11" FontWeight="Bold" Foreground="#38BDF8"/>
+                                <TextBlock Text="⚡ ÇALIŞTIRILACAK ONARIM KOMUTU (POWERSHELL)" FontSize="11" FontWeight="Bold" Foreground="#38BDF8"/>
                                 <Button Content="📋 Kopyala" HorizontalAlignment="Right" Style="{StaticResource PtSecondaryButton}" Padding="8,2" FontSize="11" Click="BtnCopyScript_Click"/>
                             </Grid>
                             <TextBox x:Name="TxtAutoScript" Background="Transparent" Foreground="#F8FAFC" FontFamily="Consolas" FontSize="12" BorderThickness="0" IsReadOnly="True" TextWrapping="Wrap" Margin="0,0,0,10"/>
-                            <Button x:Name="BtnExecuteFix" Content="🚀 Bu Çözümü Uygula (Otomatik Onar)" Style="{StaticResource PtPrimaryButton}" Height="36" Click="BtnExecuteFix_Click"/>
+                            
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Button x:Name="BtnExecuteFix" Grid.Column="0" Content="🚀 Bu Çözümü Uygula (Otomatik Güvenli Onarım)" Style="{StaticResource PtPrimaryButton}" Height="38" Click="BtnExecuteFix_Click"/>
+                                <Button x:Name="BtnUndoLastFix" Grid.Column="2" Content="↩️ Yapılan Değişikliği Geri Al (Yedekten Dön)" Style="{StaticResource PtSecondaryButton}" Height="38" Padding="12,0" Visibility="Collapsed" Click="BtnUndoLastFix_Click"/>
+                            </Grid>
                         </StackPanel>
                     </Border>
                 </StackPanel>
@@ -109,8 +194,11 @@
             <!-- 3. Terminal Execution Logs -->
             <Border Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
                 <StackPanel>
-                    <TextBlock Text="📜 Onarım Canlı Konsol Akışı" FontSize="13" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" Margin="0,0,0,8"/>
-                    <TextBox x:Name="TxtTerminalLog" Height="140" Background="#111111" Foreground="#38BDF8" FontFamily="Consolas" FontSize="11.5" IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" BorderThickness="0" Padding="8"/>
+                    <Grid Margin="0,0,0,8">
+                        <TextBlock Text="📜 Onarım &amp; Yedekleme Canlı Konsol Akışı" FontSize="13" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}"/>
+                        <Button Content="Temizle" HorizontalAlignment="Right" Style="{StaticResource PtSecondaryButton}" Padding="8,2" FontSize="11" Click="BtnClearLog_Click"/>
+                    </Grid>
+                    <TextBox x:Name="TxtTerminalLog" Height="150" Background="#111111" Foreground="#38BDF8" FontFamily="Consolas" FontSize="11.5" IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" BorderThickness="0" Padding="8"/>
                 </StackPanel>
             </Border>
 
@@ -124,7 +212,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="🔑 Google Gemini AI API Anahtarı (İsteğe Bağlı):" FontSize="12" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}"/>
-                        <TextBlock Text="API anahtarı girildiğinde canlı bulut yapay zekası devreye girer. Anahtar yoksa dahili 100+ BT kural motoru çevrimdışı çalışır." FontSize="11" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,6"/>
+                        <TextBlock Text="API anahtarı girildiğinde canlı bulut yapay zekası devreye girer. Anahtar yoksa dahili BT kural motoru ve canlı DuckDuckGo web araştırması birlikte çalışır." FontSize="11" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,6"/>
                         <TextBox x:Name="TxtApiKey" Height="34" Style="{StaticResource PtTextBox}"/>
                     </StackPanel>
                     <Button Grid.Column="2" Content="💾 Anahtarı Kaydet" Style="{StaticResource PtSecondaryButton}" Height="34" VerticalAlignment="Bottom" Click="BtnSaveApiKey_Click"/>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace UltimateToolkit.Modern.Models
@@ -54,13 +54,27 @@ namespace UltimateToolkit.Modern.Models
         public string Result { get; set; } = "";
     }
 
+    public class AISolutionAlternative
+    {
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string Script { get; set; } = "";
+        public string Category { get; set; } = "Genel";
+    }
+
     public class AISolutionResult
     {
         public string Title { get; set; } = "";
+        public string Category { get; set; } = "Genel Sistem";
         public string RootCause { get; set; } = "";
         public string Severity { get; set; } = "Orta";
         public List<string> Steps { get; set; } = new();
         public string AutoFixScript { get; set; } = "";
         public bool HasScript => !string.IsNullOrWhiteSpace(AutoFixScript);
+        public string WebInsights { get; set; } = "";
+        public bool HasWebInsights => !string.IsNullOrWhiteSpace(WebInsights);
+        public List<AISolutionAlternative> Alternatives { get; set; } = new();
+        public bool HasAlternatives => Alternatives != null && Alternatives.Count > 0;
+        public string TargetRegistryBackupPath { get; set; } = "";
     }
 }
