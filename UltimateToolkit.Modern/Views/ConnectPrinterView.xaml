@@ -23,7 +23,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBox x:Name="TxtPrinterUnc" Grid.Row="0" Style="{StaticResource PtTextBox}" Height="38" Text="\\192.168.1.100\PrinterShare" VerticalContentAlignment="Center" Margin="0,0,0,8"/>
+                    <TextBox x:Name="TxtPrinterUnc" Grid.Row="0" Style="{StaticResource PtTextBox}" Height="38" Text="\\192.168.1.100\PrinterShare" FontSize="13.5" Foreground="#FFFFFF" Padding="12,0" VerticalContentAlignment="Center" Margin="0,0,0,8"/>
                     <WrapPanel Grid.Row="1" HorizontalAlignment="Right">
                         <Button x:Name="BtnTestConnection" Content="🔍 Ön Bağlantı Testi" Style="{StaticResource PtSecondaryButton}" Height="36" Margin="0,0,8,0" Click="BtnTestConnection_Click"/>
                         <Button x:Name="BtnConnectPrinter" Content="🚀 Yazıcıyı Bağla" Style="{StaticResource PtPrimaryButton}" Height="36" Click="BtnConnectPrinter_Click"/>

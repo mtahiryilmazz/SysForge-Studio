@@ -68,7 +68,21 @@ namespace UltimateToolkit.Modern.Services
             }
 
             // 2. High-precision offline rule engine with Turkish tokenization and score weighting
-            return GetLocalExpertSolution(query);
+            var local = GetLocalExpertSolution(query);
+            if (local != null)
+            {
+                return local;
+            }
+
+            // 3. Online Web Research Fallback
+            var webResult = await QueryWebResearchAsync(query);
+            if (webResult != null)
+            {
+                return webResult;
+            }
+
+            // 4. Contextual System Log Fallback
+            return GetDefaultFallbackSolution(query);
         }
 
         public static string NormalizeText(string text)
@@ -120,7 +134,7 @@ namespace UltimateToolkit.Modern.Services
             public AISolutionResult Solution { get; set; } = new();
         }
 
-        private AISolutionResult GetLocalExpertSolution(string rawQuery)
+        private AISolutionResult? GetLocalExpertSolution(string rawQuery)
         {
             string norm = NormalizeText(rawQuery);
             string[] tokens = norm.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -193,29 +207,65 @@ namespace UltimateToolkit.Modern.Services
                 }
             }
 
-            if (bestRule != null && maxScore >= 4)
+            if (bestRule != null && maxScore >= 3)
             {
                 return bestRule.Solution;
             }
 
-            return GetDefaultFallbackSolution(rawQuery);
+            return null;
         }
 
         private AISolutionResult GetDefaultFallbackSolution(string q)
         {
             return new AISolutionResult
             {
-                Title = $"Gelişmiş BT Teşhis Analizi: {q}",
-                RootCause = "Belirtilen arıza için sistem parametreleri, servis durumu ve kayıt defteri politikaları incelendi. İlgili alt bileşenlerin sıfırlanması önerilir.",
+                Title = $"Sistem Tanılama Analizi: {q}",
+                RootCause = $"'{q}' ile ilgili sistem yapılandırması, kayıt defteri ve olay günlükleri denetlenmelidir.",
                 Severity = "Normal",
                 Steps = new List<string>
                 {
                     "Windows Olay Görüntüleyicisi (eventvwr.msc) altında 'Sistem' ve 'Uygulama' günlüklerini inceleyin.",
-                    "İlgili Windows servislerinin (Services.msc) durumunu kontrol edin ve otomatik başlatmaya ayarlayın.",
-                    "Ağ ve DNS önbelleğini temizleyip sistem dosyası bütünlük taramasını (SFC) çalıştırın."
+                    "İlgili Windows ayarını (Win + I) veya Denetim Masası seçeneklerini kontrol edin.",
+                    "Aşağıdaki tanılama komutunu çalıştırarak makinedeki son sistem hata kayıtlarını raporlayın."
                 },
-                AutoFixScript = "ipconfig /flushdns; sfc /scannow; Get-Service -Name Spooler, LanmanWorkstation, Dnscache, W32Time | Restart-Service -Force -ErrorAction SilentlyContinue"
+                AutoFixScript = $"# '{q}' konusu için sistem hata günlüğü taraması\nGet-EventLog -LogName System -Newest 10 -EntryType Error,Warning | Select-Object TimeGenerated, Source, Message"
             };
+        }
+
+        private async Task<AISolutionResult?> QueryWebResearchAsync(string query)
+        {
+            try
+            {
+                string searchUrl = $"https://api.duckduckgo.com/?q={Uri.EscapeDataString(query + " windows cozum")}&format=json&no_html=1";
+                var response = await _http.GetAsync(searchUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    using var doc = JsonDocument.Parse(json);
+                    string heading = doc.RootElement.TryGetProperty("Heading", out var h) ? h.GetString() ?? "" : "";
+                    string abstractText = doc.RootElement.TryGetProperty("AbstractText", out var a) ? a.GetString() ?? "" : "";
+                    string abstractSource = doc.RootElement.TryGetProperty("AbstractSource", out var s) ? s.GetString() ?? "" : "";
+
+                    if (!string.IsNullOrWhiteSpace(abstractText))
+                    {
+                        return new AISolutionResult
+                        {
+                            Title = $"🌐 Web Araştırması Teşhisi: {(string.IsNullOrEmpty(heading) ? query : heading)}",
+                            RootCause = $"Kaynak ({abstractSource}): {abstractText}",
+                            Severity = "Normal",
+                            Steps = new List<string>
+                            {
+                                "Web teknik dokümantasyonuna göre ilgili Windows ayarını veya kayıt defteri politikasını inceleyin.",
+                                "Olay Görüntüleyicisi (Event Viewer) altında ilişkili uygulama loglarını kontrol edin.",
+                                "Aşağıdaki PowerShell tanılama komutunu çalıştırarak sistem durumu çıktısını alın."
+                            },
+                            AutoFixScript = $"# Web Teşhisi: {query}\nGet-EventLog -LogName System -Newest 5 -EntryType Error,Warning | Select-Object TimeGenerated, Message"
+                        };
+                    }
+                }
+            }
+            catch { }
+            return null;
         }
 
         private List<DiagnosticRule> GetBuiltInRules()
@@ -713,6 +763,155 @@ namespace UltimateToolkit.Modern.Services
                             "Lisans önbelleğini yenileyin."
                         },
                         AutoFixScript = @"Start-Service -Name sppsvc -ErrorAction SilentlyContinue; cscript.exe C:\Windows\System32\slmgr.vbs /ato"
+                    }
+                },
+
+                // 20. Dosya Uzantıları Görünmüyor (HideFileExt)
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "dosya", "uzantisi" },
+                        new[] { "dosya", "uzantilari" },
+                        new[] { "uzantisi", "gorunmuyor" },
+                        new[] { "uzantilari", "gorunmuyor" },
+                        new[] { "uzanti", "gizli" },
+                        new[] { "uzanti" }
+                    },
+                    Keywords = new[] { "dosya", "uzantisi", "uzantilari", "gorunmuyor", "uzanti", "hidefileext", "uzantilarini", "goster" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Windows Dosya Gezgini Dosya Uzantılarını Gösterme (.exe, .txt, .pdf)",
+                        RootCause = "Windows Dosya Gezgini varsayılan olarak güvenlik ve sadelik gerekçesiyle bilinen dosya türlerinin uzantılarını (HideFileExt) gizlemektedir. Bu nedenle dosya isimlerinin sonundaki .txt, .exe, .bat uzantıları görünmez.",
+                        Severity = "Normal",
+                        Steps = new List<string>
+                        {
+                            "Kayıt defterinde HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced altındaki HideFileExt değerini 0 (Göster) yapın.",
+                            "Windows Gezgini (explorer.exe) sürecini yeniden başlatarak değişikliği anında etkinleştirin.",
+                            "Artık tüm dosya adlarının sonunda gerçek dosya uzantıları net şekilde listelenecektir."
+                        },
+                        AutoFixScript = "Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced' -Name 'HideFileExt' -Value 0; Stop-Process -Name explorer -Force"
+                    }
+                },
+
+                // 21. Gizli Dosyalar & Klasörler Görünmüyor
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "gizli", "dosyalar" },
+                        new[] { "gizli", "klasor" },
+                        new[] { "gizli", "dosya" },
+                        new[] { "appdata" }
+                    },
+                    Keywords = new[] { "gizli", "dosyalar", "klasorler", "gorunmuyor", "hidden", "appdata", "goster" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Gizli Dosya ve Klasörleri Görünür Yapma (AppData, ProgramData)",
+                        RootCause = "Windows Dosya Gezgini gizli ve sistem dosyalarını görüntüleme ayarı (Hidden / ShowSuperHidden) kapalı durumdadır.",
+                        Severity = "Normal",
+                        Steps = new List<string>
+                        {
+                            "Explorer Advanced anahtarında 'Hidden' değerini 1 yapın.",
+                            "Windows Gezginini yeniden başlatarak gizli öğeleri görünür kılın."
+                        },
+                        AutoFixScript = "Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced' -Name 'Hidden' -Value 1; Stop-Process -Name explorer -Force"
+                    }
+                },
+
+                // 22. Görev Çubuğu & Başlat Menüsü Kilitlendi / Dondu
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "gorev", "cubugu" },
+                        new[] { "baslat", "menusu" },
+                        new[] { "taskbar" }
+                    },
+                    Keywords = new[] { "gorev", "cubugu", "baslat", "menusu", "dondu", "kilitlendi", "yanit", "vermiyor", "taskbar" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Windows Görev Çubuğu & Başlat Menüsü Kilitlenme Onarımı",
+                        RootCause = "Windows Kabuk Deneyimi (ShellExperienceHost) veya explorer.exe sürecinin askıda kalması.",
+                        Severity = "Orta",
+                        Steps = new List<string>
+                        {
+                            "explorer.exe sürecini sonlandırıp otomatik yeniden başlatın.",
+                            "StartMenuExperienceHost arka plan sürecini tazeleyin."
+                        },
+                        AutoFixScript = "Stop-Process -Name explorer -Force"
+                    }
+                },
+
+                // 23. Windows Saat & Zaman Sunucusu Senkronizasyonu
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "saat", "yanlis" },
+                        new[] { "saat", "senkronize" },
+                        new[] { "tarih", "saat" },
+                        new[] { "w32time" }
+                    },
+                    Keywords = new[] { "saat", "tarih", "zaman", "senkronize", "yanlis", "ileri", "geri", "w32time", "ntp" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Windows Saat & Zaman Sunucusu (NTP / W32Time) Senkronizasyonu",
+                        RootCause = "Windows Zaman Hizmeti (w32time) yerel CMOS pili düşmesi veya etki alanı zaman sunucusu ile senkronizasyon kopması.",
+                        Severity = "Orta",
+                        Steps = new List<string>
+                        {
+                            "W32Time servisini pool.ntp.org sunucusuna yönlendirin.",
+                            "Zaman servisini yeniden başlatıp zorla senkronizasyon (resync) yapın."
+                        },
+                        AutoFixScript = "w32tm /config /manualpeerlist:\"pool.ntp.org\" /syncfromflags:manual /reliable:yes /update; Restart-Service -Name W32Time -Force; w32tm /resync /force"
+                    }
+                },
+
+                // 24. Windows 11 Klasik Sağ Tık Menüsü
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "sag", "tik" },
+                        new[] { "klasik", "menu" }
+                    },
+                    Keywords = new[] { "sag", "tik", "menu", "klasik", "windows 11", "eski" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Windows 11 Klasik Tam Sağ Tık Bağlam Menüsünü Geri Getirme",
+                        RootCause = "Windows 11 yeni kompakt sağ tık menüsü klasik üçüncü parti ve BT araçlarını 'Daha fazla seçenek göster' altına gizlemektedir.",
+                        Severity = "Normal",
+                        Steps = new List<string>
+                        {
+                            "HKCU:\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32 anahtarını kaydedin.",
+                            "Explorer sürecini yeniden başlatarak klasik menüyü varsayılan yapın."
+                        },
+                        AutoFixScript = "reg add \"HKCU\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32\" /f /ve; Stop-Process -Name explorer -Force"
+                    }
+                },
+
+                // 25. Windows Arama & Dizinleme Çalışmıyor
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "arama", "calismiyor" },
+                        new[] { "arama", "kutusu" },
+                        new[] { "search" }
+                    },
+                    Keywords = new[] { "arama", "search", "dizin", "index", "calismiyor", "yazilmiyor" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Windows Arama ve Dizinleme (Windows Search) Sıfırlama",
+                        RootCause = "SearchApp arka plan paketi kilitlenmesi veya dizin veritabanı bozulması.",
+                        Severity = "Orta",
+                        Steps = new List<string>
+                        {
+                            "SearchApp sürecini yeniden başlatın.",
+                            "WSearch servisini durdurup başlatın."
+                        },
+                        AutoFixScript = "Stop-Process -Name SearchApp -Force -ErrorAction SilentlyContinue; Restart-Service -Name WSearch -Force"
                     }
                 }
             };

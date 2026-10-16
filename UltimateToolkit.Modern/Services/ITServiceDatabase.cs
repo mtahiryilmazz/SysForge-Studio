@@ -83,9 +83,34 @@ namespace UltimateToolkit.Modern.Services
             using var cmd = new SqliteCommand(schema, conn);
             cmd.ExecuteNonQuery();
 
+            // Auto-migrate schema in case of existing/legacy Vanguard database
+            EnsureColumnExists(conn, "tickets", "unit", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "tickets", "department", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "tickets", "department_id", "INTEGER DEFAULT 0");
+            EnsureColumnExists(conn, "tickets", "unit_id", "INTEGER DEFAULT 0");
+            EnsureColumnExists(conn, "tickets", "personnel_name", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "tickets", "internal_number", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "tickets", "issue_type", "TEXT DEFAULT 'Genel'");
+            EnsureColumnExists(conn, "tickets", "priority", "TEXT DEFAULT 'Normal'");
+            EnsureColumnExists(conn, "tickets", "description", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "tickets", "date", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "tickets", "status", "TEXT DEFAULT 'Açık'");
+
+            EnsureColumnExists(conn, "inventory", "department", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "unit", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "department_id", "INTEGER DEFAULT 0");
+            EnsureColumnExists(conn, "inventory", "unit_id", "INTEGER DEFAULT 0");
+            EnsureColumnExists(conn, "inventory", "brand", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "model", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "serial_no", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "ip_address", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "location", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "user_name", "TEXT DEFAULT ''");
+            EnsureColumnExists(conn, "inventory", "date", "TEXT DEFAULT ''");
+
             // Seed default departments & units if empty
             using var countCmd = new SqliteCommand("SELECT COUNT(*) FROM departments;", conn);
-            long count = (long)(countCmd.ExecuteScalar() ?? 0);
+            long count = Convert.ToInt64(countCmd.ExecuteScalar() ?? 0);
             if (count == 0)
             {
                 using var insertSeed = new SqliteCommand(@"
@@ -102,6 +127,104 @@ namespace UltimateToolkit.Modern.Services
                 ", conn);
                 insertSeed.ExecuteNonQuery();
             }
+
+            // Sync/Migrate data from Vanguard database if available
+            TryMigrateVanguardData(conn);
+        }
+
+        private void EnsureColumnExists(SqliteConnection conn, string table, string column, string typeDef)
+        {
+            try
+            {
+                using var checkCmd = new SqliteCommand($"PRAGMA table_info({table});", conn);
+                using var reader = checkCmd.ExecuteReader();
+                bool exists = false;
+                while (reader.Read())
+                {
+                    string colName = reader.GetString(1);
+                    if (colName.Equals(column, StringComparison.OrdinalIgnoreCase))
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (!exists)
+                {
+                    using var alterCmd = new SqliteCommand($"ALTER TABLE {table} ADD COLUMN {column} {typeDef};", conn);
+                    alterCmd.ExecuteNonQuery();
+                }
+            }
+            catch { }
+        }
+
+        private void TryMigrateVanguardData(SqliteConnection conn)
+        {
+            try
+            {
+                string[] candidates = {
+                    @"D:\YILMAZApp\it_tech_service\it_tech_service.db",
+                    @"D:\YILMAZApp\UltimateToolkit\3-it_tech_service\it_tech_service.db",
+                    @"C:\ProgramData\VanguardIT\it_tech_service.db",
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "it_tech_service.db")
+                };
+
+                string? sourcePath = candidates.FirstOrDefault(File.Exists);
+                if (sourcePath == null || sourcePath.Equals(DbPath, StringComparison.OrdinalIgnoreCase))
+                    return;
+
+                using var sourceConn = new SqliteConnection($"Data Source={sourcePath};");
+                sourceConn.Open();
+
+                // 1. Migrate tickets if destination has 0 tickets
+                using var tCountCmd = new SqliteCommand("SELECT COUNT(*) FROM tickets;", conn);
+                long tCount = Convert.ToInt64(tCountCmd.ExecuteScalar() ?? 0);
+                if (tCount == 0)
+                {
+                    using var sCmd = new SqliteCommand("SELECT id, department, personnel_name, internal_number, issue_type, priority, description, date, status FROM tickets;", sourceConn);
+                    using var sReader = sCmd.ExecuteReader();
+                    while (sReader.Read())
+                    {
+                        using var insCmd = new SqliteCommand(@"
+                            INSERT OR IGNORE INTO tickets (department, unit, personnel_name, internal_number, issue_type, priority, description, date, status)
+                            VALUES (@dep, '-', @pname, @inum, @itype, @prio, @desc, @date, @status);
+                        ", conn);
+                        insCmd.Parameters.AddWithValue("@dep", sReader.IsDBNull(1) ? "Genel" : sReader.GetString(1));
+                        insCmd.Parameters.AddWithValue("@pname", sReader.IsDBNull(2) ? "Bilinmeyen" : sReader.GetString(2));
+                        insCmd.Parameters.AddWithValue("@inum", sReader.IsDBNull(3) ? "-" : sReader.GetString(3));
+                        insCmd.Parameters.AddWithValue("@itype", sReader.IsDBNull(4) ? "Genel" : sReader.GetString(4));
+                        insCmd.Parameters.AddWithValue("@prio", sReader.IsDBNull(5) ? "Normal" : sReader.GetString(5));
+                        insCmd.Parameters.AddWithValue("@desc", sReader.IsDBNull(6) ? "" : sReader.GetString(6));
+                        insCmd.Parameters.AddWithValue("@date", sReader.IsDBNull(7) ? DateTime.Now.ToString("yyyy-MM-dd") : sReader.GetString(7));
+                        insCmd.Parameters.AddWithValue("@status", sReader.IsDBNull(8) ? "Açık" : sReader.GetString(8));
+                        insCmd.ExecuteNonQuery();
+                    }
+                }
+
+                // 2. Migrate inventory if destination has 0 items
+                using var iCountCmd = new SqliteCommand("SELECT COUNT(*) FROM inventory;", conn);
+                long iCount = Convert.ToInt64(iCountCmd.ExecuteScalar() ?? 0);
+                if (iCount == 0)
+                {
+                    using var sInvCmd = new SqliteCommand("SELECT brand, model, serial_no, ip_address, location, user_name FROM inventory;", sourceConn);
+                    using var sInvReader = sInvCmd.ExecuteReader();
+                    while (sInvReader.Read())
+                    {
+                        using var insInvCmd = new SqliteCommand(@"
+                            INSERT OR IGNORE INTO inventory (brand, model, serial_no, ip_address, department, unit, location, user_name, date)
+                            VALUES (@brand, @model, @serial, @ip, 'Bilgi İşlem', '-', @loc, @user, @date);
+                        ", conn);
+                        insInvCmd.Parameters.AddWithValue("@brand", sInvReader.IsDBNull(0) ? "-" : sInvReader.GetString(0));
+                        insInvCmd.Parameters.AddWithValue("@model", sInvReader.IsDBNull(1) ? "-" : sInvReader.GetString(1));
+                        insInvCmd.Parameters.AddWithValue("@serial", sInvReader.IsDBNull(2) ? "-" : sInvReader.GetString(2));
+                        insInvCmd.Parameters.AddWithValue("@ip", sInvReader.IsDBNull(3) ? "-" : sInvReader.GetString(3));
+                        insInvCmd.Parameters.AddWithValue("@loc", sInvReader.IsDBNull(4) ? "-" : sInvReader.GetString(4));
+                        insInvCmd.Parameters.AddWithValue("@user", sInvReader.IsDBNull(5) ? "-" : sInvReader.GetString(5));
+                        insInvCmd.Parameters.AddWithValue("@date", DateTime.Now.ToString("yyyy-MM-dd"));
+                        insInvCmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch { }
         }
 
         #region Departments & Units

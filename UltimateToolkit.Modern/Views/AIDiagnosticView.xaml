@@ -36,9 +36,9 @@
                             <ColumnDefinition Width="10" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="TxtIssueQuery" Grid.Column="0" Height="42" Style="{StaticResource PtTextBox}" FontSize="14"
-                                 KeyDown="TxtIssueQuery_KeyDown"/>
-                        <TextBlock Text="Örn: 0x0000011b, Spooler çöküyor, DNS yanıt vermiyor, mavi ekran..." Grid.Column="0" Foreground="#777777" Margin="12,0,0,0"
+                        <TextBox x:Name="TxtIssueQuery" Grid.Column="0" MinHeight="46" Style="{StaticResource PtTextBox}" FontSize="13.5"
+                                 Padding="14,0" VerticalContentAlignment="Center" KeyDown="TxtIssueQuery_KeyDown"/>
+                        <TextBlock Text="Örn: 0x0000011b, dosya uzantısı görünmüyor, DNS yanıt vermiyor, mavi ekran..." Grid.Column="0" Foreground="#777777" Margin="14,0,0,0"
                                    VerticalAlignment="Center" IsHitTestVisible="False">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
@@ -51,7 +51,7 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <Button x:Name="BtnAnalyze" Grid.Column="2" Content="⚡ Yapay Zeka Analizi" Style="{StaticResource PtPrimaryButton}" Width="160" Height="42" FontSize="13" Click="BtnAnalyze_Click"/>
+                        <Button x:Name="BtnAnalyze" Grid.Column="2" Content="⚡ Yapay Zeka Analizi" Style="{StaticResource PtPrimaryButton}" Width="160" Height="46" FontSize="13" Click="BtnAnalyze_Click"/>
                     </Grid>
 
                     <!-- Quick Suggestions -->
