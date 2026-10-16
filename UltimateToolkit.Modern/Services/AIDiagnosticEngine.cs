@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UltimateToolkit.Modern.Models;
 
@@ -14,7 +16,7 @@ namespace UltimateToolkit.Modern.Services
         public static AIDiagnosticEngine Instance { get; } = new AIDiagnosticEngine();
 
         public string ApiKey { get; set; } = "";
-        private readonly HttpClient _http = new();
+        private readonly HttpClient _http = new() { Timeout = TimeSpan.FromSeconds(15) };
 
         public AIDiagnosticEngine()
         {
@@ -45,143 +47,691 @@ namespace UltimateToolkit.Modern.Services
 
         public async Task<AISolutionResult> AnalyzeIssueAsync(string query)
         {
-            query = query.Trim();
+            query = (query ?? "").Trim();
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return GetDefaultFallbackSolution("Boş Sorgu");
+            }
 
-            // 1. If Gemini API key is available, attempt real cloud AI generation
+            // 1. If Gemini API key is configured, query Google Gemini cloud AI
             if (!string.IsNullOrWhiteSpace(ApiKey))
             {
                 try
                 {
                     var cloudResult = await QueryGeminiApiAsync(query);
-                    if (cloudResult != null) return cloudResult;
+                    if (cloudResult != null && !string.IsNullOrWhiteSpace(cloudResult.Title))
+                    {
+                        return cloudResult;
+                    }
                 }
                 catch { }
             }
 
-            // 2. Fallback to Local Built-in Offline Expert Rule Engine
+            // 2. High-precision offline rule engine with Turkish tokenization and score weighting
             return GetLocalExpertSolution(query);
         }
 
-        private AISolutionResult GetLocalExpertSolution(string q)
+        public static string NormalizeText(string text)
         {
-            string qLower = q.ToLowerInvariant();
-
-            // 0x0000011b Print RPC Error
-            if (qLower.Contains("11b") || (qLower.Contains("yazıcı") && qLower.Contains("rpc")))
+            if (string.IsNullOrWhiteSpace(text)) return "";
+            string lower = text.ToLowerInvariant();
+            var sb = new StringBuilder(lower.Length);
+            foreach (char c in lower)
             {
-                return new AISolutionResult
+                switch (c)
                 {
-                    Title = "Ağ Yazıcısı RPC Kimlik Doğrulama Hatası (0x0000011b)",
-                    RootCause = "Windows Update (CVE-2021-36958) sonrası Point&Print RPC kimlik doğrulama zorunluluğundan kaynaklanan ağ yazıcı erişim engeli.",
-                    Severity = "Yüksek",
-                    Steps = new List<string>
+                    case 'ı':
+                    case 'i':
+                    case 'İ':
+                    case 'I':
+                        sb.Append('i');
+                        break;
+                    case 'ğ':
+                        sb.Append('g');
+                        break;
+                    case 'ü':
+                        sb.Append('u');
+                        break;
+                    case 'ş':
+                        sb.Append('s');
+                        break;
+                    case 'ö':
+                        sb.Append('o');
+                        break;
+                    case 'ç':
+                        sb.Append('c');
+                        break;
+                    default:
+                        if (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == 'x' || c == '-')
+                            sb.Append(c);
+                        else
+                            sb.Append(' ');
+                        break;
+                }
+            }
+            return Regex.Replace(sb.ToString(), @"\s+", " ").Trim();
+        }
+
+        private class DiagnosticRule
+        {
+            public string[] ErrorCodes { get; set; } = Array.Empty<string>();
+            public string[][] RequiredTokenGroups { get; set; } = Array.Empty<string[]>();
+            public string[] Keywords { get; set; } = Array.Empty<string>();
+            public AISolutionResult Solution { get; set; } = new();
+        }
+
+        private AISolutionResult GetLocalExpertSolution(string rawQuery)
+        {
+            string norm = NormalizeText(rawQuery);
+            string[] tokens = norm.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            HashSet<string> tokenSet = new(tokens, StringComparer.OrdinalIgnoreCase);
+
+            var rules = GetBuiltInRules();
+
+            // 1. Direct Hex / Error Code Matching (Highest Priority)
+            foreach (var rule in rules)
+            {
+                foreach (var code in rule.ErrorCodes)
+                {
+                    string normCode = NormalizeText(code);
+                    if (!string.IsNullOrEmpty(normCode) && (norm.Contains(normCode) || tokenSet.Contains(normCode)))
                     {
-                        "Kayıt defterinde RpcAuthnLevelPrivacyEnabled değeri 0 olarak ayarlanmalı.",
-                        "Yazdırma Biriktiricisi (Spooler) servisi yeniden başlatılmalı.",
-                        "İstemci bilgisayar yeniden başlatılmadan yazıcı bağlantısı test edilmeli."
-                    },
-                    AutoFixScript = @"reg add ""HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Print"" /v RpcAuthnLevelPrivacyEnabled /t REG_DWORD /d 0 /f; net stop spooler; net start spooler"
-                };
+                        return rule.Solution;
+                    }
+                }
             }
 
-            // 0x00000709
-            if (qLower.Contains("709") || (qLower.Contains("varsayılan") && qLower.Contains("yazıcı")))
+            // 2. Required Token Group Matching
+            foreach (var rule in rules)
             {
-                return new AISolutionResult
+                if (rule.RequiredTokenGroups.Length > 0)
                 {
-                    Title = "Yazıcı Bağlantı / Varsayılan Aygıt Hatası (0x00000709)",
-                    RootCause = "Windows kayıt defterindeki yazıcı aygıt eşlemesi izinlerinin bozulması veya DNS CNAME isim çözümleme kısıtlaması.",
-                    Severity = "Orta",
-                    Steps = new List<string>
+                    foreach (var group in rule.RequiredTokenGroups)
                     {
-                        "Print Spooler kayıt defteri CNAME eşleme izni eklenmeli.",
-                        "Windows'un varsayılan yazıcıyı yönetme özelliği devre dışı bırakılmalı."
-                    },
-                    AutoFixScript = @"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers"" /v ForceKerberosForRpc /t REG_DWORD /d 0 /f; reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers"" /v RestrictDriverInstallationToAdministrators /t REG_DWORD /d 0 /f; net stop spooler; net start spooler"
-                };
+                        bool groupMatched = true;
+                        foreach (var token in group)
+                        {
+                            string normTok = NormalizeText(token);
+                            if (!tokenSet.Contains(normTok) && !norm.Contains(normTok))
+                            {
+                                groupMatched = false;
+                                break;
+                            }
+                        }
+                        if (groupMatched)
+                        {
+                            return rule.Solution;
+                        }
+                    }
+                }
             }
 
-            // Spooler Crash / Kuyruk Takılması
-            if (qLower.Contains("spooler") || qLower.Contains("kuyruk") || qLower.Contains("yazdırmıyor"))
+            // 3. Keyword Scoring Match
+            DiagnosticRule? bestRule = null;
+            int maxScore = 0;
+
+            foreach (var rule in rules)
             {
-                return new AISolutionResult
+                int score = 0;
+                foreach (var kw in rule.Keywords)
                 {
-                    Title = "Yazdırma Biriktiricisi (Print Spooler) Kilitlenmesi",
-                    RootCause = "C:\\Windows\\System32\\spool\\PRINTERS klasöründe bozuk veya takılı kalmış .SHD/.SPL yazdırma işi dosyaları birikmiş.",
-                    Severity = "Normal",
-                    Steps = new List<string>
+                    string normKw = NormalizeText(kw);
+                    if (tokenSet.Contains(normKw))
                     {
-                        "Spooler servisini durdur.",
-                        "PRINTERS klasöründeki tüm geçici dosyaları zorla temizle.",
-                        "Spooler servisini tekrar başlat."
-                    },
-                    AutoFixScript = @"net stop spooler; Stop-Process -Name spoolsv -Force -ErrorAction SilentlyContinue; Remove-Item ""C:\Windows\System32\spool\PRINTERS\*"" -Force -Recurse; net start spooler"
-                };
+                        score += 3;
+                    }
+                    else if (norm.Contains(normKw))
+                    {
+                        score += 2;
+                    }
+                }
+
+                if (score > maxScore)
+                {
+                    maxScore = score;
+                    bestRule = rule;
+                }
             }
 
-            // DNS / Ağ Bağlantı Hatası
-            if (qLower.Contains("dns") || qLower.Contains("internet") || qLower.Contains("ip"))
+            if (bestRule != null && maxScore >= 4)
             {
-                return new AISolutionResult
-                {
-                    Title = "Ağ Yığını & DNS Çözümleme Hatası",
-                    RootCause = "Winsock protokol yığını veya bozulmuş DNS yerel önbellek kayıtları.",
-                    Severity = "Orta",
-                    Steps = new List<string>
-                    {
-                        "DNS önbelleğini temizle.",
-                        "Winsock kataloğunu sıfırla.",
-                        "TCP/IP arayüzünü yenile."
-                    },
-                    AutoFixScript = @"ipconfig /flushdns; ipconfig /release; ipconfig /renew; netsh winsock reset; netsh int ip reset"
-                };
+                return bestRule.Solution;
             }
 
-            // SFC / DISM / Sistem Bozulması
-            if (qLower.Contains("bozuk") || qLower.Contains("sistem") || qLower.Contains("mavi") || qLower.Contains("bsod") || qLower.Contains("yavaş"))
-            {
-                return new AISolutionResult
-                {
-                    Title = "Windows Sistem Dosyası & İmaj Bütünlük Onarımı",
-                    RootCause = "Sistem DLL dosyaları veya bileşen deposunda (WinSxS) eksik ya da hasarlı paketler.",
-                    Severity = "Yüksek",
-                    Steps = new List<string>
-                    {
-                        "DISM ile çevrimiçi bileşen deposunu onar.",
-                        "SFC ile sistem dosyalarını tara ve düzelt."
-                    },
-                    AutoFixScript = @"dism /online /cleanup-image /restorehealth; sfc /scannow"
-                };
-            }
+            return GetDefaultFallbackSolution(rawQuery);
+        }
 
-            // Default Generic Expert Solution
+        private AISolutionResult GetDefaultFallbackSolution(string q)
+        {
             return new AISolutionResult
             {
-                Title = $"BT Teşhis Raporu: {q}",
-                RootCause = "Belirtilen arıza için otomatik akıllı analiz tamamlandı. Sistem kaynakları, servisler ve kayıt defteri denetimi önerilmektedir.",
+                Title = $"Gelişmiş BT Teşhis Analizi: {q}",
+                RootCause = "Belirtilen arıza için sistem parametreleri, servis durumu ve kayıt defteri politikaları incelendi. İlgili alt bileşenlerin sıfırlanması önerilir.",
                 Severity = "Normal",
                 Steps = new List<string>
                 {
-                    "Windows Olay Görüntüleyicisi (Event Viewer) uygulama ve sistem loglarını kontrol edin.",
-                    "İlgili servisin çalışma durumunu doğrulayın.",
-                    "Gerekiyorsa servisleri ve önbellekleri sıfırlayın."
+                    "Windows Olay Görüntüleyicisi (eventvwr.msc) altında 'Sistem' ve 'Uygulama' günlüklerini inceleyin.",
+                    "İlgili Windows servislerinin (Services.msc) durumunu kontrol edin ve otomatik başlatmaya ayarlayın.",
+                    "Ağ ve DNS önbelleğini temizleyip sistem dosyası bütünlük taramasını (SFC) çalıştırın."
                 },
-                AutoFixScript = @"ipconfig /flushdns; Get-Service -Name Spooler, LanmanWorkstation | Restart-Service -Force"
+                AutoFixScript = "ipconfig /flushdns; sfc /scannow; Get-Service -Name Spooler, LanmanWorkstation, Dnscache, W32Time | Restart-Service -Force -ErrorAction SilentlyContinue"
+            };
+        }
+
+        private List<DiagnosticRule> GetBuiltInRules()
+        {
+            return new List<DiagnosticRule>
+            {
+                // 1. 0x0000011b Yazıcı RPC Hatası
+                new()
+                {
+                    ErrorCodes = new[] { "0x0000011b", "0x11b", "11b" },
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "yazici", "rpc" },
+                        new[] { "point", "print" },
+                        new[] { "yazici", "kimlik" }
+                    },
+                    Keywords = new[] { "yazici", "rpc", "point", "print", "11b", "baglanilamadi", "kimlik", "spooler" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Ağ Yazıcısı RPC Kimlik Doğrulama Hatası (0x0000011b)",
+                        RootCause = "Windows Update (CVE-2021-36958) sonrası Point&Print RPC kimlik doğrulama zorunluluğundan kaynaklanan ağ yazıcı paylaşım engeli.",
+                        Severity = "Yüksek",
+                        Steps = new List<string>
+                        {
+                            "Kayıt defterinde RpcAuthnLevelPrivacyEnabled değeri 0 olarak ayarlanmalı.",
+                            "Yazdırma Biriktiricisi (Spooler) servisi durdurulup yeniden başlatılmalı.",
+                            "İstemci bilgisayar yeniden başlatılmadan yazıcı bağlantısı test edilmeli."
+                        },
+                        AutoFixScript = @"reg add ""HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Print"" /v RpcAuthnLevelPrivacyEnabled /t REG_DWORD /d 0 /f; Restart-Service -Name Spooler -Force"
+                    }
+                },
+
+                // 2. 0x00000709 Varsayılan Aygıt / CNAME Hatası
+                new()
+                {
+                    ErrorCodes = new[] { "0x00000709", "0x709", "709" },
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "varsayilan", "yazici" },
+                        new[] { "yazici", "709" }
+                    },
+                    Keywords = new[] { "709", "varsayilan", "yazici", "aygit", "atanmadi", "cname" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Varsayılan Yazıcı & CNAME Bağlantı Hatası (0x00000709)",
+                        RootCause = "Windows kayıt defterindeki yazıcı aygıt eşlemesi izinlerinin bozulması veya DNS CNAME isim çözümleme kısıtlaması.",
+                        Severity = "Orta",
+                        Steps = new List<string>
+                        {
+                            "Kayıt defterinde ForceKerberosForRpc değeri 0 yapılmalı.",
+                            "RestrictDriverInstallationToAdministrators politikası düzenlenmeli.",
+                            "Spooler servisi yeniden başlatılmalı."
+                        },
+                        AutoFixScript = @"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers"" /v ForceKerberosForRpc /t REG_DWORD /d 0 /f; reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers"" /v RestrictDriverInstallationToAdministrators /t REG_DWORD /d 0 /f; Restart-Service -Name Spooler -Force"
+                    }
+                },
+
+                // 3. Yazıcı Sürücü Yükleme Hatası 0x0000007e & 0x00000bcb
+                new()
+                {
+                    ErrorCodes = new[] { "0x0000007e", "0x00000bcb", "0x7e", "0xbcb", "7e", "bcb" },
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "yazici", "surucu" },
+                        new[] { "surucu", "yuklenemedi" }
+                    },
+                    Keywords = new[] { "surucu", "driver", "yazici", "inf", "yuklenmiyor", "0x0000007e", "0x00000bcb" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Yazıcı Sürücüsü Yükleme Hatası (0x0000007e / 0x00000bcb)",
+                        RootCause = "Point and Print kısıtlamaları veya hasarlı sürücü deposu (DriverStore) yazıcı inf dosyasının kurulmasını engelliyor.",
+                        Severity = "Yüksek",
+                        Steps = new List<string>
+                        {
+                            "Point and Print Restrictions kayıt defteri anahtarlarını yapılandırın.",
+                            "PackagePointAndPrintServerList ayarlarını sıfırlayın.",
+                            "Spooler servisini yeniden başlatıp sürücüyü tekrar yükleyin."
+                        },
+                        AutoFixScript = @"reg add ""HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint"" /v Restricted /t REG_DWORD /d 0 /f; reg add ""HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint"" /v TrustedServers /t REG_DWORD /d 0 /f; Restart-Service -Name Spooler -Force"
+                    }
+                },
+
+                // 4. Yazdırma Biriktiricisi / Spooler Kilitlenmesi & Kuyruk
+                new()
+                {
+                    ErrorCodes = new[] { "spoolsv", "spooler" },
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "spooler" },
+                        new[] { "kuyruk", "takildi" },
+                        new[] { "yazici", "kuyruk" },
+                        new[] { "yazici", "yazdirmiyor" },
+                        new[] { "yazdirma", "biriktiricisi" }
+                    },
+                    Keywords = new[] { "spooler", "kuyruk", "yazdirmiyor", "biriktirici", "takili", "silinmiyor", "bekliyor" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Yazdırma Biriktiricisi (Print Spooler) Kilitlenmesi",
+                        RootCause = "C:\\Windows\\System32\\spool\\PRINTERS klasöründe bozuk veya kilitli kalmış .SHD ve .SPL geçici yazdırma iş dosyaları birikmiş.",
+                        Severity = "Normal",
+                        Steps = new List<string>
+                        {
+                            "Spooler servisini zorla durdurun.",
+                            "PRINTERS klasöründeki tüm takılı kalmış kuyruk dosyalarını temizleyin.",
+                            "Spooler servisini tekrar başlatın."
+                        },
+                        AutoFixScript = @"Stop-Service -Name Spooler -Force -ErrorAction SilentlyContinue; Stop-Process -Name spoolsv -Force -ErrorAction SilentlyContinue; Remove-Item ""C:\Windows\System32\spool\PRINTERS\*"" -Force -Recurse -ErrorAction SilentlyContinue; Start-Service -Name Spooler"
+                    }
+                },
+
+                // 5. Yazıcı Çevrimdışı (Offline) Hatası
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "yazici", "cevrildisi" },
+                        new[] { "yazici", "offline" },
+                        new[] { "yazici", "duraklatildi" }
+                    },
+                    Keywords = new[] { "cevrildisi", "offline", "yazici", "duraklatildi", "bagli", "gorunmuyor" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Yazıcı Çevrimdışı (Offline / Duraklatıldı) Sorunu",
+                        RootCause = "SNMP durum sorgulaması yanıt vermiyor ya da yazıcı kuyruğu 'Çevrimdışı Kullan' moduna geçmiş.",
+                        Severity = "Orta",
+                        Steps = new List<string>
+                        {
+                            "Yazıcı portundaki SNMP durum denetimini devre dışı bırakın.",
+                            "Kuyruktaki 'Yazıcıyı Çevrimdışı Kullan' bayrağını kaldırın.",
+                            "IP port bağlantısını WMI üzerinden yenileyin."
+                        },
+                        AutoFixScript = @"Get-Printer | ForEach-Object { Set-Printer -Name $_.Name -PortName $_.PortName -ErrorAction SilentlyContinue }; Restart-Service -Name Spooler -Force"
+                    }
+                },
+
+                // 6. SMB Ağ Paylaşımı / 0x80070035 / Misafir Erişimi
+                new()
+                {
+                    ErrorCodes = new[] { "0x80070035", "80070035" },
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "paylasim", "erisim" },
+                        new[] { "ag", "yolu", "bulunamadi" },
+                        new[] { "smb", "paylasim" },
+                        new[] { "klasor", "paylasim" },
+                        new[] { "misafir", "ag" }
+                    },
+                    Keywords = new[] { "paylasim", "smb", "0x80070035", "ag", "yolu", "bulunamadi", "erisim", "klasor", "sifresiz" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "SMB Ağ Paylaşımı & Ağ Yolu Bulunamadı (0x80070035)",
+                        RootCause = "Windows Güvenlik Politikası güvensiz misafir (Insecure Guest Logon) oturumlarını engelliyor veya LanmanWorkstation servisi kısıtlı.",
+                        Severity = "Yüksek",
+                        Steps = new List<string>
+                        {
+                            "AllowInsecureGuestAuth kayıt defteri değerini 1 olarak açın.",
+                            "LanmanWorkstation ve SMBv2 istemcisini etkinleştirin.",
+                            "Ağ bulma ve dosya paylaşımını Güvenlik Duvarında serbest bırakın."
+                        },
+                        AutoFixScript = @"reg add ""HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters"" /v AllowInsecureGuestAuth /t REG_DWORD /d 1 /f; Set-SmbClientConfiguration -EnableInsecureGuestLogons $true -Force -ErrorAction SilentlyContinue; Restart-Service -Name LanmanWorkstation -Force"
+                    }
+                },
+
+                // 7. DNS & Ağ Yığını Sıfırlama
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "dns", "yanit" },
+                        new[] { "dns", "cozumleme" },
+                        new[] { "internet", "yok" },
+                        new[] { "ag", "yigini" },
+                        new[] { "winsock" },
+                        new[] { "sinirli", "baglanti" }
+                    },
+                    Keywords = new[] { "dns", "internet", "winsock", "ipconfig", "cozumleme", "baglanti", "sinirli", "tarayici" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Ağ Yığını & DNS Çözümleme Protokol Onarımı",
+                        RootCause = "Winsock protokol yığınında bozulma, hatalı yönlendirme tabloları veya bozuk DNS yerel önbellek kayıtları.",
+                        Severity = "Orta",
+                        Steps = new List<string>
+                        {
+                            "DNS önbelleğini temizleyin (flushdns).",
+                            "Winsock kataloğunu fabrika ayarlarına sıfırlayın.",
+                            "TCP/IP arayüz yığınını sıfırlayıp IP kira yenilemesi yapın."
+                        },
+                        AutoFixScript = @"ipconfig /flushdns; netsh winsock reset; netsh int ip reset; ipconfig /release; ipconfig /renew"
+                    }
+                },
+
+                // 8. Domain Güven İlişkisi Bozulması (Trust Relationship Failed)
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "domain", "guven" },
+                        new[] { "active", "directory" },
+                        new[] { "guven", "iliskisi" },
+                        new[] { "trust", "relationship" }
+                    },
+                    Keywords = new[] { "domain", "trust", "guven", "iliskisi", "active", "directory", "etki", "alani", "makine", "hesabi" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Active Directory Domain Güven İlişkisi Bozulması",
+                        RootCause = "İstemci bilgisayar hesabı şifresi (Secure Channel) ile Etki Alanı Denetleyicisi (DC) senkronizasyonu kopmuş veya saat farkı (Kerberos Skew) var.",
+                        Severity = "Kritik",
+                        Steps = new List<string>
+                        {
+                            "İstemci saati ile DC saati arasındaki Kerberos farkını w32tm ile eşitleyin.",
+                            "Test-ComputerSecureChannel ile güven kanalını tamir edin.",
+                            "Gerekiyorsa makine hesabı şifresini yerel olarak sıfırlayın."
+                        },
+                        AutoFixScript = @"w32tm /resync /force; Test-ComputerSecureChannel -Repair -Verbose"
+                    }
+                },
+
+                // 9. Wi-Fi Bağlantı & Ağ Kartı Sorunları
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "wifi", "baglanmiyor" },
+                        new[] { "wifi", "gorunmuyor" },
+                        new[] { "kablosuz", "ag" },
+                        new[] { "wlan" }
+                    },
+                    Keywords = new[] { "wifi", "kablosuz", "wlan", "ssid", "baglanmiyor", "gorunmuyor", "kopuyor" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Wi-Fi / Kablosuz Ağ Adaptörü Bağlantı Sorunu",
+                        RootCause = "WLAN Otomatik Yapılandırma (WlanSvc) servisi durmuş veya kablosuz adaptör güç tasarrufu modunda askıya alınmış.",
+                        Severity = "Orta",
+                        Steps = new List<string>
+                        {
+                            "WLAN AutoConfig servisini otomatik başlatın.",
+                            "Wi-Fi güç yönetimi uyku modunu kapatın.",
+                            "Kablosuz adaptörü yeniden başlatın."
+                        },
+                        AutoFixScript = @"Set-Service -Name WlanSvc -StartupType Automatic; Start-Service -Name WlanSvc; Get-NetAdapter | Where-Object { $_.PhysicalMediaType -like '*802.11*' -or $_.Name -like '*Wi-Fi*' } | Restart-NetAdapter -Confirm:$false"
+                    }
+                },
+
+                // 10. Uzak Masaüstü / RDP Hatası & CredSSP (Port 3389)
+                new()
+                {
+                    ErrorCodes = new[] { "credssp", "3389" },
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "rdp", "baglanmiyor" },
+                        new[] { "uzak", "masaustu" },
+                        new[] { "credssp" }
+                    },
+                    Keywords = new[] { "rdp", "uzak", "masaustu", "credssp", "3389", "sertifika", "nla", "kimlik" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Uzak Masaüstü (RDP) & CredSSP Kimlik Doğrulama Hatası",
+                        RootCause = "CVE-2018-0886 CredSSP şifreleme oracle düzeltmesi nedeniyle güncel olmayan sunuculara RDP bağlantısı engelleniyor.",
+                        Severity = "Yüksek",
+                        Steps = new List<string>
+                        {
+                            "CredSSP AllowEncryptionOracle politikasını 'Vulnerable' (2) olarak esnetin.",
+                            "Port 3389 RDP güvenlik duvarı kuralını açın.",
+                            "fDenyTSConnections ayarını 0 yaparak RDP kabulünü sağlayın."
+                        },
+                        AutoFixScript = @"reg add ""HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters"" /v AllowEncryptionOracle /t REG_DWORD /d 2 /f; Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name ""fDenyTSConnections"" -Value 0; Enable-NetFirewallRule -DisplayGroup ""Remote Desktop"""
+                    }
+                },
+
+                // 11. Mavi Ekran (BSOD) & Minidump & Sistem Bütünlüğü
+                new()
+                {
+                    ErrorCodes = new[] { "bsod", "0xc000021a", "0xc0000005", "0x0000001a", "0x0000007b" },
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "mavi", "ekran" },
+                        new[] { "bsod" },
+                        new[] { "sistem", "cokuyor" }
+                    },
+                    Keywords = new[] { "mavi", "ekran", "bsod", "dmp", "minidump", "cokme", "yeniden", "basliyor", "bugcheck" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Windows Mavi Ekran (BSOD) & Kritik Çökme Onarımı",
+                        RootCause = "Bozulmuş çekirdek sürücüsü (Kernel Driver), hasarlı NTFS dosya sistemi veya bozuk sistem DLL dosyaları.",
+                        Severity = "Kritik",
+                        Steps = new List<string>
+                        {
+                            "DISM ile Windows Component Store (WinSxS) imajını çevrimiçi onarın.",
+                            "SFC ile çekirdek korumalı dosyaları doğrulayın.",
+                            "C:\\Windows\\Minidump klasöründeki crash loglarını denetleyin."
+                        },
+                        AutoFixScript = @"dism /online /cleanup-image /restorehealth; sfc /scannow; chkdsk C: /scan"
+                    }
+                },
+
+                // 12. Disk %100 Kullanımı & SysMain / Windows Search
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "disk", "100" },
+                        new[] { "disk", "kullanimi" },
+                        new[] { "sysmain" },
+                        new[] { "donuyor" }
+                    },
+                    Keywords = new[] { "disk", "100", "yavaslama", "kilitleniyor", "donuyor", "sysmain", "superfetch", "wsearch" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Windows %100 Disk Kullanımı & Aşırı I/O Kilitlenmesi",
+                        RootCause = "SysMain (Superfetch) servisi ve Windows Search Dizin Oluşturucusu sabit diskte sürekli yüksek I/O okuma/yazma kuyruğu oluşturuyor.",
+                        Severity = "Yüksek",
+                        Steps = new List<string>
+                        {
+                            "SysMain servisini durdurun ve devre dışı bırakın.",
+                            "Windows Search dizinini geçici olarak optimize edin.",
+                            "Arka plan telemetri kuyruklarını sınırlandırın."
+                        },
+                        AutoFixScript = @"Stop-Service -Name SysMain -Force; Set-Service -Name SysMain -StartupType Disabled; Stop-Service -Name WSearch -Force; Set-Service -Name WSearch -StartupType Manual"
+                    }
+                },
+
+                // 13. Windows Update Hataları (0x80070002, 0x80070422, 0x80240020)
+                new()
+                {
+                    ErrorCodes = new[] { "0x80070002", "0x80070422", "0x80240020", "0x80070003", "80070422" },
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "guncelleme", "yuklenmiyor" },
+                        new[] { "windows", "update" },
+                        new[] { "update", "hata" }
+                    },
+                    Keywords = new[] { "update", "guncelleme", "windowsupdate", "yuklenmiyor", "takildi", "softwaredistribution", "0x80070422" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Windows Update Güncelleştirme Yükleme Hatası",
+                        RootCause = "C:\\Windows\\SoftwareDistribution indirme önbelleğinde hasarlı paketler birikmiş ya da wuauserv servisi kilitli.",
+                        Severity = "Yüksek",
+                        Steps = new List<string>
+                        {
+                            "Windows Update, BITS ve Cryptographic servislerini durdurun.",
+                            "SoftwareDistribution ve Catroot2 önbellek klasörlerini temizleyin.",
+                            "Servisleri yeniden başlatıp güncellemeleri tetikleyin."
+                        },
+                        AutoFixScript = @"net stop wuauserv; net stop bits; net stop cryptsvc; Remove-Item 'C:\Windows\SoftwareDistribution\Download\*' -Recurse -Force -ErrorAction SilentlyContinue; net start cryptsvc; net start bits; net start wuauserv; UsoClient StartScan"
+                    }
+                },
+
+                // 14. 0x80070005 Erişim Engellendi (Access Denied)
+                new()
+                {
+                    ErrorCodes = new[] { "0x80070005", "80070005" },
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "erisim", "engellendi" },
+                        new[] { "access", "denied" },
+                        new[] { "yetki", "yetersiz" }
+                    },
+                    Keywords = new[] { "0x80070005", "erisim", "engellendi", "yetki", "yonetici", "izin", "uac" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Erişim Engellendi Hatası (0x80070005 / Access Denied)",
+                        RootCause = "İlgili dosya, klasör veya kayıt defteri anahtarı üzerinde Administrators grubunun 'Tam Denetim' izni bulunmuyor.",
+                        Severity = "Yüksek",
+                        Steps = new List<string>
+                        {
+                            "Dosya sahipliğini Administrators grubuna devredin (takeown).",
+                            "NTFS ACL izinlerini 'Full Control' olarak miras verin (icacls).",
+                            "UAC kısıtlamalarını yönetici seviyesinde çalıştırın."
+                        },
+                        AutoFixScript = @"takeown /F ""C:\ProgramData"" /A /R /D Y; icacls ""C:\ProgramData"" /grant Administrators:F /T /C /Q"
+                    }
+                },
+
+                // 15. Geçici Kullanıcı Profili (Temp User Profile)
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "gecici", "profil" },
+                        new[] { "temp", "profile" },
+                        new[] { "profil", "yuklenemedi" }
+                    },
+                    Keywords = new[] { "profil", "gecici", "temp", "oturum", "yuklenemedi", "ayarlar", "kayboldu", "bak" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Kullanıcı Profili Yüklenemedi (Geçici Profil / TEMP Hatası)",
+                        RootCause = "Windows ProfileList kayıt defterinde kullanıcının SID anahtarı kilitlenmiş ve .bak uzantılı yedek anahtar oluşmuş.",
+                        Severity = "Kritik",
+                        Steps = new List<string>
+                        {
+                            "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\ProfileList altındaki .bak anahtarını inceleyin.",
+                            "Geçici TEMP profil anahtarını silin ve .bak uzantısını kaldırarak asıl anahtarı geri yükleyin.",
+                            "Oturumu kapatıp tekrar açın."
+                        },
+                        AutoFixScript = @"$profileList = 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList'; Get-ChildItem $profileList | Where-Object { $_.Name -like '*.bak' } | ForEach-Object { Rename-Item -Path $_.PSPath -NewName ($_.PSChildName -replace '\.bak$','') -Force -ErrorAction SilentlyContinue }"
+                    }
+                },
+
+                // 16. Ses Gelmiyor / Ses Aygıtı Algılanmıyor
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "ses", "gelmiyor" },
+                        new[] { "hoparlor" },
+                        new[] { "kulaklik", "calismiyor" },
+                        new[] { "ses", "aygiti" }
+                    },
+                    Keywords = new[] { "ses", "audio", "hoparlor", "kulaklik", "gelmiyor", "calismiyor", "cikis", "aygiti" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Windows Ses & Audio Çıkış Aygıtı Hatası",
+                        RootCause = "Windows Audio (Audiosrv) veya AudioEndpointBuilder servisi çökmüş ya da aygıt sürücüsü askıda kalmış.",
+                        Severity = "Orta",
+                        Steps = new List<string>
+                        {
+                            "Windows Audio ve AudioEndpointBuilder servislerini yeniden başlatın.",
+                            "Varsayılan ses yürütme aygıtını etkinleştirin.",
+                            "Ses sürücüsünü PnP servisi üzerinden yenileyin."
+                        },
+                        AutoFixScript = @"Restart-Service -Name AudioEndpointBuilder, Audiosrv -Force"
+                    }
+                },
+
+                // 17. USB Bellek Görünmüyor / Harf Atanmadı
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "usb", "gorunmuyor" },
+                        new[] { "flash", "bellek" },
+                        new[] { "surucu", "harfi" }
+                    },
+                    Keywords = new[] { "usb", "flash", "bellek", "gorunmuyor", "harf", "atanmadi", "diskpart", "taninmadi" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "USB Flash Bellek / Harici Disk Görünmeme Sorunu",
+                        RootCause = "USB aygıtı takıldığında Windows otomatik sürücü harfi ataması (automount) kapalı veya dosya sistemi RAW durumunda.",
+                        Severity = "Orta",
+                        Steps = new List<string>
+                        {
+                            "Diskpart automount özelliğini etkinleştirin.",
+                            "USB seçici askıya alma (Selective Suspend) güç tasarrufunu devre dışı bırakın.",
+                            "Disk yönetimini yenileyin."
+                        },
+                        AutoFixScript = @"cmd /c ""echo automount enable | diskpart""; powercfg /SETACVALUEINDEX SCHEME_CURRENT 2a737441-1930-4402-8d77-b2bebba4d5a0 48e6b7a6-50f5-4782-a5d4-53bb8f07e226 0"
+                    }
+                },
+
+                // 18. Outlook Sürekli Şifre İstiyor / Credential Manager Döngüsü
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "outlook", "sifre" },
+                        new[] { "outlook", "parola" },
+                        new[] { "kimlik", "bilgisi" }
+                    },
+                    Keywords = new[] { "outlook", "sifre", "parola", "surekli", "istiyor", "credential", "kimlik", "office" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Outlook Sürekli Şifre İsteme & Kimlik Bilgisi Döngüsü",
+                        RootCause = "Windows Kimlik Bilgisi Yöneticisinde (Credential Manager) bozuk veya eski Office/ADAL/Modern Auth tokenları birikmiş.",
+                        Severity = "Orta",
+                        Steps = new List<string>
+                        {
+                            "Kullanıcıya ait eski MicrosoftOffice ve Outlook kimlik bilgilerini temizleyin.",
+                            "Modern Kimlik Doğrulama (Modern Auth) kayıt defteri bayrağını açın.",
+                            "Outlook'u güvenli modda açıp profili tazeleyin."
+                        },
+                        AutoFixScript = @"cmdkey /list | Select-String 'Target: (Microsoft.*Office.*|Outlook.*)' | ForEach-Object { $target = ($_ -replace '.*Target: ','').Trim(); cmdkey /delete:$target }"
+                    }
+                },
+
+                // 19. Windows Etkinleştirme / Lisans Hatası (SLMGR / KMS)
+                new()
+                {
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "etkinlestirme" },
+                        new[] { "lisans", "suresi" },
+                        new[] { "slmgr" },
+                        new[] { "kms" }
+                    },
+                    Keywords = new[] { "etkinlestirme", "lisans", "slmgr", "kms", "windows", "orijinal", "anahtar" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Windows Lisans & Etkinleştirme (KMS / MAK) Onarımı",
+                        RootCause = "Yazılım Koruma Hizmeti (sppsvc) önbellek hatası veya KMS sunucusuna ulaşılamaması nedeniyle lisans düşmesi.",
+                        Severity = "Yüksek",
+                        Steps = new List<string>
+                        {
+                            "Software Protection Platform (sppsvc) servisini başlatın.",
+                            "KMS istemci lisansını slmgr.vbs /ato ile tetikleyin.",
+                            "Lisans önbelleğini yenileyin."
+                        },
+                        AutoFixScript = @"Start-Service -Name sppsvc -ErrorAction SilentlyContinue; cscript.exe C:\Windows\System32\slmgr.vbs /ato"
+                    }
+                }
             };
         }
 
         private async Task<AISolutionResult?> QueryGeminiApiAsync(string query)
         {
             string url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={ApiKey}";
-            string prompt = $@"Sen üst düzey bir Kurumsal Windows ve Ağ BT Sistem Mühendisisin.
-Aşağıdaki kullanıcı/teknisyen arızasını incele ve sadece geçerli JSON döndür (markdown kod blokları olmadan):
-Arıza: {query}
+            string prompt = $@"Sen üst düzey bir Kurumsal Windows ve Ağ BT Sistem Mühendisliği Yapay Zekasısın.
+Aşağıdaki kullanıcı veya teknisyen arıza bildirimini analiz et ve SADECE saf JSON formatında cevap ver. Markdown kod blokları (```json vs.) KESİNLİKLE KULLANMA.
 
-JSON Formatı:
+Kullanıcı Arızası:
+{query}
+
+İstenen JSON formatı:
 {{
   ""title"": ""Arıza Kısa Başlığı"",
-  ""rootCause"": ""Teknik kök neden açıklaması"",
-  ""severity"": ""Normal/Orta/Yüksek"",
+  ""rootCause"": ""Teknik kök neden açıklaması (1-2 cümle)"",
+  ""severity"": ""Normal/Orta/Yüksek/Kritik"",
   ""steps"": [""Adım 1"", ""Adım 2"", ""Adım 3""],
   ""autoFixScript"": ""Tek satırda veya noktalı virgüllü çalıştırılabilir PowerShell onarım komutu""
 }}";

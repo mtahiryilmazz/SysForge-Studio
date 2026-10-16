@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -85,96 +86,286 @@ namespace UltimateToolkit.Modern.Services
 
             try
             {
-                if (req.HttpMethod == "POST" && req.Url?.AbsolutePath == "/api/tickets/create")
+                string path = req.Url?.AbsolutePath ?? "/";
+
+                // 1. POST: Create Ticket
+                if (req.HttpMethod == "POST" && path == "/api/tickets/create")
                 {
                     using var reader = new StreamReader(req.InputStream, req.ContentEncoding);
                     string body = await reader.ReadToEndAsync();
-                    // parse form-urlencoded
                     var nvc = System.Web.HttpUtility.ParseQueryString(body);
-                    string person = nvc["personnel"] ?? "-";
-                    string dep = nvc["department"] ?? "-";
-                    string unit = nvc["unit"] ?? "-";
-                    string desc = nvc["desc"] ?? "-";
 
-                    ITServiceDatabase.Instance.AddTicket(new Models.TicketItem
+                    string person = (nvc["personnel"] ?? "").Trim();
+                    string dep = (nvc["department"] ?? "").Trim();
+                    string unit = (nvc["unit"] ?? "").Trim();
+                    string issueType = (nvc["issue_type"] ?? "Genel Arıza").Trim();
+                    string priority = (nvc["priority"] ?? "Normal").Trim();
+                    string desc = (nvc["desc"] ?? "").Trim();
+
+                    if (!string.IsNullOrWhiteSpace(person) && !string.IsNullOrWhiteSpace(desc))
                     {
-                        PersonnelName = person,
-                        Department = dep,
-                        Unit = unit,
-                        Description = desc,
-                        IssueType = "Web Bildirimi",
-                        Priority = "Normal",
-                        Status = "Açık"
-                    });
+                        ITServiceDatabase.Instance.AddTicket(new Models.TicketItem
+                        {
+                            PersonnelName = person,
+                            Department = string.IsNullOrWhiteSpace(dep) ? "Belirtilmedi" : dep,
+                            Unit = string.IsNullOrWhiteSpace(unit) ? "-" : unit,
+                            IssueType = issueType,
+                            Priority = priority,
+                            Description = desc,
+                            Status = "Açık"
+                        });
+                    }
 
-                    res.Redirect("/?success=1");
+                    res.Redirect("/?msg=created");
                     res.Close();
                     return;
                 }
 
-                // Render Modern Dark Web Dashboard HTML
+                // 2. GET: Resolve Ticket
+                if (path == "/api/tickets/resolve")
+                {
+                    string idStr = req.QueryString["id"] ?? "";
+                    if (int.TryParse(idStr, out int ticketId))
+                    {
+                        ITServiceDatabase.Instance.ResolveTicket(ticketId);
+                    }
+                    res.Redirect("/?msg=resolved");
+                    res.Close();
+                    return;
+                }
+
+                // 3. GET: Delete Ticket
+                if (path == "/api/tickets/delete")
+                {
+                    string idStr = req.QueryString["id"] ?? "";
+                    if (int.TryParse(idStr, out int ticketId))
+                    {
+                        ITServiceDatabase.Instance.DeleteTicket(ticketId);
+                    }
+                    res.Redirect("/?msg=deleted");
+                    res.Close();
+                    return;
+                }
+
+                // 4. Render Windows 11 Fluent Dark Web Portal
                 var tickets = ITServiceDatabase.Instance.GetTickets();
                 var inventory = ITServiceDatabase.Instance.GetInventory();
                 var departments = ITServiceDatabase.Instance.GetDepartments();
 
+                int totalTickets = tickets.Count;
+                int openTickets = tickets.Count(t => t.Status != "Çözüldü");
+                int resolvedTickets = tickets.Count(t => t.Status == "Çözüldü");
+                int inventoryCount = inventory.Count;
+
+                string msg = req.QueryString["msg"] ?? "";
+                string toastHtml = "";
+                if (msg == "created")
+                {
+                    toastHtml = "<div class='toast toast-success'>✅ Arıza talebiniz başarıyla kaydedildi ve servis kuyruğuna alındı.</div>";
+                }
+                else if (msg == "resolved")
+                {
+                    toastHtml = "<div class='toast toast-info'>✓ Talep çözüldü olarak işaretlendi.</div>";
+                }
+                else if (msg == "deleted")
+                {
+                    toastHtml = "<div class='toast toast-warning'>🗑️ Kayıt başarıyla silindi.</div>";
+                }
+
                 var sb = new StringBuilder();
                 sb.AppendLine("<!DOCTYPE html><html lang='tr'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/>");
-                sb.AppendLine("<title>SysForge Studio - BT Web Portali</title>");
+                sb.AppendLine("<title>SysForge Studio - BT Teknik Servis Masası</title>");
                 sb.AppendLine("<style>");
-                sb.AppendLine("body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 20px; }");
-                sb.AppendLine(".container { max-width: 1000px; margin: auto; }");
-                sb.AppendLine(".header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #334155; padding-bottom: 14px; margin-bottom: 20px; }");
-                sb.AppendLine("h1 { color: #38bdf8; margin: 0; font-size: 24px; }");
-                sb.AppendLine(".card { background: #1e293b; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }");
-                sb.AppendLine("table { width: 100%; border-collapse: collapse; margin-top: 10px; }");
-                sb.AppendLine("th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #334155; font-size: 13px; }");
-                sb.AppendLine("th { background: #0f172a; color: #94a3b8; }");
-                sb.AppendLine("input, select, textarea, button { background: #0f172a; color: #fff; border: 1px solid #334155; padding: 8px 12px; border-radius: 6px; font-size: 13px; width: 100%; box-sizing: border-box; }");
-                sb.AppendLine("button { background: #0284c7; font-weight: bold; cursor: pointer; border: none; margin-top: 10px; padding: 10px; }");
-                sb.AppendLine("button:hover { background: #0369a1; }");
-                sb.AppendLine(".badge { padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }");
-                sb.AppendLine(".badge-open { background: #b45309; color: #fff; }");
-                sb.AppendLine(".badge-done { background: #15803d; color: #fff; }");
-                sb.AppendLine("</style></head><body><div class='container'>");
+                sb.AppendLine(":root {");
+                sb.AppendLine("  --bg-main: #141414; --bg-card: #202020; --bg-subtle: #2B2B2B; --bg-hover: #323232;");
+                sb.AppendLine("  --border: #383838; --border-focus: #0078D4; --text-main: #FFFFFF; --text-muted: #A6A6A6;");
+                sb.AppendLine("  --accent: #0078D4; --accent-hover: #1A86D9; --success: #107C41; --warning: #F59E0B; --danger: #C42B1C;");
+                sb.AppendLine("  --font: 'Segoe UI Variable Display', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;");
+                sb.AppendLine("}");
+                sb.AppendLine("* { box-sizing: border-box; margin: 0; padding: 0; }");
+                sb.AppendLine("body { font-family: var(--font); background: var(--bg-main); color: var(--text-main); line-height: 1.5; padding: 24px; min-height: 100vh; }");
+                sb.AppendLine(".container { max-width: 1200px; margin: 0 auto; }");
+                sb.AppendLine(".header-bar { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.4); }");
+                sb.AppendLine(".brand-title { font-size: 22px; font-weight: 700; color: #38BDF8; display: flex; align-items: center; gap: 10px; }");
+                sb.AppendLine(".brand-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }");
+                sb.AppendLine(".sys-status { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; background: rgba(16,124,65,0.2); color: #4ADE80; border: 1px solid rgba(16,124,65,0.4); padding: 6px 14px; border-radius: 20px; }");
+                sb.AppendLine(".pulse-dot { width: 8px; height: 8px; background: #4ADE80; border-radius: 50%; box-shadow: 0 0 8px #4ADE80; }");
+                sb.AppendLine(".toast { padding: 12px 18px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; font-weight: 500; display: flex; align-items: center; }");
+                sb.AppendLine(".toast-success { background: rgba(16,124,65,0.25); border: 1px solid var(--success); color: #86EFAC; }");
+                sb.AppendLine(".toast-info { background: rgba(0,120,212,0.25); border: 1px solid var(--accent); color: #93C5FD; }");
+                sb.AppendLine(".toast-warning { background: rgba(196,43,28,0.25); border: 1px solid var(--danger); color: #FCA5A5; }");
+                sb.AppendLine(".kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px; }");
+                sb.AppendLine(".kpi-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; transition: transform 0.15s, border-color 0.15s; }");
+                sb.AppendLine(".kpi-card:hover { transform: translateY(-2px); border-color: var(--accent); }");
+                sb.AppendLine(".kpi-title { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }");
+                sb.AppendLine(".kpi-num { font-size: 32px; font-weight: 800; margin-top: 6px; }");
+                sb.AppendLine(".card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }");
+                sb.AppendLine(".card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }");
+                sb.AppendLine(".card-title { font-size: 17px; font-weight: 700; color: var(--text-main); }");
+                sb.AppendLine(".form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 14px; }");
+                sb.AppendLine("label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }");
+                sb.AppendLine("input, select, textarea { width: 100%; background: var(--bg-subtle); color: var(--text-main); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; font-size: 13.5px; font-family: inherit; transition: border-color 0.15s; outline: none; }");
+                sb.AppendLine("input:focus, select:focus, textarea:focus { border-color: var(--border-focus); box-shadow: 0 0 0 2px rgba(0,120,212,0.3); }");
+                sb.AppendLine("button.btn-primary { background: var(--accent); color: #fff; font-size: 13.5px; font-weight: 600; border: none; border-radius: 6px; padding: 12px 24px; cursor: pointer; transition: background 0.15s; display: inline-flex; align-items: center; gap: 8px; }");
+                sb.AppendLine("button.btn-primary:hover { background: var(--accent-hover); }");
+                sb.AppendLine(".search-box { display: flex; gap: 10px; margin-bottom: 16px; }");
+                sb.AppendLine(".search-input { flex: 1; padding: 10px 16px; border-radius: 8px; font-size: 13px; }");
+                sb.AppendLine("table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 8px; }");
+                sb.AppendLine("th { background: #181818; color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border); }");
+                sb.AppendLine("td { padding: 12px 14px; font-size: 13px; border-bottom: 1px solid var(--border); vertical-align: middle; }");
+                sb.AppendLine("tr:hover td { background: rgba(255,255,255,0.02); }");
+                sb.AppendLine(".chip { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }");
+                sb.AppendLine(".chip-open { background: rgba(245,158,11,0.2); color: #FBBF24; border: 1px solid rgba(245,158,11,0.4); }");
+                sb.AppendLine(".chip-done { background: rgba(16,124,65,0.2); color: #4ADE80; border: 1px solid rgba(16,124,65,0.4); }");
+                sb.AppendLine(".chip-priority { background: #2A2A2A; border: 1px solid var(--border); color: #CBD5E1; }");
+                sb.AppendLine(".action-link { text-decoration: none; font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 5px; margin-right: 6px; transition: opacity 0.15s; }");
+                sb.AppendLine(".action-resolve { background: #107C41; color: #fff; }");
+                sb.AppendLine(".action-delete { background: #383838; color: #EF4444; }");
+                sb.AppendLine(".action-link:hover { opacity: 0.85; }");
+                sb.AppendLine(".footer { text-align: center; color: #64748B; font-size: 12px; margin-top: 36px; padding-top: 18px; border-top: 1px solid #262626; }");
+                sb.AppendLine("</style>");
+                sb.AppendLine("<script>");
+                sb.AppendLine("function filterTickets() {");
+                sb.AppendLine("  var filter = document.getElementById('ticketSearch').value.toLowerCase();");
+                sb.AppendLine("  var rows = document.querySelectorAll('#ticketTable tbody tr');");
+                sb.AppendLine("  rows.forEach(function(row) {");
+                sb.AppendLine("    var text = row.textContent.toLowerCase();");
+                sb.AppendLine("    row.style.display = text.indexOf(filter) > -1 ? '' : 'none';");
+                sb.AppendLine("  });");
+                sb.AppendLine("}");
+                sb.AppendLine("function filterInventory() {");
+                sb.AppendLine("  var filter = document.getElementById('invSearch').value.toLowerCase();");
+                sb.AppendLine("  var rows = document.querySelectorAll('#invTable tbody tr');");
+                sb.AppendLine("  rows.forEach(function(row) {");
+                sb.AppendLine("    var text = row.textContent.toLowerCase();");
+                sb.AppendLine("    row.style.display = text.indexOf(filter) > -1 ? '' : 'none';");
+                sb.AppendLine("  });");
+                sb.AppendLine("}");
+                sb.AppendLine("</script>");
+                sb.AppendLine("</head><body><div class='container'>");
 
-                sb.AppendLine("<div class='header'><div><h1>🛠️ SysForge Studio - BT Servis Masası</h1><p style='color:#94a3b8;margin:4px 0 0;'>Kurumsal Arıza Bildirim ve Envanter Portali</p></div>");
-                sb.AppendLine("<div style='text-align:right;'><span class='badge badge-done'>Canlı Sistem</span></div></div>");
+                // Header
+                sb.AppendLine("<div class='header-bar'>");
+                sb.AppendLine("  <div>");
+                sb.AppendLine("    <div class='brand-title'>💼 SysForge Studio &bull; BT Teknik Servis Masası</div>");
+                sb.AppendLine("    <div class='brand-sub'>Müdürlük &amp; Birim Çağrı Yönetimi, Canlı Arıza Bildirimi ve Donanım Envanter Konsolu</div>");
+                sb.AppendLine("  </div>");
+                sb.AppendLine("  <div class='sys-status'><span class='pulse-dot'></span> Sunucu Çevrimiçi</div>");
+                sb.AppendLine("</div>");
 
-                // New Ticket Card
-                sb.AppendLine("<div class='card'><h2>➕ Yeni Arıza / Destek Talebi Oluştur</h2>");
-                sb.AppendLine("<form method='POST' action='/api/tickets/create'>");
-                sb.AppendLine("<div style='display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px;'>");
-                sb.AppendLine("<input type='text' name='personnel' placeholder='Adınız Soyadınız' required/>");
-                sb.AppendLine("<select name='department'>");
+                if (!string.IsNullOrEmpty(toastHtml))
+                {
+                    sb.AppendLine(toastHtml);
+                }
+
+                // KPI Metric Summary Cards
+                sb.AppendLine("<div class='kpi-grid'>");
+                sb.AppendLine($"  <div class='kpi-card'><div class='kpi-title' style='color:#F59E0B;'>Açık Arıza Talepleri</div><div class='kpi-num' style='color:#FBBF24;'>{openTickets}</div></div>");
+                sb.AppendLine($"  <div class='kpi-card'><div class='kpi-title' style='color:#107C41;'>Çözülen Çağrılar</div><div class='kpi-num' style='color:#4ADE80;'>{resolvedTickets}</div></div>");
+                sb.AppendLine($"  <div class='kpi-card'><div class='kpi-title' style='color:#0078D4;'>Toplam Talep</div><div class='kpi-num' style='color:#38BDF8;'>{totalTickets}</div></div>");
+                sb.AppendLine($"  <div class='kpi-card'><div class='kpi-title' style='color:#8B5CF6;'>Kayıtlı Cihaz Envanteri</div><div class='kpi-num' style='color:#A78BFA;'>{inventoryCount}</div></div>");
+                sb.AppendLine("</div>");
+
+                // 1. New Ticket Form Card
+                sb.AppendLine("<div class='card'>");
+                sb.AppendLine("  <div class='card-header'><div class='card-title'>➕ Yeni Arıza / Teknik Destek Talebi Oluştur</div><span style='font-size:12px;color:var(--text-muted);'>Ağdaki tüm personeller buradan kayıt bırakabilir</span></div>");
+                sb.AppendLine("  <form method='POST' action='/api/tickets/create'>");
+                sb.AppendLine("    <div class='form-grid'>");
+                sb.AppendLine("      <div><label>Personel Adı Soyadı *</label><input type='text' name='personnel' placeholder='Örn: Ahmet Yılmaz' required/></div>");
+                sb.AppendLine("      <div><label>Müdürlük *</label><select name='department' required>");
                 foreach (var d in departments)
                 {
-                    sb.AppendLine($"<option value='{d.Name}'>{d.Name}</option>");
+                    sb.AppendLine($"        <option value='{d.Name}'>{d.Name}</option>");
                 }
-                sb.AppendLine("</select>");
-                sb.AppendLine("<input type='text' name='unit' placeholder='Alt Birim / Oda No'/>");
+                sb.AppendLine("      </select></div>");
+                sb.AppendLine("      <div><label>Alt Birim / Oda No / Dahili</label><input type='text' name='unit' placeholder='Örn: Muhasebe / Oda 204 / Dahili: 1402'/></div>");
+                sb.AppendLine("      <div><label>Arıza Kategorisi</label><select name='issue_type'>");
+                sb.AppendLine("        <option value='Yazıcı Sorunu'>🖨️ Yazıcı Sorunu</option>");
+                sb.AppendLine("        <option value='Ağ / İnternet'>🌐 Ağ / İnternet Kesintisi</option>");
+                sb.AppendLine("        <option value='Donanım Arızası'>🖥️ Bilgisayar / Donanım Arızası</option>");
+                sb.AppendLine("        <option value='Yazılım / İşletim Sistemi'>💾 Yazılım / Windows Hatası</option>");
+                sb.AppendLine("        <option value='E-Posta / Hesap'>✉️ E-Posta / Şifre Talebi</option>");
+                sb.AppendLine("      </select></div>");
+                sb.AppendLine("      <div><label>Öncelik Derecesi</label><select name='priority'>");
+                sb.AppendLine("        <option value='Normal'>Normal</option>");
+                sb.AppendLine("        <option value='Düşük'>Düşük</option>");
+                sb.AppendLine("        <option value='Yüksek'>Yüksek</option>");
+                sb.AppendLine("        <option value='Acil'>🔥 Acil (Kritik İş Engeli)</option>");
+                sb.AppendLine("      </select></div>");
+                sb.AppendLine("    </div>");
+                sb.AppendLine("    <div style='margin-bottom:16px;'><label>Arıza veya Talep Detayı *</label><textarea name='desc' rows='3' placeholder='Lütfen karşılaştığınız sorunu, hata mesajını veya talebinizi detaylı olarak açıklayın...' required></textarea></div>");
+                sb.AppendLine("    <button type='submit' class='btn-primary'>🚀 Arıza Bildirimini Servise Gönder</button>");
+                sb.AppendLine("  </form>");
                 sb.AppendLine("</div>");
-                sb.AppendLine("<textarea name='desc' rows='3' placeholder='Arızayı veya talebinizi detaylı açıklayın...' required></textarea>");
-                sb.AppendLine("<button type='submit'>🚀 Arıza Bildirimi Gönder</button>");
-                sb.AppendLine("</form></div>");
 
-                // Open Tickets Card
-                sb.AppendLine("<div class='card'><h2>📋 Aktif Destek Talepleri</h2><table><tr><th>ID</th><th>Personel</th><th>Müdürlük</th><th>Açıklama</th><th>Tarih</th><th>Durum</th></tr>");
-                foreach (var t in tickets)
+                // 2. Tickets List Card
+                sb.AppendLine("<div class='card'>");
+                sb.AppendLine("  <div class='card-header'><div class='card-title'>🎫 Arıza &amp; Destek Talepleri Listesi</div><span style='font-size:12px;color:var(--text-muted);'>Toplam " + totalTickets + " kayıt listeleniyor</span></div>");
+                sb.AppendLine("  <div class='search-box'><input type='text' id='ticketSearch' class='search-input' onkeyup='filterTickets()' placeholder='🔍 Personel, müdürlük, kategori veya açıklama ara...'/></div>");
+                sb.AppendLine("  <div style='overflow-x:auto;'><table id='ticketTable'>");
+                sb.AppendLine("    <thead><tr><th>ID</th><th>Personel</th><th>Müdürlük &amp; Birim</th><th>Kategori</th><th>Öncelik</th><th>Açıklama</th><th>Tarih</th><th>Durum</th><th>İşlem</th></tr></thead>");
+                sb.AppendLine("    <tbody>");
+                if (tickets.Count == 0)
                 {
-                    string badge = t.Status == "Çözüldü" ? "badge-done" : "badge-open";
-                    sb.AppendLine($"<tr><td><strong>#{t.Id}</strong></td><td>{t.PersonnelName}</td><td>{t.Department} / {t.Unit}</td><td>{t.Description}</td><td>{t.Date}</td><td><span class='badge {badge}'>{t.Status}</span></td></tr>");
+                    sb.AppendLine("      <tr><td colspan='9' style='text-align:center;color:var(--text-muted);padding:24px;'>Henüz kayıtlı arıza talebi bulunmuyor.</td></tr>");
                 }
-                sb.AppendLine("</table></div>");
-
-                // Inventory Card
-                sb.AppendLine("<div class='card'><h2>🖥️ Cihaz & Donanım Envanteri</h2><table><tr><th>Marka / Model</th><th>Seri No</th><th>IP Adresi</th><th>Müdürlük</th><th>Kullanıcı</th></tr>");
-                foreach (var inv in inventory)
+                else
                 {
-                    sb.AppendLine($"<tr><td><strong>{inv.Brand}</strong> {inv.Model}</td><td><code>{inv.SerialNo}</code></td><td>{inv.IpAddress}</td><td>{inv.Department} / {inv.Unit}</td><td>{inv.UserName}</td></tr>");
+                    foreach (var t in tickets)
+                    {
+                        string chipClass = t.Status == "Çözüldü" ? "chip-done" : "chip-open";
+                        sb.AppendLine($"      <tr>");
+                        sb.AppendLine($"        <td><strong>#{t.Id}</strong></td>");
+                        sb.AppendLine($"        <td><strong>{t.PersonnelName}</strong></td>");
+                        sb.AppendLine($"        <td>{t.Department}<br/><span style='font-size:11px;color:var(--text-muted);'>{t.Unit}</span></td>");
+                        sb.AppendLine($"        <td>{t.IssueType}</td>");
+                        sb.AppendLine($"        <td><span class='chip chip-priority'>{t.Priority}</span></td>");
+                        sb.AppendLine($"        <td style='max-width:320px;'>{t.Description}</td>");
+                        sb.AppendLine($"        <td style='font-size:12px;color:var(--text-muted);'>{t.Date}</td>");
+                        sb.AppendLine($"        <td><span class='chip {chipClass}'>{t.Status}</span></td>");
+                        sb.AppendLine($"        <td>");
+                        if (t.Status != "Çözüldü")
+                        {
+                            sb.AppendLine($"          <a href='/api/tickets/resolve?id={t.Id}' class='action-link action-resolve'>✓ Çözüldü</a>");
+                        }
+                        sb.AppendLine($"          <a href='/api/tickets/delete?id={t.Id}' class='action-link action-delete' onclick='return confirm(\"Bu kaydı silmek istediğinize emin misiniz?\")'>🗑️</a>");
+                        sb.AppendLine($"        </td>");
+                        sb.AppendLine($"      </tr>");
+                    }
                 }
-                sb.AppendLine("</table></div>");
+                sb.AppendLine("    </tbody></table></div>");
+                sb.AppendLine("</div>");
 
-                sb.AppendLine("<p style='text-align:center;color:#64748b;font-size:12px;'>SysForge Studio Embedded Web Engine - Saf Yerel .NET 8 Motoru</p>");
+                // 3. Hardware Inventory Card
+                sb.AppendLine("<div class='card'>");
+                sb.AppendLine("  <div class='card-header'><div class='card-title'>🖥️ Cihaz &amp; Donanım Zimmet Envanteri</div><span style='font-size:12px;color:var(--text-muted);'>Kayıtlı " + inventoryCount + " donanım</span></div>");
+                sb.AppendLine("  <div class='search-box'><input type='text' id='invSearch' class='search-input' onkeyup='filterInventory()' placeholder='🔍 Marka, model, seri no, IP veya zimmetli personel ara...'/></div>");
+                sb.AppendLine("  <div style='overflow-x:auto;'><table id='invTable'>");
+                sb.AppendLine("    <thead><tr><th>Marka / Model</th><th>Seri Numarası</th><th>IP Adresi</th><th>Müdürlük &amp; Konum</th><th>Zimmetli Kullanıcı</th><th>Kayıt Tarihi</th></tr></thead>");
+                sb.AppendLine("    <tbody>");
+                if (inventory.Count == 0)
+                {
+                    sb.AppendLine("      <tr><td colspan='6' style='text-align:center;color:var(--text-muted);padding:24px;'>Henüz zimmet envanteri eklenmedi. Masaüstü uygulamasından otomatik eklenebilir.</td></tr>");
+                }
+                else
+                {
+                    foreach (var inv in inventory)
+                    {
+                        sb.AppendLine($"      <tr>");
+                        sb.AppendLine($"        <td><strong>{inv.Brand}</strong> {inv.Model}</td>");
+                        sb.AppendLine($"        <td><code style='color:#38BDF8;font-family:Consolas,monospace;'>{inv.SerialNo}</code></td>");
+                        sb.AppendLine($"        <td><code style='color:#A78BFA;font-family:Consolas,monospace;'>{inv.IpAddress}</code></td>");
+                        sb.AppendLine($"        <td>{inv.Department} / {inv.Unit}<br/><span style='font-size:11px;color:var(--text-muted);'>{inv.Location}</span></td>");
+                        sb.AppendLine($"        <td><strong>{inv.UserName}</strong></td>");
+                        sb.AppendLine($"        <td style='font-size:12px;color:var(--text-muted);'>{inv.Date}</td>");
+                        sb.AppendLine($"      </tr>");
+                    }
+                }
+                sb.AppendLine("    </tbody></table></div>");
+                sb.AppendLine("</div>");
+
+                // Footer
+                sb.AppendLine("<div class='footer'>SysForge Studio Enterprise IT Suite &bull; Yerel Dahili C# Web Konsolu &bull; Windows 11 Fluent Tasarım</div>");
                 sb.AppendLine("</div></body></html>");
 
                 byte[] bytes = Encoding.UTF8.GetBytes(sb.ToString());

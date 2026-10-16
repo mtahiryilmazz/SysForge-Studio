@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Management;
@@ -255,6 +255,11 @@ namespace UltimateToolkit.Modern.Services
             cmd.Parameters.AddWithValue("@status", newStatus);
             cmd.Parameters.AddWithValue("@id", id);
             cmd.ExecuteNonQuery();
+        }
+
+        public void ResolveTicket(int id)
+        {
+            UpdateTicketStatus(id, "Çözüldü");
         }
 
         public void DeleteTicket(int id)

@@ -284,10 +284,9 @@ namespace UltimateToolkit.Modern.Services
             try
             {
                 using var client = new TcpClient();
-                var result = client.BeginConnect(host, port, null, null);
-                bool success = result.AsyncWaitHandle.WaitOne(timeoutMs);
-                if (success) client.EndConnect(result);
-                return success;
+                using var cts = new CancellationTokenSource(timeoutMs);
+                var vt = client.ConnectAsync(host, port, cts.Token);
+                return vt.AsTask().Wait(timeoutMs) && client.Connected;
             }
             catch
             {
@@ -1787,13 +1786,9 @@ namespace UltimateToolkit.Modern.Services
             try
             {
                 using var client = new TcpClient();
-                var result = client.BeginConnect("127.0.0.1", 9999, null, null);
-                bool success = result.AsyncWaitHandle.WaitOne(400);
-                if (success && client.Connected)
-                {
-                    client.EndConnect(result);
-                    return true;
-                }
+                using var cts = new CancellationTokenSource(400);
+                var vt = client.ConnectAsync("127.0.0.1", 9999, cts.Token);
+                return vt.AsTask().Wait(400) && client.Connected;
             }
             catch { }
             return false;

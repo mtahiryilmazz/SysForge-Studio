@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="UltimateToolkit.Modern.Views.AIDiagnosticView"
+<UserControl x:Class="UltimateToolkit.Modern.Views.AIDiagnosticView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -38,8 +38,19 @@
                         </Grid.ColumnDefinitions>
                         <TextBox x:Name="TxtIssueQuery" Grid.Column="0" Height="42" Style="{StaticResource PtTextBox}" FontSize="14"
                                  KeyDown="TxtIssueQuery_KeyDown"/>
-                        <TextBlock Text="Örn: 0x0000011b, Spooler çöküyor, DNS yanıt vermiyor, mavi ekran..." Grid.Column="0" Foreground="#666666" Margin="12,12,0,0" IsHitTestVisible="False"
-                                   Visibility="{Binding Text.IsEmpty, ElementName=TxtIssueQuery, Converter={x:Static local:EmptyToVisibilityConverter.Instance}}"/>
+                        <TextBlock Text="Örn: 0x0000011b, Spooler çöküyor, DNS yanıt vermiyor, mavi ekran..." Grid.Column="0" Foreground="#777777" Margin="12,0,0,0"
+                                   VerticalAlignment="Center" IsHitTestVisible="False">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=TxtIssueQuery}" Value="">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                         <Button x:Name="BtnAnalyze" Grid.Column="2" Content="⚡ Yapay Zeka Analizi" Style="{StaticResource PtPrimaryButton}" Width="160" Height="42" FontSize="13" Click="BtnAnalyze_Click"/>
                     </Grid>
 

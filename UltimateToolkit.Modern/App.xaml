@@ -217,7 +217,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <Border x:Name="tbBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5">
+                        <Border x:Name="tbBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5" TextElement.Foreground="{TemplateBinding Foreground}">
                             <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" />
                         </Border>
                         <ControlTemplate.Triggers>
@@ -229,6 +229,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource PtTextBox}" />
 
         <!-- PowerToys Badge Style -->
         <Style x:Key="PtBadge" TargetType="Border">
@@ -290,7 +291,8 @@
                                               ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                               Margin="12,0,32,0"
                                               VerticalAlignment="Center"
-                                              HorizontalAlignment="Left" />
+                                              HorizontalAlignment="Left"
+                                              TextElement.Foreground="{StaticResource PtTextPrimary}" />
                             <Popup x:Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}"
                                    AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
                                 <Grid x:Name="DropDown" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
@@ -321,7 +323,7 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="ComboBoxItem">
                                     <Border x:Name="itemBorder" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="3" Margin="2,1">
-                                        <ContentPresenter />
+                                        <ContentPresenter TextElement.Foreground="{StaticResource PtTextPrimary}" />
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsHighlighted" Value="True">

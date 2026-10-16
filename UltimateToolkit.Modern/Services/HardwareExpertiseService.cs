@@ -382,18 +382,25 @@ namespace UltimateToolkit.Modern.Services
             string reportFile = Path.Combine(ReportsDirectory, $"EkspertizRaporu_{DateTime.Now:yyyyMMdd_HHmmss}.html");
 
             var sb = new StringBuilder();
-            sb.AppendLine("<!DOCTYPE html><html lang='tr'><head><meta charset='utf-8'/><title>Donanım Ekspertiz Raporu</title>");
+            sb.AppendLine("<!DOCTYPE html><html lang='tr'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width,initial-scale=1'/>");
+            sb.AppendLine("<title>SysForge Studio - Donanım Ekspertiz Raporu</title>");
             sb.AppendLine("<style>");
-            sb.AppendLine("body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 24px; }");
-            sb.AppendLine(".container { max-width: 900px; margin: auto; background: #1e293b; border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }");
-            sb.AppendLine("h1 { color: #38bdf8; margin-top: 0; border-bottom: 2px solid #334155; padding-bottom: 12px; }");
-            sb.AppendLine(".badge { display: inline-block; padding: 4px 12px; border-radius: 6px; font-weight: bold; font-size: 14px; }");
-            sb.AppendLine(".badge-success { background: #15803d; color: #fff; }");
-            sb.AppendLine(".badge-danger { background: #b91c1c; color: #fff; }");
-            sb.AppendLine("table { width: 100%; border-collapse: collapse; margin-top: 16px; margin-bottom: 24px; }");
-            sb.AppendLine("th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #334155; }");
-            sb.AppendLine("th { background: #0f172a; color: #94a3b8; font-size: 13px; text-transform: uppercase; }");
-            sb.AppendLine(".hash-box { background: #0f172a; border-left: 4px solid #38bdf8; padding: 12px 16px; font-family: monospace; font-size: 13px; word-break: break-all; margin: 16px 0; border-radius: 4px; }");
+            sb.AppendLine(":root { --bg-main: #141414; --bg-card: #202020; --border: #383838; --accent: #0078D4; --text-main: #FFFFFF; --text-muted: #A6A6A6; --font: 'Segoe UI Variable Display', 'Segoe UI', sans-serif; }");
+            sb.AppendLine("* { box-sizing: border-box; margin: 0; padding: 0; }");
+            sb.AppendLine("body { font-family: var(--font); background: var(--bg-main); color: var(--text-main); margin: 0; padding: 28px; line-height: 1.5; }");
+            sb.AppendLine(".container { max-width: 960px; margin: auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 32px; box-shadow: 0 8px 30px rgba(0,0,0,0.5); }");
+            sb.AppendLine(".header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 24px; }");
+            sb.AppendLine("h1 { color: #38BDF8; font-size: 24px; font-weight: 700; }");
+            sb.AppendLine("h2 { color: #F1F5F9; font-size: 17px; margin-top: 24px; margin-bottom: 12px; font-weight: 600; }");
+            sb.AppendLine(".badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 13px; }");
+            sb.AppendLine(".badge-success { background: rgba(16,124,65,0.25); color: #4ADE80; border: 1px solid #107C41; }");
+            sb.AppendLine(".badge-danger { background: rgba(196,43,28,0.25); color: #F87171; border: 1px solid #C42B1C; }");
+            sb.AppendLine("table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 10px; margin-bottom: 20px; }");
+            sb.AppendLine("th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border); font-size: 13px; }");
+            sb.AppendLine("th { background: #181818; color: var(--text-muted); font-size: 12px; text-transform: uppercase; font-weight: 600; }");
+            sb.AppendLine("tr:hover td { background: rgba(255,255,255,0.02); }");
+            sb.AppendLine(".hash-box { background: #161616; border: 1px solid var(--border); border-left: 4px solid var(--accent); padding: 14px 18px; font-family: Consolas, monospace; font-size: 12.5px; word-break: break-all; margin: 16px 0; border-radius: 6px; color: #38BDF8; }");
+            sb.AppendLine("code { font-family: Consolas, monospace; color: #FBBF24; }");
             sb.AppendLine("</style></head><body><div class='container'>");
 
             sb.AppendLine($"<h1>🛠️ Donanım Ekspertiz & Kimlik Doğrulama Raporu</h1>");
