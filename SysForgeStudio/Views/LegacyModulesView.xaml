@@ -232,12 +232,12 @@
                     <TextBlock Text="🌐" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
                 <TextBlock Text="v6 İnteraktif Web Kontrol Paneli" FontSize="20" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" HorizontalAlignment="Center"/>
-                <TextBlock Text="SysForge Studio yerel C# web motoru ile arıza kayıtları, cihaz envanteri, departmanlar ve sistem durumu tarayıcı üzerinden canlı yönetilir." FontSize="13" Foreground="{StaticResource PtTextSecondary}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,8,0,20"/>
+                <TextBlock Text="Port 9999 üzerinde yerel köprü sunucusu çalıştırılarak gerçek zamanlı CPU, disk, süreçler, servisler ve donanım telemetrisi web kokpitinde gösterilir." FontSize="13" Foreground="{StaticResource PtTextSecondary}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,8,0,20"/>
 
                 <Border Background="#1C1C1C" CornerRadius="8" Padding="18,14" Margin="0,0,0,20" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1">
                     <Grid>
                         <TextBlock x:Name="TxtV6StatusIndicator" Text="Sunucu Durumu: KONTROL EDİLİYOR..." FontWeight="Bold" Foreground="#94A3B8" FontSize="13" VerticalAlignment="Center"/>
-                        <TextBlock x:Name="TxtV6Url" Text="http://localhost:5000" Foreground="#38BDF8" FontSize="13" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TxtV6Url" Text="http://localhost:9999" Foreground="#38BDF8" FontSize="13" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     </Grid>
                 </Border>
 
@@ -250,16 +250,17 @@
 
         <!-- View 3: Printer Analyzer Pro Management Card -->
         <Border x:Name="PnlPrinterView" Grid.Row="1" Style="{StaticResource PtSettingsCard}" Background="#222222" Padding="24" Visibility="Collapsed">
-            <StackPanel MaxWidth="720" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel MaxWidth="780" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Border Width="64" Height="64" CornerRadius="32" Background="#331A28" BorderBrush="#EC4899" BorderThickness="1" HorizontalAlignment="Center" Margin="0,0,0,16">
                     <TextBlock Text="🔬" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
-                <TextBlock Text="Printer Analyzer Pro Suite" FontSize="20" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" HorizontalAlignment="Center"/>
-                <TextBlock Text="Yazdırma biriktiricisi kilitlenmeleri, port ve sürücü çakışmaları için kök neden analizi sunan uzman teşhis aracı." FontSize="13" Foreground="{StaticResource PtTextSecondary}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,8,0,20"/>
+                <TextBlock Text="Printer Analyzer Pro &amp; Enterprise Fix Suite" FontSize="20" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" HorizontalAlignment="Center"/>
+                <TextBlock Text="Yazdırma biriktiricisi kilitlenmeleri, port ve sürücü çakışmaları, Point&amp;Print (0x11b, 0x709) onarımları ve kurumsal yazıcı analiz araçları." FontSize="13" Foreground="{StaticResource PtTextSecondary}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,8,0,20"/>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="🔬 Printer Analyzer Pro'yu Başlat" Style="{StaticResource PtPrimaryButton}" Background="#DB2777" Height="40" Padding="24,0" Margin="0,0,10,0" Click="BtnLaunchPrinterAnalyzer_Click"/>
-                    <Button Content="🖨️ Modern Yazıcı Yönetimine Git" Style="{StaticResource PtSecondaryButton}" Height="40" Padding="18,0" Click="BtnGoPrinters_Click"/>
+                    <Button Content="🔬 Printer Analyzer Pro'yu Başlat" Style="{StaticResource PtPrimaryButton}" Background="#DB2777" Height="40" Padding="18,0" Margin="0,0,8,0" Click="BtnLaunchPrinterAnalyzer_Click"/>
+                    <Button Content="🛠️ PRN Kurumsal Onarım Merkezi" Style="{StaticResource PtPrimaryButton}" Background="#7C3AED" Height="40" Padding="18,0" Margin="0,0,8,0" Click="BtnLaunchEnterpriseFixTool_Click"/>
+                    <Button Content="🖨️ Modern Yazıcı Yönetimine Git" Style="{StaticResource PtSecondaryButton}" Height="40" Padding="14,0" Click="BtnGoPrinters_Click"/>
                 </StackPanel>
             </StackPanel>
         </Border>

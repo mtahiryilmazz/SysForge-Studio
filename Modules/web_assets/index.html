@@ -1,0 +1,1564 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Web Command Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #060813;
+            --panel-bg: rgba(15, 22, 42, 0.65);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(0, 242, 254, 0.3);
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            
+            --neon-cyan: #00f2fe;
+            --neon-purple: #b155ff;
+            --neon-pink: #f857a6;
+            --neon-green: #00ff87;
+            --neon-red: #ff3366;
+            
+            --glow-cyan: 0 0 15px rgba(0, 242, 254, 0.4);
+            --glow-purple: 0 0 15px rgba(177, 85, 255, 0.4);
+            --glow-green: 0 0 15px rgba(0, 255, 135, 0.4);
+        }
+
+        /* Matrix Green Theme Override */
+        body.theme-matrix {
+            --bg-color: #020603;
+            --panel-bg: rgba(8, 20, 10, 0.7);
+            --border-color: rgba(0, 255, 102, 0.1);
+            --border-hover: rgba(0, 255, 102, 0.4);
+            --text-primary: #e6ffe6;
+            --text-secondary: #66b37a;
+            --neon-cyan: #00ff66;
+            --neon-purple: #39ff14;
+            --neon-pink: #00cc44;
+            --neon-green: #00ff33;
+            --glow-cyan: 0 0 15px rgba(0, 255, 102, 0.5);
+            --glow-purple: 0 0 15px rgba(57, 255, 20, 0.5);
+        }
+
+        /* Solar Sunset Theme Override */
+        body.theme-solar {
+            --bg-color: #0d0803;
+            --panel-bg: rgba(24, 15, 6, 0.7);
+            --border-color: rgba(255, 170, 0, 0.1);
+            --border-hover: rgba(255, 170, 0, 0.4);
+            --text-primary: #fff2e6;
+            --text-secondary: #b38f66;
+            --neon-cyan: #ffa31a;
+            --neon-purple: #ff6600;
+            --neon-pink: #ff3300;
+            --neon-green: #ffcc00;
+            --glow-cyan: 0 0 15px rgba(255, 163, 26, 0.5);
+            --glow-purple: 0 0 15px rgba(255, 102, 0, 0.5);
+        }
+
+        /* Hacker Crimson Theme Override */
+        body.theme-hacker {
+            --bg-color: #0b0202;
+            --panel-bg: rgba(22, 6, 6, 0.75);
+            --border-color: rgba(255, 51, 51, 0.1);
+            --border-hover: rgba(255, 51, 51, 0.4);
+            --text-primary: #ffe6e6;
+            --text-secondary: #b36666;
+            --neon-cyan: #ff003c;
+            --neon-purple: #ff3333;
+            --neon-pink: #990000;
+            --neon-green: #ff0055;
+            --glow-cyan: 0 0 15px rgba(255, 0, 60, 0.5);
+            --glow-purple: 0 0 15px rgba(255, 51, 51, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(20, 10, 45, 0.25) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(5, 30, 60, 0.3) 0px, transparent 50%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        /* Scanline Overlay */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 4px, 6px 100%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        header {
+            padding: 20px 40px;
+            background: rgba(10, 15, 30, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--glow-cyan);
+            transition: all 0.3s ease;
+        }
+
+        .logo-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+        }
+
+        .header-logo h1 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            background: linear-gradient(to right, #ffffff, var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+        }
+
+        .system-meta {
+            display: flex;
+            gap: 25px;
+            font-size: 14px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .meta-label {
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .meta-val {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Interactive Theme Dots */
+        .theme-selector {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .theme-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .theme-dot:hover {
+            transform: scale(1.3);
+        }
+
+        .theme-dot.active {
+            border-color: #fff;
+            box-shadow: 0 0 8px currentColor;
+        }
+
+        .dot-cyber { background-color: #00f2fe; color: #00f2fe; }
+        .dot-matrix { background-color: #00ff66; color: #00ff66; }
+        .dot-solar { background-color: #ffa31a; color: #ffa31a; }
+        .dot-hacker { background-color: #ff003c; color: #ff003c; }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-shutdown {
+            background: rgba(255, 51, 102, 0.1);
+            border-color: rgba(255, 51, 102, 0.3);
+            color: var(--neon-red);
+        }
+
+        .btn-shutdown:hover {
+            background: rgba(255, 51, 102, 0.25);
+            border-color: var(--neon-red);
+            box-shadow: 0 0 15px rgba(255, 51, 102, 0.3);
+        }
+
+        .main-container {
+            max-width: 1600px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 30px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            flex: 1;
+        }
+
+        /* Telemetry Section */
+        .telemetry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: transparent;
+            transition: background 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--border-hover);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .card-cpu:hover::before { background: var(--neon-cyan); }
+        .card-ram:hover::before { background: var(--neon-purple); }
+        .card-disk:hover::before { background: var(--neon-pink); }
+        .card-battery:hover::before { background: var(--neon-green); }
+
+        .telemetry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .telemetry-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .telemetry-icon {
+            width: 24px;
+            height: 24px;
+            opacity: 0.8;
+        }
+
+        .telemetry-body {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .telemetry-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .telemetry-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .telemetry-detail {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        /* SVG Circular Gauges */
+        .gauge-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .gauge-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .gauge-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.04);
+            stroke-width: 8;
+        }
+
+        .gauge-fg {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            stroke-dasharray: 251.2;
+            stroke-dashoffset: 251.2;
+            transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cpu-ring { stroke: var(--neon-cyan); filter: drop-shadow(0 0 4px var(--neon-cyan)); }
+        .ram-ring { stroke: var(--neon-purple); filter: drop-shadow(0 0 4px var(--neon-purple)); }
+        .disk-ring { stroke: var(--neon-pink); filter: drop-shadow(0 0 4px var(--neon-pink)); }
+        .battery-ring { stroke: var(--neon-green); filter: drop-shadow(0 0 4px var(--neon-green)); }
+
+        .gauge-text {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        /* Split Section: Actions on Left, Resources/Tools on Right */
+        .content-split {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 1100px) {
+            .content-split {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Control Panel */
+        .actions-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: "";
+            width: 4px;
+            height: 18px;
+            background: linear-gradient(to bottom, var(--neon-cyan), var(--neon-purple));
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 300px;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px 8px 38px;
+            border-radius: 8px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--neon-cyan);
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            fill: var(--text-secondary);
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .action-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: all 0.3s ease;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .action-card:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 4px 20px rgba(0, 242, 254, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .action-icon-wrapper {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover .action-icon-wrapper {
+            background: rgba(0, 242, 254, 0.1);
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+        }
+
+        .action-icon-wrapper svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            color: var(--text-secondary);
+        }
+
+        .action-card:hover .action-icon-wrapper svg {
+            color: var(--neon-cyan);
+            filter: drop-shadow(0 0 3px var(--neon-cyan));
+        }
+
+        .action-info h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .action-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Sidebar Panels */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .side-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Advisor Card */
+        .advisor-card {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.06), rgba(177, 85, 255, 0.06));
+            border: 1px solid rgba(0, 242, 254, 0.15);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .advisor-bar-bg {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .advisor-bar-fg {
+            height: 100%;
+            background: linear-gradient(to right, var(--neon-purple), var(--neon-cyan));
+            width: 0%;
+            border-radius: 4px;
+            transition: width 0.8s ease;
+        }
+
+        .advisor-recommendation {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 2px solid var(--neon-cyan);
+            border-radius: 4px;
+        }
+
+        .process-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 13px;
+        }
+
+        .process-row:last-child {
+            border: none;
+        }
+
+        .process-name {
+            font-weight: 600;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .process-pid {
+            font-size: 10px;
+            color: var(--text-secondary);
+            font-family: 'Roboto Mono', monospace;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+
+        .process-ram {
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 700;
+            color: var(--neon-purple);
+        }
+
+        /* Subnet Scanner Status card */
+        .scanner-card {
+            background: linear-gradient(135deg, rgba(15, 22, 42, 0.8), rgba(20, 10, 40, 0.4));
+            border: 1px solid rgba(177, 85, 255, 0.15);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+        }
+
+        .scanner-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--neon-purple);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-purple);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.4; }
+            50% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 15px var(--neon-purple); }
+            100% { transform: scale(0.9); opacity: 0.4; }
+        }
+
+        /* Console Terminal Bottom section */
+        .terminal-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            min-height: 350px;
+        }
+
+        .terminal-container {
+            background: #020308;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            color: #38bdf8;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            height: 280px;
+            overflow-y: auto;
+            position: relative;
+            border-left: 3px solid var(--neon-cyan);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        .terminal-lines {
+            white-space: pre-wrap;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .terminal-lines .line-stdout { color: #f8fafc; }
+        .terminal-lines .line-system { color: var(--neon-cyan); font-weight: bold; }
+        .terminal-lines .line-error { color: var(--neon-red); font-weight: bold; }
+        .terminal-lines .line-success { color: var(--neon-green); font-weight: bold; }
+
+        .terminal-input-bar {
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 12px;
+            align-items: center;
+        }
+
+        .terminal-prompt {
+            font-family: 'Roboto Mono', monospace;
+            color: var(--neon-cyan);
+            font-weight: 700;
+            font-size: 13px;
+            user-select: none;
+        }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+        }
+
+        .terminal-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-console {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .btn-run {
+            background: rgba(0, 242, 254, 0.1);
+            border-color: rgba(0, 242, 254, 0.3);
+            color: var(--neon-cyan);
+        }
+
+        .btn-run:hover {
+            background: rgba(0, 242, 254, 0.25);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+        }
+
+        .btn-cancel {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        .btn-cancel:hover {
+            background: rgba(239, 68, 68, 0.3);
+            border-color: #ef4444;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.01);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        /* Status Indicator on grid */
+        .status-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+        .status-idle {
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--neon-cyan);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+        }
+        .status-running {
+            background: rgba(177, 85, 255, 0.15);
+            color: var(--neon-purple);
+            border: 1px solid rgba(177, 85, 255, 0.3);
+            animation: glow-pulse 1.5s infinite alternate;
+        }
+
+        @keyframes glow-pulse {
+            from { box-shadow: 0 0 5px rgba(177, 85, 255, 0.2); }
+            to { box-shadow: 0 0 15px rgba(177, 85, 255, 0.6); }
+        }
+    </style>
+</head>
+<body class="theme-cyber">
+
+    <header>
+        <div class="header-logo">
+            <div class="logo-icon" id="header-logo-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2L2 22h20L12 2zm0 4l6.5 13h-13L12 6zm-1 5v3h2v-3h-2zm0 5v2h2v-2h-2z" />
+                </svg>
+            </div>
+            <div>
+                <h1>ULTIMATE COMMAND CENTER</h1>
+                <div class="meta-label" style="font-size: 10px;">By Ultimate Toolkit Pro &bull; Web Console Dashboard</div>
+            </div>
+        </div>
+        
+        <div class="system-meta">
+            <div class="meta-item">
+                <span class="meta-label">Uptime</span>
+                <span class="meta-val" id="meta-uptime">--</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Computer Name</span>
+                <span class="meta-val" id="meta-pc">--</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Active User</span>
+                <span class="meta-val" id="meta-user">--</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Status</span>
+                <span id="system-status-badge" class="status-badge status-idle">Ready</span>
+            </div>
+        </div>
+
+        <div class="header-controls">
+            <!-- Theme Selector -->
+            <div class="theme-selector">
+                <span class="meta-label" style="margin-right: 5px;">Theme</span>
+                <div class="theme-dot dot-cyber active" onclick="switchTheme('cyber')" title="Cyberpunk Cyan"></div>
+                <div class="theme-dot dot-matrix" onclick="switchTheme('matrix')" title="Matrix Green"></div>
+                <div class="theme-dot dot-solar" onclick="switchTheme('solar')" title="Solar Orange"></div>
+                <div class="theme-dot dot-hacker" onclick="switchTheme('hacker')" title="Hacker Crimson"></div>
+            </div>
+
+            <button class="btn btn-shutdown" onclick="shutdownServer()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18.36 6.64a9 9 0 1 1-12.73 0M12 2v10"/></svg>
+                Shutdown Server
+            </button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Telemetry Section -->
+        <section class="telemetry-grid">
+            <!-- CPU Gauge -->
+            <div class="card card-cpu" onmouseover="playSynth('hover')">
+                <div class="telemetry-header">
+                    <span class="telemetry-title">CPU Load</span>
+                    <svg class="telemetry-icon" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="4"/><path d="M6 6h12v12H6zM9 1v1M15 1v1M9 22v1M15 22v1M1 9h1M1 15h1M22 9h1M22 15h1"/></svg>
+                </div>
+                <div class="telemetry-body">
+                    <div class="telemetry-info">
+                        <span class="telemetry-number" id="cpu-val">0%</span>
+                        <span class="telemetry-detail" id="cpu-detail">Analyzing cores...</span>
+                    </div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg" viewBox="0 0 100 100">
+                            <circle class="gauge-bg" cx="50" cy="50" r="40" />
+                            <circle class="gauge-fg cpu-ring" cx="50" cy="50" r="40" id="cpu-gauge" />
+                        </svg>
+                        <div class="gauge-text" id="cpu-gauge-text">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RAM Gauge -->
+            <div class="card card-ram" onmouseover="playSynth('hover')">
+                <div class="telemetry-header">
+                    <span class="telemetry-title">RAM Usage</span>
+                    <svg class="telemetry-icon" viewBox="0 0 24 24" fill="none" stroke="var(--neon-purple)" stroke-width="2"><path d="M6 19h12V5H6v14zM6 9h12M6 14h12M3 7h3M3 11h3M3 15h3M18 7h3M18 11h3M18 15h3"/></svg>
+                </div>
+                <div class="telemetry-body">
+                    <div class="telemetry-info">
+                        <span class="telemetry-number" id="ram-val">0%</span>
+                        <span class="telemetry-detail" id="ram-detail">-- GB / -- GB</span>
+                    </div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg" viewBox="0 0 100 100">
+                            <circle class="gauge-bg" cx="50" cy="50" r="40" />
+                            <circle class="gauge-fg ram-ring" cx="50" cy="50" r="40" id="ram-gauge" />
+                        </svg>
+                        <div class="gauge-text" id="ram-gauge-text">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disk Gauge -->
+            <div class="card card-disk" onmouseover="playSynth('hover')">
+                <div class="telemetry-header">
+                    <span class="telemetry-title">Storage (C:)</span>
+                    <svg class="telemetry-icon" viewBox="0 0 24 24" fill="none" stroke="var(--neon-pink)" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M2 12h20M6 16.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm10-7h4"/></svg>
+                </div>
+                <div class="telemetry-body">
+                    <div class="telemetry-info">
+                        <span class="telemetry-number" id="disk-val">0%</span>
+                        <span class="telemetry-detail" id="disk-detail">-- GB / -- GB</span>
+                    </div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg" viewBox="0 0 100 100">
+                            <circle class="gauge-bg" cx="50" cy="50" r="40" />
+                            <circle class="gauge-fg disk-ring" cx="50" cy="50" r="40" id="disk-gauge" />
+                        </svg>
+                        <div class="gauge-text" id="disk-gauge-text">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Battery Gauge -->
+            <div class="card card-battery" onmouseover="playSynth('hover')">
+                <div class="telemetry-header">
+                    <span class="telemetry-title">Battery Status</span>
+                    <svg class="telemetry-icon" viewBox="0 0 24 24" fill="none" stroke="var(--neon-green)" stroke-width="2"><rect x="1" y="6" width="18" height="12" rx="2" ry="2"/><line x1="23" y1="11" x2="23" y2="13"/><line x1="6" y1="11" x2="14" y2="11"/></svg>
+                </div>
+                <div class="telemetry-body">
+                    <div class="telemetry-info">
+                        <span class="telemetry-number" id="battery-val">0%</span>
+                        <span class="telemetry-detail" id="battery-detail">Checking power...</span>
+                    </div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg" viewBox="0 0 100 100">
+                            <circle class="gauge-bg" cx="50" cy="50" r="40" />
+                            <circle class="gauge-fg battery-ring" cx="50" cy="50" r="40" id="battery-gauge" />
+                        </svg>
+                        <div class="gauge-text" id="battery-gauge-text">0%</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Grid and Sidebar content -->
+        <div class="content-split">
+            <!-- Left Side: Control Actions Grid -->
+            <section class="actions-section">
+                <div class="section-header">
+                    <h2 class="section-title">Admin Command Hub</h2>
+                    <div class="search-container">
+                        <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                        <input type="text" id="search-box" class="search-input" placeholder="Filter command actions..." onkeyup="filterActions()">
+                    </div>
+                </div>
+
+                <div class="actions-grid" id="actions-grid">
+                    <!-- SFC -->
+                    <div class="action-card" onclick="runCommand('sfc')" onmouseover="playSynth('hover')">
+                        <div class="action-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        </div>
+                        <div class="action-info">
+                            <h3>SFC System Repair</h3>
+                            <p>Verify and repair corrupt system files with System File Checker.</p>
+                        </div>
+                    </div>
+
+                    <!-- DISM -->
+                    <div class="action-card" onclick="runCommand('dism')" onmouseover="playSynth('hover')">
+                        <div class="action-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                        </div>
+                        <div class="action-info">
+                            <h3>DISM Image Health</h3>
+                            <p>Check and repair Windows image integrity with DISM utility.</p>
+                        </div>
+                    </div>
+
+                    <!-- DNS & Reset Stack -->
+                    <div class="action-card" onclick="runCommand('flushdns')" onmouseover="playSynth('hover')">
+                        <div class="action-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-3.9-5.3-3-12.7 2-17 4.7-4 12-3.3 16 1.4L21.1 5c-.75-1.2-1.84-2.18-3.1-2.82V3zm3.17 13.17c-1.2 1.2-2.8 1.83-4.42 1.83-.8 0-1.6-.16-2.37-.48l2.67-2.67 4.12 1.32z"/></svg>
+                        </div>
+                        <div class="action-info">
+                            <h3>DNS Flush & IP Reset</h3>
+                            <p>Flush DNS cache, reset Winsock catalog and network configurations.</p>
+                        </div>
+                    </div>
+
+                    <!-- WiFi Password Extraction -->
+                    <div class="action-card" onclick="runCommand('wifi')" onmouseover="playSynth('hover')">
+                        <div class="action-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M12.01 21.49L23.64 7c-.45-.34-4.93-4-11.64-4C5.28 3 .81 6.66.36 7l11.63 14.49.01.01.01-.01zM3.53 10.95l8.46 10.53 8.46-10.53C20.03 10.58 16.56 8 12 8s-8.03 2.58-8.47 2.95z"/></svg>
+                        </div>
+                        <div class="action-info">
+                            <h3>Retrieve WiFi Keys</h3>
+                            <p>Decrypt and extract all stored WiFi profiles with passwords.</p>
+                        </div>
+                    </div>
+
+                    <!-- System Cache Cleaner -->
+                    <div class="action-card" onclick="runCommand('cleanup')" onmouseover="playSynth('hover')">
+                        <div class="action-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M15 16h4v2h-4zm0-6h4v2h-4zm0-3h4v2h-4zm-9 9c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V7H6v9zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                        </div>
+                        <div class="action-info">
+                            <h3>System Cache Cleaner</h3>
+                            <p>Wipe Windows temp files, Recycle Bin, and prefetch records.</p>
+                        </div>
+                    </div>
+
+                    <!-- Restart Spooler -->
+                    <div class="action-card" onclick="runCommand('spooler')" onmouseover="playSynth('hover')">
+                        <div class="action-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+                        </div>
+                        <div class="action-info">
+                            <h3>Restart Print Spooler</h3>
+                            <p>Instantly stop and restart print spooler service to resolve stuck prints.</p>
+                        </div>
+                    </div>
+
+                    <!-- HTML Battery Report -->
+                    <div class="action-card" onclick="runCommand('battery')" onmouseover="playSynth('hover')">
+                        <div class="action-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4zM12 18h-2v-6h2v6zm0-8h-2V8h2v2z"/></svg>
+                        </div>
+                        <div class="action-info">
+                            <h3>Battery Health Report</h3>
+                            <p>Generate a detailed diagnostics HTML report of laptop battery life.</p>
+                        </div>
+                    </div>
+
+                    <!-- System Inventory Report -->
+                    <div class="action-card" onclick="runCommand('sys_report')" onmouseover="playSynth('hover')">
+                        <div class="action-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        </div>
+                        <div class="action-info">
+                            <h3>Full System Inventory</h3>
+                            <p>Scan and build a comprehensive profile of system hardware & software.</p>
+                        </div>
+                    </div>
+
+                    <!-- Subnet IP Host Discovery -->
+                    <div class="action-card" onclick="runCommand('scan_subnet')" onmouseover="playSynth('hover')">
+                        <div class="action-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                        </div>
+                        <div class="action-info">
+                            <h3>Subnet IP Scanner</h3>
+                            <p>Pings local subnet to discover other active desktop/office computers.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Side: Sidebar Panels -->
+            <aside class="sidebar">
+                <!-- System Health Advisor Score Panel -->
+                <div class="advisor-card" onmouseover="playSynth('hover')">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="font-weight: 700; font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px;">Health Advisor</h3>
+                        <span id="health-score-val" style="font-weight: 800; font-size: 18px; color: var(--neon-cyan);">100%</span>
+                    </div>
+                    <div class="advisor-bar-bg">
+                        <div class="advisor-bar-fg" id="health-score-bar"></div>
+                    </div>
+                    <p class="advisor-recommendation" id="health-advisor-text">Analyzing system diagnostics telemetry...</p>
+                </div>
+
+                <!-- Top resource intensive processes -->
+                <div class="side-panel" onmouseover="playSynth('hover')">
+                    <h3 class="section-title">Top Memory Processes</h3>
+                    <div id="processes-container">
+                        <div style="color: var(--text-secondary); text-align: center; padding: 10px;">Loading process metadata...</div>
+                    </div>
+                </div>
+
+                <!-- Fast Local Network Info -->
+                <div class="scanner-card" onmouseover="playSynth('hover')">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <h3 style="font-weight: 700; font-size: 16px; margin-bottom: 2px;">Network Dashboard</h3>
+                            <p style="font-size: 12px; color: var(--text-secondary);">IP Subnet Sweeper Utility</p>
+                        </div>
+                        <span class="pulse-dot"></span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; font-size: 13px; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Local Host IP:</span><span id="gateway-val" style="font-family: 'Roboto Mono'; color: var(--neon-cyan);">Detecting...</span></div>
+                        <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">Adapter Status:</span><span id="interface-val" style="color: var(--neon-green);">Connected</span></div>
+                    </div>
+                    <button class="btn btn-run" onclick="runCommand('scan_subnet')" style="width: 100%; justify-content: center; font-size: 12px;">
+                        Launch Network Sweep
+                    </button>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Terminal Output -->
+        <section class="terminal-section">
+            <h3 class="section-title">Live Terminal Console Logger</h3>
+            <div class="terminal-container" id="terminal-container">
+                <div class="terminal-lines" id="terminal-lines"><span class="line-system">Ultimate Web Command Center Dashboard Ready. Click an action card or enter a custom PowerShell command below.</span></div>
+            </div>
+            
+            <div class="terminal-input-bar">
+                <span class="terminal-prompt">PS C:\Admin&gt;</span>
+                <input type="text" id="terminal-input" class="terminal-input" placeholder="Enter custom system command (e.g. Get-Service, ipconfig, netstat)..." onkeydown="handleTerminalKey(event)">
+                <div class="terminal-actions">
+                    <button class="btn btn-console btn-run" id="btn-run-cli" onclick="runCustomCommand()">Execute</button>
+                    <button class="btn btn-console btn-cancel" id="btn-cancel-cli" onclick="stopExecution()" disabled>Stop Process</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let logInterval = null;
+        let lineOffset = 0;
+        let isRunningCommand = false;
+
+        // Web Audio Context Synthesis for SFX
+        let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSynth(type) {
+            try {
+                initAudio();
+                if (!audioCtx || audioCtx.state === 'suspended') return;
+                
+                const osc = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                osc.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                if (type === 'hover') {
+                    // Micro-click chirp
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(1400, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(1800, audioCtx.currentTime + 0.03);
+                    gainNode.gain.setValueAtTime(0.008, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.03);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.03);
+                } else if (type === 'click') {
+                    // Cyber confirm chirp
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(2200, audioCtx.currentTime + 0.07);
+                    gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.07);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.07);
+                } else if (type === 'success') {
+                    // Futuristic major chord beep
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(1600, audioCtx.currentTime + 0.06);
+                    osc.frequency.setValueAtTime(2000, audioCtx.currentTime + 0.12);
+                    gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.22);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.22);
+                } else if (type === 'error') {
+                    // Low buzz alarm
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(240, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(120, audioCtx.currentTime + 0.18);
+                    gainNode.gain.setValueAtTime(0.035, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.18);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.18);
+                }
+            } catch (e) {}
+        }
+
+        // Switch color theme
+        function switchTheme(themeName) {
+            initAudio();
+            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            playSynth('click');
+
+            // Remove active themes
+            document.body.className = `theme-${themeName}`;
+            
+            // Mark dot as active
+            document.querySelectorAll('.theme-dot').forEach(dot => {
+                dot.classList.remove('active');
+            });
+            document.querySelector(`.dot-${themeName}`).classList.add('active');
+        }
+
+        // On document load
+        document.addEventListener("click", () => {
+            // Initialize audio on first user interaction to bypass browser policies
+            initAudio();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            updateSysInfo();
+            setInterval(updateSysInfo, 2500);
+            checkRunningState();
+        });
+
+        // Pull System Info
+        async function updateSysInfo() {
+            try {
+                const res = await fetch('/api/sysinfo');
+                if (!res.ok) return;
+                const data = await res.json();
+
+                // Dials
+                setGauge('cpu', data.cpu);
+                setGauge('ram', data.ram);
+                setGauge('disk', data.disk);
+                setGauge('battery', data.battery);
+
+                // Details
+                document.getElementById('cpu-detail').innerText = `${data.os_name ? data.os_name.substring(0, 32) : 'Active Cores'}`;
+                document.getElementById('ram-detail').innerText = `${data.ram_used} GB / ${data.ram_total} GB`;
+                document.getElementById('disk-detail').innerText = `${data.disk_used} GB / ${data.disk_total} GB`;
+                document.getElementById('battery-detail').innerText = data.battery_plugged ? "Plugged In" : "On Battery power";
+
+                // Metadata Header
+                document.getElementById('meta-uptime').innerText = data.uptime;
+                document.getElementById('meta-pc').innerText = data.computer_name;
+                document.getElementById('meta-user').innerText = data.user_name;
+
+                // Network sidebar Details
+                document.getElementById('gateway-val').innerText = data.ram_total ? `Subnet ${data.computer_name}` : "Local Subnet";
+                
+                // Render Top memory processes
+                renderProcesses(data.processes);
+
+                // Compute and render health score
+                computeHealthScore(data.cpu, data.ram, data.disk);
+            } catch (err) {
+                console.error("Error updating sysinfo:", err);
+            }
+        }
+
+        // Calculate custom System Health Score
+        function computeHealthScore(cpu, ram, disk) {
+            let score = 100;
+            score -= (cpu * 0.25);
+            score -= (ram * 0.35);
+            if (disk > 75) {
+                score -= ((disk - 75) * 0.6);
+            }
+            score = Math.max(10, Math.round(score));
+
+            const scoreText = document.getElementById('health-score-val');
+            const scoreBar = document.getElementById('health-score-bar');
+            const advisorText = document.getElementById('health-advisor-text');
+
+            scoreText.innerText = `${score}%`;
+            scoreBar.style.width = `${score}%`;
+
+            if (score > 80) {
+                scoreText.style.color = "var(--neon-green)";
+                advisorText.innerHTML = "<strong>System Status: Optimal.</strong> RAM and CPU are running comfortably. No optimization actions needed.";
+            } else if (score > 55) {
+                scoreText.style.color = "var(--neon-cyan)";
+                advisorText.innerHTML = "<strong>System Status: Moderate Load.</strong> Suggest executing <em>System Cache Cleaner</em> to free up active memory pools.";
+            } else {
+                scoreText.style.color = "var(--neon-red)";
+                advisorText.innerHTML = "<strong>System Warning: Critical Load!</strong> Close active background processes or launch <em>SFC System Repair</em> immediately.";
+            }
+        }
+
+        // Helper to update SVG Circle Dash offset
+        function setGauge(type, val) {
+            document.getElementById(`${type}-val`).innerText = `${val}%`;
+            document.getElementById(`${type}-gauge-text`).innerText = `${Math.round(val)}%`;
+            const circle = document.getElementById(`${type}-gauge`);
+            
+            // Circumference of r=40 is 251.2
+            const offset = 251.2 - (251.2 * val / 100);
+            circle.style.strokeDashoffset = offset;
+        }
+
+        // Render processes list
+        function renderProcesses(processes) {
+            const container = document.getElementById('processes-container');
+            if (!processes || processes.length === 0) {
+                container.innerHTML = `<div style="color: var(--text-secondary); text-align: center; padding: 10px;">No processes detected.</div>`;
+                return;
+            }
+
+            let html = "";
+            processes.forEach(proc => {
+                html += `
+                    <div class="process-row">
+                        <div class="process-name">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--neon-purple)" stroke-width="2.5"><path d="M2 20h20M5 17V5a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v12"/></svg>
+                            <span>${proc.name}</span>
+                            <span class="process-pid">PID ${proc.id}</span>
+                        </div>
+                        <div class="process-ram">${proc.ram} MB</div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // Trigger command execution
+        async function runCommand(cmdId) {
+            playSynth('click');
+            if (isRunningCommand) {
+                playSynth('error');
+                appendTerminalLine("SYSTEM ALERT: A command task is already executing. Stop or wait for it to complete.", "line-error");
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/run?cmd=${cmdId}`);
+                const data = await res.json();
+                
+                if (res.status === 409) {
+                    playSynth('error');
+                    appendTerminalLine(`SYSTEM ERROR: ${data.message}`, "line-error");
+                    return;
+                }
+
+                if (!res.ok) {
+                    playSynth('error');
+                    appendTerminalLine(`SYSTEM ERROR: Failed to launch command: ${data.message}`, "line-error");
+                    return;
+                }
+
+                appendTerminalLine(`\n>>> STARTING COMMAND PROCESS: ${data.name}`, "line-system");
+                startPollingLogs();
+            } catch (err) {
+                playSynth('error');
+                appendTerminalLine(`SYSTEM EXCEPTION: Cannot reach command runner: ${err.message}`, "line-error");
+            }
+        }
+
+        // Run Custom shell command
+        async function runCustomCommand() {
+            playSynth('click');
+            const input = document.getElementById('terminal-input');
+            const cmdText = input.value.trim();
+            if (!cmdText) return;
+
+            if (isRunningCommand) {
+                playSynth('error');
+                appendTerminalLine("SYSTEM ALERT: A command task is already executing.", "line-error");
+                return;
+            }
+
+            input.value = "";
+            try {
+                const res = await fetch(`/api/run?cmd=custom&raw_cmd=${encodeURIComponent(cmdText)}`);
+                const data = await res.json();
+                
+                if (res.status === 409) {
+                    playSynth('error');
+                    appendTerminalLine(`SYSTEM ERROR: ${data.message}`, "line-error");
+                    return;
+                }
+
+                if (!res.ok) {
+                    playSynth('error');
+                    appendTerminalLine(`SYSTEM ERROR: Failed to execute: ${data.message}`, "line-error");
+                    return;
+                }
+
+                appendTerminalLine(`\nPS C:\\Admin> ${cmdText}`, "line-stdout");
+                startPollingLogs();
+            } catch (err) {
+                playSynth('error');
+                appendTerminalLine(`SYSTEM EXCEPTION: Cannot reach server: ${err.message}`, "line-error");
+            }
+        }
+
+        // Handle Enter key on console input
+        function handleTerminalKey(event) {
+            if (event.key === "Enter") {
+                runCustomCommand();
+            }
+        }
+
+        // Polling loop for Logs
+        function startPollingLogs() {
+            lineOffset = 0;
+            isRunningCommand = true;
+            toggleButtons(true);
+            
+            if (logInterval) clearInterval(logInterval);
+            
+            logInterval = setInterval(pollLogs, 300);
+        }
+
+        // Poll logs endpoint
+        async function pollLogs() {
+            try {
+                const res = await fetch(`/api/log?lineOffset=${lineOffset}`);
+                if (!res.ok) return;
+                const data = await res.json();
+
+                if (data.lines && data.lines.length > 0) {
+                    data.lines.forEach(line => {
+                        let cls = "line-stdout";
+                        if (line.startsWith(">>>") || line.includes("completed") || line.includes("Starting:")) {
+                            cls = "line-system";
+                        }
+                        if (line.includes("Error:") || line.includes("failed") || line.includes("Could not") || line.toLowerCase().includes("error details")) {
+                            cls = "line-error";
+                        }
+                        if (line.includes("successfully") || line.includes("Success") || line.includes("completed.")) {
+                            cls = "line-success";
+                        }
+                        appendTerminalLine(line, cls);
+                    });
+                }
+                
+                lineOffset = data.offset;
+
+                if (!data.running) {
+                    // Check if it ended in success or stopped
+                    const lastLine = data.lines.length > 0 ? data.lines[data.lines.length - 1] : "";
+                    if (lastLine.includes("stopped by user")) {
+                        playSynth('error');
+                    } else {
+                        playSynth('success');
+                    }
+                    stopPollingLogs();
+                }
+            } catch (err) {
+                console.error("Error polling logs:", err);
+                stopPollingLogs();
+            }
+        }
+
+        // Stop polling and revert state
+        function stopPollingLogs() {
+            if (logInterval) {
+                clearInterval(logInterval);
+                logInterval = null;
+            }
+            isRunningCommand = false;
+            toggleButtons(false);
+        }
+
+        // Check if command is running on page load
+        async function checkRunningState() {
+            try {
+                const res = await fetch('/api/log?lineOffset=0');
+                if (!res.ok) return;
+                const data = await res.json();
+                if (data.running) {
+                    appendTerminalLine("SYSTEM ALERT: Found an actively running command background process. Monitoring logs now...", "line-system");
+                    lineOffset = 0;
+                    isRunningCommand = true;
+                    toggleButtons(true);
+                    logInterval = setInterval(pollLogs, 300);
+                }
+            } catch (e) {}
+        }
+
+        // Cancel command execution
+        async function stopExecution() {
+            playSynth('click');
+            try {
+                const res = await fetch('/api/stop');
+                if (res.ok) {
+                    appendTerminalLine("\n>>> SENDING TERMINATE SIGNAL TO PROCESS...", "line-error");
+                }
+            } catch (err) {
+                console.error("Error stopping command:", err);
+            }
+        }
+
+        // Helper to append line to terminal
+        function appendTerminalLine(text, className) {
+            const container = document.getElementById('terminal-container');
+            const linesWrapper = document.getElementById('terminal-lines');
+            const lineSpan = document.createElement("span");
+            lineSpan.className = className;
+            lineSpan.textContent = text;
+            linesWrapper.appendChild(lineSpan);
+            
+            // Auto scroll
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Toggle UI buttons state
+        function toggleButtons(isRunning) {
+            const statusBadge = document.getElementById('system-status-badge');
+            const cancelBtn = document.getElementById('btn-cancel-cli');
+            const runBtn = document.getElementById('btn-run-cli');
+
+            if (isRunning) {
+                statusBadge.innerText = "Running";
+                statusBadge.className = "status-badge status-running";
+                cancelBtn.removeAttribute("disabled");
+                runBtn.setAttribute("disabled", "true");
+            } else {
+                statusBadge.innerText = "Ready";
+                statusBadge.className = "status-badge status-idle";
+                cancelBtn.setAttribute("disabled", "true");
+                runBtn.removeAttribute("disabled");
+            }
+        }
+
+        // Shutdown Web Server
+        async function shutdownServer() {
+            playSynth('click');
+            if (confirm("Are you sure you want to stop and shutdown the local Web Command Center Server? This will close the listener port.")) {
+                try {
+                    appendTerminalLine("\n>>> SHUTTING DOWN HTTP LISTENER SERVER...", "line-error");
+                    await fetch('/api/shutdown');
+                } catch (e) {
+                    // Expect connection drop
+                }
+                setTimeout(() => {
+                    window.close();
+                    document.body.innerHTML = `
+                        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; background:#060813; font-family:'Outfit'; gap:15px;">
+                            <h1 style="color:#ff3366; text-shadow:0 0 10px rgba(255,51,102,0.3)">SERVER TERMINATED</h1>
+                            <p style="color:#94a3b8">The local Web Dashboard server has been shut down successfully.</p>
+                            <p style="color:rgba(255,255,255,0.25); font-size:12px">You can close this tab now.</p>
+                        </div>
+                    `;
+                }, 800);
+            }
+        }
+
+        // Search Action Filter
+        function filterActions() {
+            const query = document.getElementById('search-box').value.toLowerCase();
+            const cards = document.querySelectorAll('#actions-grid .action-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('h3').innerText.toLowerCase();
+                const desc = card.querySelector('p').innerText.toLowerCase();
+                
+                if (title.includes(query) || desc.includes(query)) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

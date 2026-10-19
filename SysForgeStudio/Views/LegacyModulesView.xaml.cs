@@ -161,12 +161,11 @@ namespace SysForgeStudio.Views
         private void RefreshV6Status()
         {
             bool running = ToolkitEngine.Instance.IsV6Running();
-            int port = ITWebDashboardService.Instance.Port;
-            TxtV6StatusIndicator.Text = running ? $"Sunucu Durumu: AKTİF (Port {port} Dinleniyor)" : "Sunucu Durumu: KAPALI";
+            TxtV6StatusIndicator.Text = running ? "Sunucu Durumu: AKTİF (Port 9999 Dinleniyor)" : "Sunucu Durumu: KAPALI";
             TxtV6StatusIndicator.Foreground = running ? (Brush)FindResource("PtSuccess") : new SolidColorBrush(Color.FromRgb(148, 163, 184));
             if (TxtV6Url != null)
             {
-                TxtV6Url.Text = $"http://localhost:{port}";
+                TxtV6Url.Text = "http://localhost:9999/dashboard.html";
             }
         }
 
@@ -193,6 +192,11 @@ namespace SysForgeStudio.Views
         private void BtnLaunchPrinterAnalyzer_Click(object sender, RoutedEventArgs e)
         {
             ToolkitEngine.Instance.LaunchPrinterAnalyzer();
+        }
+
+        private void BtnLaunchEnterpriseFixTool_Click(object sender, RoutedEventArgs e)
+        {
+            ToolkitEngine.Instance.LaunchPrinterEnterpriseFixTool();
         }
 
         private void BtnGoPrinters_Click(object sender, RoutedEventArgs e)
