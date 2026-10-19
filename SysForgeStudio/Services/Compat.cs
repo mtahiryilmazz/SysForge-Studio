@@ -28,5 +28,29 @@ namespace SysForgeStudio
 
         public static string[] Split(this string source, char separator, StringSplitOptions options)
             => source.Split(new[] { separator }, options);
+
+        public static string[] Split(this string source, string separator, StringSplitOptions options = StringSplitOptions.None)
+            => source.Split(new[] { separator }, options);
+    }
+
+    public static class EnvironmentCompat
+    {
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        private static extern ulong GetTickCount64();
+
+        public static long TickCount64
+        {
+            get
+            {
+                try
+                {
+                    return (long)GetTickCount64();
+                }
+                catch
+                {
+                    return (uint)Environment.TickCount;
+                }
+            }
+        }
     }
 }

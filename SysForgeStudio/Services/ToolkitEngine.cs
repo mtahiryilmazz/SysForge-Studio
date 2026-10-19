@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -1558,7 +1558,7 @@ namespace SysForgeStudio.Services
                 // Uptime
                 try
                 {
-                    var uptime = TimeSpan.FromMilliseconds(Environment.TickCount64);
+                    var uptime = TimeSpan.FromMilliseconds(EnvironmentCompat.TickCount64);
                     metrics.Add(new PerformanceMetric { Name = "Çalışma Süresi", Value = $"{(int)uptime.TotalDays}g {uptime.Hours}s {uptime.Minutes}d", Unit = "", Status = uptime.TotalDays > 30 ? "Uzun" : "Normal" });
                 }
                 catch { }

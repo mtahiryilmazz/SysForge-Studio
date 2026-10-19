@@ -3,7 +3,7 @@
   <Networking>Default</Networking>
   <MappedFolders>
     <MappedFolder>
-      <HostFolder>C:\Users\YILMAZ\Documents\GitHub\SysForge-Studio</HostFolder>
+      <HostFolder>C:\Users\BT\Documents\Github\SysForge-Studio</HostFolder>
       <SandboxFolder>C:\Users\WDAGUtilityAccount\Desktop\SysForgeStudio</SandboxFolder>
       <ReadOnly>false</ReadOnly>
     </MappedFolder>
