@@ -1782,13 +1782,22 @@ namespace SysForgeStudio.Services
 
         public bool IsV6Running()
         {
+            IAsyncResult? pending = null;
+            TcpClient? client = null;
             try
             {
-                using var client = new TcpClient();
-                var connectTask = client.ConnectAsync("127.0.0.1", 9999);
-                return connectTask.Wait(400) && client.Connected;
+                client = new TcpClient();
+                pending = client.BeginConnect("127.0.0.1", 9999, null, null);
+                if (!pending.AsyncWaitHandle.WaitOne(400)) return false;
+
+                client.EndConnect(pending);
+                return client.Connected;
             }
             catch { }
+            finally
+            {
+                try { client?.Close(); } catch { }
+            }
             return false;
         }
 
@@ -1803,6 +1812,8 @@ namespace SysForgeStudio.Services
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Modules", "WebBridgeServer.ps1"),
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "Modules", "WebBridgeServer.ps1"),
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Modules", "WebBridgeServer.ps1"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "Modules", "WebBridgeServer.ps1"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "Modules", "WebBridgeServer.ps1"),
                     @"C:\ProgramData\SysForgeStudio\Modules\WebBridgeServer.ps1"
                 };
 
@@ -1860,14 +1871,20 @@ namespace SysForgeStudio.Services
                     if (IsV6Running()) break;
                 }
 
-                // Open browser
-                Process.Start(new ProcessStartInfo
+                if (IsV6Running())
                 {
-                    FileName = "http://localhost:9999/dashboard.html",
-                    UseShellExecute = true
-                });
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = "http://localhost:9999/dashboard.html",
+                        UseShellExecute = true
+                    });
 
-                Log("V6 Web Dashboard başarıyla açıldı (http://localhost:9999/dashboard.html).", LogLevel.Success);
+                    Log("V6 Web Dashboard başarıyla açıldı (http://localhost:9999/dashboard.html).", LogLevel.Success);
+                }
+                else
+                {
+                    Log("V6 Web Köprüsü başlatılamadı: Port 9999 dinlemeye açılmadı.", LogLevel.Error);
+                }
             }
             catch (Exception ex)
             {
@@ -1906,7 +1923,11 @@ namespace SysForgeStudio.Services
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Modules", "Printer_Analyzer_Pro.exe"),
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "Modules", "Printer_Analyzer_Pro.exe"),
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Modules", "Printer_Analyzer_Pro.exe"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "Modules", "Printer_Analyzer_Pro.exe"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "Modules", "Printer_Analyzer_Pro.exe"),
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Modules", "PrinterEnterpriseFixTool", "Printer_Analyzer_Pro.exe"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "Modules", "PrinterEnterpriseFixTool", "Printer_Analyzer_Pro.exe"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "Modules", "PrinterEnterpriseFixTool", "Printer_Analyzer_Pro.exe"),
                     @"C:\ProgramData\SysForgeStudio\Printer_Analyzer_Pro.exe"
                 };
 
@@ -1938,27 +1959,39 @@ namespace SysForgeStudio.Services
             try
             {
                 string[] candidates = {
+                    Path.Combine(LegacyToolkitRoot, "PrinterEnterpriseFixTool", "Printer_Enterprise_FixTool.ps1"),
+                    Path.Combine(LegacyToolkitRoot, "PrinterEnterpriseFixTool", "Ultimate_Printer_Toolkit_v3.ps1"),
                     Path.Combine(LegacyToolkitRoot, "PrinterEnterpriseFixTool", "Run_PRN_UET_ENTERPRISE_V2_3_VISUAL_BACKUP.bat"),
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Modules", "PrinterEnterpriseFixTool", "Run_PRN_UET_ENTERPRISE_V2_3_VISUAL_BACKUP.bat"),
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "Modules", "PrinterEnterpriseFixTool", "Run_PRN_UET_ENTERPRISE_V2_3_VISUAL_BACKUP.bat"),
-                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Modules", "PrinterEnterpriseFixTool", "Run_PRN_UET_ENTERPRISE_V2_3_VISUAL_BACKUP.bat")
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Modules", "PrinterEnterpriseFixTool", "Run_PRN_UET_ENTERPRISE_V2_3_VISUAL_BACKUP.bat"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "Modules", "PrinterEnterpriseFixTool", "Printer_Enterprise_FixTool.ps1"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "Modules", "PrinterEnterpriseFixTool", "Printer_Enterprise_FixTool.ps1")
                 };
 
-                string batPath = candidates.FirstOrDefault(File.Exists) ?? "";
-                if (string.IsNullOrEmpty(batPath))
+                string toolPath = candidates.FirstOrDefault(File.Exists) ?? "";
+                if (string.IsNullOrEmpty(toolPath))
                 {
-                    Log("Run_PRN_UET_ENTERPRISE_V2_3_VISUAL_BACKUP.bat bulunamadı!", LogLevel.Error);
+                    Log("Printer Enterprise Fix Tool dosyası bulunamadı!", LogLevel.Error);
                     return;
                 }
 
-                Log($"PRN Kurumsal Onarım Merkezi başlatılıyor: {batPath}...", LogLevel.Info);
-                Process.Start(new ProcessStartInfo
+                Log($"PRN Kurumsal Onarım Merkezi başlatılıyor: {toolPath}...", LogLevel.Info);
+                var startInfo = new ProcessStartInfo
                 {
-                    FileName = batPath,
-                    WorkingDirectory = Path.GetDirectoryName(batPath) ?? "",
+                    FileName = toolPath,
+                    WorkingDirectory = Path.GetDirectoryName(toolPath) ?? "",
                     UseShellExecute = true,
                     Verb = "runas"
-                });
+                };
+
+                if (Path.GetExtension(toolPath).Equals(".ps1", StringComparison.OrdinalIgnoreCase))
+                {
+                    startInfo.FileName = "powershell.exe";
+                    startInfo.Arguments = $"-NoProfile -ExecutionPolicy Bypass -File \"{toolPath}\"";
+                }
+
+                Process.Start(startInfo);
                 Log("PRN Kurumsal Onarım Merkezi başarıyla başlatıldı.", LogLevel.Success);
             }
             catch (Exception ex)
