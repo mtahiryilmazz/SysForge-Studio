@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -275,7 +275,7 @@ namespace SysForgeStudio.Views
             }
 
             AppendLog($"[GERİ YÜKLEME] '{Path.GetFileName(_lastBackupPath)}' sisteme geri yükleniyor...");
-            var res = await SystemBackupService.Instance.RestoreRegistryBackupAsync(_lastBackupPath);
+            var res = await SystemBackupService.Instance.RestoreRegistryBackupAsync(_lastBackupPath!);
             if (res.Success)
             {
                 AppendLog($"[BAŞARILI] {res.Message}");

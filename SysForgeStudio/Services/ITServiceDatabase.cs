@@ -453,7 +453,7 @@ namespace SysForgeStudio.Services
             if (!string.IsNullOrWhiteSpace(resolutionNote))
             {
                 using var cmd = new SqliteCommand("UPDATE tickets SET status='Çözüldü', resolution_note=@note WHERE id=@id;", conn);
-                cmd.Parameters.AddWithValue("@note", resolutionNote.Trim());
+                cmd.Parameters.AddWithValue("@note", resolutionNote!.Trim());
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
             }
@@ -838,7 +838,7 @@ namespace SysForgeStudio.Services
                         {
                             using var subKey = key.OpenSubKey(subKeyName);
                             string? name = subKey?.GetValue("DisplayName")?.ToString()?.Trim();
-                            if (!string.IsNullOrWhiteSpace(name) && !name.StartsWith("KB") && !sampleApps.Contains(name))
+                            if (!string.IsNullOrWhiteSpace(name) && !name!.StartsWith("KB") && !sampleApps.Contains(name))
                             {
                                 appCount++;
                                 if (sampleApps.Count < 4) sampleApps.Add(name);
@@ -943,7 +943,7 @@ namespace SysForgeStudio.Services
         public static bool IsInvalidSerial(string? s)
         {
             if (string.IsNullOrWhiteSpace(s)) return true;
-            string clean = s.Trim().ToLowerInvariant();
+            string clean = s!.Trim().ToLowerInvariant();
             return clean == "-" ||
                    clean == "0" ||
                    clean == "none" ||
