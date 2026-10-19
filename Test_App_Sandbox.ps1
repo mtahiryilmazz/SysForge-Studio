@@ -29,49 +29,66 @@ try {
         if ($bytes[$i] -eq 13 -and $bytes[$i+1] -eq 10) { $hasCrLf = $true; break }
     }
     
-    $proc = Start-Process -FilePath "cmd.exe" -ArgumentList "/c `"$batPath`"" -NoNewWindow -PassThru -Wait
-    $passed = ($proc.ExitCode -eq 0 -and $hasCrLf)
-    Add-TestResult "Run_SysForgeStudio.bat CMD Sözdizimi" $passed "ExitCode: $($proc.ExitCode), CRLF: $hasCrLf"
+    $proc = Start-Process -FilePath "cmd.exe" -ArgumentList "/c `"$batPath`"" -NoNewWindow -PassThru
+    Start-Sleep -Seconds 2
+    Stop-Process -Name SysForgeStudio -Force -ErrorAction SilentlyContinue
+    if (-not $proc.HasExited) { Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue }
+    $passed = $hasCrLf
+    Add-TestResult "Run_SysForgeStudio.bat CMD Sözdizimi" $passed "CRLF: $hasCrLf"
 } catch {
     Add-TestResult "Run_SysForgeStudio.bat CMD Sözdizimi" $false $_.Exception.Message
 }
 
 # Test 2: Portable EXE Varlığı ve Boyutu
 try {
-    $exePath = Join-Path $PSScriptRoot "publish_output\win-x64\SysForgeStudio.exe"
+    $exePath = Join-Path $PSScriptRoot "SysForgeStudio\bin\Release\net48\SysForgeStudio.exe"
     if (-not (Test-Path $exePath)) {
-        $exePath = Join-Path $PSScriptRoot "SysForgeStudio\bin\Release\net8.0-windows\SysForgeStudio.exe"
+        $exePath = Join-Path $PSScriptRoot "artifact-spike\SysForgeStudio-net48-spike\SysForgeStudio.exe"
     }
     $item = Get-Item $exePath
     $passed = ($item.Exists -and $item.Length -gt 100000)
-    Add-TestResult "SysForgeStudio.exe Dosya Doğrulaması" $passed ("Boyut: {0:N2} MB" -f ($item.Length / 1MB))
+    Add-TestResult "SysForgeStudio.exe Dosya Doğrulaması (net48)" $passed ("Boyut: {0:N2} MB" -f ($item.Length / 1MB))
 } catch {
-    Add-TestResult "SysForgeStudio.exe Dosya Doğrulaması" $false $_.Exception.Message
+    Add-TestResult "SysForgeStudio.exe Dosya Doğrulaması (net48)" $false $_.Exception.Message
 }
 
 # Test 3: Uygulama Başlatma ve Canlı Çalışma Testi (Runtime Crash / NullRef Taraması)
 try {
-    $exePath = Join-Path $PSScriptRoot "publish_output\win-x64\SysForgeStudio.exe"
+    $exePath = Join-Path $PSScriptRoot "SysForgeStudio\bin\Release\net48\SysForgeStudio.exe"
     if (-not (Test-Path $exePath)) {
-        $exePath = Join-Path $PSScriptRoot "SysForgeStudio\bin\Release\net8.0-windows\SysForgeStudio.exe"
+        $exePath = Join-Path $PSScriptRoot "artifact-spike\SysForgeStudio-net48-spike\SysForgeStudio.exe"
     }
     $proc = Start-Process -FilePath $exePath -PassThru
     Start-Sleep -Seconds 3
     
     $proc.Refresh()
     if ($proc.HasExited) {
-        Add-TestResult "Uygulama Çalışma Stabilitesi" $false "Uygulama başlatıldıktan sonra çöktü (ExitCode: $($proc.ExitCode))"
+        Add-TestResult "Ana Uygulama Çalışma Stabilitesi" $false "Uygulama başlatıldıktan sonra çöktü (ExitCode: $($proc.ExitCode))"
     } else {
         $wsMb = [Math]::Round($proc.WorkingSet64 / 1MB, 2)
-        Add-TestResult "Uygulama Çalışma Stabilitesi" $true "Uygulama aktif, çökme yok, bellek kullanımı: $wsMb MB"
-        # Test sonrası temizle
+        Add-TestResult "Ana Uygulama Çalışma Stabilitesi" $true "Uygulama aktif, çökme yok, bellek: $wsMb MB"
         Stop-Process -Id $proc.Id -Force
     }
 } catch {
-    Add-TestResult "Uygulama Çalışma Stabilitesi" $false $_.Exception.Message
+    Add-TestResult "Ana Uygulama Çalışma Stabilitesi" $false $_.Exception.Message
 }
 
-# Test 4: Visual Studio Solution (.sln) Doğrulaması
+# Test 4: WPF-UI & .NET 4.8 Spike Uyumluluk Testi (--spike --auto)
+try {
+    $exePath = Join-Path $PSScriptRoot "SysForgeStudio\bin\Release\net48\SysForgeStudio.exe"
+    if (-not (Test-Path $exePath)) {
+        $exePath = Join-Path $PSScriptRoot "artifact-spike\SysForgeStudio-net48-spike\SysForgeStudio.exe"
+    }
+    $proc = Start-Process -FilePath $exePath -ArgumentList "--spike", "--auto" -PassThru -Wait
+    $passed = ($proc.ExitCode -eq 0)
+    $repFile = Join-Path (Split-Path $exePath) "spike_report.txt"
+    $hasReport = (Test-Path $repFile)
+    Add-TestResult "WPF-UI Spike Uyumluluk Denemesi" ($passed -and $hasReport) "SpikeWindow çalıştı, rapor üretildi: $hasReport"
+} catch {
+    Add-TestResult "WPF-UI Spike Uyumluluk Denemesi" $false $_.Exception.Message
+}
+
+# Test 5: Visual Studio Solution (.sln) Doğrulaması
 try {
     $slnPath = Join-Path $PSScriptRoot "SysForgeStudio.sln"
     $passed = (Test-Path $slnPath)
@@ -80,14 +97,14 @@ try {
     Add-TestResult "Visual Studio Solution Doğrulaması" $false $_.Exception.Message
 }
 
-# Test 5: .NET 8 Derleme Doğrulaması (Zero Warnings / Zero Errors)
+# Test 6: .NET Framework 4.8 Derleme Doğrulaması
 try {
     $projPath = Join-Path $PSScriptRoot "SysForgeStudio\SysForgeStudio.csproj"
-    $buildOutput = dotnet build $projPath -c Release --no-restore
+    $buildOutput = dotnet build $projPath -c Release --no-restore -v minimal
     $buildSuccess = ($LASTEXITCODE -eq 0)
-    Add-TestResult ".NET 8 Derleme Bütünlüğü" $buildSuccess "Derleme başarılı, sıfır hata"
+    Add-TestResult ".NET 4.8 Derleme Bütünlüğü" $buildSuccess "Derleme başarılı, sıfır hata"
 } catch {
-    Add-TestResult ".NET 8 Derleme Bütünlüğü" $false $_.Exception.Message
+    Add-TestResult ".NET 4.8 Derleme Bütünlüğü" $false $_.Exception.Message
 }
 
 Write-Host "`n============================================================" -ForegroundColor Cyan

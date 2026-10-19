@@ -31,6 +31,16 @@ namespace SysForgeStudio.Views
                 new { Cihaz = "PC-02", Bolum = "Bilgi İşlem", Durum = "Serviste" },
                 new { Cihaz = "YZC-01", Bolum = "Arşiv", Durum = "Hazır" },
             };
+
+            Loaded += async (s, e) =>
+            {
+                if (Environment.GetCommandLineArgs().Any(a => string.Equals(a, "--auto", StringComparison.OrdinalIgnoreCase)))
+                {
+                    await RunAllChecksAsync();
+                    await Task.Delay(1500);
+                    Application.Current.Shutdown();
+                }
+            };
         }
 
         private void BtnTheme_Click(object sender, RoutedEventArgs e)
@@ -53,6 +63,11 @@ namespace SysForgeStudio.Views
         }
 
         private async void BtnRun_Click(object sender, RoutedEventArgs e)
+        {
+            await RunAllChecksAsync();
+        }
+
+        public async Task RunAllChecksAsync()
         {
             BtnRun.IsEnabled = false;
             var sb = new StringBuilder();
