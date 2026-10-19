@@ -35,6 +35,10 @@ install_log.txt
 sandbox_warnings.log
 toolkit_startup_debug.log
 
+# --- Lisans / yedek veritabanlari (hassas) ---
+license.json
+*.db
+
 # --- Heavy Binaries & Large Archives ---
 *.exe
 *.dll

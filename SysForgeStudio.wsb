@@ -3,12 +3,12 @@
   <Networking>Default</Networking>
   <MappedFolders>
     <MappedFolder>
-      <HostFolder>C:\Users\BT\Documents\Github\SysForge-Studio</HostFolder>
+      <HostFolder>C:\Users\YILMAZ\Documents\GitHub\SysForge-Studio</HostFolder>
       <SandboxFolder>C:\Users\WDAGUtilityAccount\Desktop\SysForgeStudio</SandboxFolder>
       <ReadOnly>false</ReadOnly>
     </MappedFolder>
   </MappedFolders>
   <LogonCommand>
-    <Command>C:\Users\WDAGUtilityAccount\Desktop\SysForgeStudio\Run_Modern_Toolkit.bat</Command>
+    <Command>C:\Users\WDAGUtilityAccount\Desktop\SysForgeStudio\Run_SysForgeStudio.bat</Command>
   </LogonCommand>
 </Configuration>
