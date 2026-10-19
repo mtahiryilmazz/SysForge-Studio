@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -284,9 +284,9 @@ namespace SysForgeStudio.Services
             try
             {
                 using var client = new TcpClient();
-                using var cts = new CancellationTokenSource(timeoutMs);
-                var vt = client.ConnectAsync(host, port, cts.Token);
-                return vt.AsTask().Wait(timeoutMs) && client.Connected;
+                // net48: ConnectAsync(host, port, CancellationToken) yok; zaman asimi Task.Wait ile saglanir
+                var connectTask = client.ConnectAsync(host, port);
+                return connectTask.Wait(timeoutMs) && client.Connected;
             }
             catch
             {
@@ -1785,9 +1785,8 @@ namespace SysForgeStudio.Services
             try
             {
                 using var client = new TcpClient();
-                using var cts = new CancellationTokenSource(400);
-                var vt = client.ConnectAsync("127.0.0.1", 9999, cts.Token);
-                return vt.AsTask().Wait(400) && client.Connected;
+                var connectTask = client.ConnectAsync("127.0.0.1", 9999);
+                return connectTask.Wait(400) && client.Connected;
             }
             catch { }
             return false;

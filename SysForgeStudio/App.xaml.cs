@@ -1,11 +1,15 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Net;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Wpf.Ui.Appearance;
+using Wpf.Ui.Markup;
 
 namespace SysForgeStudio
 {
@@ -17,6 +21,25 @@ namespace SysForgeStudio
         protected override void OnStartup(StartupEventArgs e)
         {
             SetupCrashLogger();
+
+            // Win7 SP1 / Win8: TLS 1.2 elle acilmali (GitHub / web istekleri icin)
+            try { ServicePointManager.SecurityProtocol |= (SecurityProtocolType)3072; } catch { }
+
+            if (e.Args.Any(a => string.Equals(a, "--spike", StringComparison.OrdinalIgnoreCase)))
+            {
+                // WPF-UI uyumluluk denemesi. base.OnStartup cagrilmaz, boylece StartupUri ile
+                // normal ana pencere acilmaz; normal calisma yolu hic degismez.
+                Resources.Remove(typeof(System.Windows.Controls.TextBox));
+                Resources.Remove(typeof(System.Windows.Controls.ComboBox));
+                Resources.Remove(typeof(System.Windows.Controls.DataGrid));
+                Resources.Remove(typeof(System.Windows.Controls.ListBox));
+                Resources.Remove(typeof(System.Windows.Controls.ProgressBar));
+                Resources.MergedDictionaries.Add(new ThemesDictionary { Theme = ApplicationTheme.Dark });
+                Resources.MergedDictionaries.Add(new ControlsDictionary());
+                new Views.SpikeWindow().Show();
+                return;
+            }
+
             base.OnStartup(e);
         }
 
