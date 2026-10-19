@@ -1782,90 +1782,34 @@ namespace SysForgeStudio.Services
 
         public bool IsV6Running()
         {
-            try
-            {
-                using var client = new TcpClient();
-                var connectTask = client.ConnectAsync("127.0.0.1", 9999);
-                return connectTask.Wait(400) && client.Connected;
-            }
-            catch { }
-            return false;
+            return ITWebDashboardService.Instance.IsRunning;
         }
 
         public async Task StartV6WebDashboardAsync()
         {
             try
             {
-                string scriptPath = "";
-                string[] candidates = {
-                    Path.Combine(LegacyToolkitRoot, "Modules", "WebBridgeServer.ps1"),
-                    @"C:\ProgramData\SysForgeStudio\Modules\WebBridgeServer.ps1",
-                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Modules", "WebBridgeServer.ps1"),
-                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "Modules", "WebBridgeServer.ps1")
-                };
+                Log("Web Dashboard başlatılıyor...", LogLevel.Info);
 
-                foreach (var c in candidates)
+                if (!ITWebDashboardService.Instance.IsRunning)
                 {
-                    if (File.Exists(c))
-                    {
-                        scriptPath = Path.GetFullPath(c);
-                        break;
-                    }
+                    ITWebDashboardService.Instance.Start(5000);
                 }
 
-                if (string.IsNullOrEmpty(scriptPath))
-                {
-                    Log("WebBridgeServer.ps1 modülü bulunamadı!", LogLevel.Error);
-                    return;
-                }
+                await Task.Delay(300);
 
-                Log("V6 Web Köprüsü başlatılıyor (Port 9999)...", LogLevel.Info);
-
-                // Ensure previous instance is stopped
-                StopV6WebDashboard();
-
-                await Task.Run(() =>
-                {
-                    // Add firewall rule
-                    try
-                    {
-                        var psiFw = new ProcessStartInfo
-                        {
-                            FileName = "netsh.exe",
-                            Arguments = "advfirewall firewall add rule name=\"SysForge Studio Web Bridge\" dir=in action=allow protocol=TCP localport=9999",
-                            CreateNoWindow = true,
-                            UseShellExecute = false
-                        };
-                        Process.Start(psiFw)?.WaitForExit(3000);
-                    }
-                    catch { }
-
-                    var psi = new ProcessStartInfo
-                    {
-                        FileName = "powershell.exe",
-                        Arguments = $"-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"{scriptPath}\" -Port 9999",
-                        WorkingDirectory = Path.GetDirectoryName(scriptPath) ?? "",
-                        CreateNoWindow = true,
-                        UseShellExecute = false
-                    };
-                    Process.Start(psi);
-                });
-
-                // Wait for port to open
-                await Task.Delay(2500);
-
-                // Open browser
+                string url = $"http://localhost:{ITWebDashboardService.Instance.Port}/";
                 Process.Start(new ProcessStartInfo
                 {
-                    FileName = "http://localhost:9999/dashboard.html",
+                    FileName = url,
                     UseShellExecute = true
                 });
 
-                Log("V6 Web Dashboard başarıyla açıldı (http://localhost:9999/dashboard.html).", LogLevel.Success);
+                Log($"Web Dashboard başarıyla açıldı ({url}).", LogLevel.Success);
             }
             catch (Exception ex)
             {
-                Log($"V6 başlatılırken hata: {ex.Message}", LogLevel.Error);
+                Log($"Web Dashboard başlatılırken hata: {ex.Message}", LogLevel.Error);
             }
         }
 
@@ -1873,19 +1817,12 @@ namespace SysForgeStudio.Services
         {
             try
             {
-                var psi = new ProcessStartInfo
-                {
-                    FileName = "powershell.exe",
-                    Arguments = "-NoProfile -ExecutionPolicy Bypass -Command \"Get-CimInstance Win32_Process | Where-Object { $_.Name -like '*powershell*' -and $_.CommandLine -like '*WebBridgeServer.ps1*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }\"",
-                    CreateNoWindow = true,
-                    UseShellExecute = false
-                };
-                Process.Start(psi)?.WaitForExit(4000);
-                Log("V6 Web Köprüsü sunucusu durduruldu.", LogLevel.Info);
+                ITWebDashboardService.Instance.Stop();
+                Log("Web Dashboard durduruldu.", LogLevel.Info);
             }
             catch (Exception ex)
             {
-                Log($"V6 durdurulurken hata: {ex.Message}", LogLevel.Error);
+                Log($"Web Dashboard durdurulurken hata: {ex.Message}", LogLevel.Error);
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -19,6 +19,10 @@ namespace SysForgeStudio.Views
         {
             InitializeComponent();
             Loaded += LegacyModulesView_Loaded;
+            ITWebDashboardService.Instance.StateChanged += _ =>
+            {
+                Dispatcher.Invoke(RefreshV6Status);
+            };
         }
 
         private void LegacyModulesView_Loaded(object sender, RoutedEventArgs e)
@@ -157,8 +161,13 @@ namespace SysForgeStudio.Views
         private void RefreshV6Status()
         {
             bool running = ToolkitEngine.Instance.IsV6Running();
-            TxtV6StatusIndicator.Text = running ? "Sunucu Durumu: AKTİF (Port 9999 Dinleniyor)" : "Sunucu Durumu: KAPALI";
+            int port = ITWebDashboardService.Instance.Port;
+            TxtV6StatusIndicator.Text = running ? $"Sunucu Durumu: AKTİF (Port {port} Dinleniyor)" : "Sunucu Durumu: KAPALI";
             TxtV6StatusIndicator.Foreground = running ? (Brush)FindResource("PtSuccess") : new SolidColorBrush(Color.FromRgb(148, 163, 184));
+            if (TxtV6Url != null)
+            {
+                TxtV6Url.Text = $"http://localhost:{port}";
+            }
         }
 
         private async void BtnStartV6_Click(object sender, RoutedEventArgs e)
