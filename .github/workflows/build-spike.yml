@@ -1,0 +1,21 @@
+name: Build net48 spike
+
+on:
+  push:
+    branches: [ 'spike/**' ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Derle (net48, AnyCPU)
+        run: dotnet build SysForgeStudio/SysForgeStudio.csproj -c Release -v minimal
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SysForgeStudio-net48-spike
+          path: SysForgeStudio/bin/Release/net48/

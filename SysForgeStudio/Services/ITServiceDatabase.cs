@@ -854,7 +854,7 @@ namespace SysForgeStudio.Services
             string uptime = "-";
             try
             {
-                var bootSpan = TimeSpan.FromMilliseconds(Environment.TickCount64);
+                var bootSpan = TimeSpan.FromMilliseconds(EnvironmentCompat.TickCount64);
                 uptime = $"{bootSpan.Days} gün, {bootSpan.Hours} saat, {bootSpan.Minutes} dakika";
             }
             catch { }

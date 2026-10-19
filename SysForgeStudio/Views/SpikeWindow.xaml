@@ -1,0 +1,62 @@
+<ui:FluentWindow x:Class="SysForgeStudio.Views.SpikeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        Title="SysForge Studio - WPF-UI Uyumluluk Denemesi"
+        Width="1000" Height="680" MinWidth="760" MinHeight="520"
+        WindowStartupLocation="CenterScreen"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Grid.Row="0" Title="SysForge Studio · WPF-UI Denemesi" />
+
+        <Grid Grid.Row="1" Margin="16,8,16,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="210" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Yan menü benzeri liste (gerçek NavigationView sonraki denemede) -->
+            <ListBox Grid.Column="0" Margin="0,0,12,0" SelectedIndex="0">
+                <ListBoxItem Content="Genel Bakış" />
+                <ListBoxItem Content="Yazıcı Onarımı" />
+                <ListBoxItem Content="Ağ Keşfi" />
+                <ListBoxItem Content="Donanım Ekspertizi" />
+                <ListBoxItem Content="Servis Masası" />
+            </ListBox>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <ui:Card Grid.Row="0" Margin="0,0,0,12">
+                    <StackPanel Orientation="Horizontal">
+                        <ui:Button x:Name="BtnRun" Content="Testleri çalıştır"
+                                   Icon="{ui:SymbolIcon Fluent24}" Click="BtnRun_Click" Margin="0,0,8,0" />
+                        <ui:Button x:Name="BtnTheme" Content="Açık / Koyu tema"
+                                   Click="BtnTheme_Click" Margin="0,0,8,0" />
+                        <ui:Button x:Name="BtnCopy" Content="Raporu kopyala"
+                                   Click="BtnCopy_Click" Margin="0,0,16,0" />
+                        <ProgressBar IsIndeterminate="False" Value="60" Width="120" Height="6" VerticalAlignment="Center" />
+                    </StackPanel>
+                </ui:Card>
+
+                <DataGrid Grid.Row="1" x:Name="SampleGrid" Height="130" Margin="0,0,0,12"
+                          AutoGenerateColumns="True" IsReadOnly="True" />
+
+                <TextBox Grid.Row="2" x:Name="TxtReport" IsReadOnly="True" AcceptsReturn="True"
+                         TextWrapping="NoWrap" VerticalScrollBarVisibility="Auto"
+                         HorizontalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="12"
+                         Text="Önce 'Testleri çalıştır' düğmesine basın. Pencerenin düzgün görünüp görünmediğini de not edin." />
+            </Grid>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

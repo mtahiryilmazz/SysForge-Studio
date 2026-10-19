@@ -284,9 +284,9 @@ namespace SysForgeStudio.Services
             try
             {
                 using var client = new TcpClient();
-                using var cts = new CancellationTokenSource(timeoutMs);
-                var vt = client.ConnectAsync(host, port, cts.Token);
-                return vt.AsTask().Wait(timeoutMs) && client.Connected;
+                // net48: ConnectAsync(host, port, CancellationToken) yok; zaman asimi Task.Wait ile saglanir
+                var connectTask = client.ConnectAsync(host, port);
+                return connectTask.Wait(timeoutMs) && client.Connected;
             }
             catch
             {
@@ -1558,7 +1558,7 @@ namespace SysForgeStudio.Services
                 // Uptime
                 try
                 {
-                    var uptime = TimeSpan.FromMilliseconds(Environment.TickCount64);
+                    var uptime = TimeSpan.FromMilliseconds(EnvironmentCompat.TickCount64);
                     metrics.Add(new PerformanceMetric { Name = "Çalışma Süresi", Value = $"{(int)uptime.TotalDays}g {uptime.Hours}s {uptime.Minutes}d", Unit = "", Status = uptime.TotalDays > 30 ? "Uzun" : "Normal" });
                 }
                 catch { }
@@ -1785,9 +1785,8 @@ namespace SysForgeStudio.Services
             try
             {
                 using var client = new TcpClient();
-                using var cts = new CancellationTokenSource(400);
-                var vt = client.ConnectAsync("127.0.0.1", 9999, cts.Token);
-                return vt.AsTask().Wait(400) && client.Connected;
+                var connectTask = client.ConnectAsync("127.0.0.1", 9999);
+                return connectTask.Wait(400) && client.Connected;
             }
             catch { }
             return false;

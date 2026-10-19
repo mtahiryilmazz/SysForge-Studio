@@ -213,17 +213,17 @@ namespace SysForgeStudio.Services
         public async Task SaveBaselineAsync(HardwareSnapshot snapshot)
         {
             string json = JsonSerializer.Serialize(snapshot, new JsonSerializerOptions { WriteIndented = true });
-            await File.WriteAllTextAsync(BaselineFilePath, json, Encoding.UTF8);
+            await FileCompat.WriteAllTextAsync(BaselineFilePath, json, Encoding.UTF8);
 
             // Also save a timestamped archive copy
             string archiveFile = Path.Combine(SnapshotsDirectory, $"Snapshot_{DateTime.Now:yyyyMMdd_HHmmss}.json");
-            await File.WriteAllTextAsync(archiveFile, json, Encoding.UTF8);
+            await FileCompat.WriteAllTextAsync(archiveFile, json, Encoding.UTF8);
         }
 
         public async Task<HardwareSnapshot?> LoadBaselineAsync()
         {
             if (!File.Exists(BaselineFilePath)) return null;
-            string json = await File.ReadAllTextAsync(BaselineFilePath, Encoding.UTF8);
+            string json = await FileCompat.ReadAllTextAsync(BaselineFilePath, Encoding.UTF8);
             return JsonSerializer.Deserialize<HardwareSnapshot>(json);
         }
 
@@ -456,7 +456,7 @@ namespace SysForgeStudio.Services
             sb.AppendLine("<p style='font-size:12px; color:#64748b; text-align:center; margin-top:30px;'>Bu rapor SysForge Studio Donanım Ekspertiz Motoru tarafından üretilmiştir.</p>");
             sb.AppendLine("</div></body></html>");
 
-            await File.WriteAllTextAsync(reportFile, sb.ToString(), Encoding.UTF8);
+            await FileCompat.WriteAllTextAsync(reportFile, sb.ToString(), Encoding.UTF8);
             return reportFile;
         }
     }

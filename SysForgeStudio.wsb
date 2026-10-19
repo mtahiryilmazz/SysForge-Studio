@@ -9,6 +9,6 @@
     </MappedFolder>
   </MappedFolders>
   <LogonCommand>
-    <Command>C:\Users\WDAGUtilityAccount\Desktop\SysForgeStudio\Run_Modern_Toolkit.bat</Command>
+    <Command>C:\Users\WDAGUtilityAccount\Desktop\SysForgeStudio\Run_SysForgeStudio.bat</Command>
   </LogonCommand>
 </Configuration>
