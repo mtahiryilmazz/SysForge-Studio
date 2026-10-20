@@ -77,21 +77,21 @@
 
                 <Border Grid.Column="0" Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14">
                     <StackPanel>
-                        <TextBlock Text="AÇIK ARIZA TALEPLERİ" FontSize="11" FontWeight="Bold" Foreground="#F59E0B"/>
+                        <TextBlock Text="AÇIK ARIZA TALEPLERİ" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource PtStatusAmber}"/>
                         <TextBlock x:Name="TxtOpenTicketsCount" Text="0" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" Margin="0,4,0,0"/>
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Column="2" Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14">
                     <StackPanel>
-                        <TextBlock Text="ÇÖZÜLEN ÇAĞRILAR" FontSize="11" FontWeight="Bold" Foreground="#107C41"/>
+                        <TextBlock Text="ÇÖZÜLEN ÇAĞRILAR" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource PtStatusGreen}"/>
                         <TextBlock x:Name="TxtResolvedTicketsCount" Text="0" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" Margin="0,4,0,0"/>
                     </StackPanel>
                 </Border>
 
                 <Border Grid.Column="4" Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14">
                     <StackPanel>
-                        <TextBlock Text="KAYITLI DONANIM ENVANTERİ" FontSize="11" FontWeight="Bold" Foreground="#0078D4"/>
+                        <TextBlock Text="KAYITLI DONANIM ENVANTERİ" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource PtAccent}"/>
                         <TextBlock x:Name="TxtInventoryCount" Text="0" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" Margin="0,4,0,0"/>
                     </StackPanel>
                 </Border>
@@ -160,10 +160,10 @@
                                         <Grid Margin="0,0,0,6">
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                 <TextBlock Text="🏢" FontSize="13" Margin="0,0,6,0"/>
-                                                <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="#38BDF8" FontSize="13"/>
+                                                <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="{DynamicResource PtStatusBlue}" FontSize="13"/>
                                                 <TextBlock Text="{Binding Units.Count, StringFormat=' ({0} Alt Birim)'}" FontSize="11" Foreground="{DynamicResource PtTextSecondary}" VerticalAlignment="Center" Margin="6,0,0,0"/>
                                             </StackPanel>
-                                            <Button Content="🗑️ Müdürlüğü Sil" Tag="{Binding Id}" Style="{StaticResource PtSecondaryButton}" HorizontalAlignment="Right" Padding="8,2" FontSize="11" Foreground="#F87171" Click="BtnDeleteDept_Click"/>
+                                            <Button Content="🗑️ Müdürlüğü Sil" Tag="{Binding Id}" Style="{StaticResource PtSecondaryButton}" HorizontalAlignment="Right" Padding="8,2" FontSize="11" Foreground="{DynamicResource PtStatusRed}" Click="BtnDeleteDept_Click"/>
                                         </Grid>
                                         
                                         <!-- Units under this department -->
@@ -175,10 +175,10 @@
                                             </ItemsControl.ItemsPanel>
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Border Background="{DynamicResource PtSubtleBg}" BorderBrush="#3A3A3A" BorderThickness="1" CornerRadius="4" Padding="8,3" Margin="0,0,6,4">
+                                                    <Border Background="{DynamicResource PtSubtleBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="4" Padding="8,3" Margin="0,0,6,4">
                                                         <StackPanel Orientation="Horizontal">
                                                             <TextBlock Text="{Binding Name}" Foreground="{DynamicResource PtTextPrimary}" FontSize="11.5" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                                            <Button Content="✕" Tag="{Binding Id}" Style="{StaticResource PtSecondaryButton}" Padding="4,0" FontSize="10" Foreground="#FCA5A5" Click="BtnDeleteUnit_Click" ToolTip="Bu birimi sil"/>
+                                                            <Button Content="✕" Tag="{Binding Id}" Style="{StaticResource PtSecondaryButton}" Padding="4,0" FontSize="10" Foreground="{DynamicResource PtStatusRed}" Click="BtnDeleteUnit_Click" ToolTip="Bu birimi sil"/>
                                                         </StackPanel>
                                                     </Border>
                                                 </DataTemplate>
@@ -291,13 +291,13 @@
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
 
-                                        <TextBlock Grid.Column="0" Text="{Binding Id, StringFormat='#{0}'}" FontWeight="Bold" Foreground="#38BDF8" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="0" Text="{Binding Id, StringFormat='#{0}'}" FontWeight="Bold" Foreground="{DynamicResource PtStatusBlue}" VerticalAlignment="Center"/>
                                         <TextBlock Grid.Column="1" Text="{Binding PersonnelName}" FontWeight="SemiBold" Foreground="{DynamicResource PtTextPrimary}" VerticalAlignment="Center"/>
                                         <TextBlock Grid.Column="2" Text="{Binding Department}" Foreground="{DynamicResource PtTextSecondary}" VerticalAlignment="Center"/>
                                         <TextBlock Grid.Column="3" Text="{Binding IssueType}" Foreground="{DynamicResource PtTextPrimary}" VerticalAlignment="Center"/>
                                         <StackPanel Grid.Column="4" VerticalAlignment="Center" Margin="0,0,8,0">
-                                            <TextBlock Text="{Binding Description}" Foreground="#CCCCCC" TextTrimming="CharacterEllipsis"/>
-                                            <TextBlock Text="{Binding ResolutionNote, StringFormat='💡 Çözüm: {0}'}" FontSize="11" Foreground="#34D399" TextTrimming="CharacterEllipsis" Margin="0,2,0,0">
+                                            <TextBlock Text="{Binding Description}" Foreground="{DynamicResource PtTextSecondary}" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding ResolutionNote, StringFormat='💡 Çözüm: {0}'}" FontSize="11" Foreground="{DynamicResource PtStatusGreen}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">
                                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -376,7 +376,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="Bu Bilgisayarın Donanım &amp; Yazılım Bilgi Kartı" FontSize="13.5" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}"/>
                                             <Border Style="{StaticResource PtBadge}" Margin="8,0,0,0" Padding="6,1">
-                                                <TextBlock Text="Canlı Sistem" FontSize="10" FontWeight="SemiBold" Foreground="#4ADE80"/>
+                                                <TextBlock Text="Canlı Sistem" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource PtStatusGreen}"/>
                                             </Border>
                                         </StackPanel>
                                         <TextBlock x:Name="TxtLiveMachineHeader" Text="Cihaz: Algılanıyor... | IP: Algılanıyor..." FontSize="11.5" Foreground="{DynamicResource PtTextSecondary}" Margin="0,1,0,0"/>
@@ -401,7 +401,7 @@
 
                                     <!-- Col 1: Hardware Summary -->
                                     <StackPanel Grid.Column="0">
-                                        <TextBlock Text="⚙️ DONANIM BİLEŞENLERİ" FontSize="10" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,4"/>
+                                        <TextBlock Text="⚙️ DONANIM BİLEŞENLERİ" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource PtStatusBlue}" Margin="0,0,0,4"/>
                                         <TextBlock x:Name="TxtLiveBrandModel" Text="Model: Algılanıyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource PtTextPrimary}" TextTrimming="CharacterEllipsis"/>
                                         <TextBlock x:Name="TxtLiveCpuRam" Text="CPU / RAM: Algılanıyor..." FontSize="11" Foreground="{DynamicResource PtTextPrimary}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
                                         <TextBlock x:Name="TxtLiveMotherboard" Text="Anakart: Algılanıyor..." FontSize="10.5" Foreground="{DynamicResource PtTextSecondary}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
@@ -409,7 +409,7 @@
 
                                     <!-- Col 2: Software & OS Summary -->
                                     <StackPanel Grid.Column="2">
-                                        <TextBlock Text="🪟 YAZILIM &amp; İŞLETİM SİSTEMİ" FontSize="10" FontWeight="Bold" Foreground="#4ADE80" Margin="0,0,0,4"/>
+                                        <TextBlock Text="🪟 YAZILIM &amp; İŞLETİM SİSTEMİ" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource PtStatusGreen}" Margin="0,0,0,4"/>
                                         <TextBlock x:Name="TxtLiveOsBuild" Text="İşletim Sistemi: Algılanıyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource PtTextPrimary}" TextTrimming="CharacterEllipsis"/>
                                         <TextBlock x:Name="TxtLiveSecurity" Text="Güvenlik: Defender Aktif" FontSize="11" Foreground="{DynamicResource PtTextPrimary}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
                                         <TextBlock x:Name="TxtLiveBios" Text="BIOS: Algılanıyor..." FontSize="10.5" Foreground="{DynamicResource PtTextSecondary}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
@@ -417,10 +417,10 @@
 
                                     <!-- Col 3: Network & Assignment -->
                                     <StackPanel Grid.Column="4">
-                                        <TextBlock Text="🌐 AĞ &amp; KULLANICI BİLGİSİ" FontSize="10" FontWeight="Bold" Foreground="#F59E0B" Margin="0,0,0,4"/>
+                                        <TextBlock Text="🌐 AĞ &amp; KULLANICI BİLGİSİ" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource PtStatusAmber}" Margin="0,0,0,4"/>
                                         <TextBlock x:Name="TxtLiveIpMac" Text="IP / MAC: Algılanıyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource PtTextPrimary}" TextTrimming="CharacterEllipsis"/>
                                         <TextBlock x:Name="TxtLiveUser" Text="Kullanıcı: Algılanıyor..." FontSize="11" Foreground="{DynamicResource PtTextPrimary}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
-                                        <TextBlock x:Name="TxtLiveSerial" Text="Seri No / HWID: Algılanıyor..." FontSize="10.5" FontFamily="Consolas" Foreground="#38BDF8" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                        <TextBlock x:Name="TxtLiveSerial" Text="Seri No / HWID: Algılanıyor..." FontSize="10.5" FontFamily="Consolas" Foreground="{DynamicResource PtStatusBlue}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -454,7 +454,7 @@
 
                                         <TextBlock Grid.Column="0" Text="{Binding Brand}" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding Brand}"/>
                                         <TextBlock Grid.Column="1" Text="{Binding Model}" Foreground="{DynamicResource PtTextPrimary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding Model}" Margin="4,0"/>
-                                        <TextBlock Grid.Column="2" Text="{Binding SerialNo, StringFormat='SN: {0}'}" FontFamily="Consolas" Foreground="#38BDF8" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding SerialNo}" Margin="4,0"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding SerialNo, StringFormat='SN: {0}'}" FontFamily="Consolas" Foreground="{DynamicResource PtStatusBlue}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding SerialNo}" Margin="4,0"/>
                                         <TextBlock Grid.Column="3" Text="{Binding IpAddress, StringFormat='IP: {0}'}" FontFamily="Consolas" Foreground="{DynamicResource PtTextSecondary}" VerticalAlignment="Center" Margin="4,0"/>
                                         <TextBlock Grid.Column="4" Text="{Binding UserName, StringFormat='Zimmet: {0}'}" Foreground="{DynamicResource PtTextPrimary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding UserName}" Margin="4,0"/>
                                         <StackPanel Grid.Column="5" Orientation="Horizontal" VerticalAlignment="Center">

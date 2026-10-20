@@ -78,21 +78,113 @@ namespace SysForgeStudio
             var palette = light
                 ? new (string Key, string Value)[]
                 {
-                    ("PtWindowBg", "#FFF3F6FA"), ("PtSidebarBg", "#FFEAF0F6"),
-                    ("PtCardBg", "#FFFFFFFF"), ("PtCardHover", "#FFE8EEF5"),
-                    ("PtCardBorder", "#FFD3DDE8"), ("PtAccent", "#FF0078D4"),
-                    ("PtAccentHover", "#FF006CBE"), ("PtTextPrimary", "#FF172536"),
-                    ("PtTextSecondary", "#FF526174"), ("PtSuccess", "#FF107C41"),
-                    ("PtWarning", "#FFB54708"), ("PtSubtleBg", "#FFF4F7FA")
+                    // Pencereler, Paneller ve Kartlar
+                    ("PtWindowBg", "#FFF4F7FB"),
+                    ("PtSidebarBg", "#FFE9F0F8"),
+                    ("PtCardBg", "#FFFFFFFF"),
+                    ("PtCardHover", "#FFF0F4F9"),
+                    ("PtCardBorder", "#FFD0DCE7"),
+                    ("PtSubtleBg", "#FFF1F5F9"),
+
+                    // Vurgu & Genel
+                    ("PtAccent", "#FF0078D4"),
+                    ("PtAccentHover", "#FF006CBE"),
+                    ("PtSuccess", "#FF15803D"),
+                    ("PtWarning", "#FFB45309"),
+                    ("PtDanger", "#FFDC2626"),
+
+                    // Tipografi
+                    ("PtTextPrimary", "#FF0F172A"),
+                    ("PtTextSecondary", "#FF475569"),
+                    ("PtTextMuted", "#FF64748B"),
+
+                    // İkincil Butonlar
+                    ("PtButtonBg", "#FFFFFFFF"),
+                    ("PtButtonBorder", "#FFCBD5E1"),
+                    ("PtButtonHover", "#FFE2E8F0"),
+                    ("PtButtonPressed", "#FFCBD5E1"),
+                    ("PtButtonForeground", "#FF0F172A"),
+
+                    // Navigasyon & Seçim
+                    ("PtNavHover", "#FFE2E8F0"),
+                    ("PtNavActive", "#FFD9E6F2"),
+
+                    // Girdi & Rozetler
+                    ("PtInputBg", "#FFFFFFFF"),
+                    ("PtInputBorder", "#FFCBD5E1"),
+                    ("PtBadgeBg", "#FFE2E8F0"),
+
+                    // Veri Tablosu
+                    ("PtGridRow", "#FFFFFFFF"),
+                    ("PtGridRowAlt", "#FFF8FAFC"),
+                    ("PtGridHeader", "#FFEAEFF6"),
+
+                    // Durum Renkleri (Açık tema için yüksek kontrastlı)
+                    ("PtStatusBlue", "#FF0284C7"),
+                    ("PtStatusGreen", "#FF16A34A"),
+                    ("PtStatusYellow", "#FFD97706"),
+                    ("PtStatusAmber", "#FFD97706"),
+                    ("PtStatusRed", "#FFDC2626"),
+                    ("PtStatusPurple", "#FF7C3AED"),
+
+                    // Kod & Terminal
+                    ("PtCodeBackground", "#FFF1F5F9"),
+                    ("PtCodeForeground", "#FF0369A1")
                 }
                 : new (string Key, string Value)[]
                 {
-                    ("PtWindowBg", "#FF202020"), ("PtSidebarBg", "#FF181818"),
-                    ("PtCardBg", "#FF2B2B2B"), ("PtCardHover", "#FF323232"),
-                    ("PtCardBorder", "#FF383838"), ("PtAccent", "#FF0078D4"),
-                    ("PtAccentHover", "#FF1A86D9"), ("PtTextPrimary", "#FFFFFFFF"),
-                    ("PtTextSecondary", "#FFA6A6A6"), ("PtSuccess", "#FF107C41"),
-                    ("PtWarning", "#FFD83B01"), ("PtSubtleBg", "#FF262626")
+                    // Pencereler, Paneller ve Kartlar
+                    ("PtWindowBg", "#FF202020"),
+                    ("PtSidebarBg", "#FF181818"),
+                    ("PtCardBg", "#FF2B2B2B"),
+                    ("PtCardHover", "#FF323232"),
+                    ("PtCardBorder", "#FF383838"),
+                    ("PtSubtleBg", "#FF262626"),
+
+                    // Vurgu & Genel
+                    ("PtAccent", "#FF0078D4"),
+                    ("PtAccentHover", "#FF1A86D9"),
+                    ("PtSuccess", "#FF107C41"),
+                    ("PtWarning", "#FFD83B01"),
+                    ("PtDanger", "#FFDC2626"),
+
+                    // Tipografi
+                    ("PtTextPrimary", "#FFFFFFFF"),
+                    ("PtTextSecondary", "#FFA6A6A6"),
+                    ("PtTextMuted", "#FF888888"),
+
+                    // İkincil Butonlar
+                    ("PtButtonBg", "#FF2E2E2E"),
+                    ("PtButtonBorder", "#FF404040"),
+                    ("PtButtonHover", "#FF3A3A3A"),
+                    ("PtButtonPressed", "#FF222222"),
+                    ("PtButtonForeground", "#FFFFFFFF"),
+
+                    // Navigasyon & Seçim
+                    ("PtNavHover", "#FF2D2D2D"),
+                    ("PtNavActive", "#FF333333"),
+
+                    // Girdi & Rozetler
+                    ("PtInputBg", "#FF262626"),
+                    ("PtInputBorder", "#FF383838"),
+                    ("PtBadgeBg", "#FF333333"),
+
+                    // Veri Tablosu
+                    ("PtGridRow", "#FF2B2B2B"),
+                    ("PtGridRowAlt", "#FF303030"),
+                    ("PtGridHeader", "#FF333333"),
+
+                    // Durum Renkleri (Koyu tema için canlı renkler)
+                    ("PtStatusBlue", "#FF38BDF8"),
+                    ("PtStatusGreen", "#FF4ADE80"),
+                    ("PtStatusYellow", "#FFFDE047"),
+                    ("PtStatusAmber", "#FFF59E0B"),
+                    ("PtStatusRed", "#FFF87171"),
+                    ("PtStatusPurple", "#FFA78BFA"),
+
+                    // Kod & Terminal
+                    ("PtCodeBackground", "#FF1E1E1E"),
+                    ("PtCodeForeground", "#FF38BDF8")
                 };
 
             foreach (var entry in palette)
@@ -101,8 +193,8 @@ namespace SysForgeStudio
                 Application.Current.Resources[entry.Key] = new SolidColorBrush(color);
             }
 
-            BtnThemeToggle.Content = light ? "🌙 Koyu tema" : "☀ Açık tema";
-            BtnThemeToggle.ToolTip = light ? "Koyu temaya geç" : "Açık temaya geç";
+            BtnThemeToggle.Content = light ? "☀ Açık tema" : "🌙 Koyu tema";
+            BtnThemeToggle.ToolTip = light ? "Şu an Açık Tema aktif. Koyu temaya geçmek için tıklayın." : "Şu an Koyu Tema aktif. Açık temaya geçmek için tıklayın.";
 
             if (persist)
             {

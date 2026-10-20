@@ -152626,10 +152626,6 @@ async function launchNativeGui(){
     if(btn){ btn.textContent = '❌ Köprü Sunucu Kapalı'; }
     setTimeout(()=>{ if(btn){ btn.textContent='🖥 Masaüstü Arayüzü'; btn.disabled=false; } }, 2500);
   }
-} catch(e) {
-    if(btn){ btn.textContent = '❌ Sunucu Çevrimdışı'; }
-    setTimeout(()=>{ if(btn){ btn.textContent='🖥 Masaüstü Arayüzü'; btn.disabled=false; } }, 2500);
-  }
 }
 
 async function checkServer(){
@@ -417960,7 +417956,7 @@ window.setTimeout(() => {
     'SysForge Studio — Windows Management Panel':'SysForge Studio — Windows Yönetim Paneli',
     'SysForge Studio Desktop':'SysForge Studio Masaüstü',
     'Launch Desktop App':'Masaüstü Uygulamasını Aç',
-    'Open Native GUI Application':'SysForge Studio Masaüstü Uygulamasını Aç'
+    'Open Native GUI Application':'SysForge Studio Masaüstü Uygulamasını Aç',
 
     'Automatically run a complete background system repair sequence: SFC file scans, DISM component store recovery, CHKDSK disk integrity scan, active driver validation check, network stack rebuild (Winsock, IP, DNS flush), temp junk clearance, and full health report creation.':'Arka planda kapsamlı sistem onarımını başlatın: SFC dosya taraması, DISM bileşen deposu kurtarma, CHKDSK disk denetimi, sürücü doğrulaması, ağ yığınının yenilenmesi, geçici dosyaların temizlenmesi ve durum raporunun oluşturulması.',
     'Merhaba! 👋 SysForge Studio AI asistanı — connected to internet with 4 AI providers. Ask me anything about your system and I\'ll diagnose, repair, or guide you!':'Merhaba! 👋 SysForge Studio yapay zekâ asistanı. Sisteminizle ilgili sorun; tanılama, onarım ve yönlendirme konusunda yardımcı olayım!',
