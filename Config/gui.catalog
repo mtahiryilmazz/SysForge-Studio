@@ -1,0 +1,76 @@
+# Category|Text|Type|Target|Note|Color
+# Types: toolkit_main, toolkit_label, tool, exe, script, folder, url
+# toolkit_label targets must be labels inside Toolkit.bat.
+Featured|System Inventory|script|Modules\SystemInventory.cmd|Create complete HTML PC inventory report|#CFE8FF
+Featured|Hard Disk Sentinel Pro|tool|05|Hard disk health tool|#DDF3E4
+Featured|Battery Report|script|Modules\BatteryReport.cmd|Generate Windows battery report|#E3D1FF
+Featured|BlueScreenView|tool|02|Analyze BSOD minidump crash files|#FFF2CC
+Featured|WSCC Control Center|tool|13|Sysinternals/NirSoft launcher|#F8D7DA
+Featured|Open Full CMD Toolkit|toolkit_main|main|Open original 37 menu CMD toolkit|#F2F2F2
+Featured|Portable Tools CMD Menu|toolkit_label|portable_tools_menu|Open CMD portable tools menu|#DFF0FF
+CMD Main Menus|01 - System & Administration|toolkit_label|menu_system_admin|Existing CMD menu 01|#CFE8FF
+CMD Main Menus|02 - Network & Internet|toolkit_label|menu_network_internet|Existing CMD menu 02|#DDF3E4
+CMD Main Menus|03 - Windows Repair & Recovery|toolkit_label|menu_windows_repair|Existing CMD menu 03|#E3D1FF
+CMD Main Menus|04 - Security & Defender|toolkit_label|menu_security_defender|Existing CMD menu 04|#FFF2CC
+CMD Main Menus|05 - Performance & Optimization|toolkit_label|menu_performance_optimization|Existing CMD menu 05|#F8D7DA
+CMD Main Menus|06 - Storage & Disk Management|toolkit_label|menu_storage_disk|Existing CMD menu 06|#DFF0FF
+CMD Main Menus|07 - User / Account Management|toolkit_label|menu_user_account|Existing CMD menu 07|#EAF7D9
+CMD Main Menus|08 - Backup & Restore Center|toolkit_label|menu_backup_restore|Existing CMD menu 08|#FCE4D6
+CMD Main Menus|09 - Driver & Hardware Management|toolkit_label|menu_driver_hardware|Existing CMD menu 09|#E6E6FA
+CMD Main Menus|10 - Windows Update & Activation|toolkit_label|menu_update_activation|Existing CMD menu 10|#CFE8FF
+CMD Main Menus|11 - Office / Outlook Toolkit|toolkit_label|menu_office_outlook|Existing CMD menu 11|#DDF3E4
+CMD Main Menus|12 - Printer / Spooler Center|toolkit_label|menu_printer_spooler|Existing CMD menu 12|#E3D1FF
+CMD Main Menus|13 - Remote Access / RDP Tools|toolkit_label|menu_remote_rdp|Existing CMD menu 13|#FFF2CC
+CMD Main Menus|14 - BIOS / UEFI / Boot Tools|toolkit_label|menu_bios_boot|Existing CMD menu 14|#F8D7DA
+CMD Main Menus|15 - Registry / Group Policy|toolkit_label|menu_registry_policy|Existing CMD menu 15|#DFF0FF
+CMD Main Menus|16 - Windows Services & Features|toolkit_label|menu_services_features|Existing CMD menu 16|#EAF7D9
+CMD Main Menus|17 - Live System Monitor|toolkit_label|menu_live_monitor|Existing CMD menu 17|#FCE4D6
+CMD Main Menus|18 - Event Viewer & Log Analyzer|toolkit_label|menu_event_logs|Existing CMD menu 18|#E6E6FA
+CMD Main Menus|19 - Quick Access Utilities|toolkit_label|menu_quick_access|Existing CMD menu 19|#CFE8FF
+CMD Main Menus|20 - Power User / Dev Tools|toolkit_label|menu_power_user_dev|Existing CMD menu 20|#DDF3E4
+CMD Main Menus|21 - AI Smart Auto Fix Engine|toolkit_label|menu_ai_auto_fix|Existing CMD menu 21|#E3D1FF
+CMD Main Menus|22 - Auto Performance Booster|toolkit_label|menu_auto_performance|Existing CMD menu 22|#FFF2CC
+CMD Main Menus|23 - Auto Network Repair Engine|toolkit_label|menu_auto_network|Existing CMD menu 23|#F8D7DA
+CMD Main Menus|24 - Cloud & Remote Management|toolkit_label|menu_cloud_remote|Existing CMD menu 24|#DFF0FF
+CMD Main Menus|25 - Download & Deployment Center|toolkit_label|menu_download_deploy|Existing CMD menu 25|#EAF7D9
+CMD Main Menus|26 - Cyber Security Toolkit|toolkit_label|menu_cyber_security|Existing CMD menu 26|#FCE4D6
+CMD Main Menus|27 - Mass Software Installer|toolkit_label|menu_mass_installer|Existing CMD menu 27|#E6E6FA
+CMD Main Menus|28 - Hacker Style Live Dashboard|toolkit_label|menu_hacker_dashboard|Existing CMD menu 28|#CFE8FF
+CMD Main Menus|29 - Toolkit Settings & Themes|toolkit_label|menu_settings_themes|Existing CMD menu 29|#DDF3E4
+CMD Main Menus|30 - About Toolkit|toolkit_label|menu_about_toolkit|Existing CMD menu 30|#E3D1FF
+CMD Main Menus|31 - Smart Search Center|toolkit_label|menu_search|Existing CMD menu 31|#FFF2CC
+CMD Main Menus|32 - All-in-One Problem Solver|toolkit_label|problem_master_hub|Existing CMD menu 32|#F8D7DA
+CMD Main Menus|33 - Smart Driver Auto Center|toolkit_label|driver_auto_center|Existing CMD menu 33|#DFF0FF
+CMD Main Menus|34 - CMD Vault / Global Search|toolkit_label|cmd_vault|Existing CMD menu 34|#EAF7D9
+CMD Main Menus|35 - Missing Command Mega Vault|toolkit_label|missing_mega_vault_launcher|Existing CMD menu 35|#FCE4D6
+# CMD Main Menus|36 - Portable Software Launcher|toolkit_label|portable_tools_menu|New portable tools menu|#E6E6FA
+CMD Main Menus|37 - 100 Apps 1-Click Install|toolkit_label|menu_1click_100_apps|Existing CMD menu 37|#CFE8FF
+Repair & Diagnostics|Quick Health Report|toolkit_label|quick_health_report|Generate quick health report|#CFE8FF
+Repair & Diagnostics|Deep Diagnostics|toolkit_label|issue_deep_diagnostics|Open deep diagnostics center|#DDF3E4
+Repair & Diagnostics|Windows Core Repair|toolkit_label|issue_windows_core|Windows core issue menu|#E3D1FF
+Repair & Diagnostics|Network Problem Solver|toolkit_label|issue_network_pro|Network issue menu|#FFF2CC
+Repair & Diagnostics|Hardware Devices Fixes|toolkit_label|issue_hardware_devices|Hardware device issue menu|#F8D7DA
+Repair & Diagnostics|Reports & Evidence|toolkit_label|issue_reports_evidence|Reports and evidence menu|#DFF0FF
+Repair & Diagnostics|One Clean|toolkit_label|one_clean|Run cleanup center|#EAF7D9
+Repair & Diagnostics|System Report|toolkit_label|sysreport|Create system report|#FCE4D6
+Network & Remote|WiFi Tools|toolkit_label|wifi_tools|WiFi tools submenu|#DDF3E4
+Network & Remote|DNS Manager|toolkit_label|dns_mgr|DNS tools submenu|#CFE8FF
+Network & Remote|Firewall Manager|toolkit_label|firewall_mgr|Firewall tools submenu|#FFF2CC
+Network & Remote|IP Configuration|toolkit_label|ip_config|IP configuration submenu|#DFF0FF
+Network & Remote|RDP Tools|toolkit_label|rdp_tools|RDP tools submenu|#E3D1FF
+Network & Remote|Network Shares|toolkit_label|net_shares|Network shares submenu|#EAF7D9
+Hardware & Drivers|Driver Tools|toolkit_label|driver_tools|Driver tools submenu|#CFE8FF
+Hardware & Drivers|Hardware Health|toolkit_label|hardware_health|Hardware health submenu|#DDF3E4
+Hardware & Drivers|Driver Auto Center|toolkit_label|driver_auto_center|Driver auto center|#E3D1FF
+Hardware & Drivers|Driver Backup|toolkit_label|driver_backup|Driver backup menu|#FFF2CC
+Security|Defender Tools|toolkit_label|defender_tools|Defender tools submenu|#F8D7DA
+Security|USB Security|toolkit_label|usb_security|USB security submenu|#DFF0FF
+Security|Malware Cleanup|toolkit_label|malware_cleanup|Malware cleanup submenu|#EAF7D9
+Security|Security Audit|toolkit_label|security_audit|Security audit submenu|#FCE4D6
+Software & Deployment|Winget Installer|toolkit_label|winget_installer|Winget installer center|#CFE8FF
+Software & Deployment|Mass Installer|toolkit_label|menu_mass_installer|Mass software installer|#DDF3E4
+Software & Deployment|Download & Deploy|toolkit_label|menu_download_deploy|Download and deployment center|#E3D1FF
+Folders|Open Tools Folder|folder|Tools|Open portable tools folder|#F2F2F2
+Folders|Open Logs Folder|folder|Logs|Open toolkit logs folder|#F2F2F2
+Folders|Open Assets Folder|folder|Assets|Open assets folder|#F2F2F2
+Folders|Open Config Folder|folder|Config|Open config folder|#F2F2F2
