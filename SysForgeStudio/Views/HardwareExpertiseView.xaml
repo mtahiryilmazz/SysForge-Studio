@@ -35,7 +35,7 @@
             <!-- Status & Comparison Banner -->
             <Border x:Name="BannerComparison" Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,18" Visibility="Collapsed">
                 <StackPanel>
-                    <TextBlock x:Name="TxtComparisonTitle" Text="Kıyaslama Durumu" FontSize="16" FontWeight="Bold" Foreground="#38BDF8"/>
+                    <TextBlock x:Name="TxtComparisonTitle" Text="Kıyaslama Durumu" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource PtStatusBlue}"/>
                     <TextBlock x:Name="TxtComparisonSummary" Text="Sonuç bilgisi..." FontSize="13" Foreground="{DynamicResource PtTextPrimary}" Margin="0,4,0,10" TextWrapping="Wrap"/>
                     
                     <ItemsControl x:Name="ListDifferences">
@@ -47,14 +47,14 @@
                                             <ColumnDefinition Width="140" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="{Binding Component}" FontWeight="Bold" Foreground="#F87171" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="0" Text="{Binding Component}" FontWeight="Bold" Foreground="{DynamicResource PtStatusRed}" VerticalAlignment="Center"/>
                                         <StackPanel Grid.Column="1">
                                             <TextBlock Text="{Binding Description}" Foreground="{DynamicResource PtTextPrimary}" FontWeight="SemiBold"/>
                                             <TextBlock Foreground="{DynamicResource PtTextSecondary}" FontSize="11">
                                                 <Run Text="Önceki: "/>
                                                 <Run Text="{Binding OldValue}" Foreground="{DynamicResource PtTextPrimary}"/>
                                                 <Run Text=" ➔ Yeni: "/>
-                                                <Run Text="{Binding NewValue}" Foreground="#FCA5A5" FontWeight="Bold"/>
+                                                <Run Text="{Binding NewValue}" Foreground="{DynamicResource PtStatusRed}" FontWeight="Bold"/>
                                             </TextBlock>
                                         </StackPanel>
                                     </Grid>
@@ -74,7 +74,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="🔐 Donanım Bütünlük Hash (SHA-256)" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource PtTextSecondary}"/>
-                        <TextBlock x:Name="TxtHardwareHash" Text="Tarama bekleniyor..." FontSize="14" FontWeight="SemiBold" Foreground="#38BDF8" TextWrapping="Wrap" Margin="0,4,0,0" FontFamily="Consolas"/>
+                        <TextBlock x:Name="TxtHardwareHash" Text="Tarama bekleniyor..." FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource PtStatusBlue}" TextWrapping="Wrap" Margin="0,4,0,0" FontFamily="Consolas"/>
                     </StackPanel>
                     <TextBlock Grid.Column="1" x:Name="TxtScanTimestamp" Text="" FontSize="11" Foreground="{DynamicResource PtTextSecondary}" VerticalAlignment="Center"/>
                 </Grid>
@@ -96,7 +96,7 @@
                         <TextBlock x:Name="TxtMotherboard" Text="-" FontSize="13" Foreground="{DynamicResource PtTextPrimary}" Margin="0,0,0,8"/>
 
                         <TextBlock Text="Anakart Seri No:" FontSize="11" Foreground="{DynamicResource PtTextSecondary}"/>
-                        <TextBlock x:Name="TxtMBSN" Text="-" FontSize="13" Foreground="#38BDF8" FontFamily="Consolas" Margin="0,0,0,8"/>
+                        <TextBlock x:Name="TxtMBSN" Text="-" FontSize="13" Foreground="{DynamicResource PtStatusBlue}" FontFamily="Consolas" Margin="0,0,0,8"/>
 
                         <TextBlock Text="BIOS &amp; UUID:" FontSize="11" Foreground="{DynamicResource PtTextSecondary}"/>
                         <TextBlock x:Name="TxtBiosUuid" Text="-" FontSize="13" Foreground="{DynamicResource PtTextPrimary}" FontFamily="Consolas" Margin="0,0,0,8"/>
@@ -144,7 +144,7 @@
                                         <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
                                             <TextBlock HorizontalAlignment="Left">
                                                 <Run Text="Boyut: " Foreground="{DynamicResource PtTextSecondary}" FontSize="11"/>
-                                                <Run Text="{Binding SizeGB, StringFormat='{}{0} GB'}" FontWeight="Bold" Foreground="#38BDF8"/>
+                                                <Run Text="{Binding SizeGB, StringFormat='{}{0} GB'}" FontWeight="Bold" Foreground="{DynamicResource PtStatusBlue}"/>
                                             </TextBlock>
                                             <TextBlock HorizontalAlignment="Left" FontFamily="Consolas" FontSize="11">
                                                 <Run Text="Seri No: " Foreground="{DynamicResource PtTextSecondary}"/>
@@ -171,14 +171,14 @@
                                             <TextBlock TextTrimming="CharacterEllipsis">
                                                 <Run Text="{Binding BankLabel}" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}"/>
                                                 <Run Text=" - " Foreground="{DynamicResource PtTextSecondary}"/>
-                                                <Run Text="{Binding Manufacturer}" Foreground="#DDDDDD"/>
+                                                <Run Text="{Binding Manufacturer}" Foreground="{DynamicResource PtTextSecondary}"/>
                                             </TextBlock>
                                             <TextBlock Text="{Binding PartNumber, StringFormat='Parça No: {0}'}" FontSize="11" Foreground="{DynamicResource PtTextSecondary}"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
                                             <TextBlock HorizontalAlignment="Left">
                                                 <Run Text="Kapasite: " Foreground="{DynamicResource PtTextSecondary}" FontSize="11"/>
-                                                <Run Text="{Binding CapacityGB, StringFormat='{}{0} GB'}" FontWeight="Bold" Foreground="#107C41"/>
+                                                <Run Text="{Binding CapacityGB, StringFormat='{}{0} GB'}" FontWeight="Bold" Foreground="{DynamicResource PtStatusGreen}"/>
                                                 <Run Text="  Hız: " Foreground="{DynamicResource PtTextSecondary}" FontSize="11"/>
                                                 <Run Text="{Binding SpeedMHz, StringFormat='{}{0} MHz'}" Foreground="{DynamicResource PtTextSecondary}" FontSize="11"/>
                                             </TextBlock>

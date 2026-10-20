@@ -28,13 +28,13 @@
                         <!-- Status Badges Row -->
                         <WrapPanel Margin="0,14,0,0">
                             <Border Style="{StaticResource PtBadge}" Margin="0,0,8,6">
-                                <TextBlock x:Name="TxtAdminStatus" Text="🛡️ Yönetici: Kontrol ediliyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="#38BDF8"/>
+                                <TextBlock x:Name="TxtAdminStatus" Text="🛡️ Yönetici: Kontrol ediliyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource PtStatusBlue}"/>
                             </Border>
                             <Border Style="{StaticResource PtBadge}" Margin="0,0,8,6">
-                                <TextBlock x:Name="TxtSpoolerStatus" Text="🖨️ Spooler: Kontrol ediliyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="#4ADE80"/>
+                                <TextBlock x:Name="TxtSpoolerStatus" Text="🖨️ Spooler: Kontrol ediliyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource PtStatusGreen}"/>
                             </Border>
                             <Border Style="{StaticResource PtBadge}" Margin="0,0,8,6">
-                                <TextBlock x:Name="TxtRoleStatus" Text="🌐 Rol: Algılanıyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="#FDE047"/>
+                                <TextBlock x:Name="TxtRoleStatus" Text="🌐 Rol: Algılanıyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource PtStatusYellow}"/>
                             </Border>
                         </WrapPanel>
                     </StackPanel>

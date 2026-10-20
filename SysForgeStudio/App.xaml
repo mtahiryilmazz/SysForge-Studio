@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:SysForgeStudio"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <!-- Windows 11 / PowerToys Fluent Dark Palette -->
+        <!-- Windows 11 / PowerToys Fluent Dark Palette (Default) -->
         <Color x:Key="PtWindowBgColor">#202020</Color>
         <Color x:Key="PtSidebarBgColor">#181818</Color>
         <Color x:Key="PtCardBgColor">#2B2B2B</Color>
@@ -27,9 +27,41 @@
         <SolidColorBrush x:Key="PtAccentHover" Color="{StaticResource PtAccentHoverColor}" />
         <SolidColorBrush x:Key="PtTextPrimary" Color="{StaticResource PtTextPrimaryColor}" />
         <SolidColorBrush x:Key="PtTextSecondary" Color="{StaticResource PtTextSecondaryColor}" />
+        <SolidColorBrush x:Key="PtTextMuted" Color="#888888" />
         <SolidColorBrush x:Key="PtSuccess" Color="{StaticResource PtSuccessColor}" />
         <SolidColorBrush x:Key="PtWarning" Color="{StaticResource PtWarningColor}" />
+        <SolidColorBrush x:Key="PtDanger" Color="#DC2626" />
         <SolidColorBrush x:Key="PtSubtleBg" Color="{StaticResource PtSubtleBgColor}" />
+
+        <!-- Dynamic Theme Button & Input Brushes -->
+        <SolidColorBrush x:Key="PtButtonBg" Color="#2E2E2E" />
+        <SolidColorBrush x:Key="PtButtonBorder" Color="#404040" />
+        <SolidColorBrush x:Key="PtButtonHover" Color="#3A3A3A" />
+        <SolidColorBrush x:Key="PtButtonPressed" Color="#222222" />
+        <SolidColorBrush x:Key="PtButtonForeground" Color="#FFFFFF" />
+
+        <SolidColorBrush x:Key="PtNavHover" Color="#2D2D2D" />
+        <SolidColorBrush x:Key="PtNavActive" Color="#333333" />
+
+        <SolidColorBrush x:Key="PtInputBg" Color="#262626" />
+        <SolidColorBrush x:Key="PtInputBorder" Color="#383838" />
+        <SolidColorBrush x:Key="PtBadgeBg" Color="#333333" />
+
+        <SolidColorBrush x:Key="PtGridRow" Color="#2B2B2B" />
+        <SolidColorBrush x:Key="PtGridRowAlt" Color="#303030" />
+        <SolidColorBrush x:Key="PtGridHeader" Color="#333333" />
+
+        <!-- High-Contrast Status Brushes -->
+        <SolidColorBrush x:Key="PtStatusBlue" Color="#38BDF8" />
+        <SolidColorBrush x:Key="PtStatusGreen" Color="#4ADE80" />
+        <SolidColorBrush x:Key="PtStatusYellow" Color="#FDE047" />
+        <SolidColorBrush x:Key="PtStatusAmber" Color="#F59E0B" />
+        <SolidColorBrush x:Key="PtStatusRed" Color="#F87171" />
+        <SolidColorBrush x:Key="PtStatusPurple" Color="#FFA78BFA" />
+
+        <!-- Code & Console Brushes -->
+        <SolidColorBrush x:Key="PtCodeBackground" Color="#1E1E1E" />
+        <SolidColorBrush x:Key="PtCodeForeground" Color="#38BDF8" />
 
         <!-- General Color Brushes -->
         <SolidColorBrush x:Key="SuccessBrush" Color="#107C41" />
@@ -71,11 +103,11 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#2D2D2D" />
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource PtNavHover}" />
                                 <Setter Property="Foreground" Value="{DynamicResource PtTextPrimary}" />
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#333333" />
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource PtNavActive}" />
                                 <Setter Property="Foreground" Value="{DynamicResource PtTextPrimary}" />
                                 <Setter TargetName="activeIndicator" Property="Visibility" Value="Visible" />
                             </Trigger>
@@ -125,26 +157,29 @@
 
         <!-- PowerToys Secondary / Subtle Button -->
         <Style x:Key="PtSecondaryButton" TargetType="Button">
-            <Setter Property="Background" Value="#333333" />
-            <Setter Property="Foreground" Value="{DynamicResource PtTextPrimary}" />
-            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="Background" Value="{DynamicResource PtButtonBg}" />
+            <Setter Property="Foreground" Value="{DynamicResource PtButtonForeground}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="FontSize" Value="13" />
             <Setter Property="Padding" Value="12,6" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="BorderBrush" Value="{DynamicResource PtCardBorder}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PtButtonBorder}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="btnBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5" Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" TextElement.Foreground="{TemplateBinding Foreground}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="btnBorder" Property="Background" Value="#3D3D3D" />
+                                <Setter TargetName="btnBorder" Property="Background" Value="{DynamicResource PtButtonHover}" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="btnBorder" Property="Background" Value="#252525" />
+                                <Setter TargetName="btnBorder" Property="Background" Value="{DynamicResource PtButtonPressed}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -180,8 +215,8 @@
                             <ContentPresenter Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,16,0" />
 
                             <!-- Pill Switch on the Right -->
-                            <Border x:Name="pillBorder" Grid.Column="1" Width="42" Height="22" CornerRadius="11" Background="#383838" BorderBrush="#505050" BorderThickness="1">
-                                <Ellipse x:Name="thumb" Width="14" Height="14" Fill="#D0D0D0" HorizontalAlignment="Left" Margin="3,0,0,0">
+                            <Border x:Name="pillBorder" Grid.Column="1" Width="42" Height="22" CornerRadius="11" Background="{DynamicResource PtButtonBorder}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1">
+                                <Ellipse x:Name="thumb" Width="14" Height="14" Fill="{DynamicResource PtTextPrimary}" HorizontalAlignment="Left" Margin="3,0,0,0">
                                     <Ellipse.RenderTransform>
                                         <TranslateTransform x:Name="thumbTransform" X="0" />
                                     </Ellipse.RenderTransform>
@@ -207,9 +242,9 @@
 
         <!-- Modern PowerToys TextBox -->
         <Style x:Key="PtTextBox" TargetType="TextBox">
-            <Setter Property="Background" Value="#262626" />
-            <Setter Property="Foreground" Value="#FFFFFF" />
-            <Setter Property="BorderBrush" Value="{DynamicResource PtCardBorder}" />
+            <Setter Property="Background" Value="{DynamicResource PtInputBg}" />
+            <Setter Property="Foreground" Value="{DynamicResource PtTextPrimary}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PtInputBorder}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Padding" Value="10,6" />
             <Setter Property="FontSize" Value="13" />
@@ -237,7 +272,7 @@
 
         <!-- PowerToys Badge Style -->
         <Style x:Key="PtBadge" TargetType="Border">
-            <Setter Property="Background" Value="#333333" />
+            <Setter Property="Background" Value="{DynamicResource PtBadgeBg}" />
             <Setter Property="BorderBrush" Value="{DynamicResource PtCardBorder}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="CornerRadius" Value="4" />
@@ -245,11 +280,11 @@
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
 
-        <!-- Dark ComboBox (fixes light default on dark UI) -->
+        <!-- Dynamic Theme ComboBox -->
         <Style x:Key="PtComboBox" TargetType="ComboBox">
-            <Setter Property="Background" Value="#262626" />
+            <Setter Property="Background" Value="{DynamicResource PtInputBg}" />
             <Setter Property="Foreground" Value="{DynamicResource PtTextPrimary}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource PtCardBorder}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PtInputBorder}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Padding" Value="10,6" />
             <Setter Property="FontSize" Value="13" />
@@ -266,7 +301,7 @@
                                           ClickMode="Press">
                                 <ToggleButton.Template>
                                     <ControlTemplate TargetType="ToggleButton">
-                                        <Border x:Name="comboBorder" Background="{DynamicResource PtSubtleBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="5">
+                                        <Border x:Name="comboBorder" Background="{DynamicResource PtInputBg}" BorderBrush="{DynamicResource PtInputBorder}" BorderThickness="1" CornerRadius="5">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
@@ -331,11 +366,11 @@
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsHighlighted" Value="True">
-                                            <Setter TargetName="itemBorder" Property="Background" Value="#3A3A3A" />
+                                            <Setter TargetName="itemBorder" Property="Background" Value="{DynamicResource PtCardHover}" />
                                         </Trigger>
                                         <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="itemBorder" Property="Background" Value="#152737" />
-                                            <Setter Property="Foreground" Value="#38BDF8" />
+                                            <Setter TargetName="itemBorder" Property="Background" Value="{DynamicResource PtNavActive}" />
+                                            <Setter Property="Foreground" Value="{DynamicResource PtAccent}" />
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
@@ -347,14 +382,14 @@
         </Style>
         <Style TargetType="ComboBox" BasedOn="{StaticResource PtComboBox}" />
 
-        <!-- Dark DataGrid (cells, headers, selection) -->
+        <!-- Dynamic Theme DataGrid (cells, headers, selection) -->
         <Style x:Key="PtDataGrid" TargetType="DataGrid">
-            <Setter Property="Background" Value="#262626" />
+            <Setter Property="Background" Value="{DynamicResource PtCardBg}" />
             <Setter Property="Foreground" Value="{DynamicResource PtTextPrimary}" />
             <Setter Property="BorderBrush" Value="{DynamicResource PtCardBorder}" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="RowBackground" Value="#2B2B2B" />
-            <Setter Property="AlternatingRowBackground" Value="#303030" />
+            <Setter Property="RowBackground" Value="{DynamicResource PtGridRow}" />
+            <Setter Property="AlternatingRowBackground" Value="{DynamicResource PtGridRowAlt}" />
             <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource PtCardBorder}" />
             <Setter Property="VerticalGridLinesBrush" Value="Transparent" />
             <Setter Property="GridLinesVisibility" Value="Horizontal" />
@@ -367,8 +402,8 @@
             <Setter Property="ColumnHeaderStyle">
                 <Setter.Value>
                     <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="Background" Value="#333333" />
-                        <Setter Property="Foreground" Value="{DynamicResource PtTextSecondary}" />
+                        <Setter Property="Background" Value="{DynamicResource PtGridHeader}" />
+                        <Setter Property="Foreground" Value="{DynamicResource PtTextPrimary}" />
                         <Setter Property="FontWeight" Value="SemiBold" />
                         <Setter Property="Padding" Value="10,8" />
                         <Setter Property="BorderThickness" Value="0,0,0,1" />
@@ -405,11 +440,11 @@
                         </Setter>
                         <Style.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#152737" />
-                                <Setter Property="Foreground" Value="#E0F2FE" />
+                                <Setter Property="Background" Value="{DynamicResource PtNavActive}" />
+                                <Setter Property="Foreground" Value="{DynamicResource PtTextPrimary}" />
                             </Trigger>
                             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                                <Setter Property="Background" Value="#1A3347" />
+                                <Setter Property="Background" Value="{DynamicResource PtNavActive}" />
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -424,10 +459,10 @@
                         <Setter Property="SnapsToDevicePixels" Value="True" />
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#353535" />
+                                <Setter Property="Background" Value="{DynamicResource PtCardHover}" />
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#152737" />
+                                <Setter Property="Background" Value="{DynamicResource PtNavActive}" />
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -436,9 +471,9 @@
         </Style>
         <Style TargetType="DataGrid" BasedOn="{StaticResource PtDataGrid}" />
 
-        <!-- Dark ListBox -->
+        <!-- Dynamic Theme ListBox -->
         <Style x:Key="PtListBox" TargetType="ListBox">
-            <Setter Property="Background" Value="#1A1A1A" />
+            <Setter Property="Background" Value="{DynamicResource PtCardBg}" />
             <Setter Property="Foreground" Value="{DynamicResource PtTextPrimary}" />
             <Setter Property="BorderBrush" Value="{DynamicResource PtCardBorder}" />
             <Setter Property="BorderThickness" Value="1" />
@@ -461,10 +496,10 @@
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="itemBorder" Property="Background" Value="#2D2D2D" />
+                                            <Setter TargetName="itemBorder" Property="Background" Value="{DynamicResource PtCardHover}" />
                                         </Trigger>
                                         <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="itemBorder" Property="Background" Value="#152737" />
+                                            <Setter TargetName="itemBorder" Property="Background" Value="{DynamicResource PtNavActive}" />
                                             <Setter TargetName="itemBorder" Property="BorderBrush" Value="{DynamicResource PtAccent}" />
                                             <Setter TargetName="itemBorder" Property="BorderThickness" Value="1" />
                                         </Trigger>
@@ -478,14 +513,14 @@
         </Style>
         <Style TargetType="ListBox" BasedOn="{StaticResource PtListBox}" />
 
-        <!-- Dark ProgressBar (no custom template — keeps IsIndeterminate working) -->
+        <!-- Dynamic ProgressBar -->
         <Style TargetType="ProgressBar">
-            <Setter Property="Background" Value="#333333" />
+            <Setter Property="Background" Value="{DynamicResource PtButtonBorder}" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="Foreground" Value="{DynamicResource PtAccent}" />
         </Style>
 
-        <!-- Default CheckBox text color on dark surfaces -->
+        <!-- Default CheckBox text color -->
         <Style TargetType="CheckBox">
             <Setter Property="Foreground" Value="{DynamicResource PtTextPrimary}" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -495,7 +530,7 @@
         <Style x:Key="PtSectionLabel" TargetType="TextBlock">
             <Setter Property="FontSize" Value="11" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Foreground" Value="#888888" />
+            <Setter Property="Foreground" Value="{DynamicResource PtTextMuted}" />
             <Setter Property="Margin" Value="4,8,0,6" />
         </Style>
 

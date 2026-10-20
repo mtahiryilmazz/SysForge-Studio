@@ -60,11 +60,11 @@
                     <!-- Adapter Status Badges -->
                     <Border Grid.Row="2" Background="{DynamicResource PtCardBg}" CornerRadius="6" Padding="14,10" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1">
                         <WrapPanel x:Name="PnlAdapterDetails">
-                            <TextBlock x:Name="TxtAdapterIP" Text="IP: -" Foreground="#38BDF8" FontWeight="SemiBold" Margin="0,0,16,0" FontSize="12"/>
+                            <TextBlock x:Name="TxtAdapterIP" Text="IP: -" Foreground="{DynamicResource PtStatusBlue}" FontWeight="SemiBold" Margin="0,0,16,0" FontSize="12"/>
                             <TextBlock x:Name="TxtAdapterMask" Text="Mask: -" Foreground="{DynamicResource PtTextSecondary}" Margin="0,0,16,0" FontSize="12"/>
-                            <TextBlock x:Name="TxtAdapterGateway" Text="Ağ Geçidi: -" Foreground="#FDE047" Margin="0,0,16,0" FontSize="12"/>
-                            <TextBlock x:Name="TxtAdapterDns" Text="DNS: -" Foreground="#A78BFA" Margin="0,0,16,0" FontSize="12"/>
-                            <TextBlock x:Name="TxtAdapterDhcp" Text="DHCP: -" Foreground="#4ADE80" FontSize="12"/>
+                            <TextBlock x:Name="TxtAdapterGateway" Text="Ağ Geçidi: -" Foreground="{DynamicResource PtStatusYellow}" Margin="0,0,16,0" FontSize="12"/>
+                            <TextBlock x:Name="TxtAdapterDns" Text="DNS: -" Foreground="{DynamicResource PtStatusPurple}" Margin="0,0,16,0" FontSize="12"/>
+                            <TextBlock x:Name="TxtAdapterDhcp" Text="DHCP: -" Foreground="{DynamicResource PtStatusGreen}" FontSize="12"/>
                         </WrapPanel>
                     </Border>
                 </Grid>
@@ -92,7 +92,7 @@
                         <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock Text="Bulunan Aktif Cihazlar &amp; Servisler" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}"/>
                             <Border Style="{StaticResource PtBadge}" Margin="10,0,0,0">
-                                <TextBlock x:Name="TxtHostCount" Text="0 Cihaz" FontSize="10.5" Foreground="#4ADE80" FontWeight="Bold"/>
+                                <TextBlock x:Name="TxtHostCount" Text="0 Cihaz" FontSize="10.5" Foreground="{DynamicResource PtStatusGreen}" FontWeight="Bold"/>
                             </Border>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
