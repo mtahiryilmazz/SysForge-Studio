@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SysForgeStudio.Views.ConnectPrinterView"
+<UserControl x:Class="SysForgeStudio.Views.ConnectPrinterView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -15,15 +15,15 @@
         <!-- Top Connect Box (PowerToys Style) -->
         <Border Grid.Row="0" Style="{StaticResource PtSettingsCard}" Margin="0,0,0,10">
             <StackPanel>
-                <TextBlock Text="🔗 Ağ veya Yerel Yazıcı Bağla" FontSize="16" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" Margin="0,0,0,4"/>
-                <TextBlock Text="Paylaşılan yazıcının UNC yolunu veya sunucu IP adresini girin (Örn: \\192.168.1.100\HP_LaserJet veya \\MUHASEBE\Canon)" FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,0,0,12" TextWrapping="Wrap"/>
+                <TextBlock Text="🔗 Ağ veya Yerel Yazıcı Bağla" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" Margin="0,0,0,4"/>
+                <TextBlock Text="Paylaşılan yazıcının UNC yolunu veya sunucu IP adresini girin (Örn: \\192.168.1.100\HP_LaserJet veya \\MUHASEBE\Canon)" FontSize="12" Foreground="{DynamicResource PtTextSecondary}" Margin="0,0,0,12" TextWrapping="Wrap"/>
 
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBox x:Name="TxtPrinterUnc" Grid.Row="0" Style="{StaticResource PtTextBox}" Height="38" Text="\\192.168.1.100\PrinterShare" FontSize="13.5" Foreground="#FFFFFF" Padding="12,0" VerticalContentAlignment="Center" Margin="0,0,0,8"/>
+                    <TextBox x:Name="TxtPrinterUnc" Grid.Row="0" Style="{StaticResource PtTextBox}" Height="38" Text="\\192.168.1.100\PrinterShare" FontSize="13.5" Foreground="{DynamicResource PtTextPrimary}" Padding="12,0" VerticalContentAlignment="Center" Margin="0,0,0,8"/>
                     <WrapPanel Grid.Row="1" HorizontalAlignment="Right">
                         <Button x:Name="BtnTestConnection" Content="🔍 Ön Bağlantı Testi" Style="{StaticResource PtSecondaryButton}" Height="36" Margin="0,0,8,0" Click="BtnTestConnection_Click"/>
                         <Button x:Name="BtnConnectPrinter" Content="🚀 Yazıcıyı Bağla" Style="{StaticResource PtPrimaryButton}" Height="36" Click="BtnConnectPrinter_Click"/>
@@ -46,8 +46,8 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="🖨️ Yüklü Yazıcılar" FontSize="16" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" Margin="0,0,12,0"/>
-                        <TextBlock x:Name="TxtListCount" Text="(0 yazıcı)" FontSize="13" Foreground="{StaticResource PtTextSecondary}" VerticalAlignment="Center"/>
+                        <TextBlock Text="🖨️ Yüklü Yazıcılar" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" Margin="0,0,12,0"/>
+                        <TextBlock x:Name="TxtListCount" Text="(0 yazıcı)" FontSize="13" Foreground="{DynamicResource PtTextSecondary}" VerticalAlignment="Center"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <Button Content="🔄 Listeyi Yenile" Style="{StaticResource PtSecondaryButton}" Margin="0,0,8,0" Click="BtnRefresh_Click"/>
@@ -57,18 +57,18 @@
 
                 <!-- DataGrid -->
                 <DataGrid x:Name="DgPrinters" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" 
-                          Background="#262626" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1"
-                          Foreground="{StaticResource PtTextPrimary}" RowBackground="#2B2B2B" AlternatingRowBackground="#303030"
-                          GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{StaticResource PtCardBorder}"
+                          Background="{DynamicResource PtSubtleBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1"
+                          Foreground="{DynamicResource PtTextPrimary}" RowBackground="{DynamicResource PtCardBg}" AlternatingRowBackground="{DynamicResource PtCardHover}"
+                          GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource PtCardBorder}"
                           HeadersVisibility="Column" SelectionMode="Single">
                     <DataGrid.ColumnHeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Background" Value="#333333"/>
-                            <Setter Property="Foreground" Value="{StaticResource PtTextSecondary}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource PtTextSecondary}"/>
                             <Setter Property="FontWeight" Value="SemiBold"/>
                             <Setter Property="Padding" Value="10,8"/>
                             <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                            <Setter Property="BorderBrush" Value="{StaticResource PtCardBorder}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource PtCardBorder}"/>
                         </Style>
                     </DataGrid.ColumnHeaderStyle>
                     <DataGrid.Columns>

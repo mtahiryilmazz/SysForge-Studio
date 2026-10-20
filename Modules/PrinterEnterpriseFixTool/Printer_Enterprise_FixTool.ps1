@@ -57,16 +57,16 @@ trap {
 })
 
 # ---------- THEME ----------
-$C_Bg = [System.Drawing.Color]::FromArgb(15,23,32)
-$C_Side = [System.Drawing.Color]::FromArgb(20,29,40)
-$C_Panel = [System.Drawing.Color]::FromArgb(27,38,51)
-$C_Panel2 = [System.Drawing.Color]::FromArgb(39,54,71)
-$C_Fg = [System.Drawing.Color]::FromArgb(239,245,252)
-$C_Muted = [System.Drawing.Color]::FromArgb(150,166,185)
-$C_Accent = [System.Drawing.Color]::FromArgb(76,132,255)
-$C_Ok = [System.Drawing.Color]::FromArgb(34,197,94)
-$C_Warn = [System.Drawing.Color]::FromArgb(245,158,11)
-$C_Err = [System.Drawing.Color]::FromArgb(239,68,68)
+$C_Bg = [System.Drawing.Color]::FromArgb(32,32,32)
+$C_Side = [System.Drawing.Color]::FromArgb(24,24,24)
+$C_Panel = [System.Drawing.Color]::FromArgb(43,43,43)
+$C_Panel2 = [System.Drawing.Color]::FromArgb(50,50,50)
+$C_Fg = [System.Drawing.Color]::FromArgb(255,255,255)
+$C_Muted = [System.Drawing.Color]::FromArgb(166,166,166)
+$C_Accent = [System.Drawing.Color]::FromArgb(0,120,212)
+$C_Ok = [System.Drawing.Color]::FromArgb(16,124,65)
+$C_Warn = [System.Drawing.Color]::FromArgb(216,59,1)
+$C_Err = [System.Drawing.Color]::FromArgb(220,38,38)
 
 # ---------- ICONS (Unicode Escape for Robustness) ----------
 $script:Icons = @{

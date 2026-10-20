@@ -281,16 +281,29 @@ namespace SysForgeStudio.Services
 
         private bool TestTcpPort(string host, int port, int timeoutMs = 2500)
         {
+            Socket? socket = null;
             try
             {
-                using var client = new TcpClient();
-                // net48: ConnectAsync(host, port, CancellationToken) yok; zaman asimi Task.Wait ile saglanir
-                var connectTask = client.ConnectAsync(host, port);
-                return connectTask.Wait(timeoutMs) && client.Connected;
+                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
+                {
+                    Blocking = false
+                };
+                var result = socket.BeginConnect(host, port, null, null);
+                bool success = result.AsyncWaitHandle.WaitOne(timeoutMs, false);
+                if (success && socket.Connected)
+                {
+                    try { socket.EndConnect(result); } catch { }
+                    return socket.Connected;
+                }
+                return false;
             }
             catch
             {
                 return false;
+            }
+            finally
+            {
+                try { socket?.Close(); } catch { }
             }
         }
 
@@ -1782,34 +1795,120 @@ namespace SysForgeStudio.Services
 
         public bool IsV6Running()
         {
-            return ITWebDashboardService.Instance.IsRunning;
+            Socket? socket = null;
+            try
+            {
+                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
+                {
+                    Blocking = false
+                };
+                var result = socket.BeginConnect("127.0.0.1", 9999, null, null);
+                bool success = result.AsyncWaitHandle.WaitOne(400, false);
+                if (success && socket.Connected)
+                {
+                    try { socket.EndConnect(result); } catch { }
+                    return socket.Connected;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                try { socket?.Close(); } catch { }
+            }
         }
 
         public async Task StartV6WebDashboardAsync()
         {
             try
             {
-                Log("Web Dashboard başlatılıyor...", LogLevel.Info);
+                string scriptPath = "";
+                string[] candidates = {
+                    Path.Combine(LegacyToolkitRoot, "Modules", "WebBridgeServer.ps1"),
+                    Path.Combine(LegacyToolkitRoot, "WebBridgeServer.ps1"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Modules", "WebBridgeServer.ps1"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "Modules", "WebBridgeServer.ps1"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Modules", "WebBridgeServer.ps1"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "Modules", "WebBridgeServer.ps1"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "Modules", "WebBridgeServer.ps1"),
+                    @"C:\ProgramData\SysForgeStudio\Modules\WebBridgeServer.ps1"
+                };
 
-                if (!ITWebDashboardService.Instance.IsRunning)
+                foreach (var c in candidates)
                 {
-                    ITWebDashboardService.Instance.Start(5000);
+                    if (File.Exists(c))
+                    {
+                        scriptPath = Path.GetFullPath(c);
+                        break;
+                    }
                 }
 
-                await Task.Delay(300);
-
-                string url = $"http://localhost:{ITWebDashboardService.Instance.Port}/";
-                Process.Start(new ProcessStartInfo
+                if (string.IsNullOrEmpty(scriptPath))
                 {
-                    FileName = url,
-                    UseShellExecute = true
+                    Log("WebBridgeServer.ps1 modülü bulunamadı!", LogLevel.Error);
+                    return;
+                }
+
+                Log("V6 Web Köprüsü başlatılıyor (Port 9999)...", LogLevel.Info);
+
+                // Ensure previous instance is stopped
+                StopV6WebDashboard();
+
+                await Task.Run(() =>
+                {
+                    // Add firewall rule
+                    try
+                    {
+                        var psiFw = new ProcessStartInfo
+                        {
+                            FileName = "netsh.exe",
+                            Arguments = "advfirewall firewall add rule name=\"SysForge Studio Web Bridge\" dir=in action=allow protocol=TCP localport=9999",
+                            CreateNoWindow = true,
+                            UseShellExecute = false
+                        };
+                        Process.Start(psiFw)?.WaitForExit(3000);
+                    }
+                    catch { }
+
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = "powershell.exe",
+                        Arguments = $"-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"{scriptPath}\" -Port 9999",
+                        WorkingDirectory = Path.GetDirectoryName(scriptPath) ?? "",
+                        CreateNoWindow = true,
+                        UseShellExecute = false
+                    };
+                    Process.Start(psi);
                 });
 
-                Log($"Web Dashboard başarıyla açıldı ({url}).", LogLevel.Success);
+                // Wait for port to open
+                for (int i = 0; i < 10; i++)
+                {
+                    await Task.Delay(500);
+                    if (IsV6Running()) break;
+                }
+
+                if (IsV6Running())
+                {
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = "http://localhost:9999/dashboard.html",
+                        UseShellExecute = true
+                    });
+
+                    Log("V6 Web Dashboard başarıyla açıldı (http://localhost:9999/dashboard.html).", LogLevel.Success);
+                }
+                else
+                {
+                    Log("V6 Web Köprüsü başlatılamadı: Port 9999 dinlemeye açılmadı.", LogLevel.Error);
+                }
             }
             catch (Exception ex)
             {
-                Log($"Web Dashboard başlatılırken hata: {ex.Message}", LogLevel.Error);
+                Log($"V6 başlatılırken hata: {ex.Message}", LogLevel.Error);
             }
         }
 
@@ -1817,12 +1916,19 @@ namespace SysForgeStudio.Services
         {
             try
             {
-                ITWebDashboardService.Instance.Stop();
-                Log("Web Dashboard durduruldu.", LogLevel.Info);
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "powershell.exe",
+                    Arguments = "-NoProfile -ExecutionPolicy Bypass -Command \"Get-CimInstance Win32_Process | Where-Object { $_.Name -like '*powershell*' -and $_.CommandLine -like '*WebBridgeServer.ps1*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }\"",
+                    CreateNoWindow = true,
+                    UseShellExecute = false
+                };
+                Process.Start(psi)?.WaitForExit(4000);
+                Log("V6 Web Köprüsü sunucusu durduruldu.", LogLevel.Info);
             }
             catch (Exception ex)
             {
-                Log($"Web Dashboard durdurulurken hata: {ex.Message}", LogLevel.Error);
+                Log($"V6 durdurulurken hata: {ex.Message}", LogLevel.Error);
             }
         }
 
@@ -1832,9 +1938,17 @@ namespace SysForgeStudio.Services
             {
                 string[] candidates = {
                     Path.Combine(LegacyToolkitRoot, "Printer_Analyzer_Pro.exe"),
-                    @"C:\ProgramData\SysForgeStudio\Printer_Analyzer_Pro.exe",
+                    Path.Combine(LegacyToolkitRoot, "PrinterEnterpriseFixTool", "Printer_Analyzer_Pro.exe"),
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Printer_Analyzer_Pro.exe"),
-                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "Modules", "Printer_Analyzer_Pro.exe")
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Modules", "Printer_Analyzer_Pro.exe"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "Modules", "Printer_Analyzer_Pro.exe"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Modules", "Printer_Analyzer_Pro.exe"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "Modules", "Printer_Analyzer_Pro.exe"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "Modules", "Printer_Analyzer_Pro.exe"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Modules", "PrinterEnterpriseFixTool", "Printer_Analyzer_Pro.exe"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "Modules", "PrinterEnterpriseFixTool", "Printer_Analyzer_Pro.exe"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "Modules", "PrinterEnterpriseFixTool", "Printer_Analyzer_Pro.exe"),
+                    @"C:\ProgramData\SysForgeStudio\Printer_Analyzer_Pro.exe"
                 };
 
                 string exePath = candidates.FirstOrDefault(File.Exists) ?? "";
@@ -1857,6 +1971,52 @@ namespace SysForgeStudio.Services
             catch (Exception ex)
             {
                 Log($"Printer Analyzer başlatılamadı: {ex.Message}", LogLevel.Error);
+            }
+        }
+
+        public void LaunchPrinterEnterpriseFixTool()
+        {
+            try
+            {
+                string[] candidates = {
+                    Path.Combine(LegacyToolkitRoot, "PrinterEnterpriseFixTool", "Printer_Enterprise_FixTool.ps1"),
+                    Path.Combine(LegacyToolkitRoot, "PrinterEnterpriseFixTool", "Ultimate_Printer_Toolkit_v3.ps1"),
+                    Path.Combine(LegacyToolkitRoot, "PrinterEnterpriseFixTool", "Run_PRN_UET_ENTERPRISE_V2_3_VISUAL_BACKUP.bat"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Modules", "PrinterEnterpriseFixTool", "Run_PRN_UET_ENTERPRISE_V2_3_VISUAL_BACKUP.bat"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "Modules", "PrinterEnterpriseFixTool", "Run_PRN_UET_ENTERPRISE_V2_3_VISUAL_BACKUP.bat"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Modules", "PrinterEnterpriseFixTool", "Run_PRN_UET_ENTERPRISE_V2_3_VISUAL_BACKUP.bat"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "Modules", "PrinterEnterpriseFixTool", "Printer_Enterprise_FixTool.ps1"),
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "Modules", "PrinterEnterpriseFixTool", "Printer_Enterprise_FixTool.ps1")
+                };
+
+                string toolPath = candidates.FirstOrDefault(File.Exists) ?? "";
+                if (string.IsNullOrEmpty(toolPath))
+                {
+                    Log("Printer Enterprise Fix Tool dosyası bulunamadı!", LogLevel.Error);
+                    return;
+                }
+
+                Log($"PRN Kurumsal Onarım Merkezi başlatılıyor: {toolPath}...", LogLevel.Info);
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = toolPath,
+                    WorkingDirectory = Path.GetDirectoryName(toolPath) ?? "",
+                    UseShellExecute = true,
+                    Verb = "runas"
+                };
+
+                if (Path.GetExtension(toolPath).Equals(".ps1", StringComparison.OrdinalIgnoreCase))
+                {
+                    startInfo.FileName = "powershell.exe";
+                    startInfo.Arguments = $"-NoProfile -ExecutionPolicy Bypass -File \"{toolPath}\"";
+                }
+
+                Process.Start(startInfo);
+                Log("PRN Kurumsal Onarım Merkezi başarıyla başlatıldı.", LogLevel.Success);
+            }
+            catch (Exception ex)
+            {
+                Log($"PRN Kurumsal Onarım Merkezi başlatılamadı: {ex.Message}", LogLevel.Error);
             }
         }
 

@@ -1,6 +1,8 @@
 using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using SysForgeStudio.Services;
 using SysForgeStudio.Views;
 
@@ -8,6 +10,11 @@ namespace SysForgeStudio
 {
     public partial class MainWindow : Window
     {
+        private bool _isLightTheme;
+        private static string ThemePreferencePath => Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "SysForgeStudio", "theme.txt");
+
         private DashboardView? _dashboardView;
         private ConnectPrinterView? _printersView;
         private NetworkScannerView? _networkView;
@@ -26,6 +33,7 @@ namespace SysForgeStudio
         public MainWindow()
         {
             InitializeComponent();
+            ApplyTheme(LoadLightTheme(), persist: false);
 
             _dashboardView = new DashboardView();
             _dashboardView.NavigateToPrintersRequested += () => NavPrinters.IsChecked = true;
@@ -49,6 +57,70 @@ namespace SysForgeStudio
 
             // Set default view
             MainContent.Content = _dashboardView;
+        }
+
+        private static bool LoadLightTheme()
+        {
+            try
+            {
+                return File.Exists(ThemePreferencePath) &&
+                       string.Equals(File.ReadAllText(ThemePreferencePath).Trim(), "light", StringComparison.OrdinalIgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private void ApplyTheme(bool light, bool persist)
+        {
+            _isLightTheme = light;
+            var palette = light
+                ? new (string Key, string Value)[]
+                {
+                    ("PtWindowBg", "#FFF3F6FA"), ("PtSidebarBg", "#FFEAF0F6"),
+                    ("PtCardBg", "#FFFFFFFF"), ("PtCardHover", "#FFE8EEF5"),
+                    ("PtCardBorder", "#FFD3DDE8"), ("PtAccent", "#FF0078D4"),
+                    ("PtAccentHover", "#FF006CBE"), ("PtTextPrimary", "#FF172536"),
+                    ("PtTextSecondary", "#FF526174"), ("PtSuccess", "#FF107C41"),
+                    ("PtWarning", "#FFB54708"), ("PtSubtleBg", "#FFF4F7FA")
+                }
+                : new (string Key, string Value)[]
+                {
+                    ("PtWindowBg", "#FF202020"), ("PtSidebarBg", "#FF181818"),
+                    ("PtCardBg", "#FF2B2B2B"), ("PtCardHover", "#FF323232"),
+                    ("PtCardBorder", "#FF383838"), ("PtAccent", "#FF0078D4"),
+                    ("PtAccentHover", "#FF1A86D9"), ("PtTextPrimary", "#FFFFFFFF"),
+                    ("PtTextSecondary", "#FFA6A6A6"), ("PtSuccess", "#FF107C41"),
+                    ("PtWarning", "#FFD83B01"), ("PtSubtleBg", "#FF262626")
+                };
+
+            foreach (var entry in palette)
+            {
+                var color = (Color)ColorConverter.ConvertFromString(entry.Value);
+                Application.Current.Resources[entry.Key] = new SolidColorBrush(color);
+            }
+
+            BtnThemeToggle.Content = light ? "🌙 Koyu tema" : "☀ Açık tema";
+            BtnThemeToggle.ToolTip = light ? "Koyu temaya geç" : "Açık temaya geç";
+
+            if (persist)
+            {
+                try
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(ThemePreferencePath)!);
+                    File.WriteAllText(ThemePreferencePath, light ? "light" : "dark");
+                }
+                catch
+                {
+                    // Theme changes still apply for this session if preference storage is unavailable.
+                }
+            }
+        }
+
+        private void BtnThemeToggle_Click(object sender, RoutedEventArgs e)
+        {
+            ApplyTheme(!_isLightTheme, persist: true);
         }
 
         private void OnBusyChanged(bool isBusy)

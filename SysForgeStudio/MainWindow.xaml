@@ -9,7 +9,7 @@
         Height="800" Width="1240"
         MinHeight="640" MinWidth="960"
         WindowStartupLocation="CenterScreen"
-        Background="{StaticResource PtWindowBg}"
+        Background="{DynamicResource PtWindowBg}"
         FontFamily="{StaticResource PtFont}"
         Icon="Assets/app_icon.png">
 
@@ -20,7 +20,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Left PowerToys Navigation Sidebar -->
-        <Border Grid.Column="0" Background="{StaticResource PtSidebarBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="0,0,1,0">
+        <Border Grid.Column="0" Background="{DynamicResource PtSidebarBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="0,0,1,0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -39,8 +39,8 @@
                             <Image Source="Assets/app_icon.png" Width="36" Height="36" RenderOptions.BitmapScalingMode="HighQuality" />
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                            <TextBlock Text="SysForge Studio" FontSize="15" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" />
-                            <TextBlock Text="Enterprise IT &amp; Hardware Suite" FontSize="11" Foreground="{StaticResource PtTextSecondary}" />
+                            <TextBlock Text="SysForge Studio" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" />
+                            <TextBlock Text="Enterprise IT &amp; Hardware Suite" FontSize="11" Foreground="{DynamicResource PtTextSecondary}" />
                         </StackPanel>
                     </Grid>
 
@@ -49,7 +49,7 @@
                         <TextBox x:Name="TxtSearch" Height="34" VerticalContentAlignment="Center"
                                  Style="{StaticResource PtTextBox}" TextChanged="TxtSearch_TextChanged"/>
                         <TextBlock Text="🔍 Modüllerde ara..."
-                                   Foreground="#777777" FontSize="12" Margin="12,0,0,0"
+                                   Foreground="{DynamicResource PtTextSecondary}" FontSize="12" Margin="12,0,0,0"
                                    VerticalAlignment="Center" IsHitTestVisible="False">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
@@ -64,53 +64,53 @@
                         </TextBlock>
                     </Grid>
 
-                    <Separator Background="{StaticResource PtCardBorder}" Margin="0,4,0,0"/>
+                    <Separator Background="{DynamicResource PtCardBorder}" Margin="0,4,0,0"/>
                 </StackPanel>
 
                 <!-- PowerToys Navigation Items -->
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                     <StackPanel Margin="0,2,0,0">
-                        <TextBlock Text="GENEL BAKIŞ" FontSize="10.5" FontWeight="Bold" Foreground="#666666" Margin="18,10,16,4"/>
+                        <TextBlock Text="GENEL BAKIŞ" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource PtTextSecondary}" Margin="18,10,16,4"/>
                         <RadioButton x:Name="NavDashboard" Content="📊  Genel Bakış &amp; Durum" Style="{StaticResource PtNavButtonStyle}" IsChecked="True" Checked="Nav_Checked"/>
 
-                        <TextBlock Text="YAZICI &amp; AĞ YÖNETİMİ" FontSize="10.5" FontWeight="Bold" Foreground="#666666" Margin="18,12,16,4"/>
+                        <TextBlock Text="YAZICI &amp; AĞ YÖNETİMİ" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource PtTextSecondary}" Margin="18,12,16,4"/>
                         <RadioButton x:Name="NavPrinters" Content="🖨️  Yazıcı Bağlantısı &amp; Keşif" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
                         <RadioButton x:Name="NavNetwork" Content="🌐  IP Tarama &amp; Ağ Keşfi (RDP)" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
                         <RadioButton x:Name="NavDrivers" Content="🧹  Sürücü Temizliği &amp; Paketler" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
 
-                        <TextBlock Text="ONARIM &amp; OPTİMİZASYON" FontSize="10.5" FontWeight="Bold" Foreground="#666666" Margin="18,12,16,4"/>
+                        <TextBlock Text="ONARIM &amp; OPTİMİZASYON" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource PtTextSecondary}" Margin="18,12,16,4"/>
                         <RadioButton x:Name="NavFixes" Content="⚡  Yazıcı &amp; Spooler Hızlı Onarım" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
                         <RadioButton x:Name="NavSysRepair" Content="🔧  Windows Çekirdek Onarımı" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
                         <RadioButton x:Name="NavDiag" Content="🔍  Sistem Servis &amp; İlke Teşhisi" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
                         <RadioButton x:Name="NavTools" Content="🛠️  Windows BT Sistem Araçları" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
 
-                        <TextBlock Text="GELİŞMİŞ MOTORLAR" FontSize="10.5" FontWeight="Bold" Foreground="#666666" Margin="18,12,16,4"/>
+                        <TextBlock Text="GELİŞMİŞ MOTORLAR" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource PtTextSecondary}" Margin="18,12,16,4"/>
                         <RadioButton x:Name="NavModules" Content="🚀  SysForge Entegre Motor Merkezi" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
 
-                        <TextBlock Text="DONANIM &amp; BT TEKNİK SERVİS" FontSize="10.5" FontWeight="Bold" Foreground="#666666" Margin="18,12,16,4"/>
+                        <TextBlock Text="DONANIM &amp; BT TEKNİK SERVİS" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource PtTextSecondary}" Margin="18,12,16,4"/>
                         <RadioButton x:Name="NavAIDiag" Content="🤖  Yapay Zeka Arıza Teşhis &amp; Onarım" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
                         <RadioButton x:Name="NavExpertise" Content="🛡️  Donanım Ekspertizi &amp; HWID Hash" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
                         <RadioButton x:Name="NavITService" Content="💼  BT Servis Masası &amp; Zimmet" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
 
-                        <TextBlock Text="GÜNLÜK &amp; YEDEKLEME" FontSize="10.5" FontWeight="Bold" Foreground="#666666" Margin="18,12,16,4"/>
+                        <TextBlock Text="GÜNLÜK &amp; YEDEKLEME" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource PtTextSecondary}" Margin="18,12,16,4"/>
                         <RadioButton x:Name="NavLogs" Content="📋  Canlı Terminal &amp; Çıktı Günlüğü" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
                         <RadioButton x:Name="NavBackup" Content="💾  Kayıt Defteri &amp; Yapılandırma Yedeği" Style="{StaticResource PtNavButtonStyle}" Checked="Nav_Checked"/>
                     </StackPanel>
                 </ScrollViewer>
 
                 <!-- Sidebar Footer -->
-                <Border Grid.Row="2" Padding="16,12" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="0,1,0,0" Background="#161616">
+                <Border Grid.Row="2" Padding="16,12" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="0,1,0,0" Background="{DynamicResource PtSidebarBg}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="SysForge Studio v6.0" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource PtTextSecondary}"/>
+                            <TextBlock Text="SysForge Studio v6.0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource PtTextSecondary}"/>
                             <TextBlock Text="Windows 11 / 10 / Server" FontSize="10" Foreground="#606060"/>
                         </StackPanel>
                         <Border Grid.Column="1" Style="{StaticResource PtBadge}">
-                            <TextBlock Text="PRO" FontSize="10" FontWeight="Bold" Foreground="{StaticResource PtAccent}"/>
+                            <TextBlock Text="PRO" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource PtAccent}"/>
                         </Border>
                     </Grid>
                 </Border>
@@ -125,7 +125,7 @@
             </Grid.RowDefinitions>
 
             <!-- Top Header & Breadcrumb -->
-            <Border Grid.Row="0" Background="{StaticResource PtWindowBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="0,0,0,1" Padding="28,14">
+            <Border Grid.Row="0" Background="{DynamicResource PtWindowBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="0,0,0,1" Padding="28,14">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -133,13 +133,14 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                        <TextBlock x:Name="TxtHeaderTitle" Text="Genel Bakış &amp; Durum" FontSize="20" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}"/>
-                        <TextBlock x:Name="TxtHeaderSubtitle" Text="Sistem yazdırma durumu ve hızlı eylemler" FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,3,0,0"/>
+                        <TextBlock x:Name="TxtHeaderTitle" Text="Genel Bakış &amp; Durum" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}"/>
+                        <TextBlock x:Name="TxtHeaderSubtitle" Text="Sistem yazdırma durumu ve hızlı eylemler" FontSize="12" Foreground="{DynamicResource PtTextSecondary}" Margin="0,3,0,0"/>
                     </StackPanel>
 
                     <!-- Top Right Badges & Progress -->
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                        <ProgressBar x:Name="PbBusy" Width="100" Height="4" IsIndeterminate="True" Visibility="Collapsed" Margin="0,0,14,0" Foreground="{StaticResource PtAccent}"/>
+                        <ProgressBar x:Name="PbBusy" Width="100" Height="4" IsIndeterminate="True" Visibility="Collapsed" Margin="0,0,14,0" Foreground="{DynamicResource PtAccent}"/>
+                        <Button x:Name="BtnThemeToggle" Content="☀ Açık tema" Style="{StaticResource PtSecondaryButton}" Margin="0,0,10,0" Padding="10,5" Click="BtnThemeToggle_Click" ToolTip="Açık ve koyu tema arasında geçiş yap"/>
                         <Border Style="{StaticResource PtBadge}" Padding="10,5">
                             <TextBlock Text="🛡️ Yönetici Modu" FontSize="11" FontWeight="SemiBold" Foreground="#38BDF8"/>
                         </Border>

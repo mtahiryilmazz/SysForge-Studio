@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="SysForgeStudio.Views.DiagnosticsView"
+<UserControl x:Class="SysForgeStudio.Views.DiagnosticsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -21,8 +21,8 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0" Margin="0,0,12,0">
-                    <TextBlock Text="🔍 Sistem &amp; Yazıcı Teşhis Merkezi" FontSize="18" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" Margin="0,0,0,4" TextWrapping="Wrap"/>
-                    <TextBlock Text="Kayıt defteri, güvenlik ilkeleri, RPC ayarları ve ağ servislerindeki potansiyel arızaları analiz edin." FontSize="12" Foreground="{StaticResource PtTextSecondary}" TextWrapping="Wrap"/>
+                    <TextBlock Text="🔍 Sistem &amp; Yazıcı Teşhis Merkezi" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" Margin="0,0,0,4" TextWrapping="Wrap"/>
+                    <TextBlock Text="Kayıt defteri, güvenlik ilkeleri, RPC ayarları ve ağ servislerindeki potansiyel arızaları analiz edin." FontSize="12" Foreground="{DynamicResource PtTextSecondary}" TextWrapping="Wrap"/>
                 </StackPanel>
 
                 <Button Grid.Column="1" Content="🔍 Teşhis Taramasını Başlat" Style="{StaticResource PtPrimaryButton}" Padding="18,10" VerticalAlignment="Top" Click="BtnRunDiag_Click"/>
@@ -32,18 +32,18 @@
         <!-- Diag Results Grid -->
         <Border Grid.Row="1" Style="{StaticResource PtSettingsCard}" Margin="0,0,0,10" Padding="12">
             <DataGrid x:Name="DgDiag" AutoGenerateColumns="False" IsReadOnly="True"
-                      Background="#262626" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1"
-                      Foreground="{StaticResource PtTextPrimary}" RowBackground="#2B2B2B" AlternatingRowBackground="#303030"
-                      GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{StaticResource PtCardBorder}"
+                      Background="{DynamicResource PtSubtleBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1"
+                      Foreground="{DynamicResource PtTextPrimary}" RowBackground="{DynamicResource PtCardBg}" AlternatingRowBackground="{DynamicResource PtCardHover}"
+                      GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource PtCardBorder}"
                       HeadersVisibility="Column" SelectionMode="Single">
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="Background" Value="#333333"/>
-                        <Setter Property="Foreground" Value="{StaticResource PtTextSecondary}"/>
+                        <Setter Property="Foreground" Value="{DynamicResource PtTextSecondary}"/>
                         <Setter Property="FontWeight" Value="SemiBold"/>
                         <Setter Property="Padding" Value="10,8"/>
                         <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                        <Setter Property="BorderBrush" Value="{StaticResource PtCardBorder}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource PtCardBorder}"/>
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
@@ -63,7 +63,7 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="💡 Teşhis sonuçlarına göre tek tıkla önerilen düzeltmeleri uygulayabilirsiniz." FontSize="12" Foreground="{StaticResource PtTextSecondary}" VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,0,12,0"/>
+                <TextBlock Grid.Column="0" Text="💡 Teşhis sonuçlarına göre tek tıkla önerilen düzeltmeleri uygulayabilirsiniz." FontSize="12" Foreground="{DynamicResource PtTextSecondary}" VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,0,12,0"/>
                 <Button Grid.Column="1" Content="⚡ Tespit Edilen Hataları Otomatik Onar" Style="{StaticResource PtSuccessButton}" Padding="18,9" VerticalAlignment="Center" Click="BtnAutoRemediate_Click"/>
             </Grid>
         </Border>

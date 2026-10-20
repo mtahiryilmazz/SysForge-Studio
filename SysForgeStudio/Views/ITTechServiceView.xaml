@@ -16,29 +16,53 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
-                    <TextBlock Text="💼 BT Teknik Servis Masası &amp; Müdürlük Portali" FontSize="22" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" />
+                    <TextBlock Text="💼 BT Teknik Servis Masası &amp; Müdürlük Portali" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" />
                     <TextBlock Text="Müdürlük &amp; birim yönetimi, arıza talepleri, zimmet envanteri ve dahili C# web konsolu." 
-                               FontSize="13" Foreground="{StaticResource PtTextSecondary}" Margin="0,3,0,0"/>
+                               FontSize="13" Foreground="{DynamicResource PtTextSecondary}" Margin="0,3,0,0"/>
                 </StackPanel>
                 <Button Grid.Column="1" Content="🔄 Verileri Yenile" Style="{StaticResource PtSecondaryButton}" Click="BtnRefresh_Click" VerticalAlignment="Center"/>
             </Grid>
 
             <!-- 1. Embedded Web Dashboard Control Bar -->
-            <Border Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,16">
+            <Border Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,16">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                        <TextBlock Text="🌐 Dahili BT Web Konsolu (Yerel &amp; Ağ Yayını)" FontSize="13" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}"/>
-                        <TextBlock x:Name="TxtWebStatus" Text="⚪ Web sunucusu kapalı. Başlatıldığında ağdaki cihazlar arıza kaydı bırakabilir." FontSize="11" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0"/>
+                        <TextBlock Text="🌐 Dahili BT Web Konsolu (Yerel &amp; Ağ Yayını)" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}"/>
+                        <TextBlock x:Name="TxtWebStatus" Text="⚪ Web sunucusu kapalı. Başlatıldığında ağdaki cihazlar arıza kaydı bırakabilir." FontSize="11" Foreground="{DynamicResource PtTextSecondary}" Margin="0,2,0,0"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button x:Name="BtnToggleWeb" Content="▶️ Web Panelini Başlat" Style="{StaticResource PtPrimaryButton}" Margin="0,0,8,0" Click="BtnToggleWeb_Click"/>
                         <Button x:Name="BtnOpenBrowser" Content="🖥️ Tarayıcıda Aç" Style="{StaticResource PtSecondaryButton}" IsEnabled="False" Click="BtnOpenBrowser_Click"/>
                     </StackPanel>
                 </Grid>
+            </Border>
+
+            <!-- Integrated enterprise printer repair tools -->
+            <Border Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                <StackPanel>
+                    <Grid Margin="0,0,0,10">
+                        <StackPanel>
+                            <TextBlock Text="🖨️ PRN Kurumsal Yazıcı Onarım" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}"/>
+                            <TextBlock Text="Yazıcı analizi ve onarım araçları BT modülüne entegre edilmiştir; ayrı pencere açılmaz." FontSize="11" Foreground="{DynamicResource PtTextSecondary}" Margin="0,3,0,0"/>
+                        </StackPanel>
+                        <Button Content="🔄 Yazıcıları Tara" Style="{StaticResource PtSecondaryButton}" HorizontalAlignment="Right" VerticalAlignment="Center" Click="BtnRefreshPrinters_Click"/>
+                    </Grid>
+                    <ComboBox x:Name="CmbEnterprisePrinters" Height="36" Style="{StaticResource PtComboBox}" DisplayMemberPath="Name" Margin="0,0,0,10"/>
+                    <WrapPanel>
+                        <Button Content="🔎 Tanılama" Style="{StaticResource PtSecondaryButton}" Margin="0,0,8,8" Click="BtnPrinterDiagnosis_Click"/>
+                        <Button Content="RPC / 0x11b / 709" Style="{StaticResource PtSecondaryButton}" Margin="0,0,8,8" Click="BtnPrinterRpcFix_Click"/>
+                        <Button Content="Point &amp; Print" Style="{StaticResource PtSecondaryButton}" Margin="0,0,8,8" Click="BtnPointPrintFix_Click"/>
+                        <Button Content="Spooler Sıfırla" Style="{StaticResource PtSecondaryButton}" Margin="0,0,8,8" Click="BtnSpoolerReset_Click"/>
+                        <Button Content="Paylaşım Duvarı" Style="{StaticResource PtSecondaryButton}" Margin="0,0,8,8" Click="BtnPrinterFirewall_Click"/>
+                        <Button Content="Sınama Sayfası" Style="{StaticResource PtSecondaryButton}" Margin="0,0,8,8" Click="BtnPrintTestPage_Click"/>
+                        <Button Content="Kuyruğu Aç" Style="{StaticResource PtSecondaryButton}" Margin="0,0,8,8" Click="BtnOpenPrinterQueue_Click"/>
+                    </WrapPanel>
+                    <TextBlock x:Name="TxtEnterprisePrinterStatus" Text="Yazıcı listesi henüz yüklenmedi." FontSize="11" Foreground="{DynamicResource PtTextSecondary}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                </StackPanel>
             </Border>
 
             <!-- 2. KPI Metric Summary Cards -->
@@ -51,32 +75,32 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0" Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14">
+                <Border Grid.Column="0" Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14">
                     <StackPanel>
                         <TextBlock Text="AÇIK ARIZA TALEPLERİ" FontSize="11" FontWeight="Bold" Foreground="#F59E0B"/>
-                        <TextBlock x:Name="TxtOpenTicketsCount" Text="0" FontSize="26" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,4,0,0"/>
+                        <TextBlock x:Name="TxtOpenTicketsCount" Text="0" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" Margin="0,4,0,0"/>
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Column="2" Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14">
+                <Border Grid.Column="2" Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14">
                     <StackPanel>
                         <TextBlock Text="ÇÖZÜLEN ÇAĞRILAR" FontSize="11" FontWeight="Bold" Foreground="#107C41"/>
-                        <TextBlock x:Name="TxtResolvedTicketsCount" Text="0" FontSize="26" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,4,0,0"/>
+                        <TextBlock x:Name="TxtResolvedTicketsCount" Text="0" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" Margin="0,4,0,0"/>
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Column="4" Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14">
+                <Border Grid.Column="4" Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14">
                     <StackPanel>
                         <TextBlock Text="KAYITLI DONANIM ENVANTERİ" FontSize="11" FontWeight="Bold" Foreground="#0078D4"/>
-                        <TextBlock x:Name="TxtInventoryCount" Text="0" FontSize="26" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,4,0,0"/>
+                        <TextBlock x:Name="TxtInventoryCount" Text="0" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" Margin="0,4,0,0"/>
                     </StackPanel>
                 </Border>
             </Grid>
 
             <!-- 3. Departments & Units Management (Müdürlük & Birim Yönetimi) -->
-            <Border Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+            <Border Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
                 <StackPanel>
-                    <TextBlock Text="🏢 Müdürlük &amp; Alt Birim Yönetimi" FontSize="15" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" Margin="0,0,0,10"/>
+                    <TextBlock Text="🏢 Müdürlük &amp; Alt Birim Yönetimi" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" Margin="0,0,0,10"/>
                     
                     <Grid Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
@@ -93,7 +117,7 @@
 
                         <!-- Add Department -->
                         <TextBox x:Name="TxtNewDeptName" Grid.Column="0" Height="34" Style="{StaticResource PtTextBox}" VerticalContentAlignment="Center"/>
-                        <TextBlock Text="Yeni Müdürlük Adı..." Grid.Column="0" Foreground="#777777" Margin="10,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False">
+                        <TextBlock Text="Yeni Müdürlük Adı..." Grid.Column="0" Foreground="{DynamicResource PtTextSecondary}" Margin="10,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed" />
@@ -112,7 +136,7 @@
 
                         <!-- Add Unit -->
                         <TextBox x:Name="TxtNewUnitName" Grid.Column="6" Height="34" Style="{StaticResource PtTextBox}" VerticalContentAlignment="Center"/>
-                        <TextBlock Text="Seçili Müdürlüğe Alt Birim..." Grid.Column="6" Foreground="#777777" Margin="10,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False">
+                        <TextBlock Text="Seçili Müdürlüğe Alt Birim..." Grid.Column="6" Foreground="{DynamicResource PtTextSecondary}" Margin="10,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed" />
@@ -131,13 +155,13 @@
                     <ItemsControl x:Name="ListDepartments">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="#1A1A1A" BorderBrush="#333333" BorderThickness="1" CornerRadius="6" Padding="12,10" Margin="0,0,0,8">
+                                <Border Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="6" Padding="12,10" Margin="0,0,0,8">
                                     <StackPanel>
                                         <Grid Margin="0,0,0,6">
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                 <TextBlock Text="🏢" FontSize="13" Margin="0,0,6,0"/>
                                                 <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="#38BDF8" FontSize="13"/>
-                                                <TextBlock Text="{Binding Units.Count, StringFormat=' ({0} Alt Birim)'}" FontSize="11" Foreground="#888888" VerticalAlignment="Center" Margin="6,0,0,0"/>
+                                                <TextBlock Text="{Binding Units.Count, StringFormat=' ({0} Alt Birim)'}" FontSize="11" Foreground="{DynamicResource PtTextSecondary}" VerticalAlignment="Center" Margin="6,0,0,0"/>
                                             </StackPanel>
                                             <Button Content="🗑️ Müdürlüğü Sil" Tag="{Binding Id}" Style="{StaticResource PtSecondaryButton}" HorizontalAlignment="Right" Padding="8,2" FontSize="11" Foreground="#F87171" Click="BtnDeleteDept_Click"/>
                                         </Grid>
@@ -151,9 +175,9 @@
                                             </ItemsControl.ItemsPanel>
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Border Background="#262626" BorderBrush="#3A3A3A" BorderThickness="1" CornerRadius="4" Padding="8,3" Margin="0,0,6,4">
+                                                    <Border Background="{DynamicResource PtSubtleBg}" BorderBrush="#3A3A3A" BorderThickness="1" CornerRadius="4" Padding="8,3" Margin="0,0,6,4">
                                                         <StackPanel Orientation="Horizontal">
-                                                            <TextBlock Text="{Binding Name}" Foreground="#E2E8F0" FontSize="11.5" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                            <TextBlock Text="{Binding Name}" Foreground="{DynamicResource PtTextPrimary}" FontSize="11.5" VerticalAlignment="Center" Margin="0,0,6,0"/>
                                                             <Button Content="✕" Tag="{Binding Id}" Style="{StaticResource PtSecondaryButton}" Padding="4,0" FontSize="10" Foreground="#FCA5A5" Click="BtnDeleteUnit_Click" ToolTip="Bu birimi sil"/>
                                                         </StackPanel>
                                                     </Border>
@@ -169,15 +193,15 @@
             </Border>
 
             <!-- 4. Tickets Section (Arıza & Destek Talepleri) -->
-            <Border Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+            <Border Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
                 <StackPanel>
                     <Grid Margin="0,0,0,10">
-                        <TextBlock Text="🎫 Arıza &amp; Destek Talepleri (Tickets)" FontSize="15" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}"/>
-                        <TextBlock Text="Müdürlük ve personele göre kayıt oluşturun" HorizontalAlignment="Right" FontSize="11" Foreground="{StaticResource PtTextSecondary}"/>
+                        <TextBlock Text="🎫 Arıza &amp; Destek Talepleri (Tickets)" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}"/>
+                        <TextBlock Text="Müdürlük ve personele göre kayıt oluşturun" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource PtTextSecondary}"/>
                     </Grid>
 
                     <!-- New Ticket Form -->
-                    <Border Background="#1E1E1E" CornerRadius="6" Padding="12" Margin="0,0,0,12">
+                    <Border Background="{DynamicResource PtCardBg}" CornerRadius="6" Padding="12" Margin="0,0,0,12">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -196,7 +220,7 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBox x:Name="TxtNewPerson" Grid.Row="0" Grid.Column="0" Height="34" Style="{StaticResource PtTextBox}" VerticalContentAlignment="Center" Margin="0,0,0,6"/>
-                            <TextBlock Text="Personel Adı" Grid.Row="0" Grid.Column="0" Foreground="#777777" Margin="10,0,0,6" VerticalAlignment="Center" IsHitTestVisible="False">
+                            <TextBlock Text="Personel Adı" Grid.Row="0" Grid.Column="0" Foreground="{DynamicResource PtTextSecondary}" Margin="10,0,0,6" VerticalAlignment="Center" IsHitTestVisible="False">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Collapsed" />
@@ -212,7 +236,7 @@
                             <ComboBox x:Name="CmbDepts" Grid.Row="0" Grid.Column="2" Height="34" Style="{StaticResource PtComboBox}" Margin="0,0,0,6" DisplayMemberPath="Name"/>
 
                             <TextBox x:Name="TxtNewInternal" Grid.Row="0" Grid.Column="4" Height="34" Style="{StaticResource PtTextBox}" VerticalContentAlignment="Center" Margin="0,0,0,6"/>
-                            <TextBlock Text="Dahili No" Grid.Row="0" Grid.Column="4" Foreground="#777777" Margin="10,0,0,6" VerticalAlignment="Center" IsHitTestVisible="False">
+                            <TextBlock Text="Dahili No" Grid.Row="0" Grid.Column="4" Foreground="{DynamicResource PtTextSecondary}" Margin="10,0,0,6" VerticalAlignment="Center" IsHitTestVisible="False">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Collapsed" />
@@ -234,7 +258,7 @@
                             </ComboBox>
 
                             <TextBox x:Name="TxtNewDesc" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7" Height="34" Style="{StaticResource PtTextBox}" VerticalContentAlignment="Center"/>
-                            <TextBlock Text="Arıza / Talep açıklaması..." Grid.Row="1" Grid.Column="0" Foreground="#777777" Margin="10,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False">
+                            <TextBlock Text="Arıza / Talep açıklaması..." Grid.Row="1" Grid.Column="0" Foreground="{DynamicResource PtTextSecondary}" Margin="10,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Collapsed" />
@@ -255,7 +279,7 @@
                     <ItemsControl x:Name="ListTickets">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="#1C1C1C" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="6" Padding="12,8" Margin="0,3">
+                                <Border Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="6" Padding="12,8" Margin="0,3">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="50" />
@@ -268,9 +292,9 @@
                                         </Grid.ColumnDefinitions>
 
                                         <TextBlock Grid.Column="0" Text="{Binding Id, StringFormat='#{0}'}" FontWeight="Bold" Foreground="#38BDF8" VerticalAlignment="Center"/>
-                                        <TextBlock Grid.Column="1" Text="{Binding PersonnelName}" FontWeight="SemiBold" Foreground="#FFFFFF" VerticalAlignment="Center"/>
-                                        <TextBlock Grid.Column="2" Text="{Binding Department}" Foreground="#A0A0A0" VerticalAlignment="Center"/>
-                                        <TextBlock Grid.Column="3" Text="{Binding IssueType}" Foreground="#E2E8F0" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding PersonnelName}" FontWeight="SemiBold" Foreground="{DynamicResource PtTextPrimary}" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding Department}" Foreground="{DynamicResource PtTextSecondary}" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3" Text="{Binding IssueType}" Foreground="{DynamicResource PtTextPrimary}" VerticalAlignment="Center"/>
                                         <StackPanel Grid.Column="4" VerticalAlignment="Center" Margin="0,0,8,0">
                                             <TextBlock Text="{Binding Description}" Foreground="#CCCCCC" TextTrimming="CharacterEllipsis"/>
                                             <TextBlock Text="{Binding ResolutionNote, StringFormat='💡 Çözüm: {0}'}" FontSize="11" Foreground="#34D399" TextTrimming="CharacterEllipsis" Margin="0,2,0,0">
@@ -325,12 +349,12 @@
             </Border>
 
             <!-- 5. Hardware & Software Inventory Section -->
-            <Border Background="{StaticResource PtCardBg}" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16">
+            <Border Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16">
                 <StackPanel>
-                    <TextBlock Text="🖥️ Cihaz Donanım &amp; Yazılım Zimmet Envanteri" FontSize="15" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" Margin="0,0,0,12"/>
+                    <TextBlock Text="🖥️ Cihaz Donanım &amp; Yazılım Zimmet Envanteri" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" Margin="0,0,0,12"/>
 
                     <!-- Live Machine Hardware & Software Information Card (Bilgi Kutucuğu) -->
-                    <Border Background="#202020" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,14">
+                    <Border Background="{DynamicResource PtWindowBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,14">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -345,17 +369,17 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                    <Border Background="{StaticResource PtAccentGradient}" Width="34" Height="34" CornerRadius="6" Margin="0,0,10,0">
+                                    <Border Background="{DynamicResource PtAccentGradient}" Width="34" Height="34" CornerRadius="6" Margin="0,0,10,0">
                                         <TextBlock Text="💻" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                     </Border>
                                     <StackPanel VerticalAlignment="Center">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="Bu Bilgisayarın Donanım &amp; Yazılım Bilgi Kartı" FontSize="13.5" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}"/>
+                                            <TextBlock Text="Bu Bilgisayarın Donanım &amp; Yazılım Bilgi Kartı" FontSize="13.5" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}"/>
                                             <Border Style="{StaticResource PtBadge}" Margin="8,0,0,0" Padding="6,1">
                                                 <TextBlock Text="Canlı Sistem" FontSize="10" FontWeight="SemiBold" Foreground="#4ADE80"/>
                                             </Border>
                                         </StackPanel>
-                                        <TextBlock x:Name="TxtLiveMachineHeader" Text="Cihaz: Algılanıyor... | IP: Algılanıyor..." FontSize="11.5" Foreground="{StaticResource PtTextSecondary}" Margin="0,1,0,0"/>
+                                        <TextBlock x:Name="TxtLiveMachineHeader" Text="Cihaz: Algılanıyor... | IP: Algılanıyor..." FontSize="11.5" Foreground="{DynamicResource PtTextSecondary}" Margin="0,1,0,0"/>
                                     </StackPanel>
                                 </StackPanel>
 
@@ -365,7 +389,7 @@
                             </Grid>
 
                             <!-- Specs Summary Grid (Bilgi Kutucuğu Özet Verileri) -->
-                            <Border Grid.Row="1" Background="#161616" BorderBrush="#333333" BorderThickness="1" CornerRadius="6" Padding="12,10">
+                            <Border Grid.Row="1" Background="{DynamicResource PtSidebarBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="6" Padding="12,10">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -378,24 +402,24 @@
                                     <!-- Col 1: Hardware Summary -->
                                     <StackPanel Grid.Column="0">
                                         <TextBlock Text="⚙️ DONANIM BİLEŞENLERİ" FontSize="10" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,4"/>
-                                        <TextBlock x:Name="TxtLiveBrandModel" Text="Model: Algılanıyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="#FFFFFF" TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock x:Name="TxtLiveCpuRam" Text="CPU / RAM: Algılanıyor..." FontSize="11" Foreground="#CBD5E1" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
-                                        <TextBlock x:Name="TxtLiveMotherboard" Text="Anakart: Algılanıyor..." FontSize="10.5" Foreground="#94A3B8" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                        <TextBlock x:Name="TxtLiveBrandModel" Text="Model: Algılanıyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource PtTextPrimary}" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock x:Name="TxtLiveCpuRam" Text="CPU / RAM: Algılanıyor..." FontSize="11" Foreground="{DynamicResource PtTextPrimary}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                        <TextBlock x:Name="TxtLiveMotherboard" Text="Anakart: Algılanıyor..." FontSize="10.5" Foreground="{DynamicResource PtTextSecondary}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
                                     </StackPanel>
 
                                     <!-- Col 2: Software & OS Summary -->
                                     <StackPanel Grid.Column="2">
                                         <TextBlock Text="🪟 YAZILIM &amp; İŞLETİM SİSTEMİ" FontSize="10" FontWeight="Bold" Foreground="#4ADE80" Margin="0,0,0,4"/>
-                                        <TextBlock x:Name="TxtLiveOsBuild" Text="İşletim Sistemi: Algılanıyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="#FFFFFF" TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock x:Name="TxtLiveSecurity" Text="Güvenlik: Defender Aktif" FontSize="11" Foreground="#CBD5E1" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
-                                        <TextBlock x:Name="TxtLiveBios" Text="BIOS: Algılanıyor..." FontSize="10.5" Foreground="#94A3B8" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                        <TextBlock x:Name="TxtLiveOsBuild" Text="İşletim Sistemi: Algılanıyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource PtTextPrimary}" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock x:Name="TxtLiveSecurity" Text="Güvenlik: Defender Aktif" FontSize="11" Foreground="{DynamicResource PtTextPrimary}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                        <TextBlock x:Name="TxtLiveBios" Text="BIOS: Algılanıyor..." FontSize="10.5" Foreground="{DynamicResource PtTextSecondary}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
                                     </StackPanel>
 
                                     <!-- Col 3: Network & Assignment -->
                                     <StackPanel Grid.Column="4">
                                         <TextBlock Text="🌐 AĞ &amp; KULLANICI BİLGİSİ" FontSize="10" FontWeight="Bold" Foreground="#F59E0B" Margin="0,0,0,4"/>
-                                        <TextBlock x:Name="TxtLiveIpMac" Text="IP / MAC: Algılanıyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="#FFFFFF" TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock x:Name="TxtLiveUser" Text="Kullanıcı: Algılanıyor..." FontSize="11" Foreground="#CBD5E1" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                        <TextBlock x:Name="TxtLiveIpMac" Text="IP / MAC: Algılanıyor..." FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource PtTextPrimary}" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock x:Name="TxtLiveUser" Text="Kullanıcı: Algılanıyor..." FontSize="11" Foreground="{DynamicResource PtTextPrimary}" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
                                         <TextBlock x:Name="TxtLiveSerial" Text="Seri No / HWID: Algılanıyor..." FontSize="10.5" FontFamily="Consolas" Foreground="#38BDF8" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
                                     </StackPanel>
                                 </Grid>
@@ -404,20 +428,20 @@
                     </Border>
 
                     <!-- Saved Inventory Records List Header -->
-                    <TextBlock Text="📋 Kayıtlı Zimmet Envanteri Listesi" FontSize="13" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" Margin="0,4,0,6"/>
+                    <TextBlock Text="📋 Kayıtlı Zimmet Envanteri Listesi" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" Margin="0,4,0,6"/>
 
                     <!-- Empty State Banner -->
-                    <Border x:Name="PnlEmptyInventory" Background="#1C1C1C" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="6" Padding="20" Margin="0,2,0,6" Visibility="Collapsed">
+                    <Border x:Name="PnlEmptyInventory" Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="6" Padding="20" Margin="0,2,0,6" Visibility="Collapsed">
                         <StackPanel HorizontalAlignment="Center">
-                            <TextBlock Text="ℹ️ Henüz kayıtlı donanım zimmeti bulunmuyor." FontSize="13" FontWeight="SemiBold" Foreground="#CBD5E1" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Yukarıdaki bilgi kutucuğundan 'Bu Bilgisayarı Envantere Kaydet' butonuna tıklayarak ilk donanım zimmet kaydını ekleyebilirsiniz." FontSize="11.5" Foreground="{StaticResource PtTextSecondary}" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                            <TextBlock Text="ℹ️ Henüz kayıtlı donanım zimmeti bulunmuyor." FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource PtTextPrimary}" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Yukarıdaki bilgi kutucuğundan 'Bu Bilgisayarı Envantere Kaydet' butonuna tıklayarak ilk donanım zimmet kaydını ekleyebilirsiniz." FontSize="11.5" Foreground="{DynamicResource PtTextSecondary}" HorizontalAlignment="Center" Margin="0,4,0,0"/>
                         </StackPanel>
                     </Border>
 
                     <ItemsControl x:Name="ListInventory">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="#1C1C1C" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1" CornerRadius="6" Padding="12,8" Margin="0,3">
+                                <Border Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="6" Padding="12,8" Margin="0,3">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="130" />
@@ -428,11 +452,11 @@
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
 
-                                        <TextBlock Grid.Column="0" Text="{Binding Brand}" FontWeight="Bold" Foreground="#FFFFFF" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding Brand}"/>
-                                        <TextBlock Grid.Column="1" Text="{Binding Model}" Foreground="#CBD5E1" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding Model}" Margin="4,0"/>
+                                        <TextBlock Grid.Column="0" Text="{Binding Brand}" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding Brand}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Model}" Foreground="{DynamicResource PtTextPrimary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding Model}" Margin="4,0"/>
                                         <TextBlock Grid.Column="2" Text="{Binding SerialNo, StringFormat='SN: {0}'}" FontFamily="Consolas" Foreground="#38BDF8" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding SerialNo}" Margin="4,0"/>
-                                        <TextBlock Grid.Column="3" Text="{Binding IpAddress, StringFormat='IP: {0}'}" FontFamily="Consolas" Foreground="#A0A0A0" VerticalAlignment="Center" Margin="4,0"/>
-                                        <TextBlock Grid.Column="4" Text="{Binding UserName, StringFormat='Zimmet: {0}'}" Foreground="#E2E8F0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding UserName}" Margin="4,0"/>
+                                        <TextBlock Grid.Column="3" Text="{Binding IpAddress, StringFormat='IP: {0}'}" FontFamily="Consolas" Foreground="{DynamicResource PtTextSecondary}" VerticalAlignment="Center" Margin="4,0"/>
+                                        <TextBlock Grid.Column="4" Text="{Binding UserName, StringFormat='Zimmet: {0}'}" Foreground="{DynamicResource PtTextPrimary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding UserName}" Margin="4,0"/>
                                         <StackPanel Grid.Column="5" Orientation="Horizontal" VerticalAlignment="Center">
                                             <Button Content="🔍 Detay" Tag="{Binding}" Style="{StaticResource PtSecondaryButton}" Padding="10,4" FontSize="11" Margin="0,0,6,0" Click="BtnShowInventoryDetail_Click"/>
                                             <Button Content="🗑️" Tag="{Binding Id}" Style="{StaticResource PtSecondaryButton}" Padding="8,4" FontSize="11" Click="BtnDeleteInventory_Click"/>

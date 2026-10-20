@@ -12,7 +12,7 @@
         </Grid.RowDefinitions>
 
         <!-- Top Header & Engine Tabs (stacked to prevent horizontal overflow) -->
-        <Border Grid.Row="0" Style="{StaticResource PtSettingsCard}" Background="#252525" Padding="16,12" Margin="0,0,0,12">
+        <Border Grid.Row="0" Style="{StaticResource PtSettingsCard}" Background="{DynamicResource PtCardHover}" Padding="16,12" Margin="0,0,0,12">
             <StackPanel>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -20,11 +20,11 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,12,0">
-                        <TextBlock Text="🚀 Entegre Motorlar &amp; Modül Merkezi" FontSize="18" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" TextWrapping="Wrap"/>
-                        <TextBlock Text="v5 modül kütüphanesi, v6 web paneli ve uzman araçlar tek arayüzde." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        <TextBlock Text="🚀 Entegre Motorlar &amp; Modül Merkezi" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" TextWrapping="Wrap"/>
+                        <TextBlock Text="v5 modül kütüphanesi, v6 web paneli ve uzman araçlar tek arayüzde." FontSize="12" Foreground="{DynamicResource PtTextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
                     <Border Grid.Column="1" Style="{StaticResource PtBadge}" VerticalAlignment="Top">
-                        <TextBlock Text="CMD'siz Yürütme" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource PtAccent}"/>
+                        <TextBlock Text="CMD'siz Yürütme" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource PtAccent}"/>
                     </Border>
                 </Grid>
 
@@ -46,7 +46,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Left Master: Category Selector & Search -->
-            <Border Grid.Column="0" Style="{StaticResource PtSettingsCard}" Padding="12,12" Background="#242424">
+            <Border Grid.Column="0" Style="{StaticResource PtSettingsCard}" Padding="12,12" Background="{DynamicResource PtCardHover}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -55,11 +55,11 @@
 
                     <!-- Search Filter -->
                     <StackPanel Grid.Row="0" Margin="0,0,0,10">
-                        <TextBlock Text="KATEGORİLER &amp; MODÜLLER" FontSize="10.5" FontWeight="Bold" Foreground="#888888" Margin="4,0,0,6"/>
+                        <TextBlock Text="KATEGORİLER &amp; MODÜLLER" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource PtTextSecondary}" Margin="4,0,0,6"/>
                         <Grid>
                             <TextBox x:Name="TxtSearchCategories" Height="32" VerticalContentAlignment="Center" Style="{StaticResource PtTextBox}"
                                      TextChanged="TxtSearchCategories_TextChanged"/>
-                            <TextBlock Text="Modül veya işlem ara..." Foreground="#777777" FontSize="12" Margin="12,0,0,0"
+                            <TextBlock Text="Modül veya işlem ara..." Foreground="{DynamicResource PtTextSecondary}" FontSize="12" Margin="12,0,0,0"
                                        VerticalAlignment="Center" IsHitTestVisible="False">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
@@ -81,7 +81,7 @@
                              SelectionChanged="LstCategories_SelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Border Padding="8,8" Margin="0,2" CornerRadius="6" Background="#2B2B2B" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1">
+                                <Border Padding="8,8" Margin="0,2" CornerRadius="6" Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
@@ -91,11 +91,11 @@
 
                                         <TextBlock Grid.Column="0" Text="{Binding Icon}" FontSize="15" VerticalAlignment="Center" Margin="0,0,8,0"/>
                                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12.5" Foreground="{StaticResource PtTextPrimary}" TextTrimming="CharacterEllipsis"/>
-                                            <TextBlock Text="{Binding Group}" FontSize="10" Foreground="#888888"/>
+                                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12.5" Foreground="{DynamicResource PtTextPrimary}" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding Group}" FontSize="10" Foreground="{DynamicResource PtTextSecondary}"/>
                                         </StackPanel>
                                         <Border Grid.Column="2" Style="{StaticResource PtBadge}" Padding="6,2" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding ActionCount}" FontSize="10" FontWeight="Bold" Foreground="{StaticResource PtAccent}"/>
+                                            <TextBlock Text="{Binding ActionCount}" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource PtAccent}"/>
                                         </Border>
                                     </Grid>
                                 </Border>
@@ -118,7 +118,7 @@
                 </Grid.RowDefinitions>
 
                 <!-- Category Header Card -->
-                <Border Grid.Row="0" Style="{StaticResource PtSettingsCard}" Background="#282828" Padding="16,12" Margin="0,0,0,10">
+                <Border Grid.Row="0" Style="{StaticResource PtSettingsCard}" Background="{DynamicResource PtCardHover}" Padding="16,12" Margin="0,0,0,10">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -128,18 +128,18 @@
                         <StackPanel Grid.Column="0">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock x:Name="TxtCurrentCatIcon" Text="⚙️" FontSize="18" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                <TextBlock x:Name="TxtCurrentCatTitle" Text="Sistem &amp; Yönetim" FontSize="16" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="TxtCurrentCatTitle" Text="Sistem &amp; Yönetim" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" VerticalAlignment="Center"/>
                                 <Border Style="{StaticResource PtBadge}" Margin="10,0,0,0" VerticalAlignment="Center">
                                     <TextBlock x:Name="TxtCurrentCatCount" Text="10 Araç" FontSize="10.5" Foreground="#38BDF8" FontWeight="SemiBold"/>
                                 </Border>
                             </StackPanel>
-                            <TextBlock x:Name="TxtCurrentCatDesc" Text="Windows yönetim konsolları, süreçler ve servisler" FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,3,0,0"/>
+                            <TextBlock x:Name="TxtCurrentCatDesc" Text="Windows yönetim konsolları, süreçler ve servisler" FontSize="12" Foreground="{DynamicResource PtTextSecondary}" Margin="0,3,0,0"/>
                         </StackPanel>
                     </Grid>
                 </Border>
 
                 <!-- Sub-Module Action Cards (Responsive Scrollable Grid) -->
-                <Border Grid.Row="1" Style="{StaticResource PtSettingsCard}" Padding="12" Background="#222222">
+                <Border Grid.Row="1" Style="{StaticResource PtSettingsCard}" Padding="12" Background="{DynamicResource PtCardBg}">
                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                         <ItemsControl x:Name="IcActions">
                             <ItemsControl.ItemsPanel>
@@ -149,8 +149,8 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Width="300" MinWidth="260" MaxWidth="340" Margin="4" Padding="14,12" CornerRadius="8" Background="#2A2A2A"
-                                            BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1">
+                                    <Border Width="300" MinWidth="260" MaxWidth="340" Margin="4" Padding="14,12" CornerRadius="8" Background="{DynamicResource PtCardHover}"
+                                            BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />
@@ -166,14 +166,14 @@
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Grid.Column="0" Text="{Binding Icon}" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                                <TextBlock Grid.Column="1" Text="{Binding Title}" FontWeight="Bold" FontSize="12.5" Foreground="{StaticResource PtTextPrimary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding Title}" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource PtTextPrimary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                                                 <Border Grid.Column="2" Style="{StaticResource PtBadge}" Padding="6,2" VerticalAlignment="Center">
                                                     <TextBlock Text="{Binding Badge}" FontSize="9.5" FontWeight="Bold" Foreground="#38BDF8"/>
                                                 </Border>
                                             </Grid>
 
                                             <!-- Card Description -->
-                                            <TextBlock Grid.Row="1" Text="{Binding Description}" FontSize="11" Foreground="{StaticResource PtTextSecondary}" TextWrapping="Wrap" Margin="0,0,0,10" MinHeight="32"/>
+                                            <TextBlock Grid.Row="1" Text="{Binding Description}" FontSize="11" Foreground="{DynamicResource PtTextSecondary}" TextWrapping="Wrap" Margin="0,0,0,10" MinHeight="32"/>
 
                                             <!-- Card Footer Action -->
                                             <Grid Grid.Row="2">
@@ -181,7 +181,7 @@
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="{Binding Status}" FontSize="10.5" Foreground="#94A3B8" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="0" Text="{Binding Status}" FontSize="10.5" Foreground="{DynamicResource PtTextSecondary}" VerticalAlignment="Center"/>
                                                 <Button Grid.Column="1" Content="Çalıştır / Aç" Style="{StaticResource PtPrimaryButton}" Padding="12,4" FontSize="11.5" Click="BtnExecuteAction_Click"/>
                                             </Grid>
                                         </Grid>
@@ -196,7 +196,7 @@
                 <GridSplitter Grid.Row="2" Height="4" HorizontalAlignment="Stretch" Background="Transparent"/>
 
                 <!-- Embedded Live WinUI 3 Console Terminal -->
-                <Border Grid.Row="3" Style="{StaticResource PtSettingsCard}" Padding="14,10" Background="#161616">
+                <Border Grid.Row="3" Style="{StaticResource PtSettingsCard}" Padding="14,10" Background="{DynamicResource PtSidebarBg}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -207,7 +207,7 @@
                         <Grid Grid.Row="0" Margin="0,0,0,8">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <TextBlock Text="💻 Canlı WinUI 3 Konsol Terminali" FontSize="12" FontWeight="Bold" Foreground="#38BDF8"/>
-                                <TextBlock Text="(CMD penceresi açılmadan arka planda çalıştırılır)" FontSize="10.5" Foreground="#777777" Margin="8,1,0,0"/>
+                                <TextBlock Text="(CMD penceresi açılmadan arka planda çalıştırılır)" FontSize="10.5" Foreground="{DynamicResource PtTextSecondary}" Margin="8,1,0,0"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button Content="📋 Kopyala" Style="{StaticResource PtSecondaryButton}" Padding="8,2" FontSize="10.5" Margin="0,0,6,0" Click="BtnCopyOutput_Click"/>
@@ -216,7 +216,7 @@
                         </Grid>
 
                         <!-- Output Text -->
-                        <TextBox x:Name="TxtTerminalOutput" Grid.Row="1" Background="#0F0F0F" Foreground="#38BDF8"
+                        <TextBox x:Name="TxtTerminalOutput" Grid.Row="1" Background="{DynamicResource PtWindowBg}" Foreground="#38BDF8"
                                  BorderBrush="#292929" BorderThickness="1" FontFamily="Consolas, Cascadia Code, Courier New"
                                  FontSize="11.5" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
                                  Text="[Sistem Hazır] Sol menüden bir modül seçip 'Çalıştır / Aç' butonuna basarak işlemleri başlatabilirsiniz.&#x0a;"/>
@@ -226,18 +226,18 @@
         </Grid>
 
         <!-- View 2: v6 Web Dashboard Management Card -->
-        <Border x:Name="PnlV6View" Grid.Row="1" Style="{StaticResource PtSettingsCard}" Background="#222222" Padding="24" Visibility="Collapsed">
+        <Border x:Name="PnlV6View" Grid.Row="1" Style="{StaticResource PtSettingsCard}" Background="{DynamicResource PtCardBg}" Padding="24" Visibility="Collapsed">
             <StackPanel MaxWidth="720" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Border Width="64" Height="64" CornerRadius="32" Background="#152737" BorderBrush="#38BDF8" BorderThickness="1" HorizontalAlignment="Center" Margin="0,0,0,16">
                     <TextBlock Text="🌐" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
-                <TextBlock Text="v6 İnteraktif Web Kontrol Paneli" FontSize="20" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" HorizontalAlignment="Center"/>
-                <TextBlock Text="SysForge Studio yerel C# web motoru ile arıza kayıtları, cihaz envanteri, departmanlar ve sistem durumu tarayıcı üzerinden canlı yönetilir." FontSize="13" Foreground="{StaticResource PtTextSecondary}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,8,0,20"/>
+                <TextBlock Text="v6 İnteraktif Web Kontrol Paneli" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" HorizontalAlignment="Center"/>
+                <TextBlock Text="Port 9999 üzerinde yerel köprü sunucusu çalıştırılarak gerçek zamanlı CPU, disk, süreçler, servisler ve donanım telemetrisi web kokpitinde gösterilir." FontSize="13" Foreground="{DynamicResource PtTextSecondary}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,8,0,20"/>
 
-                <Border Background="#1C1C1C" CornerRadius="8" Padding="18,14" Margin="0,0,0,20" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1">
+                <Border Background="{DynamicResource PtCardBg}" CornerRadius="8" Padding="18,14" Margin="0,0,0,20" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1">
                     <Grid>
-                        <TextBlock x:Name="TxtV6StatusIndicator" Text="Sunucu Durumu: KONTROL EDİLİYOR..." FontWeight="Bold" Foreground="#94A3B8" FontSize="13" VerticalAlignment="Center"/>
-                        <TextBlock x:Name="TxtV6Url" Text="http://localhost:5000" Foreground="#38BDF8" FontSize="13" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TxtV6StatusIndicator" Text="Sunucu Durumu: KONTROL EDİLİYOR..." FontWeight="Bold" Foreground="{DynamicResource PtTextSecondary}" FontSize="13" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TxtV6Url" Text="http://localhost:9999" Foreground="#38BDF8" FontSize="13" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     </Grid>
                 </Border>
 
@@ -249,23 +249,23 @@
         </Border>
 
         <!-- View 3: Printer Analyzer Pro Management Card -->
-        <Border x:Name="PnlPrinterView" Grid.Row="1" Style="{StaticResource PtSettingsCard}" Background="#222222" Padding="24" Visibility="Collapsed">
-            <StackPanel MaxWidth="720" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Border x:Name="PnlPrinterView" Grid.Row="1" Style="{StaticResource PtSettingsCard}" Background="{DynamicResource PtCardBg}" Padding="24" Visibility="Collapsed">
+            <StackPanel MaxWidth="780" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Border Width="64" Height="64" CornerRadius="32" Background="#331A28" BorderBrush="#EC4899" BorderThickness="1" HorizontalAlignment="Center" Margin="0,0,0,16">
                     <TextBlock Text="🔬" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
-                <TextBlock Text="Printer Analyzer Pro Suite" FontSize="20" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}" HorizontalAlignment="Center"/>
-                <TextBlock Text="Yazdırma biriktiricisi kilitlenmeleri, port ve sürücü çakışmaları için kök neden analizi sunan uzman teşhis aracı." FontSize="13" Foreground="{StaticResource PtTextSecondary}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,8,0,20"/>
+                <TextBlock Text="Printer Analyzer Pro &amp; Enterprise Fix Suite" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" HorizontalAlignment="Center"/>
+                <TextBlock Text="Yazdırma biriktiricisi kilitlenmeleri, port ve sürücü çakışmaları, Point&amp;Print (0x11b, 0x709) onarımları ve kurumsal yazıcı analiz araçları." FontSize="13" Foreground="{DynamicResource PtTextSecondary}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,8,0,20"/>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="🔬 Printer Analyzer Pro'yu Başlat" Style="{StaticResource PtPrimaryButton}" Background="#DB2777" Height="40" Padding="24,0" Margin="0,0,10,0" Click="BtnLaunchPrinterAnalyzer_Click"/>
-                    <Button Content="🖨️ Modern Yazıcı Yönetimine Git" Style="{StaticResource PtSecondaryButton}" Height="40" Padding="18,0" Click="BtnGoPrinters_Click"/>
+                    <Button Content="🔬 Printer Analyzer Pro'yu Başlat" Style="{StaticResource PtPrimaryButton}" Background="#DB2777" Height="40" Padding="18,0" Margin="0,0,8,0" Click="BtnLaunchPrinterAnalyzer_Click"/>
+                    <Button Content="🖨️ Modern Yazıcı Yönetimine Git" Style="{StaticResource PtSecondaryButton}" Height="40" Padding="14,0" Click="BtnGoPrinters_Click"/>
                 </StackPanel>
             </StackPanel>
         </Border>
 
         <!-- View 4: Sandbox & Cache Cleaning Card -->
-        <Border x:Name="PnlSandboxView" Grid.Row="1" Style="{StaticResource PtSettingsCard}" Background="#222222" Padding="20" Visibility="Collapsed">
+        <Border x:Name="PnlSandboxView" Grid.Row="1" Style="{StaticResource PtSettingsCard}" Background="{DynamicResource PtCardBg}" Padding="20" Visibility="Collapsed">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -278,13 +278,13 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0">
-                        <TextBlock Text="🧹 İzolasyon &amp; Geçici Dizin Kalıntıları" FontSize="16" FontWeight="Bold" Foreground="{StaticResource PtTextPrimary}"/>
-                        <TextBlock Text="Eski çalıştırıcıların oluşturduğu ProgramData, Public ve Temp dizinlerini denetleyin ve temizleyin." FontSize="12" Foreground="{StaticResource PtTextSecondary}" Margin="0,2,0,0"/>
+                        <TextBlock Text="🧹 İzolasyon &amp; Geçici Dizin Kalıntıları" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}"/>
+                        <TextBlock Text="Eski çalıştırıcıların oluşturduğu ProgramData, Public ve Temp dizinlerini denetleyin ve temizleyin." FontSize="12" Foreground="{DynamicResource PtTextSecondary}" Margin="0,2,0,0"/>
                     </StackPanel>
                     <Button x:Name="BtnCleanSandbox" Grid.Column="1" Content="🧹 Kalıntıları Güvenle Temizle" Style="{StaticResource PtDangerButton}" Padding="16,6" Click="BtnCleanSandbox_Click"/>
                 </Grid>
 
-                <ListBox x:Name="LstSandboxPaths" Grid.Row="1" Background="#1A1A1A" BorderBrush="{StaticResource PtCardBorder}" BorderThickness="1"/>
+                <ListBox x:Name="LstSandboxPaths" Grid.Row="1" Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1"/>
             </Grid>
         </Border>
 

@@ -29,6 +29,21 @@
     </Content>
   </ItemGroup>
 
+  <!-- The v6 bridge and the printer tools are runtime assets, not C# source. -->
+  <!-- Keep the existing Modules layout in both build and publish outputs. -->
+  <ItemGroup>
+    <Content Include="..\Modules\**\*">
+      <Link>Modules\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="..\dashboard.html">
+      <Link>dashboard.html</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
   <ItemGroup>
     <!-- .NET Framework 4.8: System.Management ve ServiceProcess dahili, paket gerekmez -->
     <Reference Include="System.Management" />
