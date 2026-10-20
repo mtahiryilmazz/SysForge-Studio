@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -29,11 +29,13 @@ namespace SysForgeStudio.Services
 
         /// <summary>
         /// Windows Sistem Geri Yükleme Noktası (Restore Point) oluşturur.
+        /// Zaman aşımı (10 saniye) ve güvenli işlem yönetimi ile donmaları önler.
         /// </summary>
         public async Task<(bool Success, string Message)> CreateSystemRestorePointAsync(string description)
         {
             return await Task.Run(() =>
             {
+                Process? proc = null;
                 try
                 {
                     string safeDesc = string.IsNullOrWhiteSpace(description) 
@@ -74,12 +76,19 @@ namespace SysForgeStudio.Services
                         CreateNoWindow = true
                     };
 
-                    using var proc = Process.Start(psi);
+                    proc = Process.Start(psi);
                     if (proc != null)
                     {
+                        // 10 saniye zaman aşımı ile çalıştır; VSS donarsa uygulamayı kitlemesini engelle
+                        bool exited = proc.WaitForExit(10000);
+                        if (!exited)
+                        {
+                            try { proc.Kill(); } catch { }
+                            return (false, "Sistem Geri Yükleme Noktası oluşturma zaman aşımına uğradı (10sn). VSS servisi meşgul olabilir, onarıma devam ediliyor.");
+                        }
+
                         string output = proc.StandardOutput.ReadToEnd();
                         string error = proc.StandardError.ReadToEnd();
-                        proc.WaitForExit();
 
                         if (output.Contains("RESTORE_POINT_SUCCESS"))
                         {
@@ -96,6 +105,10 @@ namespace SysForgeStudio.Services
                 catch (Exception ex)
                 {
                     return (false, $"Geri yükleme hatası: {ex.Message}");
+                }
+                finally
+                {
+                    try { proc?.Dispose(); } catch { }
                 }
             });
         }
@@ -134,7 +147,11 @@ namespace SysForgeStudio.Services
                     using var proc = Process.Start(psi);
                     if (proc != null)
                     {
-                        proc.WaitForExit();
+                        if (!proc.WaitForExit(6000))
+                        {
+                            try { proc.Kill(); } catch { }
+                            return (false, "", $"'{regPath}' anahtarı dışa aktarılırken zaman aşımı oluştu.");
+                        }
                         if (File.Exists(destPath) && new FileInfo(destPath).Length > 0)
                         {
                             return (true, destPath, $"Kayıt defteri yedeği alındı: {Path.GetFileName(destPath)}");

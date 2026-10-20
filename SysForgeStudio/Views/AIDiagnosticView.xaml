@@ -54,6 +54,62 @@
                 </Grid>
             </Border>
 
+            <!-- 0.5. Network Card Detection & Universal Driver (Offline Essential) -->
+            <Border Background="{DynamicResource PtCardBg}" BorderBrush="#0284C7" BorderThickness="1.5" CornerRadius="8" Padding="14" Margin="0,0,0,16">
+                <StackPanel>
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="🌐 AĞ KARTI TANIMA &amp; ÇEVRİMDAŞI UNIVERSAL SÜRÜCÜ KURUCU" FontSize="13" FontWeight="Bold" Foreground="#38BDF8"/>
+                            <TextBlock x:Name="TxtNetOverallStatus" Text="Sistemdeki fiziksel Ethernet ve Wi-Fi ağ kartları taranıyor..." FontSize="12" Foreground="{DynamicResource PtTextPrimary}" FontWeight="SemiBold" Margin="0,3,0,0"/>
+                        </StackPanel>
+                        <Border x:Name="BadgeNetAlert" Grid.Column="1" Background="#0369A1" CornerRadius="4" Padding="8,4" VerticalAlignment="Center">
+                            <TextBlock x:Name="TxtNetBadge" Text="İnternet: Denetleniyor" FontSize="11" FontWeight="Bold" Foreground="White"/>
+                        </Border>
+                    </Grid>
+
+                    <!-- Network Adapters List -->
+                    <ItemsControl x:Name="ListNetworkAdapters" Margin="0,0,0,10">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource PtSubtleBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="6" Padding="10" Margin="0,0,0,6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="📶 " FontSize="13" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding Name}" FontSize="12.5" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" VerticalAlignment="Center"/>
+                                                <Border Background="{Binding StatusBadgeColor}" CornerRadius="3" Padding="6,1" Margin="8,0,0,0" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding StatusBadgeText}" FontSize="10.5" FontWeight="Bold" Foreground="White"/>
+                                                </Border>
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding HardwareID, StringFormat='Donanım ID: {0}'}" FontSize="11" Foreground="{DynamicResource PtTextSecondary}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
+                                            <TextBlock Text="{Binding AdapterType}" FontSize="11" Foreground="{DynamicResource PtTextSecondary}" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- Universal Driver Install & Repair Action Bar -->
+                    <WrapPanel>
+                        <Button x:Name="BtnInstallUniversalNetDriver" Content="⚡ Universal Ağ Kartı Sürücüsünü Kur (Çevrimdışı / Tek Tık)" Style="{StaticResource PtPrimaryButton}" Height="34" Padding="12,0" FontSize="12" FontWeight="Bold" Margin="0,0,8,4" Click="BtnInstallUniversalNetDriver_Click"/>
+                        <Button x:Name="BtnScanNetAdapters" Content="🔄 Ağ Kartlarını Yeniden Tara" Style="{StaticResource PtSecondaryButton}" Height="34" Padding="10,0" FontSize="11.5" Margin="0,0,8,4" Click="BtnScanNetAdapters_Click"/>
+                        <Button x:Name="BtnResetNetStack" Content="🌐 TCP/IP &amp; Winsock Sıfırla" Style="{StaticResource PtSecondaryButton}" Height="34" Padding="10,0" FontSize="11.5" Margin="0,0,8,4" Click="BtnResetNetStack_Click"/>
+                        <Button x:Name="BtnOpenDeviceManager" Content="💻 Aygıt Yöneticisi (devmgmt.msc)" Style="{StaticResource PtSecondaryButton}" Height="34" Padding="10,0" FontSize="11.5" Margin="0,0,8,4" Click="BtnOpenDeviceManager_Click"/>
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+
             <!-- 1. Query Input Card -->
             <Border Background="{DynamicResource PtCardBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
                 <StackPanel>
@@ -86,6 +142,7 @@
                     <!-- Quick Suggestions -->
                     <WrapPanel Margin="0,4,0,0">
                         <TextBlock Text="Hızlı Örnekler:" FontSize="11" Foreground="{DynamicResource PtTextSecondary}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <Button Content="Ağ Kartı Tanınmıyor &amp; Sürücü Kur" Style="{StaticResource PtSecondaryButton}" Padding="8,3" FontSize="11" Margin="0,0,6,4" Click="BtnPreset_Click"/>
                         <Button Content="Dosya Uzantıları Görünmüyor" Style="{StaticResource PtSecondaryButton}" Padding="8,3" FontSize="11" Margin="0,0,6,4" Click="BtnPreset_Click"/>
                         <Button Content="Ekran Kartı Sürücüsü Kilitlendi" Style="{StaticResource PtSecondaryButton}" Padding="8,3" FontSize="11" Margin="0,0,6,4" Click="BtnPreset_Click"/>
                         <Button Content="Grup İlkesi (GPO) Engellendi" Style="{StaticResource PtSecondaryButton}" Padding="8,3" FontSize="11" Margin="0,0,6,4" Click="BtnPreset_Click"/>

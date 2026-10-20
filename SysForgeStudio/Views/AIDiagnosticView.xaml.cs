@@ -27,6 +27,125 @@ namespace SysForgeStudio.Views
         {
             TxtApiKey.Text = AIDiagnosticEngine.Instance.ApiKey;
             CheckRecentBackupsAvailability();
+            _ = LoadNetworkAdaptersAsync();
+        }
+
+        private async Task LoadNetworkAdaptersAsync()
+        {
+            try
+            {
+                TxtNetOverallStatus.Text = "Ağ kartları ve sürücü durumları WMI üzerinden taranıyor...";
+                var adapters = await NetworkCardService.Instance.GetNetworkAdaptersAsync();
+                ListNetworkAdapters.ItemsSource = adapters;
+
+                int missingDriversCount = adapters.Count(x => x.NeedsDriverFix);
+                int totalAdapters = adapters.Count;
+
+                if (missingDriversCount > 0)
+                {
+                    TxtNetOverallStatus.Text = $"⚠️ DİKKAT: {missingDriversCount} ağ kartının sürücüsü eksik veya hatalı! İnternet bağlantısı kurulamayabilir.";
+                    TxtNetBadge.Text = $"⚠️ {missingDriversCount} Sürücü Eksik";
+                    BadgeNetAlert.Background = new SolidColorBrush(Color.FromRgb(220, 38, 38)); // Red
+                }
+                else if (totalAdapters > 0)
+                {
+                    TxtNetOverallStatus.Text = $"✅ {totalAdapters} Ağ Kartı Aktif & Sürücüleri Hazır (İnternet / Yerel Ağ Bağlantısına Uygun)";
+                    TxtNetBadge.Text = "🟢 Ağ Kartı Hazır";
+                    BadgeNetAlert.Background = new SolidColorBrush(Color.FromRgb(21, 128, 61)); // Green
+                }
+                else
+                {
+                    TxtNetOverallStatus.Text = "⚠️ Sistemde fiziksel ağ bağdaştırıcısı algılanamadı. Sürücü ambarını taramak için Universal Sürücü Kurulumunu başlatın.";
+                    TxtNetBadge.Text = "⚪ Bağdaştırıcı Yok";
+                    BadgeNetAlert.Background = new SolidColorBrush(Color.FromRgb(100, 116, 139));
+                }
+            }
+            catch (Exception ex)
+            {
+                TxtNetOverallStatus.Text = $"Ağ kartı tarama hatası: {ex.Message}";
+            }
+        }
+
+        private async void BtnScanNetAdapters_Click(object sender, RoutedEventArgs e)
+        {
+            BtnScanNetAdapters.IsEnabled = false;
+            AppendLog("[AĞ KARTI TARA] Sistemdeki Ethernet ve Wi-Fi kartları taranıyor...");
+            await LoadNetworkAdaptersAsync();
+            BtnScanNetAdapters.IsEnabled = true;
+            AppendLog("[AĞ KARTI TARA] Tarama tamamlandı.");
+        }
+
+        private async void BtnInstallUniversalNetDriver_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Yerel Windows Sürücü Ambarı (DriverStore) ve sistem depoları taranarak çevrimdışı universal ağ sürücüleri yüklenecektir.\n\nBu işlem internet bağlantısı gerektirmez.\n\nDevam etmek istiyor musunuz?", "Çevrimdışı Universal Sürücü Kurulumu", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            BtnInstallUniversalNetDriver.IsEnabled = false;
+            BtnInstallUniversalNetDriver.Content = "⏳ Sürücüler Kuruluyor...";
+
+            try
+            {
+                var result = await NetworkCardService.Instance.InstallUniversalNetworkDriversAsync(msg => Dispatcher.Invoke(() => AppendLog(msg)));
+                await LoadNetworkAdaptersAsync();
+
+                if (result.Success)
+                {
+                    MessageBox.Show(result.Message + "\n\nAğ kartınız başarıyla bağlandı. Şimdi internet bağlantınızı deneyebilirsiniz.", "Sürücü Kurulumu Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show(result.Message, "Sürücü Kurulum Uyarısı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                AppendLog($"[HATA] Universal sürücü kurulum istisnası: {ex.Message}");
+                MessageBox.Show($"Kurulum hatası: {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                BtnInstallUniversalNetDriver.IsEnabled = true;
+                BtnInstallUniversalNetDriver.Content = "⚡ Universal Ağ Kartı Sürücüsünü Kur (Çevrimdışı / Tek Tık)";
+            }
+        }
+
+        private async void BtnResetNetStack_Click(object sender, RoutedEventArgs e)
+        {
+            BtnResetNetStack.IsEnabled = false;
+            AppendLog("[AĞ YIĞINI SIFIRLA] TCP/IP ve Winsock sıfırlanıyor...");
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    var p1 = Process.Start(new ProcessStartInfo("netsh.exe", "winsock reset") { CreateNoWindow = true, UseShellExecute = false });
+                    p1?.WaitForExit(10000);
+                    var p2 = Process.Start(new ProcessStartInfo("netsh.exe", "int ip reset") { CreateNoWindow = true, UseShellExecute = false });
+                    p2?.WaitForExit(10000);
+                    var p3 = Process.Start(new ProcessStartInfo("ipconfig.exe", "/flushdns") { CreateNoWindow = true, UseShellExecute = false });
+                    p3?.WaitForExit(10000);
+                }
+                catch { }
+            });
+
+            await LoadNetworkAdaptersAsync();
+            AppendLog("[AĞ YIĞINI SIFIRLA] Protokoller ve DNS önbelleği başarıyla sıfırlandı.");
+            MessageBox.Show("TCP/IP, Winsock ve DNS protokolleri başarıyla sıfırlandı.", "Ağ Sıfırlandı", MessageBoxButton.OK, MessageBoxImage.Information);
+            BtnResetNetStack.IsEnabled = true;
+        }
+
+        private void BtnOpenDeviceManager_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo("devmgmt.msc") { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Aygıt Yöneticisi açılamadı: {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void CheckRecentBackupsAvailability()
@@ -162,103 +281,128 @@ namespace SysForgeStudio.Views
                 return;
             }
 
-            BtnExecuteFix.IsEnabled = false;
-            BtnExecuteFix.Content = "⏳ Onarım Uygulanıyor...";
-
-            // 1. Safety Backup Handling
-            if (ChkAutoBackup.IsChecked == true)
+            try
             {
-                AppendLog("--- GÜVENLİK YEDEKLEMESİ BAŞLATILIYOR ---");
-                
-                // Registry Backup
-                string regToBackup = _currentSolution.TargetRegistryBackupPath;
-                if (string.IsNullOrWhiteSpace(regToBackup) && script.Contains("HKCU:"))
-                {
-                    regToBackup = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer";
-                }
-                else if (string.IsNullOrWhiteSpace(regToBackup) && script.Contains("HKLM:"))
-                {
-                    regToBackup = @"HKEY_LOCAL_MACHINE\Software\Policies\Microsoft";
-                }
+                BtnExecuteFix.IsEnabled = false;
+                BtnExecuteFix.Content = "⏳ Onarım Uygulanıyor...";
 
-                if (!string.IsNullOrWhiteSpace(regToBackup))
+                // 1. Safety Backup Handling
+                if (ChkAutoBackup.IsChecked == true)
                 {
-                    AppendLog($"[YEDEK] Kayıt Defteri yedeği alınıyor: '{regToBackup}'...");
-                    var regRes = await SystemBackupService.Instance.BackupRegistryKeyAsync(regToBackup, _currentSolution.Category);
-                    if (regRes.Success)
+                    AppendLog("--- GÜVENLİK YEDEKLEMESİ BAŞLATILIYOR ---");
+                    
+                    // Registry Backup
+                    string regToBackup = _currentSolution.TargetRegistryBackupPath;
+                    if (string.IsNullOrWhiteSpace(regToBackup) && script.Contains("HKCU:"))
                     {
-                        _lastBackupPath = regRes.FilePath;
-                        BtnUndoLastFix.Visibility = Visibility.Visible;
-                        CheckRecentBackupsAvailability();
-                        AppendLog($"[YEDEK BAŞARILI] {regRes.Message}");
+                        regToBackup = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer";
+                    }
+                    else if (string.IsNullOrWhiteSpace(regToBackup) && script.Contains("HKLM:"))
+                    {
+                        regToBackup = @"HKEY_LOCAL_MACHINE\Software\Policies\Microsoft";
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(regToBackup))
+                    {
+                        AppendLog($"[YEDEK] Kayıt Defteri yedeği alınıyor: '{regToBackup}'...");
+                        var regRes = await SystemBackupService.Instance.BackupRegistryKeyAsync(regToBackup, _currentSolution.Category);
+                        if (regRes.Success)
+                        {
+                            _lastBackupPath = regRes.FilePath;
+                            BtnUndoLastFix.Visibility = Visibility.Visible;
+                            CheckRecentBackupsAvailability();
+                            AppendLog($"[YEDEK BAŞARILI] {regRes.Message}");
+                        }
+                        else
+                        {
+                            AppendLog($"[YEDEK UYARISI] {regRes.Message}");
+                        }
+                    }
+
+                    // System Restore Point (Non-blocking with 10s internal timeout)
+                    AppendLog("[YEDEK] Windows Sistem Geri Yükleme Noktası (Restore Point) oluşturuluyor...");
+                    var rpRes = await SystemBackupService.Instance.CreateSystemRestorePointAsync(_currentSolution.Category);
+                    if (rpRes.Success)
+                    {
+                        AppendLog($"[YEDEK BAŞARILI] {rpRes.Message}");
                     }
                     else
                     {
-                        AppendLog($"[YEDEK UYARISI] {regRes.Message}");
+                        AppendLog($"[YEDEK BİLGİSİ] {rpRes.Message}");
                     }
                 }
 
-                // System Restore Point
-                AppendLog("[YEDEK] Windows Sistem Geri Yükleme Noktası (Restore Point) oluşturuluyor...");
-                var rpRes = await SystemBackupService.Instance.CreateSystemRestorePointAsync(_currentSolution.Category);
-                if (rpRes.Success)
+                AppendLog($"--- ONARIM BAŞLATILDI: {DateTime.Now:HH:mm:ss} ---");
+                AppendLog($"Komut: {script}");
+
+                await Task.Run(() =>
                 {
-                    AppendLog($"[YEDEK BAŞARILI] {rpRes.Message}");
-                }
-                else
+                    try
+                    {
+                        var psi = new ProcessStartInfo
+                        {
+                            FileName = "powershell.exe",
+                            Arguments = $"-NoProfile -ExecutionPolicy Bypass -Command \"{script}\"",
+                            RedirectStandardOutput = true,
+                            RedirectStandardError = true,
+                            UseShellExecute = false,
+                            CreateNoWindow = true
+                        };
+
+                        using var proc = Process.Start(psi);
+                        if (proc != null)
+                        {
+                            proc.OutputDataReceived += (s, args) =>
+                            {
+                                if (!string.IsNullOrEmpty(args.Data)) Dispatcher.Invoke(() => AppendLog(args.Data));
+                            };
+                            proc.ErrorDataReceived += (s, args) =>
+                            {
+                                if (!string.IsNullOrEmpty(args.Data)) Dispatcher.Invoke(() => AppendLog("[HATA] " + args.Data));
+                            };
+
+                            proc.BeginOutputReadLine();
+                            proc.BeginErrorReadLine();
+                            
+                            // 60 saniye zaman aşımı
+                            bool completed = proc.WaitForExit(60000);
+                            if (!completed)
+                            {
+                                try { proc.Kill(); } catch { }
+                                Dispatcher.Invoke(() => AppendLog("[ZAMAN AŞIMI] Onarım komutu 60 saniyede tamamlanamadı ve sonlandırıldı."));
+                            }
+                            else
+                            {
+                                Dispatcher.Invoke(() =>
+                                {
+                                    AppendLog($"--- ONARIM TAMAMLANDI (Çıkış Kodu: {proc.ExitCode}) ---");
+                                    MessageBox.Show("Otomatik onarım komutu tamamlandı!\nEğer bir sorun olursa 'Yapılan Değişikliği Geri Al' veya 'Sistem Geri Yükleme' ile önceki duruma dönebilirsiniz.", "İşlem Tamamlandı", MessageBoxButton.OK, MessageBoxImage.Information);
+                                });
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Dispatcher.Invoke(() => AppendLog($"[KRİTİK HATA] {ex.Message}"));
+                    }
+                });
+
+                // Eğer komut ağ ile ilgiliyse ağ kartlarını tazele
+                if (script.Contains("netsh") || script.Contains("pnputil") || script.Contains("PnpDevice"))
                 {
-                    AppendLog($"[YEDEK UYARISI] {rpRes.Message}");
+                    _ = LoadNetworkAdaptersAsync();
                 }
             }
-
-            AppendLog($"--- ONARIM BAŞLATILDI: {DateTime.Now:HH:mm:ss} ---");
-            AppendLog($"Komut: {script}");
-
-            await Task.Run(() =>
+            catch (Exception ex)
             {
-                try
-                {
-                    var psi = new ProcessStartInfo
-                    {
-                        FileName = "powershell.exe",
-                        Arguments = $"-NoProfile -ExecutionPolicy Bypass -Command \"{script}\"",
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true
-                    };
-
-                    using var proc = Process.Start(psi);
-                    if (proc != null)
-                    {
-                        proc.OutputDataReceived += (s, args) =>
-                        {
-                            if (!string.IsNullOrEmpty(args.Data)) Dispatcher.Invoke(() => AppendLog(args.Data));
-                        };
-                        proc.ErrorDataReceived += (s, args) =>
-                        {
-                            if (!string.IsNullOrEmpty(args.Data)) Dispatcher.Invoke(() => AppendLog("[HATA] " + args.Data));
-                        };
-
-                        proc.BeginOutputReadLine();
-                        proc.BeginErrorReadLine();
-                        proc.WaitForExit();
-
-                        Dispatcher.Invoke(() =>
-                        {
-                            AppendLog($"--- ONARIM TAMAMLANDI (Çıkış Kodu: {proc.ExitCode}) ---");
-                            MessageBox.Show("Otomatik onarım komutu tamamlandı!\nEğer bir sorun olursa 'Yapılan Değişikliği Geri Al' veya 'Sistem Geri Yükleme' ile önceki duruma dönebilirsiniz.", "İşlem Tamamlandı", MessageBoxButton.OK, MessageBoxImage.Information);
-                        });
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Dispatcher.Invoke(() => AppendLog($"[KRİTİK HATA] {ex.Message}"));
-                }
-            });
-
-            BtnExecuteFix.IsEnabled = true;
-            BtnExecuteFix.Content = "🚀 Bu Çözümü Uygula (Otomatik Güvenli Onarım)";
+                AppendLog($"[HATA] Onarım yürütme hatası: {ex.Message}");
+                MessageBox.Show($"Onarım hatası: {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                BtnExecuteFix.IsEnabled = true;
+                BtnExecuteFix.Content = "🚀 Bu Çözümü Uygula (Otomatik Güvenli Onarım)";
+            }
         }
 
         private async void BtnUndoLastFix_Click(object sender, RoutedEventArgs e)

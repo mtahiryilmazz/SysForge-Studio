@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -600,6 +600,58 @@ namespace SysForgeStudio.Services
                             "Ağ bulma ve dosya paylaşımını Güvenlik Duvarında serbest bırakın."
                         },
                         AutoFixScript = @"reg add ""HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters"" /v AllowInsecureGuestAuth /t REG_DWORD /d 1 /f; Set-SmbClientConfiguration -EnableInsecureGuestLogons $true -Force -ErrorAction SilentlyContinue; Restart-Service -Name LanmanWorkstation -Force"
+                    }
+                },
+
+                // 6.5 Ağ Kartı Tanınmıyor / Sürücüsü Kurulmamış (Universal Offline Driver Kurulumu)
+                new()
+                {
+                    ErrorCodes = new[] { "code 28", "kod 28", "code 10", "kod 10", "pci\\ven" },
+                    RequiredTokenGroups = new[]
+                    {
+                        new[] { "ag", "karti" },
+                        new[] { "ag", "surucu" },
+                        new[] { "ethernet", "surucu" },
+                        new[] { "wifi", "surucu" },
+                        new[] { "karti", "taninmiyor" },
+                        new[] { "karti", "kurulmamis" },
+                        new[] { "universal", "driver" },
+                        new[] { "universal", "surucu" },
+                        new[] { "ag", "bagdastirici" },
+                        new[] { "surucusuz", "ag" }
+                    },
+                    Keywords = new[] { "ag", "karti", "surucusu", "ethernet", "wifi", "wlan", "lan", "kurulmamis", "taninmiyor", "bagdastirici", "universal", "driver", "internet", "kod28", "code28" },
+                    Solution = new AISolutionResult
+                    {
+                        Title = "Ağ Kartı Tanınmıyor & Çevrimdışı Universal Sürücü Kurulumu",
+                        Category = "Ağ & Donanım Sürücüsü",
+                        RootCause = "Ethernet veya Wi-Fi ağ bağdaştırıcısının sürücüsü Windows tarafından tanınmamış (Kod 28) veya bozulmuş. Kullanıcı internetsiz olduğu için sürücüyü çevrimiçi indiremiyor; yerel Windows Sürücü Ambarı (DriverStore) ve NDIS deposundan çevrimdışı kurulum yapılmalıdır.",
+                        Severity = "Kritik",
+                        Steps = new List<string>
+                        {
+                            "Plug and Play (PnP) donanım değişikliklerini pnputil /scan-devices ile yeniden sorgulayın.",
+                            "C:\\Windows\\System32\\DriverStore\\FileRepository altındaki tüm yerel net*.inf paketlerini sisteme bağlayın.",
+                            "WlanSvc, Netman ve DHCP Windows ağ servislerini yeniden başlatın.",
+                            "TCP/IP ve Winsock yığınını sıfırlayarak ağ kartı bağdaştırıcılarını devreye alın."
+                        },
+                        AutoFixScript = @"pnputil.exe /scan-devices; Get-ChildItem 'C:\Windows\System32\DriverStore\FileRepository\net*.inf' -Recurse -ErrorAction SilentlyContinue | ForEach-Object { pnputil.exe /add-driver $_.FullName /install }; Start-Service -Name netman, nlasvc, netprofm, wlansvc, Dhcp -ErrorAction SilentlyContinue; netsh winsock reset; netsh int ip reset; ipconfig /renew",
+                        Alternatives = new List<AISolutionAlternative>
+                        {
+                            new()
+                            {
+                                Title = "Hatalı PnP Ağ Aygıtlarını Zorla Etkinleştir",
+                                Category = "PowerShell PnP",
+                                Description = "Devre dışı kalmış veya hata kodlu ağ bağdaştırıcılarını PnP arabirimiyle zorla açar.",
+                                Script = "Get-PnpDevice -Class Net -ErrorAction SilentlyContinue | Where-Object { $_.Status -ne 'OK' } | Enable-PnpDevice -Confirm:$false"
+                            },
+                            new()
+                            {
+                                Title = "Aygıt Yöneticisini Aç (devmgmt.msc)",
+                                Category = "Windows GUI",
+                                Description = "Donanım kimliklerini (PCI\\VEN & DEV) incelemek ve elle sürücü göstermek için Aygıt Yöneticisini açar.",
+                                Script = "devmgmt.msc"
+                            }
+                        }
                     }
                 },
 
