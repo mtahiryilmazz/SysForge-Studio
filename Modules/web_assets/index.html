@@ -808,6 +808,33 @@
             from { box-shadow: 0 0 5px rgba(177, 85, 255, 0.2); }
             to { box-shadow: 0 0 15px rgba(177, 85, 255, 0.6); }
         }
+        body[data-color-mode="light"] {
+            color-scheme: light;
+            --bg-color: #f3f6fa;
+            --panel-bg: rgba(255, 255, 255, 0.94);
+            --border-color: rgba(35, 57, 82, 0.14);
+            --border-hover: rgba(0, 120, 212, 0.35);
+            --text-primary: #172536;
+            --text-secondary: #526174;
+            --glow-cyan: none;
+            --glow-purple: none;
+            --glow-green: none;
+        }
+        body[data-color-mode="dark"] { color-scheme:dark; background:var(--bg-color)!important; color:var(--text-primary)!important; }
+        body[data-color-mode="light"] { background:var(--bg-color)!important; color:var(--text-primary)!important; }
+        body[data-color-mode="light"] :is(.card,.panel,.modal,.modal-content,.widget,.tile,.section) { color:var(--text-primary); }
+        body[data-color-mode="light"] :is(input,select,textarea) { color:var(--text-primary)!important; background:#fff!important; border-color:var(--border-color)!important; }
+        body[data-color-mode="dark"] .theme-selector, body[data-color-mode="dark"] .btn { color:var(--text-primary); }
+        body[data-color-mode="light"] .theme-selector { color:var(--text-primary)!important; background:rgba(15,35,60,.05)!important; border-color:var(--border-color)!important; }
+        body[data-color-mode="light"] .meta-label, body[data-color-mode="light"] .meta-val { color:var(--text-primary)!important; }
+        body[data-color-mode="light"] .btn { color:var(--text-primary)!important; background:rgba(15,35,60,.055)!important; border-color:var(--border-color)!important; }
+        body[data-color-mode="light"] .btn:hover { background:rgba(15,35,60,.1)!important; }
+        .color-mode-toggle {
+            width: 34px; height: 34px; display: inline-flex; align-items: center;
+            justify-content: center; border: 1px solid var(--border-color); border-radius: 8px;
+            background: var(--panel-bg); color: var(--text-primary); cursor: pointer;
+        }
+        .color-mode-toggle svg { width: 18px; height: 18px; }
     </style>
 </head>
 <body class="theme-cyber">
@@ -821,30 +848,33 @@
             </div>
             <div>
                 <h1>ULTIMATE COMMAND CENTER</h1>
-                <div class="meta-label" style="font-size: 10px;">By Ultimate Toolkit Pro &bull; Web Console Dashboard</div>
+                <div class="meta-label" style="font-size: 10px;">SysForge Studio &bull; Web Paneli</div>
             </div>
         </div>
         
         <div class="system-meta">
             <div class="meta-item">
-                <span class="meta-label">Uptime</span>
+                <span class="meta-label">Çalışma Süresi</span>
                 <span class="meta-val" id="meta-uptime">--</span>
             </div>
             <div class="meta-item">
-                <span class="meta-label">Computer Name</span>
+                <span class="meta-label">Bilgisayar Adı</span>
                 <span class="meta-val" id="meta-pc">--</span>
             </div>
             <div class="meta-item">
-                <span class="meta-label">Active User</span>
+                <span class="meta-label">Etkin Kullanıcı</span>
                 <span class="meta-val" id="meta-user">--</span>
             </div>
             <div class="meta-item">
-                <span class="meta-label">Status</span>
-                <span id="system-status-badge" class="status-badge status-idle">Ready</span>
+                <span class="meta-label">Durum</span>
+                <span id="system-status-badge" class="status-badge status-idle">Hazır</span>
             </div>
         </div>
 
         <div class="header-controls">
+            <button class="color-mode-toggle" id="colorModeToggle" type="button" onclick="toggleColorMode()" aria-label="Açık temaya geç" title="Açık temaya geç">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            </button>
             <!-- Theme Selector -->
             <div class="theme-selector">
                 <span class="meta-label" style="margin-right: 5px;">Theme</span>
@@ -1187,6 +1217,23 @@
             } catch (e) {}
         }
 
+        function setColorMode(mode) {
+            const selected = mode === 'light' ? 'light' : 'dark';
+            document.body.dataset.colorMode = selected;
+            try { localStorage.setItem('sysforge-color-mode', selected); } catch (e) {}
+            const button = document.getElementById('colorModeToggle');
+            if (!button) return;
+            const next = selected === 'light' ? 'Koyu' : 'Açık';
+            button.title = `${next} temaya geç`;
+            button.setAttribute('aria-label', button.title);
+            button.innerHTML = selected !== 'dark'
+                ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>'
+                : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6.5 6.5 0 0 0 8.268 8.268c.344-.215.825-.003.803.401"/></svg>';
+        }
+        function toggleColorMode() {
+            setColorMode(document.body.dataset.colorMode === 'light' ? 'dark' : 'light');
+        }
+
         // Switch color theme
         function switchTheme(themeName) {
             initAudio();
@@ -1213,6 +1260,7 @@
         });
 
         document.addEventListener("DOMContentLoaded", () => {
+            try { setColorMode(localStorage.getItem('sysforge-color-mode') || 'dark'); } catch (e) { setColorMode('dark'); }
             updateSysInfo();
             setInterval(updateSysInfo, 2500);
             checkRunningState();
@@ -1560,5 +1608,36 @@
             });
         }
     </script>
+<script id="sysforge-web-tr-ui">
+(() => {
+  const terms = {
+    'Theme':'Tema','Cyberpunk Cyan':'Camgöbeği','Matrix Green':'Yeşil','Solar Orange':'Turuncu','Hacker Crimson':'Koyu Kırmızı',
+    'Shutdown Server':'Sunucuyu Durdur','Admin Command Hub':'Yönetici İşlem Merkezi',
+    'Filter command actions...':'İşlemleri süz...','Execute':'Çalıştır','Stop Process':'İşlemi Durdur',
+    'CPU Load':'İşlemci Kullanımı','GPU Load':'Grafik İşlemci Kullanımı','Storage (C:)':'Depolama (C:)',
+    'Battery Status':'Pil Durumu','Analyzing cores...':'Çekirdekler inceleniyor...','Checking power...':'Güç durumu denetleniyor...',
+    'Refresh':'Yenile','Run':'Çalıştır','Scan':'Tara','Start':'Başlat','Stop':'Durdur','Cancel':'İptal','Close':'Kapat',
+    'Search':'Ara','Settings':'Ayarlar','Status':'Durum','Ready':'Hazır','Error':'Hata','Warning':'Uyarı',
+    'Network':'Ağ','System':'Sistem','Security':'Güvenlik','Repair':'Onar','Diagnostics':'Tanılama',
+    'You can close this tab now.':'Bu sekmeyi kapatabilirsiniz.'
+  };
+  const tr = root => {
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT); let n;
+    while((n=walker.nextNode())) {
+      const original=n.nodeValue.trim();
+      if(terms[original]) n.nodeValue=n.nodeValue.replace(original,terms[original]);
+      else for(const [en,translated] of Object.entries(terms).sort((a,b)=>b[0].length-a[0].length)) {
+        const escaped=en.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+        n.nodeValue=n.nodeValue.replace(new RegExp('(^|[^\\p{L}])'+escaped+'(?=$|[^\\p{L}])','giu'),(match,prefix)=>prefix+translated);
+      }
+    }
+    if(root.querySelectorAll) root.querySelectorAll('[placeholder],[title],[aria-label]').forEach(el=>{
+      for(const attr of ['placeholder','title','aria-label']) if(terms[el.getAttribute(attr)]) el.setAttribute(attr,terms[el.getAttribute(attr)]);
+    });
+  };
+  tr(document.body);
+  new MutationObserver(records=>records.forEach(r=>{if(r.type==='characterData')tr(r.target.parentElement);else r.addedNodes.forEach(n=>{if(n.nodeType===1)tr(n);});})).observe(document.body,{childList:true,characterData:true,subtree:true});
+})();
+</script>
 </body>
 </html>

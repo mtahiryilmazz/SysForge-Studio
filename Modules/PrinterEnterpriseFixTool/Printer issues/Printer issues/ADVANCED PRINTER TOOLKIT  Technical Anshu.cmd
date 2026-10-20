@@ -1,5 +1,5 @@
 @echo off
-title ADVANCED PRINTER TOOLKIT - Technical Anshu
+title SysForge Studio - Advanced Printer Toolkit
 color 0B
 
 :MENU

@@ -647,8 +647,8 @@ function Save-ReportHtml {
     </div>
 
     <footer>
-      <strong>UltimateToolkit Version 5 Report Center</strong><br>
-      Developed and Maintained by Ultimate Toolkit Pro | 2026 All Rights Reserved
+      <strong>SysForge Studio Report Center</strong><br>
+      SysForge Studio • Sistem Raporu • 2026
     </footer>
   </div>
   <script>

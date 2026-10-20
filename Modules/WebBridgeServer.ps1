@@ -1,8 +1,8 @@
-﻿# ═══════════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════════════
 
 
 
-# UltimateToolkit — Local Web Bridge Server v5 FULL
+# SysForge Studio — Local Web Bridge Server v5 FULL
 
 
 
@@ -174,7 +174,7 @@ Log "═════════════════════════
 
 
 
-Log "UltimateToolkit Web Bridge Server v5"
+Log "SysForge Studio Web Bridge Server v5"
 
 
 
@@ -1141,11 +1141,11 @@ $SafeCommands = @{
 
 
 
-    'cmd'              = @{ cmd = 'cmd.exe';               args = '/k echo UltimateToolkit Terminal'; desc = 'Command Prompt' }
+    'cmd'              = @{ cmd = 'cmd.exe';               args = '/k echo SysForge Studio Terminal'; desc = 'Command Prompt' }
 
 
 
-    'cmd_admin'        = @{ cmd = 'cmd.exe';               args = '/k echo UltimateToolkit ADMIN Terminal'; desc = 'CMD Admin'; runas=$true }
+    'cmd_admin'        = @{ cmd = 'cmd.exe';               args = '/k echo SysForge Studio ADMIN Terminal'; desc = 'CMD Admin'; runas=$true }
 
 
 
@@ -5856,7 +5856,7 @@ function Process-Request($ctx) {
 
 
 
-                $reply = if ($isHindi) { "Namaste Technician! Main aapka UltimateToolkit AI Assistant hoon. Abhi internet AI temporarily offline hai, lekin main phir bhi help kar sakta hoon!`n`nAap ye topics pe pooch sakte ho:`n- **PC slow** hai ya hang karta hai`n- **Virus/Security** issues`n- **Battery** problems`n- **Network/WiFi** issues`n- **Windows Update** problems`n- **Driver** issues`n- **Storage/Disk** problems`n`nYa dashboard ke kisi bhi feature ke baare mein poochho. Main ready hoon!" } else { "Hello Technician! I'm your UltimateToolkit AI Assistant. Internet AI is temporarily offline, but I can still help!`n`nYou can ask me about:`n- **Slow PC** or freezing issues`n- **Virus/Security** concerns`n- **Battery** problems`n- **Network/WiFi** connectivity`n- **Windows Updates**`n- **Driver** issues`n- **Storage/Disk** space`n`nOr ask about any feature in this dashboard. I'm here!" }
+                $reply = if ($isHindi) { "Namaste Technician! Main aapka SysForge Studio AI Assistant hoon. Abhi internet AI temporarily offline hai, lekin main phir bhi help kar sakta hoon!`n`nAap ye topics pe pooch sakte ho:`n- **PC slow** hai ya hang karta hai`n- **Virus/Security** issues`n- **Battery** problems`n- **Network/WiFi** issues`n- **Windows Update** problems`n- **Driver** issues`n- **Storage/Disk** problems`n`nYa dashboard ke kisi bhi feature ke baare mein poochho. Main ready hoon!" } else { "Hello Technician! I'm your SysForge Studio AI Assistant. Internet AI is temporarily offline, but I can still help!`n`nYou can ask me about:`n- **Slow PC** or freezing issues`n- **Virus/Security** concerns`n- **Battery** problems`n- **Network/WiFi** connectivity`n- **Windows Updates**`n- **Driver** issues`n- **Storage/Disk** space`n`nOr ask about any feature in this dashboard. I'm here!" }
 
 
 
@@ -9275,7 +9275,7 @@ function Process-Request($ctx) {
 
 
 
-                    $titleStr = if ($label -and $label -ne 'main') { "Toolkit-$label" } else { 'UltimateToolkit' }
+                    $titleStr = if ($label -and $label -ne 'main') { "Toolkit-$label" } else { 'SysForge Studio' }
 
 
 
@@ -9519,43 +9519,33 @@ function Process-Request($ctx) {
 
 
 
-                $guiExe = Join-Path $ToolkitRoot 'UltimateToolkit-GUI.exe'
-
-
-
-                if (-not (Test-Path -LiteralPath $guiExe)) {
-
-
-
-                    Err "UltimateToolkit-GUI.exe not found at: $guiExe"
-
-
-
-                } else {
-
-
-
-                    Start-Process -FilePath $guiExe -WorkingDirectory $ToolkitRoot
-
-
-
-                    Log "Native GUI launched: $guiExe"
-
-
-
-                    Ok @{ launched = $true; path = $guiExe }
-
-
-
+                $candidates = @(
+                    (Join-Path $ToolkitRoot 'publish_output\win-x64\SysForgeStudio.exe'),
+                    (Join-Path $ToolkitRoot 'SysForgeStudio\bin\Release\net48\SysForgeStudio.exe'),
+                    (Join-Path $ToolkitRoot 'SysForgeStudio\bin\Debug\net48\SysForgeStudio.exe'),
+                    (Join-Path $ToolkitRoot 'publish_output\win-x86\SysForgeStudio.exe'),
+                    (Join-Path $ToolkitRoot 'publish_output\SysForgeStudio.exe'),
+                    (Join-Path $ToolkitRoot 'SysForgeStudio.exe'),
+                    (Join-Path $ToolkitRoot 'SysForge Studio-GUI.exe')
+                )
+                $guiExe = $null
+                foreach ($cand in $candidates) {
+                    if (Test-Path -LiteralPath $cand) {
+                        $guiExe = $cand
+                        break
+                    }
                 }
 
-
-
+                if (-not $guiExe) {
+                    Err "SysForgeStudio.exe bulunamadı! Lütfen önce projeyi derleyin."
+                } else {
+                    $workDir = Split-Path -Parent $guiExe
+                    Start-Process -FilePath $guiExe -WorkingDirectory $workDir
+                    Log "Native GUI launched: $guiExe"
+                    Ok @{ launched = $true; path = $guiExe }
+                }
             } catch {
-
-
-
-                Err "Failed to launch GUI: $($_.Exception.Message)"
+                Err "Masaüstü GUI başlatılamadı: $($_.Exception.Message)"
 
 
 
@@ -11029,7 +11019,7 @@ function Process-Request($ctx) {
 
 
 
-                        $cmdArgs = "/V:ON /k `"$envPrefix && title UltimateToolkit Executor && echo Executing: $translatedCmd && echo. && $translatedCmd`""
+                        $cmdArgs = "/V:ON /k `"$envPrefix && title SysForge Studio Executor && echo Executing: $translatedCmd && echo. && $translatedCmd`""
 
 
 
@@ -15715,7 +15705,7 @@ Write-Host "Bulk driver updates completed." -ForegroundColor Gray
 
 
 
-                    "echo               ULTIMATETOOLKIT ADVANCED AUTOMATED OS REPAIR PIPELINE",
+                    "echo               SYSFORGE STUDIO ADVANCED AUTOMATED OS REPAIR PIPELINE",
 
 
 
@@ -15935,7 +15925,7 @@ Write-Host "Bulk driver updates completed." -ForegroundColor Gray
 
 
 
-                    "[ UltimateToolkit Silent Runner - $label ]`r`n" | Set-Content $logFile -Encoding UTF8
+                    "[ SysForge Studio Silent Runner - $label ]`r`n" | Set-Content $logFile -Encoding UTF8
 
 
 
@@ -16524,7 +16514,7 @@ Write-Host "Bulk driver updates completed." -ForegroundColor Gray
 
 
 
-                        $sysPrompt = "You are the UltimateToolkit AI Assistant by Ultimate Toolkit Pro. Greet the user enthusiastically as 'Hello Technician!' or 'Namaste Technician!'. Confirm that you are fully connected to the internet, ready to answer questions or run PC diagnostic commands. CRITICAL: If the user's message is in Hindi or Hinglish (Hindi written in Roman script like 'kaise ho', 'jawab de', 'kro'), you MUST respond in natural Hinglish/Hindi! Keep all technical details accurate, and trigger PC commands using these CMD tags in your reply when relevant: '[CMD:CLEAN]', '[CMD:DNS]', '[CMD:HWDIAG]', '[CMD:DEBLOAT]', '[CMD:UPDATE]', '[CMD:BATTERY]', or '[CMD:SECURITY]'. Otherwise, answer any general question naturally in detail without limits!"
+                        $sysPrompt = "You are the SysForge Studio AI Assistant. Use a friendly, concise greeting in the user's selected language. Confirm that you are fully connected to the internet, ready to answer questions or run PC diagnostic commands. CRITICAL: If the user's message is in Hindi or Hinglish (Hindi written in Roman script like 'kaise ho', 'jawab de', 'kro'), you MUST respond in natural Hinglish/Hindi! Keep all technical details accurate, and trigger PC commands using these CMD tags in your reply when relevant: '[CMD:CLEAN]', '[CMD:DNS]', '[CMD:HWDIAG]', '[CMD:DEBLOAT]', '[CMD:UPDATE]', '[CMD:BATTERY]', or '[CMD:SECURITY]'. Otherwise, answer any general question naturally in detail without limits!"
 
 
 
@@ -18490,7 +18480,7 @@ echo Benchmark complete! >> "$logFile"
 
 
 
-                        'schedule_autorepair'  { "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command `"Register-ScheduledTask -TaskName 'UltimateToolkit_AutoRepair' -Action (New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-NoProfile -ExecutionPolicy Bypass -Command sfc /scannow') -Trigger (New-ScheduledTaskTrigger -Daily -At 3am) -Force`"" }
+                        'schedule_autorepair'  { "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command `"Register-ScheduledTask -TaskName 'SysForge Studio_AutoRepair' -Action (New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-NoProfile -ExecutionPolicy Bypass -Command sfc /scannow') -Trigger (New-ScheduledTaskTrigger -Daily -At 3am) -Force`"" }
 
 
 
@@ -18554,7 +18544,7 @@ echo Benchmark complete! >> "$logFile"
 
 
 
-                        'schedule_restore_points' { "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command `"Register-ScheduledTask -TaskName 'UltimateToolkit_DailyRestorePoint' -Action (New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-NoProfile -ExecutionPolicy Bypass -Command Checkpoint-Computer -Description DailyRestorePoint -RestorePointType MODIFY_SETTINGS') -Trigger (New-ScheduledTaskTrigger -Daily -At 1am) -Force`"" }
+                        'schedule_restore_points' { "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command `"Register-ScheduledTask -TaskName 'SysForge Studio_DailyRestorePoint' -Action (New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-NoProfile -ExecutionPolicy Bypass -Command Checkpoint-Computer -Description DailyRestorePoint -RestorePointType MODIFY_SETTINGS') -Trigger (New-ScheduledTaskTrigger -Daily -At 1am) -Force`"" }
 
 
 

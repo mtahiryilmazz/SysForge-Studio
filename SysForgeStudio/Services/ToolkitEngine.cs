@@ -281,16 +281,29 @@ namespace SysForgeStudio.Services
 
         private bool TestTcpPort(string host, int port, int timeoutMs = 2500)
         {
+            Socket? socket = null;
             try
             {
-                using var client = new TcpClient();
-                // net48: ConnectAsync(host, port, CancellationToken) yok; zaman asimi Task.Wait ile saglanir
-                var connectTask = client.ConnectAsync(host, port);
-                return connectTask.Wait(timeoutMs) && client.Connected;
+                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
+                {
+                    Blocking = false
+                };
+                var result = socket.BeginConnect(host, port, null, null);
+                bool success = result.AsyncWaitHandle.WaitOne(timeoutMs, false);
+                if (success && socket.Connected)
+                {
+                    try { socket.EndConnect(result); } catch { }
+                    return socket.Connected;
+                }
+                return false;
             }
             catch
             {
                 return false;
+            }
+            finally
+            {
+                try { socket?.Close(); } catch { }
             }
         }
 
@@ -1782,23 +1795,30 @@ namespace SysForgeStudio.Services
 
         public bool IsV6Running()
         {
-            IAsyncResult? pending = null;
-            TcpClient? client = null;
+            Socket? socket = null;
             try
             {
-                client = new TcpClient();
-                pending = client.BeginConnect("127.0.0.1", 9999, null, null);
-                if (!pending.AsyncWaitHandle.WaitOne(400)) return false;
-
-                client.EndConnect(pending);
-                return client.Connected;
+                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
+                {
+                    Blocking = false
+                };
+                var result = socket.BeginConnect("127.0.0.1", 9999, null, null);
+                bool success = result.AsyncWaitHandle.WaitOne(400, false);
+                if (success && socket.Connected)
+                {
+                    try { socket.EndConnect(result); } catch { }
+                    return socket.Connected;
+                }
+                return false;
             }
-            catch { }
+            catch
+            {
+                return false;
+            }
             finally
             {
-                try { client?.Close(); } catch { }
+                try { socket?.Close(); } catch { }
             }
-            return false;
         }
 
         public async Task StartV6WebDashboardAsync()

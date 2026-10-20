@@ -12,13 +12,13 @@
 function Out-MessageBox {
     param(
         [Parameter(Position=0)]$Message,
-        [Parameter(Position=1)]$Title = 'UltimateToolkit',
+        [Parameter(Position=1)]$Title = 'SysForge Studio',
         [Parameter(Position=2)]$Buttons = 'OK',
         [Parameter(Position=3)]$Icon = 'None'
     )
     # Check if $Message is an array/collection (happens when called using C# syntax like function(a, b))
     if ($Message -is [System.Array] -or $Message -is [System.Collections.IList]) {
-        $Title   = if ($Message.Count -gt 1) { $Message[1] } else { 'UltimateToolkit' }
+        $Title   = if ($Message.Count -gt 1) { $Message[1] } else { 'SysForge Studio' }
         $Buttons = if ($Message.Count -gt 2) { $Message[2] } else { 'OK' }
         $Icon    = if ($Message.Count -gt 3) { $Message[3] } else { 'None' }
         $Message = $Message[0]
@@ -142,7 +142,7 @@ if (-not $NoElevate -and -not $SelfTest -and -not $SilentClean) {
 
         Add-Type -AssemblyName System.Windows.Forms
 
-        $msgText = "UltimateToolkit Pro requires Administrator privileges to run all system cleanups, performance boosts, and diagnostic tweaks successfully.`r`n`r`nWould you like to relaunch the GUI as Administrator?"
+        $msgText = "SysForge Studio requires Administrator privileges to run all system cleanups, performance boosts, and diagnostic tweaks successfully.`r`n`r`nWould you like to relaunch the GUI as Administrator?"
 
         $result = Out-MessageBox($msgText, "Run as Administrator", "YesNo", "Warning")
 
@@ -1188,7 +1188,7 @@ if ($SelfTest) {
 
     }
 
-    Write-Host "UltimateToolkit Pro GUI self-test"
+    Write-Host "SysForge Studio GUI self-test"
 
     Write-Host "Batch labels        : $($model.Labels.Count)"
 
@@ -1254,7 +1254,7 @@ try {
 
 
 
-$AppIconPath = Join-Path $ToolkitRoot 'Assets\UltimateToolkit.ico'
+$AppIconPath = Join-Path $ToolkitRoot 'Assets\SysForge Studio.ico'
 
 $script:IconCache = @{}
 
@@ -2264,7 +2264,7 @@ function Show-Info {
 
     param([string]$Message)
 
-    Out-MessageBox($Message, 'UltimateToolkit', 'OK', 'Information') | Out-Null
+    Out-MessageBox($Message, 'SysForge Studio', 'OK', 'Information') | Out-Null
 
 }
 
@@ -3758,7 +3758,7 @@ function Start-VisibleCmdRunner {
 
 
 
-    $runner = Join-Path $script:LocalTempDir ("UltimateToolkit_interactive_{0}.cmd" -f ([guid]::NewGuid().ToString('N')))
+    $runner = Join-Path $script:LocalTempDir ("SysForge Studio_interactive_{0}.cmd" -f ([guid]::NewGuid().ToString('N')))
 
     $appendHelpers = ($CommandText -match '(?i)\bcall\s+:')
 
@@ -3828,7 +3828,7 @@ function Start-CmdWindow {
 
 
 
-    $runner = Join-Path $script:LocalTempDir ("UltimateToolkit_runner_{0}.cmd" -f ([guid]::NewGuid().ToString('N')))
+    $runner = Join-Path $script:LocalTempDir ("SysForge Studio_runner_{0}.cmd" -f ([guid]::NewGuid().ToString('N')))
 
     $appendHelpers = ($CommandText -match '(?i)\bcall\s+:')
 
@@ -4024,7 +4024,7 @@ function Start-CmdWindow {
 
 
 
-        $cmdRunner = Join-Path $script:LocalTempDir ("UltimateToolkit_cli_{0}.cmd" -f ([guid]::NewGuid().ToString('N')))
+        $cmdRunner = Join-Path $script:LocalTempDir ("SysForge Studio_cli_{0}.cmd" -f ([guid]::NewGuid().ToString('N')))
 
         Copy-Item -LiteralPath $runner -Destination $cmdRunner -Force -ErrorAction SilentlyContinue
 
@@ -4318,7 +4318,7 @@ function Start-CmdWindow {
 
             if (-not $process.HasExited -and -not $dialogState.ClosedByUser) {
 
-                $result = Out-MessageBox('Command is still running. Cancel it now?', 'UltimateToolkit', 'YesNo', 'Warning')
+                $result = Out-MessageBox('Command is still running. Cancel it now?', 'SysForge Studio', 'YesNo', 'Warning')
 
                 if ($result -ne [System.Windows.Forms.DialogResult]::Yes) {
 
@@ -4548,7 +4548,7 @@ function Show-Warning {
 
     param([string]$Message)
 
-    Out-MessageBox($Message, 'UltimateToolkit', 'OK', 'Warning') | Out-Null
+    Out-MessageBox($Message, 'SysForge Studio', 'OK', 'Warning') | Out-Null
 
 }
 
@@ -5526,7 +5526,7 @@ function Add-VenomPaint {
 
 $form = New-Object System.Windows.Forms.Form
 
-$form.Text = 'UltimateToolkit Version 5 - Ultimate Toolkit Pro'
+$form.Text = 'SysForge Studio'
 
 $form.StartPosition = 'CenterScreen'
 
@@ -6362,7 +6362,7 @@ Enable-DoubleBuffer $cardBoost
 
 $btnBoost = New-Object System.Windows.Forms.Button
 
-$btnBoost.Text = "ULTIMATE TOOLKIT`r`nTOOLKIT"
+$btnBoost.Text = "SYSFORGE STUDIO"
 
 $btnBoost.Font = New-Object System.Drawing.Font('Segoe UI', 9.5, [System.Drawing.FontStyle]::Bold)
 
@@ -6383,11 +6383,11 @@ $btnBoost.Add_Click({
         New-Item -ItemType Directory -Path $logDir -Force | Out-Null
     }
     $stamp = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
-    $logLine = "[$stamp] [Browser Bypass] Blocked YouTube open: https://www.youtube.com/@ultimatetoolkit"
+    $logLine = "[$stamp] [Help] Help link was requested."
     Add-Content -LiteralPath $logPath -Value $logLine -Encoding UTF8 -ErrorAction SilentlyContinue
 })
 
-$toolTip.SetToolTip($btnBoost, "Visit Ultimate Toolkit Pro YouTube Channel!")
+$toolTip.SetToolTip($btnBoost, "SysForge Studio yardım ve sürüm bilgileri")
 
 $cardBoost.Controls.Add($btnBoost)
 
@@ -6639,7 +6639,7 @@ function Add-SideButton {
 
 $brand = New-Object System.Windows.Forms.Label
 
-$brand.Text = "Ultimate Toolkit v5`r`nUltimate Toolkit Pro"
+$brand.Text = "SysForge Studio"
 
 $brand.Font = New-Object System.Drawing.Font('Segoe UI', 13, [System.Drawing.FontStyle]::Bold)
 
@@ -6653,7 +6653,7 @@ $sidebar.Controls.Add($brand)
 
 Add-SideButton '  Dashboard / Main Menus' 10 { Show-Menu 'main' $false }
 
-Add-SideButton '  Ultimate Toolkit Pro CMD Toolkit' 35 {
+Add-SideButton '  SysForge Studio CMD Toolkit' 35 {
 
     try {
 
@@ -6757,7 +6757,7 @@ $dynamicThemeCheck.Checked = $script:DynamicThemeEnabled
 
 $copyrightLabel = New-Object System.Windows.Forms.Label
 
-$copyrightLabel.Text = "Ultimate Toolkit v5`r`nAll rights reserved &`r`nmaintained by Ultimate Toolkit Pro"
+$copyrightLabel.Text = "SysForge Studio • 2026"
 
 $copyrightLabel.Font = New-Object System.Drawing.Font('Segoe UI', 8, [System.Drawing.FontStyle]::Bold)
 
@@ -6799,7 +6799,7 @@ $sidebar.Controls.Add($dynamicThemeCheck)
 
 $footer = New-Object System.Windows.Forms.Label
 
-$footer.Text = "Developed and Maintained by Ultimate Toolkit Pro`r`n2026 All Rights Reserved"
+$footer.Text = "SysForge Studio`r`n2026 All Rights Reserved"
 
 $footer.Font = New-Object System.Drawing.Font('Segoe UI', 8)
 
@@ -13709,7 +13709,7 @@ function Show-SystemCleanerPanel {
 
                         if (-not (Test-Path $debloatScript)) {
 
-                            $debloatScript = "C:\Users\Anshu\Downloads\Win11Debloat.ps1"
+                            $debloatScript = "$env:USERPROFILE\Downloads\Win11Debloat.ps1"
 
                         }
 
@@ -14081,7 +14081,7 @@ function Show-SystemCleanerPanel {
 
     try {
 
-        $res = schtasks.exe /query /tn "UltimateToolkit_AutoClean" 2>$null
+        $res = schtasks.exe /query /tn "SysForge Studio_AutoClean" 2>$null
 
         if ($LASTEXITCODE -eq 0) { $taskExists = $true }
 
@@ -14097,7 +14097,7 @@ function Show-SystemCleanerPanel {
 
         param($sender, $e)
 
-        $taskName = "UltimateToolkit_AutoClean"
+        $taskName = "SysForge Studio_AutoClean"
 
         if ($sender.Checked) {
 
@@ -14593,7 +14593,7 @@ function Show-BackupMigrationPanel {
 
 
 
-                "Ultimate Toolkit v5 Profile Backup Summary`r`n====================================`r`nDate: $(Get-Date)`r`nPC: $env:COMPUTERNAME`r`nUser: $env:USERNAME`r`n`r`n" | Out-File -FilePath $logFile -Force -Encoding utf8
+                "SysForge Studiofile Backup Summary`r`n====================================`r`nDate: $(Get-Date)`r`nPC: $env:COMPUTERNAME`r`nUser: $env:USERNAME`r`n`r`n" | Out-File -FilePath $logFile -Force -Encoding utf8
 
                 
 
@@ -16263,13 +16263,13 @@ function Show-HardwareDiagnosticsPanel {
 
 <body>
 
-  <h1>Ultimate Toolkit v5 - Hardware Diagnostics Cert</h1>
+  <h1>SysForge Studio - Hardware Diagnostics Cert</h1>
 
   $cardsHtml
 
   <footer>
 
-    Generated by Ultimate Toolkit v5 | Powered by Ultimate Toolkit Pro
+    Generated by SysForge Studio
 
   </footer>
 
@@ -16903,13 +16903,13 @@ function Show-SoftwareDiagnosticsPanel {
 
 <body>
 
-  <h1>Ultimate Toolkit v5 - Software Diagnostics Cert</h1>
+  <h1>SysForge Studio - Software Diagnostics Cert</h1>
 
   $cardsHtml
 
   <footer>
 
-    Generated by Ultimate Toolkit v5 | Powered by Ultimate Toolkit Pro
+    Generated by SysForge Studio
 
   </footer>
 
@@ -20009,7 +20009,7 @@ function Show-RegistryTweaksPanel {
 
                 if (-not (Test-Path $debloatScript)) {
 
-                    $debloatScript = "C:\Users\Anshu\Downloads\Win11Debloat.ps1"
+                    $debloatScript = "$env:USERPROFILE\Downloads\Win11Debloat.ps1"
 
                 }
 
@@ -20067,7 +20067,7 @@ function Show-RegistryTweaksPanel {
 
                 if (-not (Test-Path $debloatScript)) {
 
-                    $debloatScript = "C:\Users\Anshu\Downloads\Win11Debloat.ps1"
+                    $debloatScript = "$env:USERPROFILE\Downloads\Win11Debloat.ps1"
 
                 }
 
@@ -21449,7 +21449,7 @@ function Show-AiDiagnosticsPanel {
 
   <div class='hero-inner'>
 
-    <div class='brand'>Ultimate Toolkit Pro Ultimate Toolkit - AI Cyber Diagnostics Engine</div>
+    <div class='brand'>SysForge Studio - AI System Diagnostics</div>
 
     <h1>AI System Health Diagnostic Report</h1>
 
@@ -21495,7 +21495,7 @@ $cardsHtml
 
 </div>
 
-<footer>Generated by Ultimate Toolkit Pro Ultimate Toolkit &mdash; AI Cyber-Heuristic Diagnostics Engine &mdash; $scanTime</footer>
+<footer>Generated by SysForge Studio &mdash; AI System Diagnostics &mdash; $scanTime</footer>
 
 </body>
 
@@ -23695,7 +23695,7 @@ function Show-LicenseVaultPanel {
 
 ==================================================
 
-        ULTIMATE TOOLKIT LICENSE RECOVERY VAULT
+        SYSFORGE STUDIO LICENSE RECOVERY VAULT
 
 ==================================================
 
@@ -24175,7 +24175,7 @@ function Show-BsodAnalyzerPanel {
 
             $mockFile = Join-Path $minidumpPath "Mini052626-$rand.dmp"
 
-            Set-Content -Path $mockFile -Value "Mock BSOD Minidump File created by UltimateToolkit Pro Diagnostic Suite.`r`nThis dummy file allows testing the dump explorers, BlueScreenView, and WhoCrashed analyzer on systems with no real BSOD events."
+            Set-Content -Path $mockFile -Value "Mock BSOD Minidump File created by SysForge Studio Diagnostic Suite.`r`nThis dummy file allows testing the dump explorers, BlueScreenView, and WhoCrashed analyzer on systems with no real BSOD events."
 
             Out-MessageBox("Success! Generated a mock minidump crash log file at:`r`n$mockFile`r`n`r`nThe panel will now refresh to display the newly added mock dump.", "Mock Dump Generated", "OK", "Information") | Out-Null
 
@@ -24457,7 +24457,7 @@ function Show-BsodAnalyzerPanel {
 
    
 
-2. Run Offline Recovery tools in Ultimate Toolkit:
+2. Run Offline Recovery tools in SysForge Studio:
 
    - Perform Offline SFC & DISM scans to restore core system files.
 
@@ -24689,7 +24689,7 @@ function Show-BsodAnalyzerPanel {
 
             $reportData += "             2. Rebuild Boot Configuration Data using recovery Command Prompt: 'bootrec /rebuildbcd'.`r`n"
 
-            $reportData += "             3. Use UltimateToolkit Offline Recovery options to apply offline SFC/DISM to the drive.`r`n"
+            $reportData += "             3. Use SysForge Studio Offline Recovery options to apply offline SFC/DISM to the drive.`r`n"
 
         } elseif ($lowerQuery -match "0x0*ef\b" -or $lowerQuery -match "critical_process") {
 
@@ -25351,7 +25351,7 @@ function Show-DiskBenchmarkPanel {
 
         if (-not (Test-IsAdmin)) {
 
-            Out-MessageBox("WinSAT Disk Speed Test requires Administrator privileges to run successfully.`r`n`r`nPlease relaunch the UltimateToolkit as Administrator.", "Admin Privileges Required", "OK", "Warning") | Out-Null
+            Out-MessageBox("WinSAT Disk Speed Test requires Administrator privileges to run successfully.`r`n`r`nPlease relaunch the SysForge Studio as Administrator.", "Admin Privileges Required", "OK", "Warning") | Out-Null
 
             return
 
@@ -27857,7 +27857,7 @@ function Show-WiFiPasswordPanel {
 
             $exportPath = Join-Path $script:ToolkitRoot "Logs\WiFi_Passwords_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
 
-            $lines = @("UltimateToolkit v5 - WiFi Password Export", "Generated: $(Get-Date)", "=" * 50, "")
+            $lines = @("SysForge Studio - WiFi Password Export", "Generated: $(Get-Date)", "=" * 50, "")
 
             foreach ($p in $script:_wifiProfiles) {
 
@@ -28579,7 +28579,7 @@ function Show-EventLogPanel {
 
             $exportPath = Join-Path $script:ToolkitRoot "Logs\EventLog_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
 
-            $lines = @("UltimateToolkit v5 - Event Log Export", "Generated: $(Get-Date)", "=" * 60, "")
+            $lines = @("SysForge Studio - Event Log Export", "Generated: $(Get-Date)", "=" * 60, "")
 
             foreach ($ev in $script:_eventRows) {
 
@@ -31141,7 +31141,7 @@ $form.Add_FormClosing({
 
     try {
 
-        Get-ChildItem -Path $script:LocalTempDir -Filter "UltimateToolkit_*.cmd" -File -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue
+        Get-ChildItem -Path $script:LocalTempDir -Filter "SysForge Studio_*.cmd" -File -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue
 
     } catch {}
 

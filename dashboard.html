@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 
 
@@ -30,7 +30,7 @@
 
 
 
-<html lang="en" data-theme="cyberpunk">
+<html lang="tr" data-theme="cyberpunk">
 
 
 
@@ -182,7 +182,7 @@ window.onerror = function(msg, url, line, col, err) {
 
 
 
-<title>UltimateToolkit v5 Pro — World's Best PC Admin Suite by Ultimate Toolkit Pro</title>
+<title>SysForge Studio — Windows Yönetim Paneli</title>
 
 
 
@@ -214,7 +214,7 @@ window.onerror = function(msg, url, line, col, err) {
 
 
 
-<meta name="description" content="UltimateToolkit v5 Pro by Ultimate Toolkit Pro — World's most powerful Windows admin dashboard with 37 CMD modules, live monitoring, 10 premium themes and real execution.">
+<meta name="description" content="SysForge Studio — Windows sistem yönetimi, tanılama ve onarım paneli.">
 
 
 
@@ -30102,7 +30102,7 @@ a{color:var(--a);text-decoration:none;}
 
 
 
-   PREMIUM DESIGN UPGRADE v6 — by Ultimate Toolkit Pro
+   SYSFORGE STUDIO THEME
 
 
 
@@ -64439,6 +64439,43 @@ display: flex;
 
 
 
+<style id="sysforge-studio-theme">
+/* Match the desktop application's Fluent dark palette while keeping the dashboard's own UI and features. */
+:root,[data-theme] {
+  --bg1:#181818; --bg2:#202020; --bg3:#262626;
+  --panel:rgba(255,255,255,.025); --panel2:rgba(255,255,255,.045);
+  --border:#383838; --borda:rgba(0,120,212,.55);
+  --text:#ffffff; --muted:#858585; --sub:#a6a6a6;
+  --a:#0078d4; --ar:0; --ag:120; --ab:212;
+  --a2:#1a86d9; --a2r:26; --a2g:134; --a2b:217;
+  --a3:#4aa3e8; --green:#107c41; --gold:#d83b01; --yellow:#d83b01;
+  --orange:#d83b01; --red:#dc2626; --blue:#0078d4;
+  --glow:none; --glow2:none; --glow3:none; --sb:rgba(24,24,24,.98);
+  --card-glow:rgba(0,120,212,.04);
+}
+ body { font-family: "Segoe UI Variable Display", "Segoe UI", sans-serif !important; }
+html[data-color-mode="light"] {
+  color-scheme: light;
+  --bg1:#f3f6fa; --bg2:#ffffff; --bg3:#e9eef5;
+  --panel:rgba(15,35,60,.035); --panel2:rgba(15,35,60,.06);
+  --border:#d7e0eb; --borda:rgba(0,120,212,.42);
+  --text:#172536; --muted:#5c6b7b; --sub:#435468;
+  --sb:rgba(248,250,253,.98); --card-glow:rgba(0,120,212,.035);
+  --glow:none; --glow2:none; --glow3:none;
+}
+html[data-color-mode="dark"] body { color-scheme:dark; background:var(--bg1)!important; color:var(--text)!important; }
+html[data-color-mode="light"] body { background:var(--bg1)!important; color:var(--text)!important; }
+html[data-color-mode="light"] :is(.card,.panel,.modal,.modal-content,.sidebar,.topbar,.header,.widget,.tile,.section,.content-card) { color:var(--text); }
+html[data-color-mode="light"] :is(input,select,textarea) { color:var(--text)!important; background:var(--bg2)!important; border-color:var(--border)!important; }
+html[data-color-mode] #sb, html[data-color-mode] .sb { background:var(--sb)!important; color:var(--text)!important; border-color:var(--border)!important; }
+html[data-color-mode] #sb .sbn { color:var(--sub)!important; text-shadow:none!important; }
+html[data-color-mode] #sb .sbn:hover { background:var(--panel2)!important; color:var(--text)!important; }
+html[data-color-mode] #sb .sbn.active { background:var(--panel2)!important; color:var(--a)!important; text-shadow:none!important; }
+html[data-color-mode] #sb .sbsec { color:var(--muted)!important; }
+.color-mode-toggle { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; margin:0 8px; padding:0; border:1px solid var(--border); border-radius:8px; color:var(--text); background:var(--panel2); cursor:pointer; transition:background .18s,border-color .18s,transform .18s; }
+.color-mode-toggle:hover { background:var(--bg3); border-color:var(--a); transform:translateY(-1px); }
+.color-mode-toggle svg { width:18px; height:18px; }
+</style>
 </head>
 
 
@@ -64567,7 +64604,7 @@ display: flex;
 
 
 
-  <div style="font-family:'Orbitron',sans-serif;font-size:32px;font-weight:900;background:linear-gradient(90deg,var(--a),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:3px">UltimateToolkit</div>
+  <div style="font-family:'Orbitron',sans-serif;font-size:32px;font-weight:900;background:linear-gradient(90deg,var(--a),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:3px">SysForge Studio</div>
 
 
 
@@ -64599,7 +64636,7 @@ display: flex;
 
 
 
-  <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--muted);letter-spacing:4px;text-transform:uppercase">v5 Pro · by Ultimate Toolkit Pro</div>
+  <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--muted);letter-spacing:4px;text-transform:uppercase">SysForge Studio</div>
 
 
 
@@ -64759,7 +64796,7 @@ display: flex;
 
 
 
-  <div id="splashConsole" style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:0.4;height:30px;text-align:center;line-height:1.5;max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Readying UltimateToolkit Engine...</div>
+  <div id="splashConsole" style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:0.4;height:30px;text-align:center;line-height:1.5;max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Readying SysForge Studio Engine...</div>
 
 
 
@@ -65559,7 +65596,7 @@ display: flex;
 
 
 
-        <div class="logo-name">UltimateToolkit</div>
+        <div class="logo-name">SysForge Studio</div>
 
 
 
@@ -65591,7 +65628,7 @@ display: flex;
 
 
 
-        <div class="logo-sub">v5 Pro · Ultimate Toolkit Pro</div>
+        <div class="logo-sub">SysForge Studio</div>
 
 
 
@@ -65751,7 +65788,7 @@ display: flex;
 
 
 
-      <div class="sbn active" data-p="dashboard" onclick="go('dashboard',this)"><span class="nav-ico-box" style="color: #00ffff; background: rgba(0, 255, 255, 0.12);">🏠</span><span>Dashboard Home</span></div>
+      <div class="sbn active" data-p="dashboard" onclick="go('dashboard',this)"><span class="nav-ico-box" style="color: #00ffff; background: rgba(0, 255, 255, 0.12);">🏠</span><span>Ana Sayfa</span></div>
 
 
 
@@ -65847,7 +65884,7 @@ display: flex;
 
 
 
-      <div class="sbn" data-p="themes" onclick="go('themes',this)"><span class="nav-ico-box" style="color: #ce93d8; background: rgba(206, 147, 216, 0.12);">🎨</span><span>Themes Customizer</span></div>
+      <div class="sbn" data-p="themes" onclick="go('themes',this)"><span class="nav-ico-box" style="color: #ce93d8; background: rgba(206, 147, 216, 0.12);">🎨</span><span>Tema Özelleştirme</span></div>
 
 
 
@@ -65879,7 +65916,7 @@ display: flex;
 
 
 
-      <div class="sbsec">Module 1: AI Diagnostic Engine</div>
+      <div class="sbsec">Modül 1: Yapay Zekâ Tanılama Motoru</div>
 
 
 
@@ -66011,7 +66048,7 @@ display: flex;
 
 
 
-      <div class="sbsec">Module 2: Hardware Diagnostics</div>
+      <div class="sbsec">Modül 2: Donanım Tanılaması</div>
 
 
 
@@ -66139,7 +66176,7 @@ display: flex;
 
 
 
-      <div class="sbsec">Module 3: Windows Repair</div>
+      <div class="sbsec">Modül 3: Windows Onarımı</div>
 
 
 
@@ -66299,7 +66336,7 @@ display: flex;
 
 
 
-      <div class="sbsec">Module 4: Network Operations</div>
+      <div class="sbsec">Modül 4: Ağ İşlemleri</div>
 
 
 
@@ -66427,7 +66464,7 @@ display: flex;
 
 
 
-      <div class="sbsec">Module 5: Security</div>
+      <div class="sbsec">Modül 5: Güvenlik</div>
 
 
 
@@ -66555,7 +66592,7 @@ display: flex;
 
 
 
-      <div class="sbsec">Module 6: Backup/Recovery</div>
+      <div class="sbsec">Modül 6: Yedekleme/Kurtarma</div>
 
 
 
@@ -66651,7 +66688,7 @@ display: flex;
 
 
 
-      <div class="sbsec">Module 7: Performance</div>
+      <div class="sbsec">Modül 7: Performans</div>
 
 
 
@@ -66779,7 +66816,7 @@ display: flex;
 
 
 
-      <div class="sbsec">Module 8: Emergency Recovery</div>
+      <div class="sbsec">Modül 8: Acil Kurtarma</div>
 
 
 
@@ -66875,7 +66912,7 @@ display: flex;
 
 
 
-      <div class="sbsec">Module 9: IT Admin</div>
+      <div class="sbsec">Modül 9: BT Yönetimi</div>
 
 
 
@@ -66907,7 +66944,7 @@ display: flex;
 
 
 
-      <div class="sbn" data-p="cmd37" onclick="go('cmd37',this)"><span class="nav-ico-box" style="color: #ff007f; background: rgba(255, 0, 127, 0.12);">🛠️</span><span>Ultimate Toolkit Pro CMD Toolkit</span></div>
+      <div class="sbn" data-p="cmd37" onclick="go('cmd37',this)"><span class="nav-ico-box" style="color: #ff007f; background: rgba(255, 0, 127, 0.12);">🛠️</span><span>SysForge Studio CMD Toolkit</span></div>
 
 
 
@@ -67195,7 +67232,7 @@ display: flex;
 
 
 
-      <div class="sbsec">Module 10: AI Knowledge Base</div>
+      <div class="sbsec">Modül 10: Yapay Zekâ Bilgi Bankası</div>
 
 
 
@@ -67415,7 +67452,7 @@ display: flex;
 
 
 
-        <span class="sbsrvtxt" id="sbTxt">Bridge Server</span>
+        <span class="sbsrvtxt" id="sbTxt">Köprü Sunucusu</span>
 
 
 
@@ -67703,7 +67740,7 @@ display: flex;
 
 
 
-      <div class="breadcrumb">UltimateToolkit / <strong id="bc">Dashboard</strong></div>
+      <div class="breadcrumb">SysForge Studio / <strong id="bc">Dashboard</strong></div>
 
 
 
@@ -67927,6 +67964,9 @@ display: flex;
 
 
 
+        <button class="color-mode-toggle" id="colorModeToggle" type="button" onclick="toggleColorMode()" aria-label="Açık temaya geç" title="Açık temaya geç">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
         <div class="srvdot" id="srvDot" onclick="checkServer()" title="Click to recheck"></div>
 
 
@@ -67959,7 +67999,7 @@ display: flex;
 
 
 
-        <span class="srvtxt" id="srvTxt">OFFLINE</span>
+        <span class="srvtxt" id="srvTxt">ÇEVRİMDIŞI</span>
 
 
 
@@ -68023,9 +68063,9 @@ display: flex;
 
 
 
-        <div class="admbdg" id="admBdg" style="display:none">⚡ ADMIN</div>
+        <div class="admbdg" id="admBdg" style="display:none">⚡ YÖNETİCİ</div>
 
-        <button id="btnLaunchNativeGui" title="Open Native GUI Application" onclick="launchNativeGui()" style="
+        <button id="btnLaunchNativeGui" title="SysForge Studio Masaüstü Uygulamasını Aç" onclick="launchNativeGui()" style="
           margin-left:8px;
           padding:4px 12px;
           background:linear-gradient(135deg,#7c3aed,#2563eb);
@@ -68038,7 +68078,7 @@ display: flex;
           letter-spacing:0.5px;
           box-shadow:0 0 8px rgba(124,58,237,0.5);
           transition:all 0.2s;
-        " onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">🖥 Native GUI</button>
+        " onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">🖥 Masaüstü Arayüzü</button>
 
 
 
@@ -68390,7 +68430,7 @@ display: flex;
 
 
 
-            <p>Ultimate System Management &amp; Repair Toolkit &mdash; v5 Pro by Ultimate Toolkit Pro</p>
+            <p>SysForge Studio &mdash; Sistem Yönetim ve Onarım Paneli</p>
 
 
 
@@ -68454,7 +68494,7 @@ display: flex;
 
 
 
-              <span id="dbSrvPill" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,59,59,0.1);border:1px solid rgba(255,59,59,0.3);color:var(--red);font-family:var(--fhud);font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:99px;text-transform:uppercase;transition:all 0.4s;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;"></span> Server Offline</span>
+              <span id="dbSrvPill" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,59,59,0.1);border:1px solid rgba(255,59,59,0.3);color:var(--red);font-family:var(--fhud);font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:99px;text-transform:uppercase;transition:all 0.4s;"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;"></span> Sunucu Çevrimdışı</span>
 
 
 
@@ -73446,7 +73486,7 @@ display: flex;
 
 
 
-                  <span class="module-title">Module 1: AI Diagnostic Engine</span>
+                  <span class="module-title">Modül 1: Yapay Zekâ Tanılama Motoru</span>
 
 
 
@@ -73478,7 +73518,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Autonomous repairs, watchdog protection</span>
+                      <span class="module-option-desc">Otomatik onarım ve sürekli koruma</span>
 
 
 
@@ -73506,7 +73546,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Deep diagnostic scans & threat analysis</span>
+                      <span class="module-option-desc">Ayrıntılı tanılama taramaları ve tehdit incelemesi</span>
 
 
 
@@ -73534,7 +73574,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Diagnostic logs and HTML reports export</span>
+                      <span class="module-option-desc">Tanılama günlüklerini ve raporları dışa aktarma</span>
 
 
 
@@ -73570,7 +73610,7 @@ display: flex;
 
 
 
-                  <span class="module-title">Module 2: Hardware Diagnostics</span>
+                  <span class="module-title">Modül 2: Donanım Tanılaması</span>
 
 
 
@@ -73602,7 +73642,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">WMI probes, SMART status, CPU stress test</span>
+                      <span class="module-option-desc">Donanım sorguları, disk durumu ve işlemci yük testi</span>
 
 
 
@@ -73630,7 +73670,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">ACPI sensors real-time temperature graph</span>
+                      <span class="module-option-desc">ACPI sensörlerinden anlık sıcaklık grafiği</span>
 
 
 
@@ -73658,7 +73698,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Read/write speeds & IOPs performance</span>
+                      <span class="module-option-desc">Okuma/yazma hızları ve G/Ç performansı</span>
 
 
 
@@ -73694,7 +73734,7 @@ display: flex;
 
 
 
-                  <span class="module-title">Module 3: Windows Repair</span>
+                  <span class="module-title">Modül 3: Windows Onarımı</span>
 
 
 
@@ -73726,7 +73766,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">System file scans & component store repair</span>
+                      <span class="module-option-desc">Sistem dosyalarını tarama ve bileşen deposunu onarma</span>
 
 
 
@@ -73754,7 +73794,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Event viewer parsing & autonomous fixes</span>
+                      <span class="module-option-desc">Olay kayıtlarını inceleme ve otomatik düzeltmeler</span>
 
 
 
@@ -73782,7 +73822,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Manage, start & stop Windows services</span>
+                      <span class="module-option-desc">Windows hizmetlerini yönetme, başlatma ve durdurma</span>
 
 
 
@@ -73810,7 +73850,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Disable telemetry & boost OS speed</span>
+                      <span class="module-option-desc">Telemetriyi kapatma ve işletim sistemini hızlandırma</span>
 
 
 
@@ -73846,7 +73886,7 @@ display: flex;
 
 
 
-                  <span class="module-title">Module 4: Network Operations</span>
+                  <span class="module-title">Modül 4: Ağ İşlemleri</span>
 
 
 
@@ -73878,7 +73918,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Rebuild TCP/IP, flush DNS cache</span>
+                      <span class="module-option-desc">TCP/IP’yi yenileme ve DNS önbelleğini temizleme</span>
 
 
 
@@ -73906,7 +73946,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Monitor active IP ports & network endpoints</span>
+                      <span class="module-option-desc">Etkin IP bağlantı noktalarını ve ağ uçlarını izleme</span>
 
 
 
@@ -73934,7 +73974,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Adapter configurations & signal status</span>
+                      <span class="module-option-desc">Bağdaştırıcı ayarları ve sinyal durumu</span>
 
 
 
@@ -73970,7 +74010,7 @@ display: flex;
 
 
 
-                  <span class="module-title">Module 5: Security</span>
+                  <span class="module-title">Modül 5: Güvenlik</span>
 
 
 
@@ -74002,7 +74042,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Control active ports, firewall policies</span>
+                      <span class="module-option-desc">Etkin bağlantı noktalarını ve güvenlik duvarı kurallarını yönetme</span>
 
 
 
@@ -74030,7 +74070,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Defender verification, security policies</span>
+                      <span class="module-option-desc">Defender doğrulaması ve güvenlik ilkeleri</span>
 
 
 
@@ -74058,7 +74098,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Check Windows activation & license keys</span>
+                      <span class="module-option-desc">Windows etkinleştirmesini ve lisans anahtarlarını denetleme</span>
 
 
 
@@ -74094,7 +74134,7 @@ display: flex;
 
 
 
-                  <span class="module-title">Module 6: Backup/Recovery</span>
+                  <span class="module-title">Modül 6: Yedekleme/Kurtarma</span>
 
 
 
@@ -74126,7 +74166,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Robocopy profile migration & file backups</span>
+                      <span class="module-option-desc">Robocopy ile profil taşıma ve dosya yedekleme</span>
 
 
 
@@ -74154,7 +74194,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Rollback, create and delete restore points</span>
+                      <span class="module-option-desc">Geri yükleme noktalarını oluşturma, silme ve geri dönme</span>
 
 
 
@@ -74190,7 +74230,7 @@ display: flex;
 
 
 
-                  <span class="module-title">Module 7: Performance</span>
+                  <span class="module-title">Modül 7: Performans</span>
 
 
 
@@ -74222,7 +74262,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Clear temp folders, junk logs & prefetch</span>
+                      <span class="module-option-desc">Geçici klasörleri, gereksiz günlükleri ve ön getirme verilerini temizleme</span>
 
 
 
@@ -74250,7 +74290,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Remove preinstalled bloatware packages</span>
+                      <span class="module-option-desc">Ön yüklü gereksiz yazılımları kaldırma</span>
 
 
 
@@ -74278,7 +74318,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Control background startup apps & delay</span>
+                      <span class="module-option-desc">Arka plan başlangıç uygulamalarını ve gecikmelerini yönetme</span>
 
 
 
@@ -74314,7 +74354,7 @@ display: flex;
 
 
 
-                  <span class="module-title">Module 8: Emergency Recovery</span>
+                  <span class="module-title">Modül 8: Acil Kurtarma</span>
 
 
 
@@ -74346,7 +74386,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Reboot to Advanced Startup, repair WinRE</span>
+                      <span class="module-option-desc">Gelişmiş başlangıç seçeneklerini açma ve WinRE’yi onarma</span>
 
 
 
@@ -74374,7 +74414,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Parse minidumps with diagnostic AI engine</span>
+                      <span class="module-option-desc">Küçük bellek dökümlerini yapay zekâyla inceleme</span>
 
 
 
@@ -74410,7 +74450,7 @@ display: flex;
 
 
 
-                  <span class="module-title">Module 9: IT Admin</span>
+                  <span class="module-title">Modül 9: BT Yönetimi</span>
 
 
 
@@ -74666,7 +74706,7 @@ display: flex;
 
 
 
-                  <span class="module-title">Module 10: AI Knowledge Base</span>
+                  <span class="module-title">Modül 10: Yapay Zekâ Bilgi Bankası</span>
 
 
 
@@ -74698,7 +74738,7 @@ display: flex;
 
 
 
-                      <span class="module-option-desc">Troubleshoot Windows, AI advice documentation</span>
+                      <span class="module-option-desc">Windows sorun giderme ve yapay zekâ destekli açıklamalar</span>
 
 
 
@@ -74730,7 +74770,7 @@ display: flex;
 
 
 
-                  <span class="module-title">⏳ Outdated Apps & Updates</span>
+                  <span class="module-title">⏳ Eski Uygulamalar ve Güncellemeler</span>
 
 
 
@@ -80306,7 +80346,7 @@ display: flex;
 
 
 
-                    <strong>AI Assistant:</strong><br>Namaste Technician! 👋 I'm your AI-powered PC Doctor — connected to internet with 4 AI providers. Ask me anything about your system and I'll diagnose, repair, or guide you!
+                    <strong>AI Assistant:</strong><br>Merhaba! 👋 SysForge Studio AI asistanı — connected to internet with 4 AI providers. Ask me anything about your system and I'll diagnose, repair, or guide you!
 
 
 
@@ -81842,7 +81882,7 @@ display: flex;
 
 
 
-                <span>✨</span> AI RECOMMENDATION
+                <span>✨</span> YAPAY ZEKÂ ÖNERİSİ
 
 
 
@@ -82482,7 +82522,7 @@ display: flex;
 
 
 
-              <button class="btn bg bsm" style="width: 100%; justify-content: center; font-weight: bold; background: linear-gradient(135deg, rgba(0,255,136,0.15), rgba(0,255,208,0.25));" onclick="runRecommendedActions()">✨ Run Recommended Actions</button>
+              <button class="btn bg bsm" style="width: 100%; justify-content: center; font-weight: bold; background: linear-gradient(135deg, rgba(0,255,136,0.15), rgba(0,255,208,0.25));" onclick="runRecommendedActions()">✨ Önerilen İşlemleri Uygula</button>
 
 
 
@@ -83796,7 +83836,7 @@ display: flex;
 
         <div class="ph">
           <div class="ph-welcome">
-            <div class="pt">⚡ Ultimate Toolkit Pro <span class="hl">CMD Toolkit</span></div>
+            <div class="pt">⚡ SysForge Studio <span class="hl">CMD Toolkit</span></div>
             <div class="ps">All 37 CMD modules — click ⚡ to open in visible CMD window on your PC · Navigate full hierarchy</div>
           </div>
           <div class="db-uptime-card" style="display: flex; align-items: center; gap: 8px;">
@@ -94167,7 +94207,7 @@ display: flex;
 
 
 
-            <div class="term-title">ULTIMATETOOLKIT TERMINAL · <span id="termMode">OFFLINE</span></div>
+            <div class="term-title">SYSFORGE STUDIO TERMINAL · <span id="termMode">OFFLINE</span></div>
 
 
 
@@ -110724,7 +110764,7 @@ display: flex;
 
 
 
-                🚀 Run All Recommended Actions
+                🚀 Önerilen Tüm İşlemleri Uygula
 
 
 
@@ -117028,7 +117068,7 @@ display: flex;
 
 
 
-              <button class="btn bp bsm" onclick="applyAIRecommendation(this)" style="width:100%; font-size:8.5px; padding:3px; font-family:var(--fhud); text-transform:uppercase; margin-top:2px;">Apply Recommendation</button>
+              <button class="btn bp bsm" onclick="applyAIRecommendation(this)" style="width:100%; font-size:8.5px; padding:3px; font-family:var(--fhud); text-transform:uppercase; margin-top:2px;">Öneriyi Uygula</button>
 
 
 
@@ -127059,7 +127099,7 @@ display: flex;
                       <div class="db-ai-item"><span class="db-ai-left"><span class="db-legend-dot sys" style="background:#ffd700"></span> Performance</span><b style="color:#ffd700" id="dbAiPerf">8% below expected</b></div>
                     </div>
                     <div class="db-ai-rec">
-                      <div class="db-ai-rec-title">AI RECOMMENDATION</div>
+                      <div class="db-ai-rec-title">YAPAY ZEKÂ ÖNERİSİ</div>
                       <div class="db-ai-rec-text" id="dbAiRecText">Enable TRIM to maintain optimal performance. Consider firmware update for better stability.</div>
                     </div>
                   </div>
@@ -131614,8 +131654,8 @@ display: flex;
                 <div class="hwd-ai-item"><div class="hwd-ai-dot ok"></div> GPU: Healthy</div>
               </div>
               <div class="hwd-ai-rec" id="hwdAIRec">
-                <div class="hwd-ai-rec-title">RECOMMENDATION</div>
-                <div class="hwd-ai-rec-text">Run a full hardware scan to get AI-powered diagnostics and personalized recommendations.</div>
+                <div class="hwd-ai-rec-title">ÖNERİ</div>
+                <div class="hwd-ai-rec-text">Yapay zekâ destekli tanılama ve kişiselleştirilmiş öneriler için tam donanım taraması yapın.</div>
               </div>
               <button class="hwd-ai-report-btn" onclick="exportHardwareReport()">📋 Full AI Report</button>
             </div>
@@ -134031,7 +134071,7 @@ display: flex;
                 <div class="rt-sub">Curated Windows registry tweaks • Disable telemetry • Privacy hardening • Performance boost</div>
               </div>
               <div class="rt-topbar-right">
-                <button class="rt-btn primary" id="btnRtApplyRecommended" onclick="rtApplyAllRecommended()">⚡ Apply All Recommended</button>
+                <button class="rt-btn primary" id="btnRtApplyRecommended" onclick="rtApplyAllRecommended()">⚡ Önerilenlerin Tümünü Uygula</button>
                 <button class="rt-btn" id="btnRtBackupFirst" onclick="rtBackupRegistry()" style="border-color:rgba(157,0,255,0.3); color:#b740ff">💾 Backup Registry First</button>
               </div>
             </div>
@@ -134049,7 +134089,7 @@ display: flex;
               
               <div class="rt-stat-card" style="border-color:rgba(0,255,136,0.15)">
                 <div class="rt-stat-card-left">
-                  <span class="rt-stat-card-label">Recommended</span>
+                  <span class="rt-stat-card-label">Önerilen</span>
                   <span class="rt-stat-card-val green" id="rtStatRecommended">28</span>
                   <span class="rt-stat-card-desc" style="color:#00ff88">Safe to Apply</span>
                 </div>
@@ -134083,7 +134123,7 @@ display: flex;
               </div>
               <div class="rt-tabs">
                 <button class="rt-tab active" id="rtTabAll" onclick="rtSetFilter('all', this)">All Tweaks</button>
-                <button class="rt-tab" id="rtTabRecommended" onclick="rtSetFilter('recommended', this)">✔️ Recommended</button>
+                <button class="rt-tab" id="rtTabRecommended" onclick="rtSetFilter('recommended', this)">✔️ Önerilen</button>
                 <button class="rt-tab" id="rtTabSafe" onclick="rtSetFilter('safe', this)">🛡️ Safe</button>
                 <button class="rt-tab" id="rtTabAdvanced" onclick="rtSetFilter('advanced', this)">⚙️ Advanced</button>
               </div>
@@ -137346,7 +137386,7 @@ display: flex;
 
 
 
-              <div class="ng-card-header" style="color:var(--gold)">💡 AI Recommendations</div>
+              <div class="ng-card-header" style="color:var(--gold)">💡 Yapay Zekâ Önerileri</div>
 
 
 
@@ -137518,7 +137558,7 @@ display: flex;
 
 
 
-                <a href="#" onclick="switchNgTab('ng-twin'); return false;" style="color:var(--a); text-decoration:none;">View All Recommendations ➔</a>
+                <a href="#" onclick="switchNgTab('ng-twin'); return false;" style="color:var(--a); text-decoration:none;">Tüm Önerileri Görüntüle ➔</a>
 
 
 
@@ -152570,20 +152610,25 @@ async function POST(path,data){
 
 async function launchNativeGui(){
   const btn = document.getElementById('btnLaunchNativeGui');
-  if(btn){ btn.textContent = '⏳ Launching...'; btn.disabled = true; }
+  if(btn){ btn.textContent = '⏳ Başlatılıyor...'; btn.disabled = true; }
   try {
-    const r = await fetch('/api/launch-gui', { method:'POST' });
+    const targetUrl = (typeof API !== 'undefined' && API) ? `${API}/api/launch-gui` : 'http://localhost:9999/api/launch-gui';
+    const r = await fetch(targetUrl, { method:'POST' });
     const d = await r.json();
     if(d && d.launched){
-      if(btn){ btn.textContent = '✅ Launched!'; }
-      setTimeout(()=>{ if(btn){ btn.textContent='🖥 Native GUI'; btn.disabled=false; } }, 2500);
+      if(btn){ btn.textContent = '✅ Başlatıldı!'; }
+      setTimeout(()=>{ if(btn){ btn.textContent='🖥 Masaüstü Arayüzü'; btn.disabled=false; } }, 2500);
     } else {
-      if(btn){ btn.textContent = '❌ Failed'; }
-      setTimeout(()=>{ if(btn){ btn.textContent='🖥 Native GUI'; btn.disabled=false; } }, 2500);
+      if(btn){ btn.textContent = '❌ Başarısız'; }
+      setTimeout(()=>{ if(btn){ btn.textContent='🖥 Masaüstü Arayüzü'; btn.disabled=false; } }, 2500);
     }
   } catch(e) {
-    if(btn){ btn.textContent = '❌ Server Offline'; }
-    setTimeout(()=>{ if(btn){ btn.textContent='🖥 Native GUI'; btn.disabled=false; } }, 2500);
+    if(btn){ btn.textContent = '❌ Köprü Sunucu Kapalı'; }
+    setTimeout(()=>{ if(btn){ btn.textContent='🖥 Masaüstü Arayüzü'; btn.disabled=false; } }, 2500);
+  }
+} catch(e) {
+    if(btn){ btn.textContent = '❌ Sunucu Çevrimdışı'; }
+    setTimeout(()=>{ if(btn){ btn.textContent='🖥 Masaüstü Arayüzü'; btn.disabled=false; } }, 2500);
   }
 }
 
@@ -152907,7 +152952,7 @@ async function checkServer(){
 
 
 
-      dot.className='srvdot on'; txt.textContent='ONLINE';
+      dot.className='srvdot on'; txt.textContent='ÇEVRİMİÇİ';
 
 
 
@@ -152939,7 +152984,7 @@ async function checkServer(){
 
 
 
-      sdot.className='sbsrvdot on'; stxt.textContent='Online · Port '+PORT;
+      sdot.className='sbsrvdot on'; stxt.textContent='Çevrimiçi · Port '+PORT;
 
 
 
@@ -152971,7 +153016,7 @@ async function checkServer(){
 
 
 
-      document.getElementById('termMode').textContent='REAL EXECUTION';
+      document.getElementById('termMode').textContent='GERÇEK ÇALIŞTIRMA';
 
 
 
@@ -153227,7 +153272,7 @@ async function checkServer(){
 
 
 
-      if(sPill){ sPill.style.background='rgba(0,255,136,0.1)'; sPill.style.borderColor='rgba(0,255,136,0.3)'; sPill.style.color='var(--green)'; sPill.innerHTML='<span style="width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;animation:uptimePulse 2s infinite;"></span> Server Online'; }
+      if(sPill){ sPill.style.background='rgba(0,255,136,0.1)'; sPill.style.borderColor='rgba(0,255,136,0.3)'; sPill.style.color='var(--green)'; sPill.innerHTML='<span style="width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;animation:uptimePulse 2s infinite;"></span> Sunucu Çevrimiçi'; }
 
 
 
@@ -153291,7 +153336,7 @@ async function checkServer(){
 
 
 
-      if(aiTxt){ aiTxt.textContent='Internet Connected · 4 AI Providers'; aiTxt.style.color='var(--green)'; }
+      if(aiTxt){ aiTxt.textContent='İnternet Bağlı · 4 Yapay Zekâ Sağlayıcısı'; aiTxt.style.color='var(--green)'; }
 
 
 
@@ -153531,7 +153576,7 @@ async function checkServer(){
 
 
 
-  dot.className='srvdot'; txt.textContent='OFFLINE';
+  dot.className='srvdot'; txt.textContent='ÇEVRİMDIŞI';
 
 
 
@@ -153563,7 +153608,7 @@ async function checkServer(){
 
 
 
-  sdot.className='sbsrvdot'; stxt.textContent='Offline';
+  sdot.className='sbsrvdot'; stxt.textContent='Çevrimdışı';
 
 
 
@@ -153595,7 +153640,7 @@ async function checkServer(){
 
 
 
-  document.getElementById('termMode').textContent='SIMULATION';
+  document.getElementById('termMode').textContent='SİMÜLASYON';
 
 
 
@@ -153755,7 +153800,7 @@ async function checkServer(){
 
 
 
-  if(sPillO){ sPillO.style.background='rgba(255,59,59,0.1)'; sPillO.style.borderColor='rgba(255,59,59,0.3)'; sPillO.style.color='var(--red)'; sPillO.innerHTML='<span style="width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;"></span> Server Offline'; }
+  if(sPillO){ sPillO.style.background='rgba(255,59,59,0.1)'; sPillO.style.borderColor='rgba(255,59,59,0.3)'; sPillO.style.color='var(--red)'; sPillO.innerHTML='<span style="width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;"></span> Sunucu Çevrimdışı'; }
 
 
 
@@ -153819,7 +153864,7 @@ async function checkServer(){
 
 
 
-  if(aiTxt){ aiTxt.textContent='Bridge Server Offline'; aiTxt.style.color='var(--red)'; }
+  if(aiTxt){ aiTxt.textContent='Bridge Sunucu Çevrimdışı'; aiTxt.style.color='var(--red)'; }
 
 
 
@@ -154523,7 +154568,7 @@ const bcMap = {
 
 
 
-  cmd37: 'Ultimate Toolkit Pro CMD Toolkit',
+  cmd37: 'SysForge Studio CMD Toolkit',
 
 
 
@@ -160010,7 +160055,7 @@ async function launch(id){
 
 
 
-  if(!srv){toast('Server Offline','Start Launch-WebDashboard.cmd first','warning');return;}
+  if(!srv){toast('Sunucu Çevrimdışı','Start Launch-WebDashboard.cmd first','warning');return;}
 
 
 
@@ -160781,7 +160826,7 @@ async function doOp(id){
 async function runPS(cmd){
   addLog('info','RunPS: '+cmd);
   toast('Running…',cmd,'info',2000);
-  if(!srv){toast('Server Offline','Start server first','warning');return;}
+  if(!srv){toast('Sunucu Çevrimdışı','Start server first','warning');return;}
   const r=await POST('/api/run-ps',{cmd});
   if(r?.ok){
     if (r.data?.guid) {
@@ -161285,7 +161330,7 @@ async function tkRun(lbl){
 
 
 
-  if(!srv){toast('Server Offline','Start Launch-WebDashboard.cmd first','warning');return;}
+  if(!srv){toast('Sunucu Çevrimdışı','Start Launch-WebDashboard.cmd first','warning');return;}
 
 
 
@@ -161765,7 +161810,7 @@ async function execOpt(cmd,target){
 
 
 
-  if(!srv){toast('Server Offline','Start server first','warning');return;}
+  if(!srv){toast('Sunucu Çevrimdışı','Start server first','warning');return;}
 
 
 
@@ -162757,7 +162802,7 @@ async function wingetInstall(){
 
 
 
-  if(!srv){toast('Server Offline','Start server first','warning');return;}
+  if(!srv){toast('Sunucu Çevrimdışı','Start server first','warning');return;}
 
 
 
@@ -168822,7 +168867,7 @@ async function runRecommendedActions() {
       const res = await GET('/api/clean-temp');
       if (res && res.ok && res.data) {
         toast('Cleanup Completed', res.data.message || 'Temporary files removed.', 'success');
-        addLog('success', `AI Recommendation: ${res.data.message}`);
+        addLog('success', `Yapay zekâ önerisi: ${res.data.message}`);
       } else {
         toast('Cleanup Failed', res.error || 'Failed to clean temp files.', 'error');
       }
@@ -168832,20 +168877,20 @@ async function runRecommendedActions() {
   } else {
     setTimeout(() => {
       toast('Cleanup Completed', '2.34 GB temporary files removed.', 'success');
-      addLog('success', 'AI Recommendation: Temp files cleaned (Simulated)');
+      addLog('success', 'Yapay zekâ önerisi: Geçici dosyalar temizlendi (benzetim)');
     }, 2000);
   }
   
   setTimeout(() => {
     toast('Optimization Finished', 'Startup programs optimized.', 'success');
-    addLog('success', 'AI Recommendation: Startup programs optimized');
+    addLog('success', 'Yapay zekâ önerisi: Başlangıç programları iyileştirildi');
   }, 4000);
 }
 
 function emailDiskBenchReport() {
-  const subject = encodeURIComponent("UltimateToolkit - Disk Benchmark Report");
+  const subject = encodeURIComponent("SysForge Studio - Disk Benchmark Report");
   const body = encodeURIComponent(
-    `UltimateToolkit Disk Benchmark Report Summary:\n` +
+    `SysForge Studio Disk Benchmark Report Summary:\n` +
     `Timestamp: ${new Date().toISOString()}\n` +
     `Drive Health: 98%\n` +
     `Life Remaining: 95%\n` +
@@ -168861,8 +168906,8 @@ function emailDiskBenchReport() {
 }
 
 function emailHardwareDiagReport() {
-  const subject = encodeURIComponent("UltimateToolkit - Hardware Diagnostics Report");
-  let bodyContent = "UltimateToolkit Hardware Diagnostics Report Summary:\n";
+  const subject = encodeURIComponent("SysForge Studio - Hardware Diagnostics Report");
+  let bodyContent = "SysForge Studio Hardware Diagnostics Report Summary:\n";
   if (typeof lastHwDiag !== "undefined" && lastHwDiag) {
     bodyContent += `Status: ${lastHwDiag.status || 'Complete'}\n` +
                    `CPU Health: ${lastHwDiag.cpu_health || 'OK'}\n` +
@@ -186243,7 +186288,7 @@ function generateCategoryReport(label) {
 
 
 
-<html lang="en">
+<html lang="tr">
 
 
 
@@ -216419,7 +216464,7 @@ function copyAllSysInfo() {
 
 
 
-ULTIMATETOOLKIT — SYSTEM INVENTORY & SPECIFICATIONS REPORT
+SYSFORGE STUDIO — SYSTEM INVENTORY & SPECIFICATIONS REPORT
 
 
 
@@ -217251,7 +217296,7 @@ Last Boot Timestamp: ${s.LastBoot || 'N/A'}
 
 
 
-Generated At: ${new Date().toLocaleString()} (UltimateToolkit v5.0)`;
+Generated At: ${new Date().toLocaleString()} (SysForge Studio.0)`;
 
 
 
@@ -218285,7 +218330,7 @@ function generatePremiumHTMLReport(reportTitle, reportDesc, reportContentHtml) {
 
   return `<!DOCTYPE html>
 
-<html lang="en">
+<html lang="tr">
 
 <head>
 
@@ -218293,7 +218338,7 @@ function generatePremiumHTMLReport(reportTitle, reportDesc, reportContentHtml) {
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>${reportTitle} - UltimateToolkit</title>
+<title>${reportTitle} - SysForge Studio</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
@@ -218381,7 +218426,7 @@ function generatePremiumHTMLReport(reportTitle, reportDesc, reportContentHtml) {
 
   <div class="hero-inner">
 
-    <div class="brand">Ultimate Toolkit Pro Ultimate Toolkit - AI Cyber Diagnostics Engine</div>
+    <div class="brand">SysForge Studio - AI Cyber Diagnostics Engine</div>
 
     <h1>${reportTitle}</h1>
 
@@ -218415,7 +218460,7 @@ function generatePremiumHTMLReport(reportTitle, reportDesc, reportContentHtml) {
 
 
 
-<footer>Generated by Ultimate Toolkit Pro Ultimate Toolkit &mdash; AI Cyber-Heuristic Diagnostics Engine &mdash; ${generatedTime}</footer>
+<footer>Generated by SysForge Studio &mdash; AI Cyber-Heuristic Diagnostics Engine &mdash; ${generatedTime}</footer>
 
 </body>
 
@@ -218481,7 +218526,7 @@ BIOS     : ${s.BIOSVersion || 'N/A'}
 Admin    : ${s.IsAdmin ? 'Yes (Elevated)' : 'No'}
 Uptime   : ${s.Uptime || 'N/A'}
 Network  : ${s.NetworkMap || 'N/A'}
---- Generated by UltimateToolkit on ${new Date().toLocaleString()} ---`;
+--- Generated by SysForge Studio on ${new Date().toLocaleString()} ---`;
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(summary).then(() => {
       toast('Copied!', 'System report copied to clipboard.', 'success');
@@ -220853,7 +220898,7 @@ function exportAIDiagReport() {
 
             <ul style="padding-left: 18px; margin-top: 8px; line-height: 2;">
 
-              <li>Execute <strong>⚡ Run ${target.name}</strong> from the UltimateToolkit system dashboard interface.</li>
+              <li>Execute <strong>⚡ Run ${target.name}</strong> from the SysForge Studio system dashboard interface.</li>
 
             </ul>
 
@@ -220997,7 +221042,7 @@ function exportAIDiagReport() {
 
   <div class='hero-inner'>
 
-    <div class='brand'>Ultimate Toolkit Pro Ultimate Toolkit - AI Cyber Diagnostics Engine</div>
+    <div class='brand'>SysForge Studio - AI Cyber Diagnostics Engine</div>
 
     <h1>AI System Health Diagnostic Report</h1>
 
@@ -221043,7 +221088,7 @@ ${cardsHtml}
 
 </div>
 
-<footer>Generated by Ultimate Toolkit Pro Ultimate Toolkit &mdash; AI Cyber-Heuristic Diagnostics Engine &mdash; ${generatedTime}</footer>
+<footer>Generated by SysForge Studio &mdash; AI Cyber-Heuristic Diagnostics Engine &mdash; ${generatedTime}</footer>
 
 </body>
 
@@ -221793,7 +221838,7 @@ function exportSelfHealingReport() {
 
 
 
-    <p style="margin-bottom:20px; color:var(--sub);">This comprehensive system document contains the cognitive predictive diagnostics, failure probability modeling, virtual system twin integrity verification, and auto-healing operations log from the UltimateToolkit AI daemon.</p>
+    <p style="margin-bottom:20px; color:var(--sub);">This comprehensive system document contains the cognitive predictive diagnostics, failure probability modeling, virtual system twin integrity verification, and auto-healing operations log from the SysForge Studio AI daemon.</p>
 
 
 
@@ -239114,7 +239159,7 @@ async function loadNetwork() {
   }
   
   if (!srv) {
-    toast('Server Offline', 'Cannot fetch network telemetry.', 'error');
+    toast('Sunucu Çevrimdışı', 'Cannot fetch network telemetry.', 'error');
     return;
   }
   
@@ -248363,7 +248408,7 @@ async function installApp(id,name){
 
 
 
-  if(!srv){toast('Server Offline','Start Launch-WebDashboard.cmd first','warning');return;}
+  if(!srv){toast('Sunucu Çevrimdışı','Start Launch-WebDashboard.cmd first','warning');return;}
 
 
 
@@ -249291,7 +249336,7 @@ async function customWingetSearch() {
 
 
 
-    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: var(--muted);">Server Offline</div>';
+    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: var(--muted);">Sunucu Çevrimdışı</div>';
 
 
 
@@ -259403,7 +259448,7 @@ async function openReg(path){
 
 
 
-  if(!srv){toast('Server Offline','Start server first','warning');return;}
+  if(!srv){toast('Sunucu Çevrimdışı','Start server first','warning');return;}
 
 
 
@@ -259723,7 +259768,7 @@ const termCmds={
 
 
 
-    {c:'t-ok',t:'=== UltimateToolkit Terminal Commands ==='},
+    {c:'t-ok',t:'=== SysForge Studio Terminal Commands ==='},
 
 
 
@@ -266161,6 +266206,24 @@ function renderThemes(){
 
 
 
+function setColorMode(mode) {
+  const selected = mode === 'light' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-color-mode', selected);
+  try { localStorage.setItem('sysforge-color-mode', selected); } catch (_) {}
+  const button = document.getElementById('colorModeToggle');
+  if (!button) return;
+  const nextMode = selected === 'dark' ? 'light' : 'dark';
+  button.setAttribute('aria-label', `${nextMode === 'light' ? 'Açık' : 'Koyu'} temaya geç`);
+  button.title = `${nextMode === 'light' ? 'Açık' : 'Koyu'} temaya geç`;
+  button.innerHTML = selected !== 'dark'
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6.5 6.5 0 0 0 8.268 8.268c.344-.215.825-.003.803.401"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>';
+}
+function toggleColorMode() {
+  setColorMode(document.documentElement.getAttribute('data-color-mode') === 'light' ? 'dark' : 'light');
+}
+try { setColorMode(localStorage.getItem('sysforge-color-mode') || 'dark'); } catch (_) { setColorMode('dark'); }
+
 function setTheme(id){
 
 
@@ -266578,7 +266641,7 @@ console.log('!!! DEBUG: SPLASH FUNCTION STARTED EXECUTION !!!');
 
 
 
-  const msgs = ['Booting UltimateToolkit Core...', 'Connecting to Port 9999...', 'Compiling UI HUD shaders...', 'Assembling System Inventory...', 'Loading Agentic AI brain...'];
+  const msgs = ['Booting SysForge Studio Core...', 'Connecting to Port 9999...', 'Compiling UI HUD shaders...', 'Assembling System Inventory...', 'Loading Agentic AI brain...'];
 
 
 
@@ -272722,7 +272785,7 @@ async function upgradeSingleApp(id) {
 
 
 
-  if(!srv){toast('Server Offline','Start server first','warning');return;}
+  if(!srv){toast('Sunucu Çevrimdışı','Start server first','warning');return;}
 
 
 
@@ -273202,7 +273265,7 @@ async function upgradeAllApps() {
 
 
 
-  if(!srv){toast('Server Offline','Start server first','warning');return;}
+  if(!srv){toast('Sunucu Çevrimdışı','Start server first','warning');return;}
 
 
 
@@ -273682,7 +273745,7 @@ async function installSingleDriver(updateId, title) {
 
 
 
-  if(!srv){toast('Server Offline','Start server first','warning');return;}
+  if(!srv){toast('Sunucu Çevrimdışı','Start server first','warning');return;}
 
 
 
@@ -274162,7 +274225,7 @@ async function installAllDrivers() {
 
 
 
-  if(!srv){toast('Server Offline','Start server first','warning');return;}
+  if(!srv){toast('Sunucu Çevrimdışı','Start server first','warning');return;}
 
 
 
@@ -284203,7 +284266,7 @@ async function triggerAutoFix() {
 
 
 
-  if(!srv){toast('Server Offline','Start server first','warning');return;}
+  if(!srv){toast('Sunucu Çevrimdışı','Start server first','warning');return;}
 
 
 
@@ -295371,7 +295434,7 @@ addT([
 
 
 
-  {c:'t-ok',t:'║  UltimateToolkit v5 Pro — READY      ║'},
+  {c:'t-ok',t:'║  SysForge Studio — READY      ║'},
 
 
 
@@ -295403,7 +295466,7 @@ addT([
 
 
 
-  {c:'t-ok',t:'║  by Ultimate Toolkit Pro · All 37 Modules ║'},
+  {c:'t-ok',t:'║  by SysForge Studio · All 37 Modules ║'},
 
 
 
@@ -361069,7 +361132,7 @@ async function oldSendAiMessage() {
 
 
 
-          { role: 'system', content: 'You are an advanced Cyber HUD AI Assistant inside the Ultimate System Toolkit dashboard by Ultimate Toolkit Pro. Keep your responses highly helpful, professional, extremely concise (under 2-3 sentences), and formatted in clean HTML. You can suggest dashboard actions like cleaning temp files (onclick="executeSystemDeepClean()"), running software diagnostics (onclick="nav(\'swdiag\')"), or checking network (onclick="nav(\'network\')") by including styled buttons with onclick triggers.' },
+          { role: 'system', content: 'You are an advanced Cyber HUD AI Assistant inside the SysForge Studio dashboard. Keep your responses highly helpful, professional, extremely concise (under 2-3 sentences), and formatted in clean HTML. You can suggest dashboard actions like cleaning temp files (onclick="executeSystemDeepClean()"), running software diagnostics (onclick="nav(\'swdiag\')"), or checking network (onclick="nav(\'network\')") by including styled buttons with onclick triggers.' },
 
 
 
@@ -392102,7 +392165,7 @@ async function upgradeSelectedSoftApps() {
 
 
 
-  if(!srv){toast('Server Offline','Start server first','warning');return;}
+  if(!srv){toast('Sunucu Çevrimdışı','Start server first','warning');return;}
 
 
 
@@ -395654,7 +395717,7 @@ async function saveAISettings() {
 
 
 
-    toast('Server Offline', 'Cannot save settings while server is offline', 'warning');
+    toast('Sunucu Çevrimdışı', 'Cannot save settings while server is offline', 'warning');
 
 
 
@@ -396422,7 +396485,7 @@ async function testAISettingsConnection() {
 
 
 
-    toast('Server Offline', 'Start PowerShell Web Bridge server to test.', 'warning');
+    toast('Sunucu Çevrimdışı', 'Start PowerShell Web Bridge server to test.', 'warning');
 
 
 
@@ -406746,7 +406809,7 @@ function backupProductKey() {
 
 
 
-  const text = `UltimateToolkit v5 Pro - Secure License Backup\nGenerated: ${new Date().toLocaleString()}\nComputer: ${lastSysInfo?.ComputerName || 'LocalHost'}\n\nWindows Product Key: ${key}\n\nWindows Activation Status:\n${document.getElementById('licVaultContainer')?.querySelector('pre')?.textContent || 'N/A'}`;
+  const text = `SysForge Studio - Secure License Backup\nGenerated: ${new Date().toLocaleString()}\nComputer: ${lastSysInfo?.ComputerName || 'LocalHost'}\n\nWindows Product Key: ${key}\n\nWindows Activation Status:\n${document.getElementById('licVaultContainer')?.querySelector('pre')?.textContent || 'N/A'}`;
 
 
 
@@ -408774,7 +408837,7 @@ async function backupSavedWiFiPasswords() {
 
 
 
-      let text = `UltimateToolkit v5 Pro - Secure WiFi Passwords Backup\nGenerated: ${new Date().toLocaleString()}\n\n`;
+      let text = `SysForge Studio - Secure WiFi Passwords Backup\nGenerated: ${new Date().toLocaleString()}\n\n`;
 
 
 
@@ -414758,7 +414821,7 @@ function createRebootTask() {
 
 
 
-    toast('Task Created', 'Scheduled task UltimateToolkit_Reboot added successfully!', 'success');
+    toast('Task Created', 'Scheduled task SysForge Studio_Reboot added successfully!', 'success');
 
 
 
@@ -417750,6 +417813,278 @@ document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('btnParallelScan') || document.querySelector('[data-action="parallel-scan"]');
   if (btn) btn.addEventListener('click', launchFullParallelScan);
 });
+
+// Never leave the startup overlay blocking the dashboard if optional startup work stalls.
+window.setTimeout(() => {
+  const splash = document.getElementById('splash');
+  if (splash) {
+    splash.style.opacity = '0';
+    window.setTimeout(() => splash.remove(), 700);
+  }
+}, 15000);
+
+// Turkish UI pass for static and lazily-rendered dashboard labels.
+(function applyTurkishDashboardLabels(){
+  const labels = {
+    'SYSTEM INFO':'SİSTEM BİLGİSİ','Home':'Ana Sayfa','System Inventory':'Sistem Envanteri','All Parsed Options':'Ayıklanan Tüm Seçenekler','AI Self-Healing Platform':'Yapay Zekâ ile Otomatik Onarım','AI Smart Diagnostics':'Akıllı Yapay Zekâ Tanılaması','Report Center':'Rapor Merkezi','Hardware Diagnostics':'Donanım Tanılaması','CPU/GPU Temp Monitor':'İşlemci/Grafik İşlemci Sıcaklığı','Disk Speed Benchmark':'Disk Hız Sınaması','Software Diagnostics':'Yazılım Tanılaması','Error Log Self-Repair':'Hata Günlüğü Onarımı','Services Control Panel':'Hizmet Yönetimi','Registry Telemetry Tweaks':'Kayıt Defteri ve Telemetri Ayarları','DNS Flush & Network Repair':'DNS Önbelleği ve Ağ Onarımı','Netstat Connections':'Ağ Bağlantıları','Network Center':'Ağ Merkezi','Firewall Manager':'Güvenlik Duvarı Yönetimi','Security & Privacy Audit':'Güvenlik ve Gizlilik Denetimi','License Vault':'Lisans Kasası','1-Click Backup Migrate':'Tek Tıkla Yedekle ve Taşı','System Restore Manager':'Sistem Geri Yükleme Yönetimi','System Cleaner':'Sistem Temizleyici','Windows Debloater':'Windows Gereksiz Bileşen Temizliği','Startup Optimizer':'Başlangıç İyileştirici','Offline Recovery Center':'Çevrimdışı Kurtarma Merkezi','BSOD Crash Analyzer':'Mavi Ekran Çözümleyici','SysForge Studio CMD Toolkit':'SysForge Studio Komut Satırı Araçları','100 Apps 1-Click Install':'100 Uygulamayı Tek Tıkla Kur','Custom Apps Bundler':'Özel Uygulama Paketi Oluşturucu','Software Updater':'Yazılım Güncelleyici','One Click Actions':'Tek Tıkla İşlemler','Portable Tools Menu':'Taşınabilir Araçlar','Scheduled Tasks Manager':'Zamanlanmış Görevler','Visual Process Manager':'Görsel İşlem Yöneticisi','Self-Heal Monitor':'Otomatik Onarım İzleyicisi','AI Knowledge Base':'Yapay Zekâ Bilgi Bankası','Themes Customizer':'Tema Özelleştirme','Dashboard Home':'Ana Sayfa','Quick Status':'Hızlı Durum','Network Health Excellent':'Ağ Durumu Çok İyi','Last Scan: Today, 01:35 AM':'Son tarama: Bugün, 01:35','Run Full Diagnostics':'Tüm Tanılamaları Çalıştır','SYSTEM STATUS':'SİSTEM DURUMU','System Protected':'Sistem Korunuyor','Dashboard':'Gösterge Paneli','Search anything...':'Her yerde ara...','Open Native GUI Application':'Masaüstü Uygulamasını Aç','Welcome back, Technician! 👋':'Tekrar hoş geldiniz! 👋','System Uptime:':'Sistemin çalışma süresi:','Loading...':'Yükleniyor...','System Health':'Sistem Durumu','System Overview':'Sistem Özeti','View Details >':'Ayrıntıları Görüntüle >','Cyber Control Center — 10 Modules':'Siber Kontrol Merkezi — 10 Modül','Diagnostic logs and HTML reports export':'Tanılama günlüklerini ve HTML raporlarını dışa aktar','WMI probes, SMART status, CPU stress test':'Donanım sorguları, disk durumu ve işlemci yük testi','System file scans & component store repair':'Sistem dosyalarını tara ve bileşen deposunu onar','Manage, start & stop Windows services':'Windows hizmetlerini yönet, başlat ve durdur','Monitor active IP ports & network endpoints':'Etkin IP bağlantı noktalarını ve ağ uçlarını izle','Adapter configurations & signal status':'Bağdaştırıcı ayarları ve sinyal durumu','Control active ports, firewall policies':'Etkin bağlantı noktalarını ve güvenlik duvarı kurallarını yönet','Defender verification, security policies':'Defender doğrulaması ve güvenlik ilkeleri','Check Windows activation & license keys':'Windows etkinleştirmesini ve lisans anahtarlarını denetle','Rollback, create and delete restore points':'Geri yükleme noktalarını yönet','Clear temp folders, junk logs & prefetch':'Geçici dosyaları, gereksiz günlükleri ve ön getirme verilerini temizle','Control background startup apps & delay':'Başlangıç uygulamalarını ve gecikmelerini yönet','Reboot to Advanced Startup, repair WinRE':'Gelişmiş başlangıç seçeneklerini aç ve kurtarma ortamını onar','1-Click Actions':'Tek Tıkla İşlemler','Portable Tools':'Taşınabilir Araçlar','Process Mgr':'İşlem Yöneticisi','Winget Package Manager':'Winget Paket Yöneticisi','Scan':'Tara','Update All':'Tümünü Güncelle','Quick Scan Completed':'Hızlı tarama tamamlandı','Windows Update Repair':'Windows Update Onarımı','Driver Backup Created':'Sürücü yedeği oluşturuldu','System Optimized':'Sistem iyileştirildi','System Alerts':'Sistem Uyarıları','Windows Update Available':'Windows güncellemesi mevcut','Consider taking a backup':'Yedek almanız önerilir','Weekly Health Report':'Haftalık Sistem Durumu Raporu','System report generated':'Sistem raporu oluşturuldu','Task Manager':'Görev Yöneticisi','Disk Cleanup':'Disk Temizleme','System Info':'Sistem Bilgisi','SYSTEM INFORMATION':'SİSTEM BİLGİLERİ','Operating System':'İşletim Sistemi','Enabled ✓':'Etkin ✓','Enabled':'Etkin','Disabled':'Devre Dışı','Update Intel WiFi Driver':'Intel Wi-Fi sürücüsünü güncelle','Run Disk Health Check':'Disk Durumunu Denetle','Run Recommended Actions':'Önerilen İşlemleri Uygula','Auto Backup:':'Otomatik yedekleme:','Last Backup:':'Son yedekleme:','Next Schedule:':'Sonraki zamanlama:','Internet Status:':'İnternet durumu:','VPN Status:':'VPN durumu:','Health Center':'Sistem Durumu Merkezi','Generate Battery Report':'Pil Raporu Oluştur','Battery Status':'Pil Durumu','Gaming Tools':'Oyun Araçları','OPEN GAMING UTILITIES':'OYUN ARAÇLARINI AÇ','Task Manager (Close background apps)':'Görev Yöneticisi (Arka plan uygulamalarını kapat)','Device Manager (Update GPU driver)':'Aygıt Yöneticisi (Grafik işlemci sürücüsünü güncelle)','Display Settings (Set refresh rate)':'Ekran Ayarları (Yenileme hızını ayarla)','Sound Settings (Set output device)':'Ses Ayarları (Çıkış aygıtını seç)','Security & Privacy':'Güvenlik ve Gizlilik','Run Full Security Audit':'Tam Güvenlik Denetimini Çalıştır','Security Status':'Güvenlik Durumu','Real-time protection status':'Gerçek zamanlı koruma durumu','Windows Firewall':'Windows Güvenlik Duvarı','Network traffic protection':'Ağ trafiği koruması','Windows Update Status':'Windows Update Durumu','Security patches and updates':'Güvenlik düzeltmeleri ve güncellemeler','User Account Control status':'Kullanıcı Hesabı Denetimi durumu','Security Audit Results':'Güvenlik Denetimi Sonuçları','Security Score':'Güvenlik Puanı','Excellent Health':'Çok İyi','System is secure':'Sistem güvenli','Privacy Toolkit':'Gizlilik Araçları','Show all saved wireless network passwords':'Kayıtlı tüm kablosuz ağ parolalarını göster','Product License Keys':'Ürün Lisans Anahtarları','USB Connection History':'USB Bağlantı Geçmişi','Quick Privacy Tools':'Hızlı Gizlilik Araçları','License Keys':'Lisans Anahtarları','USB History':'USB Geçmişi','Auto Scan':'Otomatik Tarama','Information':'Bilgiler','Export Inventory Report':'Envanter Raporunu Dışa Aktar','Export Specs JSON':'Özellikleri JSON Olarak Dışa Aktar','System Info GUI':'Sistem Bilgisi Arayüzü','Network MAC/IP Map':'Ağ MAC/IP Haritası','Motherboard Details':'Anakart Ayrıntıları','System Inventory Offline':'Sistem Envanteri Çevrimdışı','Load Full Info':'Tüm Bilgileri Yükle','Load System Information':'Sistem Bilgilerini Yükle','Process Manager':'İşlem Yöneticisi','Filter process...':'İşlemleri süz...','Refresh':'Yenile','Process List Empty':'İşlem listesi boş','Click Refresh to load all running processes sorted by RAM usage.':'Bellek kullanımına göre sıralanmış çalışan işlemleri yüklemek için Yenile’ye tıklayın.','Control Panel':'Denetim Masası','Refresh Services':'Hizmetleri Yenile','All Service Types':'Tüm Hizmet Türleri','Filter services name or display name...':'Hizmet adı veya görünen adına göre süz...','Service Name':'Hizmet Adı','Display Name':'Görünen Ad','Status':'Durum','Start Type':'Başlangıç Türü','Selected Service Details':'Seçili Hizmet Ayrıntıları','Application Information':'Uygulama Bilgileri','Service Type':'Hizmet Türü','Win32 Own Process':'Win32 Bağımsız İşlem','Open in Services.msc':'Hizmetler’i Aç','Service Properties':'Hizmet Özellikleri','System Overview':'Sistem Özeti','Quick Actions':'Hızlı İşlemler','Start All':'Tümünü Başlat','Stop All':'Tümünü Durdur','Clear Service Cache':'Hizmet Önbelleğini Temizle','Export Services List':'Hizmet Listesini Dışa Aktar','Service Health':'Hizmet Durumu','System Stability':'Sistem Kararlılığı','Service started':'Hizmet başlatıldı','Service restarted':'Hizmet yeniden başlatıldı','Service stopped':'Hizmet durduruldu','System Status:':'Sistem durumu:','Last Refresh: --':'Son yenileme: --','Auto Refresh:':'Otomatik yenileme:','Startup Settings':'Başlangıç Ayarları','Disk Information':'Disk Bilgileri','Drive health, SMART data, usage statistics':'Sürücü durumu, SMART verileri ve kullanım istatistikleri','Load Disk Info':'Disk Bilgilerini Yükle','Disk Information Not Loaded':'Disk bilgileri yüklenmedi','Click "Load Disk Info" to retrieve drive health, SMART data, and usage statistics for all connected drives.':'Bağlı sürücülerin durumunu ve kullanım istatistiklerini görmek için Disk Bilgilerini Yükle’ye tıklayın.','Network Information':'Ağ Bilgileri','Load Network Info':'Ağ Bilgilerini Yükle','Network Connections':'Ağ Bağlantıları','Start Ping':'Ping’i Başlat','Network Status':'Ağ Durumu','DNS Status':'DNS Durumu','Checking network...':'Ağ denetleniyor...','Network Speed':'Ağ Hızı','Tools & Actions':'Araçlar ve İşlemler','Refresh Interval:':'Yenileme Aralığı:','Install 100+ popular apps via Winget — one click installation':'Winget ile 100’den fazla popüler uygulamayı tek tıkla kurun','Search apps...':'Uygulamalarda ara...','Open in CMD':'Komut İsteminde Aç','Custom Winget Search & Install':'Winget ile Uygulama Ara ve Kur','Search':'Ara','MATCHING WINGET REPOSITORY RESULTS:':'EŞLEŞEN WINGET DEPO SONUÇLARI:','Apps Settings':'Uygulama Ayarları','Click "Load Apps" to scan the Windows Registry and list all installed programs with their version and publisher info.':'Yüklü programları listelemek için Uygulamaları Yükle’ye tıklayın.','Windows System event viewer — errors, warnings, info':'Windows sistem olayları — hatalar, uyarılar ve bilgiler','Run SFC Scan':'SFC Taramasını Çalıştır','Click "Load Events" to retrieve recent Windows system events — errors, warnings, and critical alerts.':'Son sistem olaylarını almak için Olayları Yükle’ye tıklayın.','Quick Actions':'Hızlı İşlemler','All one-click system operations — everything executes REAL on your PC':'Tek tıkla sistem işlemleri — tümü bilgisayarınızda uygulanır','Tools':'Araçlar','Open common registry paths, Windows 11 HUD customizer, NTFS cache optimizer and more':'Sık kullanılan kayıt defteri konumlarını ve sistem araçlarını açın','Open Regedit':'Kayıt Defteri Düzenleyicisini Aç','Open Custom Registry Path':'Özel Kayıt Defteri Konumunu Aç','Open in Regedit':'Kayıt Defteri Düzenleyicisinde Aç','Execute commands · Launch toolkit modules · Open system apps':'Komutları çalıştırın, araçları ve sistem uygulamalarını açın','Clear':'Temizle','Close':'Kapat','Theme & Style':'Tema ve Görünüm','Select Primary Theme Base':'Ana Tema Rengini Seç','Dashboard Background & Wallpaper HUD':'Gösterge Paneli Arka Planı ve Duvar Kâğıdı','SELECT BACKGROUND STYLE PRESET':'ARKA PLAN BİÇİMİNİ SEÇİN','SELECT INTERFACE FONT FAMILY':'ARAYÜZ YAZI TİPİNİ SEÇİN','SELECT TECH GRID OVERLAY STYLE':'TEKNİK IZGARA BİÇİMİNİ SEÇİN','Scan for Updates':'Güncellemeleri Tara','Scan and update Windows software (Winget) and hardware drivers (Windows Update agent)':'Windows yazılımlarını ve donanım sürücülerini tarayıp güncelleyin','Search pending updates...':'Bekleyen güncellemelerde ara...','Update Selected (':'Seçilileri Güncelle (','Install All Drivers':'Tüm Sürücüleri Yükle','Click "Scan for Updates" to start scanning your system.':'Sistem taramasını başlatmak için Güncellemeleri Tara’ya tıklayın.','Update GUID':'Güncelleme GUID’si','Run Diagnostics Scan':'Tanılama Taramasını Çalıştır','Auto-Fix System Issues':'Sistem Sorunlarını Otomatik Onar','System Health Score':'Sistem Durumu Puanı','Your PC is running perfectly optimized with zero detected system issues!':'Bilgisayarınız iyileştirilmiş durumda; herhangi bir sistem sorunu bulunmadı.','System Optimizations & Issues Detected':'Sistem İyileştirmeleri ve Sorunlar Algılandı','Resolve & Optimize System Now':'Sorunları Gider ve Sistemi İyileştir','Hardware Health':'Donanım Durumu','Physical Memory Slots':'Fiziksel Bellek Yuvaları','Report':'Rapor','Generate premium diagnostic reports · Exact file & line analysis · Export HTML':'Ayrıntılı tanılama raporları oluşturun ve HTML olarak dışa aktarın','Settings':'Ayarlar','ONE-CLICK PREMIUM SYSTEM REPORT':'TEK TIKLA SİSTEM RAPORU','Generate Full System Report':'Tam Sistem Raporu Oluştur','SELECT REPORT TYPE':'RAPOR TÜRÜNÜ SEÇİN','Network Diagnostics':'Ağ Tanılaması','Security Audit':'Güvenlik Denetimi','Performance Report':'Performans Raporu','Driver Status':'Sürücü Durumu','Issue Report':'Sorun Raporu','Battery Report':'Pil Raporu','QUICK ACTIONS':'HIZLI İŞLEMLER','Open Latest Report':'Son Raporu Aç','Export All Reports':'Tüm Raporları Dışa Aktar','Weekly System Report':'Haftalık Sistem Raporu','Daily Security Scan':'Günlük Güvenlik Taraması','AI-powered system health analysis & intelligent repair recommendations':'Yapay zekâ destekli sistem analizi ve akıllı onarım önerileri','Scan Engine':'Tarama Motoru','AI System Analysis':'Yapay Zekâ Sistem Analizi','AI Settings':'Yapay Zekâ Ayarları','Scan History':'Tarama Geçmişi','AI Assistant & Diagnostics Provider Settings':'Yapay Zekâ Asistanı ve Tanılama Sağlayıcısı Ayarları','MODEL NAME':'MODEL ADI','Save Settings':'Ayarları Kaydet','Overall Status':'Genel Durum','Run AI System Analysis':'Yapay Zekâ Sistem Analizini Çalıştır','CPU Temperature High':'İşlemci Sıcaklığı Yüksek','Battery Health Degrading':'Pil Durumu Kötüleşiyor','Windows Update Pending':'Windows Güncellemesi Bekliyor','AI Quick Actions':'Hızlı Yapay Zekâ İşlemleri','Repair system files':'Sistem dosyalarını onar','Repair system image':'Sistem görüntüsünü onar','Free up disk space':'Disk alanı aç','Improve memory load':'Bellek kullanımını iyileştir','Run All Recommended Actions':'Önerilen Tüm İşlemleri Uygula','AI Health Analysis Report':'Yapay Zekâ Durum Analiz Raporu','Your system is in good health. No critical issues found.':'Sisteminiz iyi durumda. Kritik bir sorun bulunmadı.','Export Full Report (PDF)':'Tam Raporu Dışa Aktar (PDF)','Save Report (JSON)':'Raporu Kaydet (JSON)','Share Report':'Raporu Paylaş','System Slow':'Sistem Yavaş','High CPU Usage':'Yüksek İşlemci Kullanımı','Network Problems':'Ağ Sorunları','Live System Monitor':'Canlı Sistem İzleyicisi','Recent Scan History':'Son Tarama Geçmişi','Deep Diagnostics History Logs':'Ayrıntılı Tanılama Geçmişi','Scan Timestamp':'Tarama Zamanı','Scan Type':'Tarama Türü','Full Core System Scan':'Tam Sistem Taraması','Quick Probe Scan':'Hızlı Sorgulama Taraması','Smart Diagnostics Scan':'Akıllı Tanılama Taraması','Control Center':'Denetim Merkezi','Toggle system-level Windows customizations instantly with real-time registry tweaks and explorer auto-restart':'Windows ayarlarını ve kayıt defteri değişikliklerini yönetin','Toggle system-wide dark theme':'Sistem genelinde koyu temayı aç veya kapat','Reveal system hidden files':'Gizli sistem dosyalarını göster','Windows Services Quick Toggle':'Windows Hizmetleri Hızlı Yönetimi','Windows Update':'Windows Update','Start':'Başlat','Stop':'Durdur','Display Settings':'Ekran Ayarları','Bundle Manager':'Paket Yöneticisi','Clear All':'Tümünü Temizle','Install Bundle':'Paketi Yükle','Save Profile':'Profili Kaydet','Import / Export Package List':'Paket Listesini İçe veya Dışa Aktar','Import List':'Listeyi İçe Aktar','Export List':'Listeyi Dışa Aktar','Advanced OS repair tools — SFC, DISM, CHKDSK, Bootrec, and BCD operations with real-time console output':'SFC, DISM, CHKDSK ve önyükleme onarım araçları','OS Repair Tools':'İşletim Sistemi Onarım Araçları','System Recovery Options':'Sistem Kurtarma Seçenekleri','Open System Restore':'Sistem Geri Yüklemeyi Aç','Reset Network Stack':'Ağ Yığınını Sıfırla','Clear Event Logs':'Olay Günlüklerini Temizle','Reset Firewall Rules':'Güvenlik Duvarı Kurallarını Sıfırla','Reset System Hosts File':'Sistem Hosts Dosyasını Sıfırla','Purge Update Cache':'Güncelleme Önbelleğini Temizle','License':'Lisans','Windows product keys, Office activation status, and digital license information retrieval':'Windows ürün anahtarlarını ve etkinleştirme durumunu görüntüleyin','Retrieve License Keys':'Lisans Anahtarlarını Al','Backup Decrypted Keys':'Çözülmüş Anahtarları Yedekle','Activation Settings':'Etkinleştirme Ayarları','Show License Info (slmgr)':'Lisans Bilgisini Göster (slmgr)','CMD License Vault':'Komut Satırı Lisans Kasası','Backup WiFi Passwords':'Wi-Fi Parolalarını Yedekle','WiFi Security Audit':'Wi-Fi Güvenlik Denetimi','Start Benchmark':'Hız Sınamasını Başlat','Disk Management':'Disk Yönetimi','Drive Health':'Sürücü Durumu','Disk Usage':'Disk Kullanımı','SSD Health Analyzer':'SSD Durum Çözümleyicisi','SMART Status':'SMART Durumu','Quick Tools':'Hızlı Araçlar','Quick Benchmark':'Hızlı Sınama','Surface Scan':'Yüzey Taraması','Bad Sector Scan':'Bozuk Bölüm Taraması','SMART Refresh':'SMART Verilerini Yenile','Report Export':'Raporu Dışa Aktar','Export CSV':'CSV Olarak Dışa Aktar','Export JSON':'JSON Olarak Dışa Aktar','Email Report':'Raporu E-postayla Gönder','Print Report':'Raporu Yazdır','Network Repair':'Ağ Onarımı','Fix internet connection issues – DNS flush, Winsock reset, IP renewal, and network stack repair':'İnternet bağlantısı sorunlarını giderin: DNS, Winsock ve IP ayarlarını onarın','Run Now':'Şimdi Çalıştır','Reset TCP/IP stack to restore network settings.':'Ağ ayarlarını geri yüklemek için TCP/IP yığınını sıfırlayın.','Network Troubleshooter':'Ağ Sorun Gidericisi','Reset Network Settings':'Ağ Ayarlarını Sıfırla','Clear ARP Cache':'ARP Önbelleğini Temizle','Restore Default Settings':'Varsayılan Ayarları Geri Yükle','Network Adapter:':'Ağ Bağdaştırıcısı:','Create a restore point first!':'Önce bir geri yükleme noktası oluşturun!','Create Restore Point First':'Önce Geri Yükleme Noktası Oluştur','Advanced Debloat & Services Tweaks':'Gelişmiş Bileşen ve Hizmet Ayarları','Disable Cortana & Bing Web Search':'Cortana ve Bing Web Aramasını Kapat','Telemetry & Privacy':'Telemetri ve Gizlilik','Stop DiagTrack Telemetry':'DiagTrack Telemetrisini Durdur','Stop WAP Push Service':'WAP Anında İletim Hizmetini Durdur','Disable Cortana Search':'Cortana Aramasını Kapat','1-Click Install':'Tek Tıkla Kurulum','Install Selected Apps':'Seçili Uygulamaları Yükle','Select All':'Tümünü Seç','BULK INSTALL QUEUE ACTIVE':'TOPLU KURULUM SIRASI ETKİN','Quick Selection Preset Packs':'Hazır Hızlı Seçim Paketleri','Run Hardware Scan':'Donanım Taramasını Çalıştır','Run SFC':'SFC’yi Çalıştır','Disk SMART Status':'Disk SMART Durumu','CPU Stress Test':'İşlemci Yük Testi','More Tools':'Diğer Araçlar','System Temp':'Sistem Sıcaklığı','CPU Usage':'İşlemci Kullanımı','Disk Activity':'Disk Etkinliği','Network I/O':'Ağ Giriş/Çıkışı','GPU Usage':'Grafik İşlemci Kullanımı','CPU: Healthy':'İşlemci: Sağlıklı','GPU: Healthy':'Grafik İşlemci: Sağlıklı','Run a full hardware scan to get AI-powered diagnostics and personalized recommendations.':'Yapay zekâ destekli tanılama ve öneriler için tam donanım taraması yapın.','Full AI Report':'Tam Yapay Zekâ Raporu','CPU Temperature':'İşlemci Sıcaklığı','GPU Temperature':'Grafik İşlemci Sıcaklığı','System Temperature':'Sistem Sıcaklığı','CPU Benchmark':'İşlemci Sınaması','GPU Benchmark':'Grafik İşlemci Sınaması','Overall System Score':'Genel Sistem Puanı','Run scan to calculate':'Hesaplamak için tarama yapın','Waiting for scan...':'Tarama bekleniyor...','One Click Repair Tools':'Tek Tıkla Onarım Araçları','Repair Windows Update':'Windows Update’i Onar','Repair Device Manager':'Aygıt Yöneticisini Onar','Optimize System':'Sistemi İyileştir','Report & Export':'Rapor ve Dışa Aktarma','Generate Health Report':'Durum Raporu Oluştur','Export PDF':'PDF Olarak Dışa Aktar','Cancel':'İptal','Save':'Kaydet','Close':'Kapat','Open':'Aç','Run':'Çalıştır','Refresh':'Yenile','Loading':'Yükleniyor','Please wait...':'Lütfen bekleyin...','Select':'Seç','Choose':'Seçin','Search':'Ara','Settings':'Ayarlar','Help':'Yardım','About':'Hakkında','Unknown':'Bilinmiyor','Ready':'Hazır','Running':'Çalışıyor','Success':'Başarılı','Error':'Hata','Warning':'Uyarı','Failed':'Başarısız','Completed':'Tamamlandı','Enabled':'Etkin','Disabled':'Devre dışı','Today':'Bugün','Yesterday':'Dün','Never':'Hiçbir zaman','Name':'Ad','Type':'Tür','Date':'Tarih','Time':'Saat','Size':'Boyut','Version':'Sürüm','Manufacturer':'Üretici','Details':'Ayrıntılar','More':'Daha Fazla','Back':'Geri','Next':'İleri','Previous':'Önceki','Apply':'Uygula','Reset':'Sıfırla','Remove':'Kaldır','Delete':'Sil','Export':'Dışa Aktar','Import':'İçe Aktar','Start Scan':'Taramayı Başlat','Stop Scan':'Taramayı Durdur','No data available':'Veri yok','No results found':'Sonuç bulunamadı','Search anything...':'Her yerde ara...','Ask anything about your PC...':'Bilgisayarınızla ilgili sorun...','Filter process...':'İşlemleri süz...','Search apps...':'Uygulamalarda ara...'
+  };
+  Object.assign(labels, {
+    // ── Ek Türkçe Terimler & Arayüz Çevirileri ──
+    'ONLINE':'ÇEVRİMİÇİ',
+    'OFFLINE':'ÇEVRİMDIŞI',
+    'Online':'Çevrimiçi',
+    'Offline':'Çevrimdışı',
+    'Bridge Server':'Köprü Sunucusu',
+    'Bridge Server Offline':'Köprü Sunucusu Çevrimdışı (Port 9999)',
+    'REAL EXECUTION':'GERÇEK ÇALIŞTIRMA',
+    'SIMULATION':'SİMÜLASYON',
+    'Task Resumed':'Görev Devam Ettirildi',
+    'Resuming dynamic console logs...':'Dinamik konsol günlükleri devam ettiriliyor...',
+    'Super Repair':'Süper Onarım',
+    'SUPER REPAIR':'SÜPER ONARIM',
+    'Offline Recovery':'Çevrimdışı Kurtarma',
+    'Sunucu Online':'Sunucu Çevrimiçi',
+    'Sunucu Offline':'Sunucu Çevrimdışı',
+    'Server Online':'Sunucu Çevrimiçi',
+    'Server Offline':'Sunucu Çevrimdışı',
+    'Kill Process':'Görevi Sonlandır',
+    'Kill':'Sonlandır',
+    'Restart':'Yeniden Başlat',
+    'Start':'Başlat',
+    'Stop':'Durdur',
+    'Pause':'Duraklat',
+    'Resume':'Sürdür',
+    'Clear Console':'Konsolu Temizle',
+    'Copy Output':'Çıktıyı Kopyala',
+    'Export Log':'Günlüğü Dışa Aktar',
+    'Run Script':'Betiği Çalıştır',
+    'Execute':'Çalıştır',
+    'Scan Now':'Şimdi Tara',
+    'Analyze':'Analiz Et',
+    'Benchmark':'Hız Testi',
+    'Optimize':'İyileştir',
+    'Debloat':'Gereksizleri Kaldır',
+    'Fix All':'Tümünü Onar',
+    'Select All':'Tümünü Seç',
+    'Deselect All':'Seçimi Kaldır',
+    'Install Selected':'Seçilenleri Kur',
+    'Uninstall':'Kaldır',
+    'Repair':'Onar',
+    'Clean':'Temizle',
+    'Restore':'Geri Yükle',
+    'Backup':'Yedekle',
+    'Create Restore Point':'Geri Yükleme Noktası Oluştur',
+    'Create Backup':'Yedek Oluştur',
+    'Search anything...':'Herhangi bir şey arayın...',
+    'Search services...':'Hizmetlerde ara...',
+    'Search processes...':'İşlemlerde ara...',
+    'Search apps...':'Uygulamalarda ara...',
+    'Search updates...':'Güncellemelerde ara...',
+    'Search modules...':'Modüllerde ara...',
+    'All Categories':'Tüm Kategoriler',
+    'All Types':'Tüm Türler',
+    'System Information':'Sistem Bilgileri',
+    'Hardware Specifications':'Donanım Özellikleri',
+    'Operating System Details':'İşletim Sistemi Detayları',
+    'Storage Devices':'Depolama Cihazları',
+    'Network Adapters':'Ağ Bağdaştırıcıları',
+    'Memory Usage':'Bellek Kullanımı',
+    'Processor Load':'İşlemci Yükü',
+    'GPU Load':'Grafik İşlemci Yükü',
+    'Disk Health':'Disk Sağlığı',
+    'Thermal Status':'Sıcaklık Durumu',
+    'System Uptime':'Sistem Açık Kalma Süresi',
+    'Boot Time':'Önyükleme Zamanı',
+    'Last Reboot':'Son Yeniden Başlatma',
+    'Services Control':'Hizmet Kontrolü',
+    'Process Explorer':'İşlem Gezgini',
+    'Installed Programs':'Yüklü Programlar',
+    'Winget Manager':'Winget Paket Yöneticisi',
+    'Windows Updates':'Windows Güncellemeleri',
+    'Driver Updates':'Sürücü Güncellemeleri',
+    'Registry Optimizer':'Kayıt Defteri İyileştirici',
+    'Telemetry Disabler':'Telemetri Kapatıcı',
+    'Privacy Hardening':'Gizlilik Güçlendirme',
+    'Network Tools':'Ağ Araçları',
+    'DNS Optimizer':'DNS İyileştirici',
+    'Ping Test':'Ping Sınaması',
+    'Port Scanner':'Port Tarayıcı',
+    'Active Sockets':'Aktif Bağlantı Yuvaları',
+    'Firewall Rules':'Güvenlik Duvarı Kuralları',
+    'System Restore Points':'Sistem Geri Yükleme Noktaları',
+    'BSOD Dump Analysis':'Mavi Ekran Döküm Analizi',
+    'Event Viewer':'Olay Görüntüleyici',
+    'Task Scheduler':'Zamanlanmış Görevler',
+    'Battery Health':'Pil Sağlığı',
+    'Gaming Boost Mode':'Oyun Hızlandırma Modu',
+    'One-Click Maintenance':'Tek Tıkla Bakım',
+    'Emergency Recovery':'Acil Durum Kurtarma',
+    'AI Assistant':'Yapay Zekâ Asistanı',
+    'AI System Doctor':'Yapay Zekâ Sistem Doktoru',
+    'Interactive Shell':'Etkileşimli Komut Kabuğu',
+    'Console Output':'Konsol Çıktısı',
+    'Ready for input...':'Komut bekleniyor...',
+    'Execution finished.':'Çalıştırma tamamlandı.',
+    'Command executed successfully.':'Komut başarıyla çalıştırıldı.',
+    'Operation completed.':'İşlem tamamlandı.',
+    'Error occurred during execution.':'Çalıştırma sırasında hata oluştu.',
+    'Administrator privileges required.':'Yönetici yetkileri gerekiyor.',
+    'Connected':'Bağlı',
+    'Disconnected':'Bağlantı Kesildi',
+    'Healthy':'Sağlıklı',
+    'Degraded':'Zayıf',
+    'Critical':'Kritik',
+    'Normal':'Normal',
+    'High':'Yüksek',
+    'Low':'Düşük',
+    'Auto':'Otomatik',
+    'Manual':'Elle',
+    'Disabled':'Devre Dışı',
+    'Enabled':'Etkin',
+    'Running':'Çalışıyor',
+    'Stopped':'Durduruldu',
+    'Paused':'Duraklatıldı',
+    'Pending':'Bekliyor',
+    'Passed':'Başarılı',
+    'Failed':'Başarısız',
+    'Active':'Aktif',
+    'Inactive':'Pasif',
+    'Unknown':'Bilinmiyor',
+    'Yes':'Evet',
+    'No':'Hayır',
+    'Cancel':'İptal',
+    'Confirm':'Onayla',
+    'Apply':'Uygula',
+    'Save Changes':'Değişiklikleri Kaydet',
+    'Reset to Default':'Varsayılana Sıfırla',
+    'SysForge Studio — Windows Management Panel':'SysForge Studio — Windows Yönetim Paneli',
+    'SysForge Studio Desktop':'SysForge Studio Masaüstü',
+    'Launch Desktop App':'Masaüstü Uygulamasını Aç',
+    'Open Native GUI Application':'SysForge Studio Masaüstü Uygulamasını Aç'
+
+    'Automatically run a complete background system repair sequence: SFC file scans, DISM component store recovery, CHKDSK disk integrity scan, active driver validation check, network stack rebuild (Winsock, IP, DNS flush), temp junk clearance, and full health report creation.':'Arka planda kapsamlı sistem onarımını başlatın: SFC dosya taraması, DISM bileşen deposu kurtarma, CHKDSK disk denetimi, sürücü doğrulaması, ağ yığınının yenilenmesi, geçici dosyaların temizlenmesi ve durum raporunun oluşturulması.',
+    'Merhaba! 👋 SysForge Studio AI asistanı — connected to internet with 4 AI providers. Ask me anything about your system and I\'ll diagnose, repair, or guide you!':'Merhaba! 👋 SysForge Studio yapay zekâ asistanı. Sisteminizle ilgili sorun; tanılama, onarım ve yönlendirme konusunda yardımcı olayım!',
+    'All 37 CMD modules — click ⚡ to open in visible CMD window on your PC · Navigate full hierarchy':'37 komut satırı modülü. Bilgisayarınızda görünür bir komut penceresi açmak için ⚡ simgesine tıklayın; tüm modüller arasında gezinin.',
+    'Real-time battery analytics, wear analysis, and capacity optimization':'Anlık pil verilerini inceleyin; pil yıpranmasını değerlendirin ve kapasite kullanımını iyileştirin.',
+    'Avoid charging above 80% for daily use to extend cell lifespan':'Pil ömrünü uzatmak için günlük kullanımda şarjı yüzde 80’in üzerinde tutmamaya çalışın.',
+    'Disconnect unused USB and Bluetooth devices when unplugged':'Güç kaynağına bağlı değilken kullanmadığınız USB ve Bluetooth aygıtlarını çıkarın.',
+    'Run Battery Report monthly to track health trends over time':'Pil durumundaki değişimi izlemek için ayda bir pil raporu oluşturun.',
+    'One-click gaming performance boosts — maximize FPS, reduce latency, disable distractions':'Tek tıkla oyun performansını artırın; kare hızını yükseltin, gecikmeyi azaltın ve dikkat dağıtıcı öğeleri kapatın.',
+    'Full security posture check — Defender, firewall, open ports, privacy risks and login audit':'Defender’ı, güvenlik duvarını, açık bağlantı noktalarını, gizlilik risklerini ve oturum açma kayıtlarını kapsamlı biçimde denetleyin.',
+    'Complete real-time hardware & software profile of your PC':'Bilgisayarınızın donanım ve yazılım bilgilerini anlık olarak görüntüleyin.',
+    'Click "Load Full Info" to scan and display your complete hardware & software profile in real time.':'Donanım ve yazılım bilgilerini tarayıp anlık olarak görüntülemek için “Tüm Bilgileri Yükle”ye tıklayın.',
+    'Click Refresh to load all running processes sorted by RAM usage.':'Çalışan işlemleri bellek kullanımına göre sıralı görüntülemek için “Yenile”ye tıklayın.',
+    'Start • Stop • Restart Windows services for peak performance':'En iyi performans için Windows hizmetlerini başlatın, durdurun veya yeniden başlatın.',
+    'Facilitates the running of interactive applications with additional administrative privileges.':'Etkileşimli uygulamaların ek yönetici izinleriyle çalıştırılmasını sağlar.',
+    'Click "Load Startup Items" to view and manage all startup entries from Windows Registry.':'Kayıt Defteri’ndeki başlangıç girdilerini görüntüleyip yönetmek için “Başlangıç Öğelerini Yükle”ye tıklayın.',
+    'Click "Load Disk Info" to retrieve drive health, SMART data, and usage statistics for all connected drives.':'Bağlı sürücülerin durumunu ve kullanım istatistiklerini almak için “Disk Bilgilerini Yükle”ye tıklayın.',
+    'Powerful DNS tools · Ping · Network adapters · Diagnostics':'Gelişmiş DNS araçları, Ping, ağ bağdaştırıcıları ve tanılama işlemleri.',
+    'Click "Extract WiFi Passwords" to view all saved profiles':'Kayıtlı ağ profillerini görüntülemek için “Wi-Fi Parolalarını Çıkar”a tıklayın.',
+    'Install 100+ popular apps via Winget — one click installation':'Winget ile 100’den fazla popüler uygulamayı tek tıkla yükleyin.',
+    'Enter app name to search in Winget (e.g. VLC, WinRAR, Python)':'Winget’te aramak istediğiniz uygulamanın adını girin (ör. VLC, WinRAR, Python).',
+    'Click "Load Apps" to scan the Windows Registry and list all installed programs with their version and publisher info.':'Kayıt Defteri’ni tarayıp yüklü programları sürüm ve yayımcı bilgileriyle listelemek için “Uygulamaları Yükle”ye tıklayın.',
+    'Click "Load Events" to retrieve recent Windows system events — errors, warnings, and critical alerts.':'Son Windows sistem olaylarını, hataları ve uyarıları görüntülemek için “Olayları Yükle”ye tıklayın.',
+    'View and manage all active Windows scheduled tasks — including OEM bloatware and maintenance jobs':'Üretici yazılımları ve bakım işleri dâhil, etkin Windows zamanlanmış görevlerini görüntüleyip yönetin.',
+    'Click "Load Tasks" to view all active Windows scheduled tasks, including OEM and maintenance jobs.':'Üretici yazılımları ve bakım işleri dâhil etkin zamanlanmış görevleri görüntülemek için “Görevleri Yükle”ye tıklayın.',
+    'All one-click system operations — everything executes REAL on your PC':'Tek tıkla sistem işlemleri. Seçtiğiniz işlemler doğrudan bilgisayarınızda uygulanır.',
+    'Open common registry paths, Windows 11 HUD customizer, NTFS cache optimizer and more':'Sık kullanılan Kayıt Defteri konumlarını, Windows görünüm ayarlarını ve NTFS önbellek iyileştiricisini açın.',
+    'Execute commands · Launch toolkit modules · Open system apps':'Komutları çalıştırın, araç modüllerini ve sistem uygulamalarını açın.',
+    'Handcrafted tech-themes and elite customization HUD — customize fonts, grids, and premium background wallpapers':'Teknoloji temalı görünümü özelleştirin; yazı tiplerini, ızgaraları ve arka planları değiştirin.',
+    'Toggle programmatically synthesized sci-fi hums, sweeps, ticks, and chimes.':'Bilim kurgu tarzı uğultu, geçiş, tıklama ve bildirim seslerini açıp kapatın.',
+    'Scan and update Windows software (Winget) and hardware drivers (Windows Update agent)':'Windows yazılımlarını ve donanım sürücülerini tarayıp güncelleyin.',
+    'Comprehensive real-time hardware health profiles and Windows software integrity checks':'Donanım durumunu anlık izleyin ve Windows yazılımlarının bütünlüğünü kapsamlı biçimde denetleyin.',
+    'Your PC is running perfectly optimized with zero detected system issues!':'Bilgisayarınız en iyi durumda çalışıyor; herhangi bir sistem sorunu algılanmadı!',
+    'Click scan to check OS restore points, UAC state, and Store health.':'Geri yükleme noktalarını, Kullanıcı Hesabı Denetimi’ni ve Mağaza durumunu denetlemek için tarama yapın.',
+    'Generates a complete system inventory & health audit — CPU, GPU, RAM, motherboard, WiFi, running processes, restore points, event crashes, drivers, and update status. Compiled as a downloadable HTML report.':'İşlemci, grafik işlemci, bellek, anakart, Wi-Fi, çalışan işlemler, geri yükleme noktaları, sistem hataları, sürücüler ve güncelleme durumunu içeren kapsamlı bir sistem raporu oluşturur ve indirilebilir HTML dosyası olarak hazırlar.',
+    'AI-powered system health analysis & intelligent repair recommendations':'Yapay zekâ destekli sistem incelemesi ve akıllı onarım önerileri.',
+    '✔ Your system is in good health. No critical issues found.':'✔ Sisteminiz iyi durumda. Kritik bir sorun bulunmadı.',
+    'AI has scanned 1,248 system components and found 3 potential issues that may require attention.':'Yapay zekâ 1.248 sistem bileşenini taradı ve incelenmesi gerekebilecek 3 olası sorun buldu.',
+    'We recommend running the optimizations on the right to improve system performance and prevent future issues.':'Performansı artırmak ve olası sorunları önlemek için sağdaki iyileştirmeleri uygulamanızı öneririz.',
+    'Hello! I\'m your AI Diagnostics Assistant. I can help you analyze your system, find issues, and suggest solutions. Ask me anything about your system...':'Merhaba! Ben yapay zekâ tanılama asistanınızım. Sisteminizi incelemenize, sorunları bulmanıza ve çözüm önermeme yardımcı olabilirim. Sisteminizle ilgili sorun...',
+    'Toggle system-level Windows customizations instantly with real-time registry tweaks and explorer auto-restart':'Kayıt Defteri ayarlarını değiştirin ve Dosya Gezgini’ni yeniden başlatarak Windows özelleştirmelerini uygulayın.',
+    'Build and install your custom winget application bundle in one shot — all silently streamed through the Cyber Console':'Kendi Winget uygulama paketinizi hazırlayıp tek seferde yükleyin; işlemler komut penceresinde yürütülür.',
+    'Enter profile name (e.g. Developer Setup, Office Rig)...':'Profil adını girin (ör. Geliştirici Kurulumu, Ofis Bilgisayarı)...',
+    'Advanced OS repair tools — SFC, DISM, CHKDSK, Bootrec, and BCD operations with real-time console output':'SFC, DISM, CHKDSK, Bootrec ve BCD işlemlerini anlık komut çıktısıyla çalıştıran gelişmiş sistem onarım araçları.',
+    '→ Scans and repairs Windows system files. Best first step for OS issues.':'→ Windows sistem dosyalarını tarar ve onarır. Sistem sorunlarında ilk denenmesi gereken adımdır.',
+    '→ Fixes Windows image corruption. Run after SFC if SFC fails.':'→ Windows sistem görüntüsünü onarır. SFC başarısız olursa ardından çalıştırın.',
+    '→ Use when Windows won\'t boot. Repairs MBR, Boot sector, and BCD store.':'→ Windows açılmıyorsa kullanın. MBR’yi, önyükleme sektörünü ve BCD deposunu onarır.',
+    'All operations run silently in elevated console — keep CMD window open until complete.':'İşlemler yönetici izinli komut penceresinde yürütülür. Tamamlanana kadar pencereyi kapatmayın.',
+    'Windows product keys, Office activation status, and digital license information retrieval':'Windows ürün anahtarlarını, Office etkinleştirme ve dijital lisans bilgilerini görüntüleyin.',
+    'Click the "Retrieve License Keys" button above to decrypt system product keys from the Windows Registry, SLMGR license records, and Microsoft Office software protection logs.':'Windows ve Office ürün anahtarlarını çözümleyip görüntülemek için yukarıdaki “Lisans Anahtarlarını Al” düğmesine tıklayın.',
+    'High-precision sequential read/write speed analysis using system-native engines.':'Sistemin yerleşik araçlarıyla sıralı okuma ve yazma hızını hassas biçimde ölçer.',
+    'Enable TRIM to maintain optimal performance. Consider firmware update for better stability.':'En iyi performans için TRIM’i etkinleştirin; kararlılık için aygıt yazılımını güncellemeyi değerlendirin.',
+    'Fix internet connection issues – DNS flush, Winsock reset, IP renewal, and network stack repair':'DNS önbelleğini temizleyerek, Winsock’u sıfırlayarak, IP’yi yenileyerek ve ağ yığınını onararak bağlantı sorunlarını giderin.',
+    'Set DNS to Google Public DNS for faster & secure browsing.':'Daha hızlı ve güvenli gezinme için DNS’i Google Public DNS olarak ayarlayın.',
+    'Remove unnecessary Windows pre-installed apps, bloatware, and telemetry services safely':'Gereksiz ön yüklü Windows uygulamalarını ve telemetri hizmetlerini güvenli biçimde kaldırın.',
+    'These operations remove Windows built-in apps permanently.':'Bu işlemler Windows’un yerleşik uygulamalarını kalıcı olarak kaldırır.',
+    'Curated collection of 100 best Windows applications — install silently via winget in one click':'Özenle seçilmiş 100 Windows uygulamasını Winget ile tek tıkla sessizce yükleyin.',
+    'Comprehensive system diagnostics, real-time monitoring & health reporting':'Kapsamlı sistem tanılaması, anlık izleme ve durum raporlaması.',
+    'Run a full hardware scan to get AI-powered diagnostics and personalized recommendations.':'Yapay zekâ destekli tanılama ve kişiselleştirilmiş öneriler için tam donanım taraması yapın.',
+    'Scan Windows Integrity - PC Health - Store Health - Update Agent - App archives.':'Windows bütünlüğünü, bilgisayar ve Mağaza durumunu, güncelleme aracısını ve uygulama arşivlerini tarar.',
+    'Run SFC, DISM, Windows Update health check, Store verification, and app crash analysis in one click.':'SFC ve DISM taramalarını, Windows Update ve Mağaza denetimlerini, uygulama çökme incelemesini tek tıkla çalıştırın.',
+    'Verify and rebuild Windows Management Instrumentation files.':'Windows Yönetim Araçları dosyalarını doğrulayın ve yeniden oluşturun.',
+    'Stop, clear and restart spooler service and fix print queue.':'Yazdırma Biriktiricisi hizmetini durdurup temizleyin, yeniden başlatın ve yazdırma kuyruğunu onarın.',
+    'Repair & reset Windows Update services. Fix update errors and restore functionality.':'Windows Update hizmetlerini onarıp sıfırlayın; güncelleme hatalarını giderin.',
+    'Analyze Windows minidump files to identify Blue Screen of Death causes and stop codes':'Mavi ekranın nedenlerini ve durdurma kodlarını bulmak için Windows küçük bellek dökümlerini inceleyin.',
+    'Click "Analyze BSOD Dumps" to scan Windows minidump folder for crash reports...':'Çökme raporlarını bulmak için küçük bellek dökümü klasörünü taramak üzere “Mavi Ekran Dökümlerini İncele”ye tıklayın...',
+    'Real-time thermal telemetry, visual insights and processor core temperature diagnostics.':'Anlık sıcaklık verileri, görsel ölçümler ve işlemci çekirdeği sıcaklık tanılaması.',
+    '✔️ Ideal performance · ✔️ No thermal stress · ✔️ System longevity optimal':'✔️ İdeal performans · ✔️ Aşırı ısınma yok · ✔️ Sistem ömrü korunuyor',
+    'Real-time deep analysis of active network sockets, protocol distributions, and socket owners':'Etkin ağ yuvalarını, protokol dağılımlarını ve sahiplerini anlık ve ayrıntılı inceleyin.',
+    'Select any connection row to inspect details and run actions.':'Ayrıntıları incelemek ve işlem yapmak için bir bağlantı satırı seçin.',
+    'View and manage Windows Firewall rules, inbound/outbound policies and configurations':'Windows Güvenlik Duvarı kurallarını ve gelen/giden bağlantı ilkelerini görüntüleyip yönetin.',
+    'Curated Windows registry tweaks • Disable telemetry • Privacy hardening • Performance boost':'Windows Kayıt Defteri ayarları • Telemetriyi kapatma • Gizliliği güçlendirme • Performansı artırma',
+    'Scan Windows Event Logs - Detect Critical Errors - Auto-repair & Apply fixes.':'Windows olay günlüklerini tarayın, kritik hataları belirleyin ve düzeltmeleri uygulayın.',
+    'Your system is running smoothly. No critical errors detected.':'Sisteminiz sorunsuz çalışıyor. Kritik hata algılanmadı.',
+    'The application-specific permission settings do not grant Local Activation permission.':'Uygulamaya özgü izin ayarları Yerel Etkinleştirme izni vermiyor.',
+    'WMI-Activity: Detected a slow response from WMI provider.':'WMI etkinliği: WMI sağlayıcısından yavaş yanıt alındı.',
+    'Successfully scheduled Software Protection service for re-start at 2024-05-16T03:00:00Z.':'Yazılım Koruma hizmetinin 16.05.2024 03:00 UTC’de yeniden başlatılması zamanlandı.',
+    'The start type of the Background Intelligent Transfer Service service was changed.':'Arka Plan Akıllı Aktarım Hizmetinin başlangıç türü değiştirildi.',
+    'Create, view, and manage Windows System Restore Points for safe system rollback':'Güvenli sistem geri dönüşü için Windows geri yükleme noktalarını oluşturun ve yönetin.',
+    'Backup your user files to any destination using RoboCopy — Desktop, Documents, AppData, Full Profile':'RoboCopy ile masaüstünüzü, belgelerinizi, AppData’yı veya kullanıcı profilinizin tamamını istediğiniz konuma yedekleyin.',
+    'For best performance, use an external SSD or high-speed storage device.':'En iyi performans için harici SSD veya yüksek hızlı depolama aygıtı kullanın.',
+    'Deep clean junk files, temp folders, old logs, recycle bin, and browser caches to free up disk space':'Disk alanı açmak için gereksiz dosyaları, geçici klasörleri, eski günlükleri, Geri Dönüşüm Kutusu’nu ve tarayıcı önbelleklerini temizleyin.',
+    'Complete searchable list of all toolkit menu options — click any to execute instantly':'Araç menüsündeki tüm seçenekleri arayın; bir işlemi hemen çalıştırmak için seçeneğe tıklayın.',
+    'Launch offline diagnostic suites, backup tools, and partition managers directly from the toolkit catalog':'Çevrimdışı tanılama paketlerini, yedekleme araçlarını ve bölüm yöneticilerini araç kataloğundan başlatın.',
+    'System shifting from reactive repairs to predictive auto-healing loops.':'Sistem, sorun sonrası onarımdan öngörülü ve otomatik iyileştirme döngülerine geçiyor.',
+    'Create an offline configuration snapshot of local drivers, registry variables, active services, startup items, and security policies.':'Yerel sürücülerin, Kayıt Defteri değişkenlerinin, etkin hizmetlerin, başlangıç öğelerinin ve güvenlik ilkelerinin çevrimdışı anlık görüntüsünü oluşturun.',
+    'Select a mock system error image or drag-and-drop a crash screen (BSOD, application error, updates) for cognitive AI analysis.':'Yapay zekâ incelemesi için örnek hata görseli seçin veya çökme ekranını (mavi ekran, uygulama hatası ya da güncelleme) sürükleyip bırakın.',
+    '🔄 Windows Update Error: Component Store Corrupt 0x80070002':'🔄 Windows Update hatası: Bileşen deposu bozuk 0x80070002',
+    'Choose an error template from the dropdown to run cognitive OCR diagnostic scans.':'OCR tanılama taraması için açılır listeden bir hata şablonu seçin.',
+    'Describe the repair script you need (e.g. \'Reset firewall to default\', \'Clear update downloads\')...':'İhtiyacınız olan onarım betiğini açıklayın (ör. “Güvenlik duvarını varsayılana döndür”, “İndirilen güncellemeleri temizle”)...',
+    'Generated PowerShell scripts and safety reviews will display here.':'Oluşturulan PowerShell betikleri ve güvenlik incelemeleri burada görüntülenir.',
+    'Daemon automatically monitors and restarts vital operating services.':'Arka plan hizmeti, kritik sistem hizmetlerini otomatik olarak izler ve yeniden başlatır.',
+    'Watchdog daemon is currently offline. Enable to begin monitoring.':'Gözetmen hizmeti şu anda kapalı. İzlemeyi başlatmak için etkinleştirin.',
+    'Over 1,500 enterprise nodes reported printer driver crash incidents immediately following Windows Update package':'Windows güncellemesinden hemen sonra 1.500’den fazla kurumsal bilgisayarda yazıcı sürücüsü çökmesi bildirildi.',
+    'AI Correlation Engine linked Spooler failure to active driver regression automatically.':'Yapay zekâ ilişkilendirme motoru, Biriktirici arızasını etkin sürücü sorunuyla otomatik olarak ilişkilendirdi.',
+    'Real-time error detection · Exact file:line diagnostics · Auto-fix · Project-wide scan':'Anlık hata algılama · Dosya ve satır düzeyinde tanılama · Otomatik onarım · Tüm projeyi tarama',
+    'Comprehensive interactive database of Windows repair protocols, error codes, WMI commands & AI-driven fixes':'Windows onarım yöntemleri, hata kodları, WMI komutları ve yapay zekâ çözümleri için kapsamlı etkileşimli kaynak.',
+    'Select a core topic from the left side panel to view detailed diagnostic pathways, root cause explanations, and run automated recovery scripts.':'Ayrıntılı tanılama adımlarını ve kök neden açıklamalarını görmek, otomatik kurtarma betiklerini çalıştırmak için sol menüden bir konu seçin.'
+  });
+  const translate = node => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const raw = node.nodeValue, trimmed = raw.trim();
+      if (labels[trimmed]) node.nodeValue = raw.replace(trimmed, labels[trimmed]);
+      return;
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE || /^(SCRIPT|STYLE|CODE|PRE)$/i.test(node.tagName)) return;
+    const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+    const textNodes = []; while (walker.nextNode()) textNodes.push(walker.currentNode);
+    textNodes.forEach(translate);
+    ['placeholder','title','aria-label','alt'].forEach(attr => {
+      if (node.hasAttribute(attr) && labels[node.getAttribute(attr).trim()]) node.setAttribute(attr, labels[node.getAttribute(attr).trim()]);
+    });
+    if (node.querySelectorAll) node.querySelectorAll('[placeholder],[title],[aria-label],[alt]').forEach(el => {
+      ['placeholder','title','aria-label','alt'].forEach(attr => { const value=el.getAttribute(attr); if(value && labels[value.trim()]) el.setAttribute(attr,labels[value.trim()]); });
+    });
+  };
+  if (document.body) {
+    translate(document.body);
+    new MutationObserver(records => records.forEach(record => {
+      if (record.type === 'characterData') translate(record.target);
+      record.addedNodes.forEach(translate);
+    })).observe(document.body,{childList:true,characterData:true,subtree:true});
+  }
+})();
 
 console.log('[Fresh] TaskQueue engine loaded — 10-slot parallelism active. Press Ctrl+Shift+P to run a full parallel health scan.');
 

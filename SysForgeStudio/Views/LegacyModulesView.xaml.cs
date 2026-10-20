@@ -194,11 +194,6 @@ namespace SysForgeStudio.Views
             ToolkitEngine.Instance.LaunchPrinterAnalyzer();
         }
 
-        private void BtnLaunchEnterpriseFixTool_Click(object sender, RoutedEventArgs e)
-        {
-            ToolkitEngine.Instance.LaunchPrinterEnterpriseFixTool();
-        }
-
         private void BtnGoPrinters_Click(object sender, RoutedEventArgs e)
         {
             NavigateToPrintersRequested?.Invoke();

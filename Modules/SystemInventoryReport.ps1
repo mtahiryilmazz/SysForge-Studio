@@ -836,8 +836,8 @@ $html = @"
     <div class="notice">Contains Windows license keys and saved Wi-Fi connection passwords.</div>
     $($sections -join "`n")
     <footer>
-      <strong>UltimateToolkit Version 5 Inventory</strong><br>
-      Developed and Maintained by Ultimate Toolkit Pro | 2026 All Rights Reserved
+      <strong>SysForge Studio Inventory</strong><br>
+      SysForge Studio • Sistem Raporu • 2026
     </footer>
   </div>
   <script>

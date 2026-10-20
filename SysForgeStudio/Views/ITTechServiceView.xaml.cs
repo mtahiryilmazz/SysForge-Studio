@@ -16,9 +16,10 @@ namespace SysForgeStudio.Views
         public ITTechServiceView()
         {
             InitializeComponent();
-            Loaded += (s, e) =>
+            Loaded += async (s, e) =>
             {
                 RefreshData();
+                await LoadEnterprisePrintersAsync();
                 UpdateWebStatus();
                 StartSyncTimer();
             };
@@ -99,6 +100,77 @@ namespace SysForgeStudio.Views
         {
             RefreshData();
         }
+
+        private async void BtnRefreshPrinters_Click(object sender, RoutedEventArgs e) => await LoadEnterprisePrintersAsync();
+
+        private async System.Threading.Tasks.Task LoadEnterprisePrintersAsync()
+        {
+            try
+            {
+                var previous = (CmbEnterprisePrinters.SelectedItem as PrinterItem)?.Name;
+                var printers = await ToolkitEngine.Instance.GetPrintersAsync();
+                CmbEnterprisePrinters.ItemsSource = printers;
+                CmbEnterprisePrinters.SelectedItem = printers.FirstOrDefault(p => p.Name == previous) ?? printers.FirstOrDefault();
+                TxtEnterprisePrinterStatus.Text = printers.Count == 0
+                    ? $"Yazıcı bulunamadı. Spooler: {ToolkitEngine.Instance.GetSpoolerStatus()}"
+                    : $"{printers.Count} yazıcı bulundu. Spooler: {ToolkitEngine.Instance.GetSpoolerStatus()}";
+            }
+            catch (Exception ex)
+            {
+                TxtEnterprisePrinterStatus.Text = $"Yazıcı listesi alınamadı: {ex.Message}";
+            }
+        }
+
+        private async void BtnPrinterDiagnosis_Click(object sender, RoutedEventArgs e)
+        {
+            var results = await ToolkitEngine.Instance.RunFullDiagnosisAsync();
+            int issues = results.Count(item => item.Status != "OK");
+            TxtEnterprisePrinterStatus.Text = $"Tanılama tamamlandı: {results.Count} kontrol, {issues} uyarı/hata. Ayrıntılar Canlı Kayıtlar bölümünde.";
+        }
+
+        private async void BtnPrinterRpcFix_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ConfirmPrinterRepair("RPC 0x11b/709 kayıt defteri ayarları değiştirilecek. Devam edilsin mi?")) return;
+            await ToolkitEngine.Instance.FixRpc11bAnd709Async();
+            TxtEnterprisePrinterStatus.Text = "RPC / 0x11b / 709 onarımı tamamlandı. Gerekirse bilgisayarı yeniden başlatın.";
+        }
+
+        private async void BtnPointPrintFix_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ConfirmPrinterRepair("Point & Print güvenlik ilkeleri değiştirilecek ve sürücü yükleme izinleri gevşetilecek. Devam edilsin mi?")) return;
+            await ToolkitEngine.Instance.FixPointAndPrintAsync();
+            TxtEnterprisePrinterStatus.Text = "Point & Print ayarları uygulandı.";
+        }
+
+        private async void BtnSpoolerReset_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ConfirmPrinterRepair("Yazdırma kuyruğu durdurulup bekleyen işler temizlenecek. Devam edilsin mi?")) return;
+            await ToolkitEngine.Instance.ResetSpoolerAsync();
+            TxtEnterprisePrinterStatus.Text = $"Spooler: {ToolkitEngine.Instance.GetSpoolerStatus()}";
+        }
+
+        private async void BtnPrinterFirewall_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ConfirmPrinterRepair("Dosya ve yazıcı paylaşımı için güvenlik duvarı kuralları etkinleştirilecek, ağ profili Özel yapılacak. Devam edilsin mi?")) return;
+            await ToolkitEngine.Instance.FixFirewallAsync();
+            TxtEnterprisePrinterStatus.Text = "Yazıcı paylaşım güvenlik duvarı ayarları uygulandı.";
+        }
+
+        private async void BtnPrintTestPage_Click(object sender, RoutedEventArgs e)
+        {
+            if (CmbEnterprisePrinters.SelectedItem is not PrinterItem printer) { TxtEnterprisePrinterStatus.Text = "Önce listeden bir yazıcı seçin."; return; }
+            await ToolkitEngine.Instance.PrintTestPageAsync(printer.Name);
+            TxtEnterprisePrinterStatus.Text = $"Sınama sayfası gönderildi: {printer.Name}";
+        }
+
+        private void BtnOpenPrinterQueue_Click(object sender, RoutedEventArgs e)
+        {
+            if (CmbEnterprisePrinters.SelectedItem is not PrinterItem printer) { TxtEnterprisePrinterStatus.Text = "Önce listeden bir yazıcı seçin."; return; }
+            ToolkitEngine.Instance.OpenQueue(printer.Name);
+        }
+
+        private bool ConfirmPrinterRepair(string message) =>
+            MessageBox.Show(message, "PRN Kurumsal Onarım", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes;
 
         public void RefreshData()
         {
