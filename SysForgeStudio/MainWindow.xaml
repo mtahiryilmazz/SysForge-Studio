@@ -107,7 +107,7 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="SysForge Studio v6.0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource PtTextSecondary}"/>
-                            <TextBlock Text="Windows 11 / 10 / Server" FontSize="10" Foreground="#606060"/>
+                            <TextBlock Text="Windows 11 / 10 / Server" FontSize="10" Foreground="{DynamicResource PtTextMuted}"/>
                         </StackPanel>
                         <Border Grid.Column="1" Style="{StaticResource PtBadge}">
                             <TextBlock Text="PRO" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource PtAccent}"/>
@@ -142,7 +142,7 @@
                         <ProgressBar x:Name="PbBusy" Width="100" Height="4" IsIndeterminate="True" Visibility="Collapsed" Margin="0,0,14,0" Foreground="{DynamicResource PtAccent}"/>
                         <Button x:Name="BtnThemeToggle" Content="🌙 Koyu tema" Style="{StaticResource PtSecondaryButton}" Margin="0,0,10,0" Padding="10,5" Click="BtnThemeToggle_Click" ToolTip="Şu an Koyu Tema aktif. Açık temaya geçmek için tıklayın."/>
                         <Border Style="{StaticResource PtBadge}" Padding="10,5">
-                            <TextBlock Text="🛡️ Yönetici Modu" FontSize="11" FontWeight="SemiBold" Foreground="#38BDF8"/>
+                            <TextBlock Text="🛡️ Yönetici Modu" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource PtStatusBlue}"/>
                         </Border>
                     </StackPanel>
                 </Grid>

@@ -41,7 +41,7 @@
                                         <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource PtTextSecondary}"/>
                                         <TextBlock Text="{Binding Value}" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" Margin="0,4,0,2"/>
                                         <ProgressBar Height="4" Minimum="0" Maximum="100" Value="{Binding Percentage}" Foreground="{DynamicResource PtAccent}" Margin="0,4,0,2"/>
-                                        <TextBlock Text="{Binding Status}" FontSize="10.5" Foreground="#38BDF8"/>
+                                        <TextBlock Text="{Binding Status}" FontSize="10.5" Foreground="{DynamicResource PtStatusBlue}"/>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>

@@ -105,13 +105,13 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
-                            <TextBlock x:Name="TxtSolutionTitle" Text="Arıza Başlığı" FontSize="17" FontWeight="Bold" Foreground="#38BDF8"/>
+                            <TextBlock x:Name="TxtSolutionTitle" Text="Arıza Başlığı" FontSize="17" FontWeight="Bold" Foreground="{DynamicResource PtStatusBlue}"/>
                             <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
                                 <Border Background="#0369A1" CornerRadius="4" Padding="6,2" Margin="0,0,8,0">
-                                    <TextBlock x:Name="TxtCategoryBadge" Text="Alan: Genel" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}"/>
+                                    <TextBlock x:Name="TxtCategoryBadge" Text="Alan: Genel" FontSize="11" FontWeight="Bold" Foreground="White"/>
                                 </Border>
                                 <Border x:Name="BadgeSeverity" Background="#B45309" CornerRadius="4" Padding="6,2">
-                                    <TextBlock x:Name="TxtSeverity" Text="Risk: Normal" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}"/>
+                                    <TextBlock x:Name="TxtSeverity" Text="Risk: Normal" FontSize="11" FontWeight="Bold" Foreground="White"/>
                                 </Border>
                             </StackPanel>
                         </StackPanel>

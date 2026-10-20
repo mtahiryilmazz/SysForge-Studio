@@ -130,7 +130,7 @@
                                 <TextBlock x:Name="TxtCurrentCatIcon" Text="⚙️" FontSize="18" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                 <TextBlock x:Name="TxtCurrentCatTitle" Text="Sistem &amp; Yönetim" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" VerticalAlignment="Center"/>
                                 <Border Style="{StaticResource PtBadge}" Margin="10,0,0,0" VerticalAlignment="Center">
-                                    <TextBlock x:Name="TxtCurrentCatCount" Text="10 Araç" FontSize="10.5" Foreground="#38BDF8" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="TxtCurrentCatCount" Text="10 Araç" FontSize="10.5" Foreground="{DynamicResource PtStatusBlue}" FontWeight="SemiBold"/>
                                 </Border>
                             </StackPanel>
                             <TextBlock x:Name="TxtCurrentCatDesc" Text="Windows yönetim konsolları, süreçler ve servisler" FontSize="12" Foreground="{DynamicResource PtTextSecondary}" Margin="0,3,0,0"/>
@@ -168,7 +168,7 @@
                                                 <TextBlock Grid.Column="0" Text="{Binding Icon}" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                                 <TextBlock Grid.Column="1" Text="{Binding Title}" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource PtTextPrimary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                                                 <Border Grid.Column="2" Style="{StaticResource PtBadge}" Padding="6,2" VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding Badge}" FontSize="9.5" FontWeight="Bold" Foreground="#38BDF8"/>
+                                                    <TextBlock Text="{Binding Badge}" FontSize="9.5" FontWeight="Bold" Foreground="{DynamicResource PtStatusBlue}"/>
                                                 </Border>
                                             </Grid>
 
@@ -206,7 +206,7 @@
                         <!-- Terminal Title & Controls -->
                         <Grid Grid.Row="0" Margin="0,0,0,8">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock Text="💻 Canlı WinUI 3 Konsol Terminali" FontSize="12" FontWeight="Bold" Foreground="#38BDF8"/>
+                                <TextBlock Text="💻 Canlı WinUI 3 Konsol Terminali" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource PtStatusBlue}"/>
                                 <TextBlock Text="(CMD penceresi açılmadan arka planda çalıştırılır)" FontSize="10.5" Foreground="{DynamicResource PtTextSecondary}" Margin="8,1,0,0"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -216,8 +216,8 @@
                         </Grid>
 
                         <!-- Output Text -->
-                        <TextBox x:Name="TxtTerminalOutput" Grid.Row="1" Background="{DynamicResource PtWindowBg}" Foreground="#38BDF8"
-                                 BorderBrush="#292929" BorderThickness="1" FontFamily="Consolas, Cascadia Code, Courier New"
+                        <TextBox x:Name="TxtTerminalOutput" Grid.Row="1" Background="{DynamicResource PtCodeBackground}" Foreground="{DynamicResource PtCodeForeground}"
+                                 BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" FontFamily="Consolas, Cascadia Code, Courier New"
                                  FontSize="11.5" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
                                  Text="[Sistem Hazır] Sol menüden bir modül seçip 'Çalıştır / Aç' butonuna basarak işlemleri başlatabilirsiniz.&#x0a;"/>
                     </Grid>
@@ -237,7 +237,7 @@
                 <Border Background="{DynamicResource PtCardBg}" CornerRadius="8" Padding="18,14" Margin="0,0,0,20" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1">
                     <Grid>
                         <TextBlock x:Name="TxtV6StatusIndicator" Text="Sunucu Durumu: KONTROL EDİLİYOR..." FontWeight="Bold" Foreground="{DynamicResource PtTextSecondary}" FontSize="13" VerticalAlignment="Center"/>
-                        <TextBlock x:Name="TxtV6Url" Text="http://localhost:9999" Foreground="#38BDF8" FontSize="13" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TxtV6Url" Text="http://localhost:9999" Foreground="{DynamicResource PtStatusBlue}" FontSize="13" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     </Grid>
                 </Border>
 

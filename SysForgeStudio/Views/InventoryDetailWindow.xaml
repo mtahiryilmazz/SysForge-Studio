@@ -65,8 +65,8 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Seri No / HWID:" Foreground="{DynamicResource PtTextSecondary}" FontSize="12.5" VerticalAlignment="Center"/>
-                                <Border Grid.Column="1" Background="{DynamicResource PtSidebarBg}" BorderBrush="#333" BorderThickness="1" CornerRadius="4" Padding="8,4" Margin="0,0,8,0">
-                                    <TextBlock x:Name="TxtSerialNo" Text="-" FontFamily="Consolas" Foreground="#38BDF8" FontSize="12" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                <Border Grid.Column="1" Background="{DynamicResource PtSidebarBg}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="4" Padding="8,4" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtSerialNo" Text="-" FontFamily="Consolas" Foreground="{DynamicResource PtStatusBlue}" FontSize="12" TextWrapping="Wrap" VerticalAlignment="Center"/>
                                 </Border>
                                 <Button Grid.Column="2" Content="📋 Kopyala" Style="{StaticResource PtSecondaryButton}" Padding="10,4" FontSize="11" Click="BtnCopySerial_Click"/>
                             </Grid>
@@ -79,7 +79,7 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="IP Adresi:" Foreground="{DynamicResource PtTextSecondary}" FontSize="12.5"/>
-                                <TextBlock Grid.Column="1" x:Name="TxtIpAddress" Text="-" FontFamily="Consolas" Foreground="#A78BFA" FontSize="12.5" FontWeight="SemiBold"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtIpAddress" Text="-" FontFamily="Consolas" Foreground="{DynamicResource PtStatusPurple}" FontSize="12.5" FontWeight="SemiBold"/>
 
                                 <TextBlock Grid.Column="2" Text="Fiziksel MAC:" Foreground="{DynamicResource PtTextSecondary}" FontSize="12.5"/>
                                 <TextBlock Grid.Column="3" x:Name="TxtMacAddress" Text="-" FontFamily="Consolas" Foreground="{DynamicResource PtTextPrimary}" FontSize="12.5"/>
@@ -90,7 +90,7 @@
                     <!-- 2. Donanım Bileşen Detayları -->
                     <Border Background="{DynamicResource PtCardHover}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
                         <StackPanel>
-                            <TextBlock Text="⚙️ DONANIM BİLEŞENLERİ (HARDWARE)" FontSize="11" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,10"/>
+                            <TextBlock Text="⚙️ DONANIM BİLEŞENLERİ (HARDWARE)" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource PtStatusBlue}" Margin="0,0,0,10"/>
 
                             <!-- Anakart -->
                             <Grid Margin="0,0,0,8">
@@ -109,7 +109,7 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="⚡ İşlemci (CPU):" Foreground="{DynamicResource PtTextSecondary}" FontSize="12.5"/>
-                                <TextBlock Grid.Column="1" x:Name="TxtProcessor" Text="-" Foreground="#4ADE80" FontWeight="SemiBold" FontSize="12.5" TextWrapping="Wrap"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtProcessor" Text="-" Foreground="{DynamicResource PtStatusGreen}" FontWeight="SemiBold" FontSize="12.5" TextWrapping="Wrap"/>
                             </Grid>
 
                             <!-- Bellek (RAM) -->
@@ -147,7 +147,7 @@
                     <!-- 3. Yazılım & İşletim Sistemi Detayları -->
                     <Border Background="{DynamicResource PtCardHover}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
                         <StackPanel>
-                            <TextBlock Text="🪟 YAZILIM, SİSTEM VE AĞ ALTYAPISI (SOFTWARE &amp; OS)" FontSize="11" FontWeight="Bold" Foreground="#4ADE80" Margin="0,0,0,10"/>
+                            <TextBlock Text="🪟 YAZILIM, SİSTEM VE AĞ ALTYAPISI (SOFTWARE &amp; OS)" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource PtStatusGreen}" Margin="0,0,0,10"/>
 
                             <!-- Windows Sürümü & Build -->
                             <Grid Margin="0,0,0,8">
@@ -156,7 +156,7 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="🪟 İşletim Sistemi:" Foreground="{DynamicResource PtTextSecondary}" FontSize="12.5"/>
-                                <TextBlock Grid.Column="1" x:Name="TxtOsVersion" Text="-" Foreground="#38BDF8" FontWeight="SemiBold" FontSize="12.5" TextWrapping="Wrap"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtOsVersion" Text="-" Foreground="{DynamicResource PtStatusBlue}" FontWeight="SemiBold" FontSize="12.5" TextWrapping="Wrap"/>
                             </Grid>
 
                             <!-- Build & Mimari -->
@@ -206,7 +206,7 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="🛡️ Güvenlik / Antivirüs:" Foreground="{DynamicResource PtTextSecondary}" FontSize="12.5"/>
-                                <TextBlock Grid.Column="1" x:Name="TxtSecurity" Text="-" Foreground="#4ADE80" FontSize="12.5"/>
+                                <TextBlock Grid.Column="1" x:Name="TxtSecurity" Text="-" Foreground="{DynamicResource PtStatusGreen}" FontSize="12.5"/>
                             </Grid>
 
                             <!-- Kurulu Programlar -->
@@ -234,7 +234,7 @@
                     <!-- 4. Zimmet & Kullanıcı Bilgisi -->
                     <Border Background="{DynamicResource PtCardHover}" BorderBrush="{DynamicResource PtCardBorder}" BorderThickness="1" CornerRadius="8" Padding="14">
                         <StackPanel>
-                            <TextBlock Text="👤 ZİMMET VE KULLANICI BİLGİSİ" FontSize="11" FontWeight="Bold" Foreground="#F59E0B" Margin="0,0,0,10"/>
+                            <TextBlock Text="👤 ZİMMET VE KULLANICI BİLGİSİ" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource PtStatusAmber}" Margin="0,0,0,10"/>
 
                             <Grid Margin="0,0,0,6">
                                 <Grid.ColumnDefinitions>
@@ -274,7 +274,7 @@
 
             <!-- Bottom Actions Bar -->
             <Grid Grid.Row="2" Margin="0,4,0,0">
-                <TextBlock x:Name="TxtCopyStatus" Text="" Foreground="#4ADE80" FontSize="12.5" VerticalAlignment="Center"/>
+                <TextBlock x:Name="TxtCopyStatus" Text="" Foreground="{DynamicResource PtStatusGreen}" FontSize="12.5" VerticalAlignment="Center"/>
                 <Button Content="Tamam / Kapat" HorizontalAlignment="Right" Style="{StaticResource PtPrimaryButton}" Width="130" Height="36" Click="BtnClose_Click"/>
             </Grid>
         </Grid>
