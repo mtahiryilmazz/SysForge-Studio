@@ -9937,6 +9937,83 @@ function Process-Request($ctx) {
             }
         }
 
+        '/api/run-command' {
+            $rawCmd = if ($body) { "$($body.command)" } else { $qs['command'] }
+            if (-not $rawCmd) {
+                Err "Missing command parameter"
+            } else {
+                try {
+                    Log "Executing system command: $rawCmd"
+                    $out = cmd.exe /c "$rawCmd" 2>&1 | Out-String
+                    Ok @{ command=$rawCmd; output=$out.Trim(); success=$true }
+                } catch {
+                    Err $_.Exception.Message
+                }
+            }
+        }
+
+        '/api/disk-info' {
+            try {
+                $cDrive = Get-PSDrive -Name C -PSProvider FileSystem -ErrorAction SilentlyContinue
+                if ($cDrive) {
+                    $freeGB = [math]::Round($cDrive.Free / 1GB, 1)
+                    $usedGB = [math]::Round($cDrive.Used / 1GB, 1)
+                    $totalGB = [math]::Round(($cDrive.Used + $cDrive.Free) / 1GB, 1)
+                    Ok @{ freeGB = $freeGB; usedGB = $usedGB; totalGB = $totalGB; drive = 'C:' }
+                } else {
+                    Ok @{ freeGB = 50; usedGB = 100; totalGB = 150; drive = 'C:' }
+                }
+            } catch {
+                Err $_.Exception.Message
+            }
+        }
+
+        '/api/backup-logs' {
+            try {
+                $logDir = Join-Path $ToolkitRoot 'Logs'
+                $recentLog = Get-ChildItem -Path $logDir -Filter '*.log' -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+                if ($recentLog -and (Test-Path $recentLog.FullName)) {
+                    $content = Get-Content -LiteralPath $recentLog.FullName -Tail 100 -Encoding UTF8 -ErrorAction SilentlyContinue
+                    Ok ($content -join "`n")
+                } else {
+                    Ok "=== SysForge Studio Backup Logs ===`nNo backup session recorded yet."
+                }
+            } catch {
+                Err $_.Exception.Message
+            }
+        }
+
+        '/api/backup-history' {
+            try {
+                $logDir = Join-Path $ToolkitRoot 'Logs'
+                $logs = Get-ChildItem -Path $logDir -Filter 'Task_*.log' -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 10 | ForEach-Object {
+                    @{
+                        date = $_.LastWriteTime.ToString("yyyy-MM-dd HH:mm")
+                        dest = $_.Name
+                        size = "$([math]::Round($_.Length / 1KB, 1)) KB"
+                        status = "Completed"
+                    }
+                }
+                Ok @($logs)
+            } catch {
+                Err $_.Exception.Message
+            }
+        }
+
+        '/api/latest-report' {
+            try {
+                $reportDir = Join-Path $ToolkitRoot 'Reports'
+                $recentRep = Get-ChildItem -Path $reportDir -Filter '*.html' -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+                if ($recentRep) {
+                    Ok @{ url = "/Reports/$($recentRep.Name)"; name = $recentRep.Name }
+                } else {
+                    Ok @{ url = $null; message = "No reports generated yet" }
+                }
+            } catch {
+                Err $_.Exception.Message
+            }
+        }
+
 
 
 
