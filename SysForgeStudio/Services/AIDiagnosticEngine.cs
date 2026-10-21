@@ -25,6 +25,13 @@ namespace SysForgeStudio.Services
 
         private void LoadSavedApiKey()
         {
+            string envKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY");
+            if (!string.IsNullOrWhiteSpace(envKey))
+            {
+                ApiKey = envKey.Trim();
+                return;
+            }
+
             string appData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "SysForgeStudio");
             string keyFile = Path.Combine(appData, "gemini_api.key");
             if (File.Exists(keyFile))

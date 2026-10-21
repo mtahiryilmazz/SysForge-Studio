@@ -9,6 +9,12 @@
 .github_settings.json
 *.cer
 *.pfx
+*.key
+*.token
+Config/*.key
+Config/*.txt
+Config/gemini_api.key
+Config/ai_key.txt
 
 # --- Build Outputs ---
 bin/
