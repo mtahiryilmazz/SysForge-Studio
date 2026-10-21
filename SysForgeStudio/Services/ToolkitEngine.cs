@@ -1852,7 +1852,30 @@ namespace SysForgeStudio.Services
                     return;
                 }
 
-                Log("V6 Web Köprüsü başlatılıyor (Port 9999)...", LogLevel.Info);
+                // Check if Node.js server.js exists for multi-device LAN access
+                string rootDir = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(scriptPath) ?? "", ".."));
+                string nodeServerPath = Path.Combine(rootDir, "server.js");
+                bool hasNode = false;
+                try
+                {
+                    using (var pCheck = Process.Start(new ProcessStartInfo { FileName = "node.exe", Arguments = "-v", CreateNoWindow = true, UseShellExecute = false }))
+                    {
+                        pCheck?.WaitForExit(1000);
+                        if (pCheck?.ExitCode == 0) hasNode = true;
+                    }
+                }
+                catch { }
+
+                bool useNode = hasNode && File.Exists(nodeServerPath);
+
+                if (useNode)
+                {
+                    Log("SysForge Node.js Sanal Sunucusu başlatılıyor (0.0.0.0:9999 - LAN/Ağ Erişimi Aktif)...", LogLevel.Info);
+                }
+                else
+                {
+                    Log("V6 Web Köprüsü başlatılıyor (Port 9999)...", LogLevel.Info);
+                }
 
                 // Ensure previous instance is stopped
                 StopV6WebDashboard();
@@ -1865,7 +1888,7 @@ namespace SysForgeStudio.Services
                         var psiFw = new ProcessStartInfo
                         {
                             FileName = "netsh.exe",
-                            Arguments = "advfirewall firewall add rule name=\"SysForge Studio Web Bridge\" dir=in action=allow protocol=TCP localport=9999",
+                            Arguments = "advfirewall firewall add rule name=\"SysForge Studio Web Server\" dir=in action=allow protocol=TCP localport=9999",
                             CreateNoWindow = true,
                             UseShellExecute = false
                         };
@@ -1873,14 +1896,29 @@ namespace SysForgeStudio.Services
                     }
                     catch { }
 
-                    var psi = new ProcessStartInfo
+                    ProcessStartInfo psi;
+                    if (useNode)
                     {
-                        FileName = "powershell.exe",
-                        Arguments = $"-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"{scriptPath}\" -Port 9999",
-                        WorkingDirectory = Path.GetDirectoryName(scriptPath) ?? "",
-                        CreateNoWindow = true,
-                        UseShellExecute = false
-                    };
+                        psi = new ProcessStartInfo
+                        {
+                            FileName = "node.exe",
+                            Arguments = $"\"{nodeServerPath}\"",
+                            WorkingDirectory = rootDir,
+                            CreateNoWindow = true,
+                            UseShellExecute = false
+                        };
+                    }
+                    else
+                    {
+                        psi = new ProcessStartInfo
+                        {
+                            FileName = "powershell.exe",
+                            Arguments = $"-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"{scriptPath}\" -Port 9999",
+                            WorkingDirectory = Path.GetDirectoryName(scriptPath) ?? "",
+                            CreateNoWindow = true,
+                            UseShellExecute = false
+                        };
+                    }
                     Process.Start(psi);
                 });
 
@@ -1919,12 +1957,12 @@ namespace SysForgeStudio.Services
                 var psi = new ProcessStartInfo
                 {
                     FileName = "powershell.exe",
-                    Arguments = "-NoProfile -ExecutionPolicy Bypass -Command \"Get-CimInstance Win32_Process | Where-Object { $_.Name -like '*powershell*' -and $_.CommandLine -like '*WebBridgeServer.ps1*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }\"",
+                    Arguments = "-NoProfile -ExecutionPolicy Bypass -Command \"Get-CimInstance Win32_Process | Where-Object { ($_.Name -like '*powershell*' -and $_.CommandLine -like '*WebBridgeServer.ps1*') -or ($_.Name -like '*node*' -and $_.CommandLine -like '*server.js*') } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }\"",
                     CreateNoWindow = true,
                     UseShellExecute = false
                 };
                 Process.Start(psi)?.WaitForExit(4000);
-                Log("V6 Web Köprüsü sunucusu durduruldu.", LogLevel.Info);
+                Log("SysForge Sanal Sunucusu / Web Köprüsü durduruldu.", LogLevel.Info);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,4 @@
-﻿@echo off
+@echo off
 cd /d "%~dp0"
 
 :: --- Step 1: Admin check ---
@@ -35,11 +35,19 @@ for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":9999 "') do (
 
 timeout /t 1 /nobreak >nul
 
-:: --- Step 3: Start bridge server in background ---
-echo [2/4] Starting Bridge Server on http://localhost:9999 ...
-netsh advfirewall firewall delete rule name="UltimateToolkit Web Bridge" >nul 2>&1
-netsh advfirewall firewall add rule name="UltimateToolkit Web Bridge" dir=in action=allow protocol=TCP localport=9999 >nul 2>&1
-start "UltimateToolkit-Bridge" powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0Modules\WebBridgeServer.ps1" -Port 9999
+:: --- Step 3: Start server (Node.js Virtual Server if available, else PowerShell bridge) ---
+where node >nul 2>&1
+if %errorlevel% EQU 0 (
+    echo [2/4] Node.js Virtual Server baslatiliyor (0.0.0.0:9999 - Ag Erisimi Aktif)...
+    netsh advfirewall firewall delete rule name="SysForge Studio Web Server" >nul 2>&1
+    netsh advfirewall firewall add rule name="SysForge Studio Web Server" dir=in action=allow protocol=TCP localport=9999 >nul 2>&1
+    start "SysForgeStudio-NodeServer" node "%~dp0server.js"
+) else (
+    echo [2/4] Starting PowerShell Bridge Server on http://localhost:9999 ...
+    netsh advfirewall firewall delete rule name="UltimateToolkit Web Bridge" >nul 2>&1
+    netsh advfirewall firewall add rule name="UltimateToolkit Web Bridge" dir=in action=allow protocol=TCP localport=9999 >nul 2>&1
+    start "UltimateToolkit-Bridge" powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0Modules\WebBridgeServer.ps1" -Port 9999
+)
 
 :: Wait for server to come up
 echo [3/4] Server is starting up...
