@@ -546,6 +546,71 @@ function handleApi(req, res, pathname) {
     return;
   }
 
+  // /api/hardware-drift/snapshot - Hardware snapshot & SHA-256 HWID hash
+  if (pathname === '/api/hardware-drift/snapshot') {
+    const driftScript = path.join(ROOT_DIR, 'Modules', 'SysForgeHardwareDriftCore.ps1');
+    const psCmd = `& "${driftScript}" -Action snapshot`;
+    runPowerShell(psCmd, (err, output) => {
+      if (err) sendJson(res, 500, { error: err.message });
+      else {
+        try { sendJson(res, 200, JSON.parse(output)); } catch(e) { sendJson(res, 200, { raw: output }); }
+      }
+    }, 15000);
+    return;
+  }
+
+  // /api/hardware-drift/compare (GET fallback)
+  if (pathname === '/api/hardware-drift/compare' && method === 'GET') {
+    const driftScript = path.join(ROOT_DIR, 'Modules', 'SysForgeHardwareDriftCore.ps1');
+    const psCmd = `& "${driftScript}" -Action compare`;
+    runPowerShell(psCmd, (err, output) => {
+      if (err) sendJson(res, 500, { error: err.message });
+      else {
+        try { sendJson(res, 200, JSON.parse(output)); } catch(e) { sendJson(res, 200, { raw: output }); }
+      }
+    }, 15000);
+    return;
+  }
+
+  // /api/lan-agent/discover - Fast LAN nodes discovery via ARP table
+  if (pathname === '/api/lan-agent/discover') {
+    const psCmd = `
+      Get-NetNeighbor -AddressFamily IPv4 | 
+      Where-Object { $_.State -ne 'Permanent' -and $_.IPAddress -notlike '224.*' -and $_.IPAddress -notlike '239.*' -and $_.IPAddress -notlike '255.*' } | 
+      Select-Object IPAddress, LinkLayerAddress, State | ConvertTo-Json -Compress
+    `;
+    runPowerShell(psCmd, (err, output) => {
+      if (err) sendJson(res, 500, { error: err.message });
+      else {
+        try {
+          const list = JSON.parse(output);
+          const normalized = Array.isArray(list) ? list : (list ? [list] : []);
+          sendJson(res, 200, {
+            status: 'OK',
+            lanAddresses: getLocalNetworkAddresses(),
+            discoveredNodes: normalized
+          });
+        } catch(e) {
+          sendJson(res, 200, { status: 'OK', discoveredNodes: [] });
+        }
+      }
+    }, 10000);
+    return;
+  }
+
+  // /api/iso-builder/generate-xml (GET fallback)
+  if (pathname === '/api/iso-builder/generate-xml' && method === 'GET') {
+    const isoScript = path.join(ROOT_DIR, 'Modules', 'SysForgeIsoCore.ps1');
+    const psCmd = `& "${isoScript}" -Action generate-xml`;
+    runPowerShell(psCmd, (err, output) => {
+      if (err) sendJson(res, 500, { error: err.message });
+      else {
+        try { sendJson(res, 200, JSON.parse(output)); } catch(e) { sendJson(res, 200, { raw: output }); }
+      }
+    }, 15000);
+    return;
+  }
+
   // /api/bloatware-remove (GET fallback)
   if (pathname === '/api/bloatware-remove' && method === 'GET') {
     sendJson(res, 200, { status: 'OK', message: 'Use POST to remove bloatware' });
@@ -557,6 +622,156 @@ function handleApi(req, res, pathname) {
     parseJsonBody(req, (err, body) => {
       if (err) {
         sendJson(res, 400, { error: 'Invalid JSON body' });
+        return;
+      }
+
+      // /api/hardware-drift/save-baseline - Store baseline hardware snapshot
+      if (pathname === '/api/hardware-drift/save-baseline') {
+        const driftScript = path.join(ROOT_DIR, 'Modules', 'SysForgeHardwareDriftCore.ps1');
+        const psCmd = `& "${driftScript}" -Action save-baseline`;
+        runPowerShell(psCmd, (psErr, output) => {
+          if (psErr) sendJson(res, 500, { error: psErr.message });
+          else {
+            try { sendJson(res, 200, JSON.parse(output)); } catch(e) { sendJson(res, 200, { status: 'SAVED', raw: output }); }
+          }
+        }, 20000);
+        return;
+      }
+
+      // /api/hardware-drift/compare - Compare current hardware with baseline
+      if (pathname === '/api/hardware-drift/compare') {
+        const driftScript = path.join(ROOT_DIR, 'Modules', 'SysForgeHardwareDriftCore.ps1');
+        const psCmd = `& "${driftScript}" -Action compare`;
+        runPowerShell(psCmd, (psErr, output) => {
+          if (psErr) sendJson(res, 500, { error: psErr.message });
+          else {
+            try { sendJson(res, 200, JSON.parse(output)); } catch(e) { sendJson(res, 200, { raw: output }); }
+          }
+        }, 20000);
+        return;
+      }
+
+      // /api/hardware-drift/generate-report - Generate HTML expertise report
+      if (pathname === '/api/hardware-drift/generate-report') {
+        const driftScript = path.join(ROOT_DIR, 'Modules', 'SysForgeHardwareDriftCore.ps1');
+        const psCmd = `& "${driftScript}" -Action generate-report`;
+        runPowerShell(psCmd, (psErr, output) => {
+          if (psErr) sendJson(res, 500, { error: psErr.message });
+          else {
+            try { sendJson(res, 200, JSON.parse(output)); } catch(e) { sendJson(res, 200, { status: 'OK', raw: output }); }
+          }
+        }, 20000);
+        return;
+      }
+
+      // /api/lan-agent/dispatch - Send probe or command to remote LAN node
+      if (pathname === '/api/lan-agent/dispatch') {
+        const targetIp = body.targetIp || body.target;
+        const op = (body.action || 'ping').toLowerCase();
+        if (!targetIp) {
+          sendJson(res, 400, { error: 'Target IP is required' });
+          return;
+        }
+
+        if (op === 'ping') {
+          runPowerShell(`Test-Connection -ComputerName "${targetIp}" -Count 2 -Quiet`, (psErr, output) => {
+            const reachable = output.trim().toLowerCase() === 'true';
+            sendJson(res, 200, { status: 'OK', targetIp, reachable });
+          }, 10000);
+          return;
+        }
+
+        // Remote HTTP probe to SysForge node
+        const reqOpts = {
+          hostname: targetIp,
+          port: PORT,
+          path: '/api/status',
+          method: 'GET',
+          timeout: 4000
+        };
+
+        const probeReq = http.request(reqOpts, (probeRes) => {
+          let probeData = '';
+          probeRes.on('data', chunk => { probeData += chunk; });
+          probeRes.on('end', () => {
+            try {
+              sendJson(res, 200, { status: 'OK', nodeOnline: true, data: JSON.parse(probeData) });
+            } catch(e) {
+              sendJson(res, 200, { status: 'OK', nodeOnline: true, raw: probeData });
+            }
+          });
+        });
+
+        probeReq.on('error', (pErr) => {
+          sendJson(res, 200, { status: 'OFFLINE_OR_UNREACHABLE', targetIp, error: pErr.message });
+        });
+
+        probeReq.on('timeout', () => {
+          probeReq.destroy();
+          sendJson(res, 200, { status: 'TIMEOUT', targetIp });
+        });
+
+        probeReq.end();
+        return;
+      }
+
+      // /api/iso-builder/generate-xml - Generate unattended answer file
+      if (pathname === '/api/iso-builder/generate-xml') {
+        const isoScript = path.join(ROOT_DIR, 'Modules', 'SysForgeIsoCore.ps1');
+        const user = (body.username || 'SysForgeAdmin').replace(/"/g, '`"');
+        const pass = (body.password || '').replace(/"/g, '`"');
+        const psCmd = `& "${isoScript}" -Action generate-xml -Username "${user}" -Password "${pass}"`;
+        runPowerShell(psCmd, (psErr, output) => {
+          if (psErr) sendJson(res, 500, { error: psErr.message });
+          else {
+            try { sendJson(res, 200, JSON.parse(output)); } catch(e) { sendJson(res, 200, { status: 'OK', raw: output }); }
+          }
+        }, 20000);
+        return;
+      }
+
+      // /api/iso-builder/mount - Mount WIM image with DISM
+      if (pathname === '/api/iso-builder/mount') {
+        const isoScript = path.join(ROOT_DIR, 'Modules', 'SysForgeIsoCore.ps1');
+        const wimPath = (body.wimPath || '').replace(/"/g, '`"');
+        const wimIndex = parseInt(body.index, 10) || 1;
+        const psCmd = `& "${isoScript}" -Action mount-wim -WimPath "${wimPath}" -WimIndex ${wimIndex}`;
+        runPowerShell(psCmd, (psErr, output) => {
+          if (psErr) sendJson(res, 500, { error: psErr.message });
+          else {
+            try { sendJson(res, 200, JSON.parse(output)); } catch(e) { sendJson(res, 200, { status: 'OK', raw: output }); }
+          }
+        }, 180000);
+        return;
+      }
+
+      // /api/iso-builder/unmount - Unmount and commit WIM
+      if (pathname === '/api/iso-builder/unmount') {
+        const isoScript = path.join(ROOT_DIR, 'Modules', 'SysForgeIsoCore.ps1');
+        const mountDir = (body.mountDir || '').replace(/"/g, '`"');
+        const psCmd = `& "${isoScript}" -Action unmount-wim -MountDir "${mountDir}"`;
+        runPowerShell(psCmd, (psErr, output) => {
+          if (psErr) sendJson(res, 500, { error: psErr.message });
+          else {
+            try { sendJson(res, 200, JSON.parse(output)); } catch(e) { sendJson(res, 200, { status: 'OK', raw: output }); }
+          }
+        }, 180000);
+        return;
+      }
+
+      // /api/iso-builder/inject - Inject drivers or SysForge debloat
+      if (pathname === '/api/iso-builder/inject') {
+        const isoScript = path.join(ROOT_DIR, 'Modules', 'SysForgeIsoCore.ps1');
+        const mountDir = (body.mountDir || '').replace(/"/g, '`"');
+        const driversDir = (body.driversDir || '').replace(/"/g, '`"');
+        const action = driversDir ? 'inject-drivers' : 'inject-sysforge';
+        const psCmd = `& "${isoScript}" -Action ${action} -MountDir "${mountDir}" -DriversDir "${driversDir}"`;
+        runPowerShell(psCmd, (psErr, output) => {
+          if (psErr) sendJson(res, 500, { error: psErr.message });
+          else {
+            try { sendJson(res, 200, JSON.parse(output)); } catch(e) { sendJson(res, 200, { status: 'OK', raw: output }); }
+          }
+        }, 180000);
         return;
       }
 
@@ -712,6 +927,15 @@ function handleApi(req, res, pathname) {
           case 'apply-all-debloat':
           case 'optimize_all':
             psCommand = `& "${debloatScript}" -Action apply-all`;
+            break;
+          case 'remove-onedrive':
+            psCommand = `& "${debloatScript}" -Action remove-onedrive`;
+            break;
+          case 'restore-onedrive':
+            psCommand = `& "${debloatScript}" -Action restore-onedrive`;
+            break;
+          case 'debloat-edge':
+            psCommand = `& "${debloatScript}" -Action debloat-edge`;
             break;
 
           // Cleaning & Disk Ops

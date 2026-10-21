@@ -82,14 +82,30 @@ komutunu vermeniz yeterlidir. `dashboard.html`, `server.js` ve `Modules\` klasö
 
 ---
 
-## 🎯 4. Sıradaki Hedefler (Faz 3 - Evde Başlanabilecek İşler)
+## 🎯 4. Evde Tamamlanan Hedefler (Faz 3 & Faz 4 ✅)
 
-1. **Hardware Drift (Donanım Değişiklik Dedektörü):**
-   - Bilgisayarın ilk durumundaki kriptografik SHA-256 donanım parmak izini saklayıp, sonraki taramada değişen/sökülen RAM, Disk, GPU gibi parçaları tespit eden alarm arayüzü.
-2. **Push Agent (Ağdaki Diğer Bilgisayarlara Ajan Dağıtımı):**
-   - LAN üzerindeki bir IP adresine uzaktan SysForge onarım veya sağlık taraması komutları gönderebilme.
-3. **Edge & OneDrive İsteğe Bağlı Temizlik:**
-   - Microsoft Edge ve OneDrive için güvenli kaldırma ve tekrar kurma seçeneği ekleme.
+1. **Hardware Drift (Donanım Değişiklik Dedektörü) Tamamlandı ✅:**
+   - [`Modules/SysForgeHardwareDriftCore.ps1`](file:///c:/Users/YILMAZ/Documents/GitHub/SysForge-Studio/Modules/SysForgeHardwareDriftCore.ps1) geliştirildi.
+   - Bilgisayarın anakart, BIOS UUID, CPU ID, RAM yuvaları ve seri numaraları, Disk seri numaraları, GPU ve MAC adreslerinden kriptografik SHA-256 donanım parmak izi üretilir.
+   - İlk durum (`save-baseline`) kaydedilir, sonraki kontrollerde (`compare`) değişen veya sökülen parçalar saniyeler içinde tespit edilir ve kırmızı alarm verilir.
+   - HTML ekspertiz raporu (`generate-report`) oluşturulur.
+   - `server.js` ve `dashboard.html`'e canlı kart ve API uç noktaları entegre edildi.
+2. **Push Agent & LAN Filo Keşfi Tamamlandı ✅:**
+   - `/api/lan-agent/discover` ve `/api/lan-agent/dispatch` API'leri yazıldı.
+   - Kokpitte Ağ Merkezi altına "Ağdaki Cihazları Keşfet (LAN Fleet)" paneli eklendi; yerel ağdaki IP'lere tek tıkla Ping testi veya uzaktan SysForge sağlık taraması yapılabilir.
+3. **Edge & OneDrive İsteğe Bağlı Temizlik Tamamlandı ✅:**
+   - [`Modules/SysForgeDebloatCore.ps1`](file:///c:/Users/YILMAZ/Documents/GitHub/SysForge-Studio/Modules/SysForgeDebloatCore.ps1) içerisine `remove-onedrive`, `restore-onedrive` ve `debloat-edge` işlevleri eklendi.
+   - Web kokpitindeki Debloat Suite içerisine bu işlemler tek tık butonları olarak yerleştirildi.
+4. **Katılımsız (Unattended) ISO / WIM İmaj Hazırlama Modülü Tamamlandı ✅:**
+   - [`Modules/SysForgeIsoCore.ps1`](file:///c:/Users/YILMAZ/Documents/GitHub/SysForge-Studio/Modules/SysForgeIsoCore.ps1) yazıldı.
+   - Windows 11 TPM 2.0, SecureBoot, RAM ve CPU kontrollerini bypass eden `autounattend.xml` yanıt dosyası üretici eklendi.
+   - DISM WIM mount/unmount ve `SetupComplete.cmd` ilk açılış script enjeksiyon motoru entegre edildi.
+   - `server.js` API uç noktaları (`/api/iso-builder/generate-xml`, `/mount`, `/unmount`, `/inject`) ve web kokpitine interaktif yönetim kartı yerleştirildi.
+5. **Web Kokpiti Mobil HUD Teması & Portre İnce Ayarları Tamamlandı ✅:**
+   - Küçük ekranlı akıllı telefonlar ve tabletler için responsive media query kuralları eklendi (`@media (max-width: 768px)` ve `480px`).
+   - Kart akışları tek sütuna dengelendi, dokunmatik buton paddingleri ve başlık ölçeklemeleri optimize edildi.
 
 ---
-*Tüm değişiklikler Git geçmişine işlenmiş ve uzaktaki GitHub deposuna (`origin/main`) eşitlenmiştir.*
+
+## 🚀 5. Proje Durumu ve Genel Özet
+*Tüm hedefler (Faz 1, Faz 2, Faz 3 ve Faz 4) başarıyla tamamlanmış, `SysForgeStudio.exe` Release sürümü 0 hata ile derlenmiş ve test edilmiştir.*

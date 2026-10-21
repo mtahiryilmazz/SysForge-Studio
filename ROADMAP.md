@@ -122,10 +122,21 @@ Yapılan kaynak kod taramasında, önceki sürümlerde otomatik yapılan regex a
 - [x] **Sürüm v6.1.0 Derlemesi:**
   - `SysForgeStudio.exe` Release ve Debug sürümleri 0 hata ile derlendi.
 
-### 📍 Faz 3: Donanım Ekspertizi & Filo Dağıtımı (Gelecek Aşama 🎯)
-- [ ] **Hardware Drift / Değişiklik Raporlama:**
-  - Cihaz servise geldiğinde alınan SHA-256 parmak izi ile servis çıkışını karşılaştırıp değişen/sökülen parçaları kırmızı alarm olarak işaretleme.
-- [ ] **Ağdaki Diğer Bilgisayarlara Ajan Gönderme (Push Agent / Tactical RMM Paritesi):**
-  - LAN'daki hedef IP'ye tek tıkla SysForge komut seti veya hafif RPC ajanı yönlendirerek uzaktan onarım yapabilme.
-- [ ] **ISO / WIM İmaj Hazırlama Modülü:**
-  - SysForge optimizasyonları ve sürücüleri entegre edilmiş katılımsız (unattended) Windows kurulum medyası oluşturma.
+### 📍 Faz 3: Donanım Ekspertizi & Filo Dağıtımı (TAMAMLANDI ✅)
+- [x] **Hardware Drift / Değişiklik Raporlama (`Modules/SysForgeHardwareDriftCore.ps1`):**
+  - Cihaz servise geldiğinde alınan kriptografik SHA-256 donanım parmak izi ile servis çıkışını karşılaştırıp değişen/sökülen parçaları kırmızı alarm olarak işaretleme.
+  - Node.js `/api/hardware-drift/snapshot`, `/save-baseline`, `/compare` ve `/generate-report` API uç noktaları eklendi.
+  - Web kokpitine canlı SHA-256 parmak izi rozeti ve interaktif drift kontrol kartı yerleştirildi.
+- [x] **Ağdaki Diğer Bilgisayarlara Ajan Gönderme (Push Agent / LAN Filo Dağıtımı):**
+  - `/api/lan-agent/discover` ve `/api/lan-agent/dispatch` ile yerel ağdaki (LAN) diğer istemcileri otomatik keşfetme, Ping ve SysForge uzaktan sağlık taraması gönderme altyapısı kuruldu.
+- [x] **Microsoft Edge & OneDrive İsteğe Bağlı Temizlik / Debloat:**
+  - `SysForgeDebloatCore.ps1` ve kokpite tam temiz kaldırma (`remove-onedrive`), yeniden kurma (`restore-onedrive`) ve Edge arka plan kilitleri (`debloat-edge`) entegre edildi.
+### 📍 Faz 4: Katılımsız ISO / WIM İmaj Stüdyosu & Mobil HUD (TAMAMLANDI ✅)
+- [x] **ISO / WIM İmaj Hazırlama Modülü (`Modules/SysForgeIsoCore.ps1`):**
+  - Windows 11 TPM 2.0, SecureBoot, RAM ve CPU kontrollerini bypass eden `autounattend.xml` yanıt dosyası üretici.
+  - DISM WIM mount/unmount ve `SetupComplete.cmd` ilk açılış script enjeksiyon motoru.
+  - Node.js `/api/iso-builder/generate-xml`, `/mount`, `/unmount`, `/inject` API uç noktaları.
+  - Web kokpitine "SysForge Katılımsız (Unattended) ISO & WIM İmaj Stüdyosu" kartı entegrasyonu.
+- [x] **Web Kokpiti Mobil HUD Teması İnce Ayarları:**
+  - Küçük ekranlı akıllı telefonlar ve tabletler için responsive media query kuralları eklendi (`@media (max-width: 768px)` ve `480px`).
+  - Kart akışları tek sütuna dengelendi, dokunmatik buton paddingleri ve başlık ölçeklemeleri optimize edildi.

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 
 
@@ -4907,6 +4907,20 @@ a{color:var(--a);text-decoration:none;}
 
 
 @media(max-width:750px){.g4,.g3,.g2{grid-template-columns:1fr;}}
+@media(max-width:768px){
+  body { font-size: 13px; }
+  .pbar { flex-wrap: wrap !important; gap: 6px !important; }
+  .pbar .btn { flex: 1 1 calc(50% - 6px); font-size: 11px !important; padding: 6px 10px !important; }
+  .top-bar, .tb { flex-direction: column !important; align-items: stretch !important; gap: 8px !important; }
+  .ch { flex-direction: column !important; align-items: flex-start !important; gap: 6px !important; }
+  .hwd-health-row { grid-template-columns: 1fr !important; }
+  .card { padding: 12px !important; margin-bottom: 12px !important; }
+  .info-grid { font-size: 12px !important; }
+}
+@media(max-width:480px){
+  .pbar .btn { flex: 1 1 100% !important; }
+  .ph-welcome .pt { font-size: 18px !important; }
+}
 
 
 
@@ -90794,6 +90808,17 @@ html[data-color-mode] #sb .sbsec { color:var(--muted)!important; }
     <button class="btn bs" onclick="runPS('ipconfig')">📝 IPConfig / All</button>
     <button class="btn bs" onclick="runPS('netsh_reset')">🔄 Reset Winsock</button>
     <button class="btn bs" onclick="launch('network')">🔌 Network Connections</button>
+    <button class="btn bs" onclick="scanLanNodes()" style="color:#38bdf8; border-color:rgba(56,189,248,0.4)">📡 Ağdaki Cihazları Keşfet (LAN Fleet)</button>
+  </div>
+
+  <!-- LAN Fleet / Remote Push Agent Card -->
+  <div class="card glow" id="lanFleetCard" style="display:none; margin-bottom:16px; border:1px solid rgba(56,189,248,0.3); background:linear-gradient(135deg, rgba(15,23,42,0.95), rgba(30,41,59,0.85)); border-radius:12px; padding:16px;">
+    <div class="ch" style="display:flex; justify-content:space-between; align-items:center;">
+      <span style="font-size:14px; font-weight:800; color:#38bdf8; display:flex; align-items:center; gap:8px;">📡 SysForge LAN Filo & Push Agent Merkezi</span>
+      <span id="lanFleetCountBadge" style="font-size:10px; font-weight:bold; background:rgba(56,189,248,0.15); color:#38bdf8; border:1px solid rgba(56,189,248,0.3); padding:2px 8px; border-radius:12px;">0 Cihaz</span>
+    </div>
+    <div style="font-size:11px; color:var(--muted); margin-top:4px;">Yerel ağdaki (LAN) diğer istemcileri keşfedin, SysForge sanal sunucusu çalıştıran bilgisayarlarla eşleşin veya IP bazlı uzaktan sağlık/ping testi gönderin.</div>
+    <div id="lanFleetList" style="margin-top:12px; display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:10px;"></div>
   </div>
 
   <!-- Main 3x3 layout column container -->
@@ -128181,6 +128206,43 @@ html[data-color-mode] #sb .sbsec { color:var(--muted)!important; }
           </div>
         </div>
 
+        <!-- SysForge Unattended ISO & WIM Suite (Phase 4) -->
+        <div class="card glow" style="margin-bottom:16px; border-left: 3px solid #06b6d4; background: linear-gradient(135deg, rgba(6, 182, 212, 0.08) 0%, rgba(15, 23, 42, 0.6) 100%);">
+          <div class="ch" style="display:flex; justify-content:space-between; align-items:center;">
+            <span>📀 <strong style="color: #38bdf8;">SysForge Katılımsız (Unattended) ISO &amp; WIM İmaj Stüdyosu</strong> <span class="badge badge-info" style="margin-left:8px; font-size:10px;">TPM 2.0 / SecureBoot / RAM Bypass · 100% Offline</span></span>
+            <span class="badge" style="background:rgba(6,182,212,0.15); color:#38bdf8; border:1px solid rgba(6,182,212,0.3); font-size:11px;">Faz 4 🚀</span>
+          </div>
+          <div style="font-size:12px; color:var(--sub); margin-top:6px; line-height:1.5;">
+            Windows 11 TPM 2.0, SecureBoot, RAM ve CPU kontrollerini otomatik bypass eden <code style="color:#38bdf8;">autounattend.xml</code> yanıt dosyası üretir, yerel Yönetici (Admin) hesabı açar ve WIM imajlarına sürücü/debloat enjekte eder.
+          </div>
+
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:10px; margin-top:14px;">
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:8px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;">
+              <div>
+                <div style="font-weight:600; font-size:13px; color:#38bdf8; display:flex; align-items:center; gap:6px;">
+                  ⚡ 1-Tık autounattend.xml Yanıt Dosyası
+                </div>
+                <div style="font-size:11px; color:var(--muted); margin-top:4px;">TPM/RAM bypass, yerel SysForgeAdmin hesabı ve Türkçe Q klavye/bölge ayarlarını içeren dosya Masaüstüne oluşturulur.</div>
+              </div>
+              <button class="btn bp bsm" onclick="isoGenerateXml()" style="margin-top:10px; width:100%; background:linear-gradient(135deg,#06b6d4,#2563eb); border:none;">📄 Yanıt Dosyasını Oluştur (Masaüstü)</button>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:8px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;">
+              <div>
+                <div style="font-weight:600; font-size:13px; color:#34d399; display:flex; align-items:center; gap:6px;">
+                  🔧 WIM İmajına Sürücü &amp; Post-Setup Enjeksiyonu
+                </div>
+                <div style="font-size:11px; color:var(--muted); margin-top:4px;">DISM ile Windows kurulum medyasındaki <code style="color:#34d399">install.wim</code> imajını bağlar, ağ sürücülerini ve ilk açılış optimizasyonlarını entegre eder.</div>
+              </div>
+              <div style="display:flex; gap:8px; margin-top:10px;">
+                <button class="btn bs bsm" onclick="isoInjectSysForge()" style="flex:1;">💉 SysForge Enjekte Et</button>
+                <button class="btn bs bsm" onclick="isoMountWimDialog()" style="flex:1;">📂 WIM Bağla (Mount)</button>
+              </div>
+            </div>
+          </div>
+          <div id="isoStatusOutput" style="margin-top:12px; font-size:11px; display:none; background:rgba(6,182,212,0.08); border:1px solid rgba(6,182,212,0.3); border-radius:8px; padding:12px;"></div>
+        </div>
+
 
 
 
@@ -128406,6 +128468,13 @@ html[data-color-mode] #sb .sbsec { color:var(--muted)!important; }
 
 
               <button class="btn bs bsm" onclick="runRecovery('disable_widgets')" style="justify-content:flex-start">📰 Devre Dışı Bırak Widgets & MSN Feeds</button>
+              <button class="btn bs bsm" onclick="runDebloatOp('remove-onedrive')" style="justify-content:flex-start; color:#f87171">☁️ Kaldır Microsoft OneDrive (Clean Uninstall)</button>
+              <button class="btn bs bsm" onclick="runDebloatOp('restore-onedrive')" style="justify-content:flex-start">🔄 Yeniden Kur Microsoft OneDrive</button>
+              <button class="btn bs bsm" onclick="runDebloatOp('debloat-edge')" style="justify-content:flex-start; color:#38bdf8">🌐 Devre Dışı Bırak Edge Arka Plan & Telemetri</button>
+              <button class="btn bs bsm" onclick="runDebloatOp('disable-ai')" style="justify-content:flex-start">🛡️ Windows 11 Copilot & Recall AI Kalkanı</button>
+              <button class="btn bs bsm" onclick="runDebloatOp('wu-delay')" style="justify-content:flex-start">🚀 CTT Parity: 2-Yıl Windows Update Özellik Dondurma</button>
+              <button class="btn bs bsm" onclick="runDebloatOp('block-hosts')" style="justify-content:flex-start">🔒 Hosts Telemetri Kalkanı (0.0.0.0)</button>
+              <button class="btn bs bsm" onclick="runDebloatOp('apply-all-debloat')" style="justify-content:flex-start; background:rgba(0,255,136,0.12); color:#00ff88; border-color:rgba(0,255,136,0.3)">✨ 1-Tık Master Debloat (Hepsini Uygula)</button>
 
 
 
@@ -131745,6 +131814,31 @@ html[data-color-mode] #sb .sbsec { color:var(--muted)!important; }
             <button class="hwd-abtn pink" onclick="startDeadPixelCheck()">📺 Display Test</button>
             <button class="hwd-abtn" onclick="runRecovery('check_usb_speeds')">🔌 USB Speed</button>
             <button class="hwd-abtn more" onclick="hwdToggleMore()">+ More Tools</button>
+          </div>
+
+          <!-- HARDWARE DRIFT & HWID FINGERPRINT CARD -->
+          <div class="card glow" id="hwdDriftCard" style="border:1px solid rgba(0, 229, 255, 0.25); background:linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.85) 100%); border-radius:12px; padding:18px 22px; margin:6px 0 16px 0;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+              <div>
+                <div style="font-size:15px; font-weight:800; color:#38bdf8; display:flex; align-items:center; gap:10px;">
+                  <span>🛡️ Kriptografik HWID & Hardware Drift Kalkanı</span>
+                  <span id="hwdDriftStatusBadge" style="font-size:10px; font-weight:bold; background:rgba(56, 189, 248, 0.15); color:#38bdf8; border:1px solid rgba(56, 189, 248, 0.3); padding:3px 10px; border-radius:12px;">HAZIR</span>
+                </div>
+                <div style="font-size:11px; color:var(--muted); margin-top:4px;">
+                  SHA-256 donanım parmak izi ile servis öncesi/sonrası takılan veya sökülen RAM, Disk, GPU ve Anakart parçalarını anında tespit edin.
+                </div>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="hwd-abtn" onclick="hwdSaveBaseline()" style="background:rgba(16, 185, 129, 0.12); color:#10b981; border-color:rgba(16, 185, 129, 0.3); font-weight:bold;">💾 Referans Kaydet</button>
+                <button class="hwd-abtn primary" onclick="hwdCheckDrift()" style="font-weight:bold;">🔍 Drift Kontrol Et</button>
+                <button class="hwd-abtn" onclick="hwdGenerateReport()" style="background:rgba(245, 158, 11, 0.12); color:#f59e0b; border-color:rgba(245, 158, 11, 0.3); font-weight:bold;">📄 Ekspertiz Raporu Aç</button>
+              </div>
+            </div>
+            <div style="margin-top:12px; background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center; font-family:Consolas, monospace; font-size:11px;">
+              <span style="color:var(--muted)">Global SHA-256 HWID:</span>
+              <span id="hwdSha256Badge" style="color:#38bdf8; font-weight:bold; letter-spacing:0.5px;">Taranıyor...</span>
+            </div>
+            <div id="hwdDriftDiffs" style="margin-top:12px; font-size:11px; display:none; background:rgba(239, 68, 68, 0.08); border:1px solid rgba(239, 68, 68, 0.3); border-radius:8px; padding:12px;"></div>
           </div>
 
           <!-- HEALTH CARDS -->
@@ -413619,6 +413713,238 @@ if (typeof window !== 'undefined') {
   window.doSvcEylem = window.doSvcEylem || window.doSvcAction;
   window.shClearErrors = window.shClearErrors || window.shClearHatas;
   window.shClearHatas = window.shClearHatas || window.shClearErrors;
+}
+
+// === SysForge Phase 3: Hardware Drift & Debloat & LAN Fleet Engine ===
+window.runDebloatOp = async function(op) {
+  try {
+    console.log(`[SysForge Debloat] Running op: ${op}`);
+    const res = await fetch('/api/run-op', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ op: op })
+    });
+    const data = await res.json();
+    alert(`[SysForge] İşlem tamamlandı: ${op}\n${data.output || data.message || 'Başarılı'}`);
+  } catch(e) {
+    alert(`[SysForge] İşlem hatası: ${e.message}`);
+  }
+};
+
+window.hwdLoadSnapshot = async function() {
+  try {
+    const badge = document.getElementById('hwdSha256Badge');
+    if (!badge) return;
+    const res = await fetch('/api/hardware-drift/snapshot');
+    const data = await res.json();
+    if (data.GlobalHardwareHash) {
+      badge.textContent = data.GlobalHardwareHash;
+      badge.title = `Tarih: ${data.Timestamp} | Cihaz: ${data.MachineName}`;
+    }
+  } catch(e) {}
+};
+
+window.hwdSaveBaseline = async function() {
+  try {
+    const stBadge = document.getElementById('hwdDriftStatusBadge');
+    if (stBadge) { stBadge.textContent = 'KAYDEDİLİYOR...'; stBadge.style.color = '#ffd700'; }
+    const res = await fetch('/api/hardware-drift/save-baseline', { method: 'POST' });
+    const data = await res.json();
+    if (stBadge) {
+      stBadge.textContent = 'REFERANS SAKLANDI';
+      stBadge.style.color = '#10b981';
+      stBadge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+    }
+    alert(`✅ İlk donanım referansı başarıyla kaydedildi!\n\nSHA-256 Hash: ${data.hardwareHash}\nDosya: ${data.baselinePath}`);
+    window.hwdLoadSnapshot();
+  } catch(e) {
+    alert(`Referans kaydetme hatası: ${e.message}`);
+  }
+};
+
+window.hwdCheckDrift = async function() {
+  try {
+    const stBadge = document.getElementById('hwdDriftStatusBadge');
+    const diffContainer = document.getElementById('hwdDriftDiffs');
+    if (stBadge) { stBadge.textContent = 'TARANIYOR...'; stBadge.style.color = '#38bdf8'; }
+
+    const res = await fetch('/api/hardware-drift/compare');
+    const data = await res.json();
+
+    if (data.status === 'NO_BASELINE') {
+      alert(data.message || 'İlk referans donanım kaydı bulunamadı. Lütfen önce referansı kaydedin.');
+      if (stBadge) { stBadge.textContent = 'REFERANS YOK'; stBadge.style.color = '#f59e0b'; }
+      return;
+    }
+
+    if (data.IsMatch || data.DifferenceCount === 0) {
+      if (stBadge) {
+        stBadge.textContent = 'ORİJİNAL DONANIM DOĞRULANDI';
+        stBadge.style.color = '#10b981';
+        stBadge.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+      }
+      if (diffContainer) {
+        diffContainer.style.display = 'block';
+        diffContainer.style.background = 'rgba(16, 185, 129, 0.08)';
+        diffContainer.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+        diffContainer.innerHTML = `<span style="color:#10b981;font-weight:bold;">🛡️ Mükemmel Eşleşme:</span> Tüm anakart, RAM, disk ve GPU seri numaraları referans ile birebir uyuşuyor. Donanım bütünlüğü tamdır.`;
+      }
+    } else {
+      if (stBadge) {
+        stBadge.textContent = `🚨 KRİTİK UYARI (${data.DifferenceCount} FARK)`;
+        stBadge.style.color = '#ef4444';
+        stBadge.style.borderColor = 'rgba(239, 68, 68, 0.5)';
+      }
+      if (diffContainer) {
+        diffContainer.style.display = 'block';
+        diffContainer.style.background = 'rgba(239, 68, 68, 0.08)';
+        diffContainer.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+        let diffHtml = `<b style="color:#ef4444;">🚨 Dikkat: Cihazda parça değişimi veya sökülme algılandı!</b><ul style="margin:6px 0 0 16px;padding:0;">`;
+        data.Differences.forEach(d => {
+          diffHtml += `<li><b>${d.Component}:</b> ${d.Description} (<span style="color:#f87171">${d.OldValue}</span> ➔ <span style="color:#38bdf8">${d.NewValue}</span>)</li>`;
+        });
+        diffHtml += `</ul>`;
+        diffContainer.innerHTML = diffHtml;
+      }
+    }
+  } catch(e) {
+    alert(`Drift kontrolü sırasında hata: ${e.message}`);
+  }
+};
+
+window.hwdGenerateReport = async function() {
+  try {
+    const res = await fetch('/api/hardware-drift/generate-report', { method: 'POST' });
+    const data = await res.json();
+    if (data.status === 'OK') {
+      alert(`📄 Ekspertiz raporu oluşturuldu:\n${data.reportPath}`);
+    }
+  } catch(e) {
+    alert(`Rapor oluşturma hatası: ${e.message}`);
+  }
+};
+
+window.scanLanNodes = async function() {
+  try {
+    const card = document.getElementById('lanFleetCard');
+    const list = document.getElementById('lanFleetList');
+    const badge = document.getElementById('lanFleetCountBadge');
+    if (card) card.style.display = 'block';
+    if (list) list.innerHTML = '<div style="color:var(--muted)">Ağdaki cihazlar taranıyor...</div>';
+
+    const res = await fetch('/api/lan-agent/discover');
+    const data = await res.json();
+    const nodes = data.discoveredNodes || [];
+
+    if (badge) badge.textContent = `${nodes.length} Cihaz`;
+    if (!list) return;
+
+    if (nodes.length === 0) {
+      list.innerHTML = '<div style="color:var(--muted)">Ağda henüz yanıt veren cihaz bulunamadı.</div>';
+      return;
+    }
+
+    list.innerHTML = nodes.map(n => `
+      <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:10px; display:flex; flex-direction:column; gap:6px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <b style="color:#fff; font-family:var(--fhud);">${n.IPAddress}</b>
+          <span style="font-size:10px; color:var(--muted);">${n.LinkLayerAddress || ''}</span>
+        </div>
+        <div style="display:flex; gap:6px; margin-top:4px;">
+          <button class="btn bs bsm" onclick="dispatchLanCommand('${n.IPAddress}', 'ping')" style="font-size:10px; padding:3px 8px;">Ping Testi</button>
+          <button class="btn bs bsm" onclick="dispatchLanCommand('${n.IPAddress}', 'probe')" style="font-size:10px; padding:3px 8px; color:#38bdf8;">SysForge Tara</button>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    alert(`Ağ tarama hatası: ${e.message}`);
+  }
+};
+
+window.dispatchLanCommand = async function(ip, action) {
+  try {
+    const res = await fetch('/api/lan-agent/dispatch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ targetIp: ip, action: action })
+    });
+    const data = await res.json();
+    if (action === 'ping') {
+      alert(`[Ping ${ip}] ${data.reachable ? '✅ Cihaz Yanıt Veriyor (Reachable)' : '❌ Cihaza Ulaşılamadı'}`);
+    } else {
+      alert(`[SysForge Probe ${ip}] ${data.nodeOnline ? '✅ SysForge Sanal Sunucusu Aktif!' : 'ℹ️ SysForge sunucusu yanıt vermedi'}`);
+    }
+  } catch(e) {
+    alert(`LAN komutu hatası: ${e.message}`);
+  }
+};
+
+window.isoGenerateXml = async function() {
+  try {
+    const outBox = document.getElementById('isoStatusOutput');
+    if (outBox) { outBox.style.display = 'block'; outBox.innerHTML = '<span style="color:#38bdf8;">autounattend.xml oluşturuluyor...</span>'; }
+    const res = await fetch('/api/iso-builder/generate-xml', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: 'SysForgeAdmin' })
+    });
+    const data = await res.json();
+    if (outBox) {
+      outBox.style.display = 'block';
+      outBox.innerHTML = `<b style="color:#10b981;">✅ Başarılı:</b> ${data.Message || 'Yanıt dosyası oluşturuldu.'}<br><span style="color:var(--muted)">Dosya Yolu:</span> <code style="color:#38bdf8">${data.Path || ''}</code><br><span style="color:var(--muted)">Aktif Bypasslar:</span> ${(data.Bypass || []).join(', ')}`;
+    }
+    alert(`✅ autounattend.xml dosyası oluşturuldu:\n${data.Path}`);
+  } catch(e) {
+    alert(`Hata: ${e.message}`);
+  }
+};
+
+window.isoInjectSysForge = async function() {
+  const mountDir = prompt('Lütfen bağlı WIM (Mount) klasör yolunu giriniz:', 'C:\\SysForge_ISO_Workspace\\Mount');
+  if (!mountDir) return;
+  try {
+    const outBox = document.getElementById('isoStatusOutput');
+    if (outBox) { outBox.style.display = 'block'; outBox.innerHTML = '<span style="color:#38bdf8;">SysForge ilk açılış scriptleri enjekte ediliyor...</span>'; }
+    const res = await fetch('/api/iso-builder/inject', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mountDir: mountDir })
+    });
+    const data = await res.json();
+    if (outBox) {
+      outBox.innerHTML = `<b style="color:#10b981;">✅ Enjeksiyon Tamamlandı:</b> SetupComplete.cmd imaja yerleştirildi.`;
+    }
+    alert('SetupComplete.cmd başarıyla imaj içerisine yerleştirildi.');
+  } catch(e) {
+    alert(`Hata: ${e.message}`);
+  }
+};
+
+window.isoMountWimDialog = async function() {
+  const wimPath = prompt('Bağlanacak install.wim dosyasının tam yolunu giriniz:');
+  if (!wimPath) return;
+  try {
+    const outBox = document.getElementById('isoStatusOutput');
+    if (outBox) { outBox.style.display = 'block'; outBox.innerHTML = '<span style="color:#38bdf8;">WIM imajı DISM ile bağlanıyor (bu işlem 1-2 dakika sürebilir)...</span>'; }
+    const res = await fetch('/api/iso-builder/mount', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ wimPath: wimPath, index: 1 })
+    });
+    const data = await res.json();
+    if (outBox) {
+      outBox.innerHTML = `<b style="color:#10b981;">✅ WIM Başarıyla Bağlandı:</b> ${data.MountDir || ''}`;
+    }
+  } catch(e) {
+    alert(`Bağlama hatası: ${e.message}`);
+  }
+};
+
+// Auto-load hardware snapshot on page ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => { window.hwdLoadSnapshot(); });
+} else {
+  window.hwdLoadSnapshot();
 }
 </script>
 </body>
