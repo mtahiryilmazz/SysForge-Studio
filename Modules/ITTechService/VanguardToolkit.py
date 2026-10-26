@@ -305,8 +305,8 @@ class BuilderTab(QFrame):
         leg_info.setStyleSheet("font-weight: bold; color: #f9e2af;")
         legacy_layout.addWidget(leg_info)
         
-        py_row = QHBoxLayout()
-        self.inp_py38 = QLineEdit("C:/Users/BT/AppData/Local/Programs/Python/Python38/python.exe")
+        default_py = os.path.expandvars(r"%LOCALAPPDATA%\Programs\Python\Python38\python.exe")
+        self.inp_py38 = QLineEdit(default_py if os.path.exists(default_py) else "")
         self.inp_py38.setPlaceholderText("Python 3.8.x executable yolu (örn: C:\\Python38\\python.exe)")
         self.inp_py38.setStyleSheet("background: #1e1e2e; color: #cdd6f4; border: 1px solid #45475a; padding: 4px;")
         

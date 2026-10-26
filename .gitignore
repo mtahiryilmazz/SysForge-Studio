@@ -59,3 +59,23 @@ Archive/
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# --- Redundant AI Tool Exports & Debris ---
+.augment/
+.claude/
+.codebuddy/
+.codewhale/
+.continue/
+.cursor/
+.factory/
+.gemini/
+.kilocode/
+.kiro/
+.opencode/
+.qoder/
+.roo/
+.trae/
+.warp/
+.windsurf/
+.github/prompts/
+

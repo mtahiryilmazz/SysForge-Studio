@@ -3,7 +3,8 @@
   <Networking>Default</Networking>
   <MappedFolders>
     <MappedFolder>
-      <HostFolder>C:\Users\BT\Documents\Github\SysForge-Studio</HostFolder>
+      <!-- Replace with local repo path or run Launch-Sandbox.cmd for automatic resolution -->
+      <HostFolder>C:\SysForgeStudio</HostFolder>
       <SandboxFolder>C:\Users\WDAGUtilityAccount\Desktop\SysForgeStudio</SandboxFolder>
       <ReadOnly>false</ReadOnly>
     </MappedFolder>

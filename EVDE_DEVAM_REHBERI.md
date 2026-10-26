@@ -16,7 +16,7 @@ Bu belge; ofiste gerçekleştirilen kapsamlı tersine mühendislik analizi, çev
    - Eski PowerShell `HttpListener`'ın `localhost` kısıtı ve thread kilitlenmesi sorunları aşıldı.
    - Harici npm paketi gerektirmeyen saf Node.js sunucusu **`0.0.0.0:9999`** dinleyecek şekilde yazıldı.
    - Yerel ağdaki Ethernet ve Wi-Fi IPv4 adreslerini otomatik algılar. Ağdaki cep telefonları, tabletler ve teknisyen laptopları web arayüzüne tam yetkiyle erişebilir.
-   - Windows Güvenlik Duvarı'nda 9999 TCP kuralını açan [`Launch-NodeServer.cmd`](file:///c:/Users/BT/Documents/Github/SysForge-Studio/Launch-NodeServer.cmd) hazırlandı.
+   - Windows Güvenlik Duvarı'nda 9999 TCP kuralını açan [`Launch-NodeServer.cmd`](Launch-NodeServer.cmd) hazırlandı.
 4. **Çevrimdışı Kurumsal Debloat & Gizlilik Çekirdeği (`Modules/SysForgeDebloatCore.ps1`):**
    - %100 çevrimdışı ve sıfır dış bağımlılıkla çalışan debloat motoru yazıldı:
      - Windows 11 Copilot & Recall AI kalkanı (`disable-ai`)
@@ -30,12 +30,12 @@ Bu belge; ofiste gerçekleştirilen kapsamlı tersine mühendislik analizi, çev
    - Web kokpitine **"SysForge Enterprise Debloat & Privacy Suite"** yönetim kartı eklendi.
    - `dashboard.html` ve `Modules/dashboard.html` birebir senkronize edildi.
 6. **Masaüstü WPF Entegrasyonu & v6.1.0 Derlemesi:**
-   - [`ToolkitEngine.cs`](file:///c:/Users/BT/Documents/Github/SysForge-Studio/SysForgeStudio/Services/ToolkitEngine.cs) güncellenerek Node sunucusunu otomatik tespit edip başlatması ve durdurulduğunda süreçleri temizlemesi sağlandı.
+   - [`ToolkitEngine.cs`](SysForgeStudio/Services/ToolkitEngine.cs) güncellenerek Node sunucusunu otomatik tespit edip başlatması ve durdurulduğunda süreçleri temizlemesi sağlandı.
    - Sürüm numarası `v6.1.0.0`'a yükseltildi.
    - `dotnet build -c Release` ve `-c Debug` 0 hata ile derlendi.
-   - Kök dizine tek tıkla açan [`Launch-SysForgeStudio.cmd`](file:///c:/Users/BT/Documents/Github/SysForge-Studio/Launch-SysForgeStudio.cmd) yerleştirildi.
+   - Kök dizine tek tıkla açan [`Launch-SysForgeStudio.cmd`](Launch-SysForgeStudio.cmd) yerleştirildi.
 7. **WinoxIT Projesinin Ayrılması:**
-   - Kullanıcı talimatı doğrultusunda WinoxIT bağımsız bir proje olarak `C:\Users\BT\Documents\Github\WinoxIT` dizinine taşındı ve kendi yol haritası oluşturuldu. Bu depoda sadece SysForge Studio geliştirilmektedir.
+   - Kullanıcı talimatı doğrultusunda WinoxIT bağımsız bir proje olarak `../WinoxIT` dizinine taşındı ve kendi yol haritası oluşturuldu. Bu depoda sadece SysForge Studio geliştirilmektedir.
 
 ---
 
@@ -43,15 +43,15 @@ Bu belge; ofiste gerçekleştirilen kapsamlı tersine mühendislik analizi, çev
 
 | Dosya | Açıklama |
 | :--- | :--- |
-| [`ROADMAP.md`](file:///c:/Users/BT/Documents/Github/SysForge-Studio/ROADMAP.md) | Detaylı tersine mühendislik raporu, pazar matrisi ve tamamlanan/kalan yol haritası. |
-| [`server.js`](file:///c:/Users/BT/Documents/Github/SysForge-Studio/server.js) | Node.js Sanal Sunucu & LAN Ağ Geçidi (0.0.0.0:9999). |
-| [`Modules/SysForgeDebloatCore.ps1`](file:///c:/Users/BT/Documents/Github/SysForge-Studio/Modules/SysForgeDebloatCore.ps1) | 100% Çevrimdışı PowerShell Debloat ve Gizlilik Çekirdeği. |
-| [`dashboard.html`](file:///c:/Users/BT/Documents/Github/SysForge-Studio/dashboard.html) | Ana Web Kokpiti (TR/EN dil seçici & Debloat Suite dahil). |
-| [`Modules/dashboard.html`](file:///c:/Users/BT/Documents/Github/SysForge-Studio/Modules/dashboard.html) | Web Kokpitinin yedek/modül içi kopyası (sürekli ana kopya ile eşit tutulur). |
-| [`Launch-SysForgeStudio.cmd`](file:///c:/Users/BT/Documents/Github/SysForge-Studio/Launch-SysForgeStudio.cmd) | WPF uygulamasını Yönetici olarak Release sürümünden açan başlatıcı. |
-| [`Launch-NodeServer.cmd`](file:///c:/Users/BT/Documents/Github/SysForge-Studio/Launch-NodeServer.cmd) | Güvenlik duvarını yapılandırıp Node sunucusunu başlatan konsol. |
-| [`Launch-WebDashboard.cmd`](file:///c:/Users/BT/Documents/Github/SysForge-Studio/Launch-WebDashboard.cmd) | Web konsolunu başlatan akıllı başlatıcı (Node varsa Node'u, yoksa PS köprüsünü açar). |
-| [`SysForgeStudio/bin/Release/net48/SysForgeStudio.exe`](file:///c:/Users/BT/Documents/Github/SysForge-Studio/SysForgeStudio/bin/Release/net48/SysForgeStudio.exe) | Derlenmiş en güncel kararlı Release çalıştırılabilir dosyası. |
+| [`ROADMAP.md`](ROADMAP.md) | Detaylı tersine mühendislik raporu, pazar matrisi ve tamamlanan/kalan yol haritası. |
+| [`server.js`](server.js) | Node.js Sanal Sunucu & LAN Ağ Geçidi (0.0.0.0:9999). |
+| [`Modules/SysForgeDebloatCore.ps1`](Modules/SysForgeDebloatCore.ps1) | 100% Çevrimdışı PowerShell Debloat ve Gizlilik Çekirdeği. |
+| [`dashboard.html`](dashboard.html) | Ana Web Kokpiti (TR/EN dil seçici & Debloat Suite dahil). |
+| [`Modules/dashboard.html`](Modules/dashboard.html) | Web Kokpitinin yedek/modül içi kopyası (sürekli ana kopya ile eşit tutulur). |
+| [`Launch-SysForgeStudio.cmd`](Launch-SysForgeStudio.cmd) | WPF uygulamasını Yönetici olarak Release sürümünden açan başlatıcı. |
+| [`Launch-NodeServer.cmd`](Launch-NodeServer.cmd) | Güvenlik duvarını yapılandırıp Node sunucusunu başlatan konsol. |
+| [`Launch-WebDashboard.cmd`](Launch-WebDashboard.cmd) | Web konsolunu başlatan akıllı başlatıcı (Node varsa Node'u, yoksa PS köprüsünü açar). |
+| [`SysForgeStudio/bin/Release/net48/SysForgeStudio.exe`](SysForgeStudio/bin/Release/net48/SysForgeStudio.exe) | Derlenmiş en güncel kararlı Release çalıştırılabilir dosyası. |
 
 ---
 
@@ -85,7 +85,7 @@ komutunu vermeniz yeterlidir. `dashboard.html`, `server.js` ve `Modules\` klasö
 ## 🎯 4. Evde Tamamlanan Hedefler (Faz 3 & Faz 4 ✅)
 
 1. **Hardware Drift (Donanım Değişiklik Dedektörü) Tamamlandı ✅:**
-   - [`Modules/SysForgeHardwareDriftCore.ps1`](file:///c:/Users/YILMAZ/Documents/GitHub/SysForge-Studio/Modules/SysForgeHardwareDriftCore.ps1) geliştirildi.
+   - [`Modules/SysForgeHardwareDriftCore.ps1`](Modules/SysForgeHardwareDriftCore.ps1) geliştirildi.
    - Bilgisayarın anakart, BIOS UUID, CPU ID, RAM yuvaları ve seri numaraları, Disk seri numaraları, GPU ve MAC adreslerinden kriptografik SHA-256 donanım parmak izi üretilir.
    - İlk durum (`save-baseline`) kaydedilir, sonraki kontrollerde (`compare`) değişen veya sökülen parçalar saniyeler içinde tespit edilir ve kırmızı alarm verilir.
    - HTML ekspertiz raporu (`generate-report`) oluşturulur.
@@ -94,10 +94,10 @@ komutunu vermeniz yeterlidir. `dashboard.html`, `server.js` ve `Modules\` klasö
    - `/api/lan-agent/discover` ve `/api/lan-agent/dispatch` API'leri yazıldı.
    - Kokpitte Ağ Merkezi altına "Ağdaki Cihazları Keşfet (LAN Fleet)" paneli eklendi; yerel ağdaki IP'lere tek tıkla Ping testi veya uzaktan SysForge sağlık taraması yapılabilir.
 3. **Edge & OneDrive İsteğe Bağlı Temizlik Tamamlandı ✅:**
-   - [`Modules/SysForgeDebloatCore.ps1`](file:///c:/Users/YILMAZ/Documents/GitHub/SysForge-Studio/Modules/SysForgeDebloatCore.ps1) içerisine `remove-onedrive`, `restore-onedrive` ve `debloat-edge` işlevleri eklendi.
+   - [`Modules/SysForgeDebloatCore.ps1`](Modules/SysForgeDebloatCore.ps1) içerisine `remove-onedrive`, `restore-onedrive` ve `debloat-edge` işlevleri eklendi.
    - Web kokpitindeki Debloat Suite içerisine bu işlemler tek tık butonları olarak yerleştirildi.
 4. **Katılımsız (Unattended) ISO / WIM İmaj Hazırlama Modülü Tamamlandı ✅:**
-   - [`Modules/SysForgeIsoCore.ps1`](file:///c:/Users/YILMAZ/Documents/GitHub/SysForge-Studio/Modules/SysForgeIsoCore.ps1) yazıldı.
+   - [`Modules/SysForgeIsoCore.ps1`](Modules/SysForgeIsoCore.ps1) yazıldı.
    - Windows 11 TPM 2.0, SecureBoot, RAM ve CPU kontrollerini bypass eden `autounattend.xml` yanıt dosyası üretici eklendi.
    - DISM WIM mount/unmount ve `SetupComplete.cmd` ilk açılış script enjeksiyon motoru entegre edildi.
    - `server.js` API uç noktaları (`/api/iso-builder/generate-xml`, `/mount`, `/unmount`, `/inject`) ve web kokpitine interaktif yönetim kartı yerleştirildi.

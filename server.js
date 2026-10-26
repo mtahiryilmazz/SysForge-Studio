@@ -197,13 +197,34 @@ function serveStaticFile(req, res, pathname) {
     : pathname.replace(/^\/+/, '');
 
   // Protect against directory traversal attacks
-  const normalizedPath = path.normalize(relativePath).replace(/^(\.\.[\/\\])+/, '');
-  const filePath = path.join(ROOT_DIR, normalizedPath);
+  const resolvedPath = path.resolve(ROOT_DIR, relativePath);
+  if (!resolvedPath.startsWith(ROOT_DIR)) {
+    res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('403 Forbidden: Access denied');
+    return;
+  }
+
+  // Prevent serving hidden files or sensitive files
+  const pathParts = relativePath.split(/[/\\]/);
+  const ext = path.extname(resolvedPath).toLowerCase();
+  const blockedExts = ['.key', '.token', '.env', '.pfx', '.cer', '.db', '.log', '.cs', '.csproj', '.sln', '.suo'];
+  if (pathParts.some(p => p.startsWith('.')) || blockedExts.includes(ext)) {
+    res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('403 Forbidden: Access to sensitive or system files is restricted');
+    return;
+  }
+
+  const filePath = resolvedPath;
 
   fs.stat(filePath, (err, stats) => {
     if (err || !stats.isFile()) {
       // Fallback check in Modules folder
-      const fallbackPath = path.join(ROOT_DIR, 'Modules', normalizedPath);
+      const fallbackPath = path.resolve(ROOT_DIR, 'Modules', relativePath);
+      if (!fallbackPath.startsWith(path.join(ROOT_DIR, 'Modules'))) {
+        res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+        res.end('403 Forbidden');
+        return;
+      }
       fs.stat(fallbackPath, (fbErr, fbStats) => {
         if (fbErr || !fbStats.isFile()) {
           res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });

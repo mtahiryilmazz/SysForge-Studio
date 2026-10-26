@@ -1,4 +1,4 @@
-﻿{
+{
     "startupCount":  8,
     "services":  [
                      {
@@ -1727,10 +1727,10 @@
     "timestamp":  "2026-06-03T16:10:03.7433837+05:30",
     "startup":  [
                     {
-                        "path":  "\"C:\\Users\\Ansh\\AppData\\Local\\Microsoft\\OneDrive\\OneDrive.exe\" /background",
+                        "path":  "\"%USERPROFILE%\\AppData\\Local\\Microsoft\\OneDrive\\OneDrive.exe\" /background",
                         "name":  "OneDrive",
                         "location":  {
-                                         "Value":  "\"C:\\Users\\Ansh\\AppData\\Local\\Microsoft\\OneDrive\\OneDrive.exe\" /background",
+                                         "Value":  "\"%USERPROFILE%\\AppData\\Local\\Microsoft\\OneDrive\\OneDrive.exe\" /background",
                                          "MemberType":  8,
                                          "IsSettable":  true,
                                          "IsGettable":  true,
@@ -1755,10 +1755,10 @@
                         "enabled":  true
                     },
                     {
-                        "path":  "\"C:\\Users\\Ansh\\AppData\\Local\\Wondershare\\Wondershare Filmora\\15.5.3.19727\\FilmoraTray.exe\" --autostart",
+                        "path":  "\"%USERPROFILE%\\AppData\\Local\\Wondershare\\Wondershare Filmora\\15.5.3.19727\\FilmoraTray.exe\" --autostart",
                         "name":  "FilmoraTray",
                         "location":  {
-                                         "Value":  "\"C:\\Users\\Ansh\\AppData\\Local\\Wondershare\\Wondershare Filmora\\15.5.3.19727\\FilmoraTray.exe\" --autostart",
+                                         "Value":  "\"%USERPROFILE%\\AppData\\Local\\Wondershare\\Wondershare Filmora\\15.5.3.19727\\FilmoraTray.exe\" --autostart",
                                          "MemberType":  8,
                                          "IsSettable":  true,
                                          "IsGettable":  true,

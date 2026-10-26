@@ -13,7 +13,7 @@ from modules.tickets import TicketsModule
 from modules.inventory import InventoryModule
 
 app = Flask(__name__)
-app.secret_key = 'it_service_super_secret_key'
+app.secret_key = os.environ.get('FLASK_SECRET_KEY') or os.urandom(24)
 
 def get_db():
     db = DatabaseConnection()
