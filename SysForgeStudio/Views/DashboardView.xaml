@@ -20,7 +20,7 @@
                         <DockPanel LastChildFill="False" Margin="0,0,0,6">
                             <TextBlock DockPanel.Dock="Left" Text="⚡ SysForge Studio" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource PtTextPrimary}" TextWrapping="Wrap" Margin="0,0,10,4"/>
                             <Border DockPanel.Dock="Left" Style="{StaticResource PtBadge}" VerticalAlignment="Center" Margin="0,0,0,4">
-                                <TextBlock Text="v6.0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource PtAccent}"/>
+                                <TextBlock Text="v6.2.0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource PtAccent}"/>
                             </Border>
                         </DockPanel>
                         <TextBlock Text="Kurumsal BT, donanım envanteri, yazdırma altyapısı ve sistem mühendisliği konsolu" FontSize="12.5" Foreground="{DynamicResource PtTextSecondary}" TextWrapping="Wrap"/>

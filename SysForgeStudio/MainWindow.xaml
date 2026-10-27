@@ -106,7 +106,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="SysForge Studio v6.0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource PtTextSecondary}"/>
+                            <TextBlock Text="SysForge Studio v6.2.0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource PtTextSecondary}"/>
                             <TextBlock Text="Windows 11 / 10 / Server" FontSize="10" Foreground="{DynamicResource PtTextMuted}"/>
                         </StackPanel>
                         <Border Grid.Column="1" Style="{StaticResource PtBadge}">

@@ -13,9 +13,9 @@
     <ApplicationTitle>SysForge Studio - Enterprise IT &amp; Hardware Suite</ApplicationTitle>
     <Company>SysForge Enterprise IT Suite</Company>
     <Product>SysForge Studio</Product>
-    <Version>6.1.0</Version>
-    <FileVersion>6.1.0.0</FileVersion>
-    <AssemblyVersion>6.1.0.0</AssemblyVersion>
+    <Version>6.2.0</Version>
+    <FileVersion>6.2.0.0</FileVersion>
+    <AssemblyVersion>6.2.0.0</AssemblyVersion>
     <ApplicationIcon>Assets\app_icon.ico</ApplicationIcon>
     <Platforms>AnyCPU</Platforms>
     <PlatformTarget>AnyCPU</PlatformTarget>

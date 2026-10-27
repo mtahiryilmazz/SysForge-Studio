@@ -267,7 +267,7 @@ function handleApi(req, res, pathname) {
       sendJson(res, 200, {
         status: 'ONLINE',
         mode: 'Node.js Virtual Server',
-        server: 'SysForge Studio Virtual LAN Host v6.0',
+        server: 'SysForge Studio Virtual LAN Host v6.2.0',
         port: PORT,
         uptimeSeconds: Math.floor((Date.now() - START_TIME) / 1000),
         isAdmin: isAdmin,
