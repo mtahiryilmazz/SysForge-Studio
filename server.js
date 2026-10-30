@@ -4,7 +4,8 @@
  * ═══════════════════════════════════════════════════════════════════════════
  * 
  * Features:
- *  - Listens on 0.0.0.0:9999 (Localhost & all LAN Network Interfaces)
+ *  - Listens on 127.0.0.1:9999 by default (set HOST=0.0.0.0 to open to the LAN)
+ *  - Token-gated access: all requests require the token from Config/webserver-token.txt
  *  - High-concurrency async I/O: supports multiple technicians/devices across LAN
  *  - Zero external npm dependencies (runs natively on standard Node.js runtime)
  *  - Auto-discovers local IPv4 addresses (Wi-Fi, Ethernet) & logs LAN URLs
@@ -22,10 +23,56 @@ const os = require('os');
 const { spawn, exec } = require('child_process');
 const url = require('url');
 
+const crypto = require('crypto');
+
 const PORT = parseInt(process.env.PORT || '9999', 10);
-const HOST = '0.0.0.0';
+// Varsayılan sadece localhost. LAN erişimi için: HOST=0.0.0.0 node server.js
+const HOST = process.env.HOST || '127.0.0.1';
 const ROOT_DIR = __dirname;
 const START_TIME = Date.now();
+
+// --- Erişim token'ı: ilk açılışta üretilir, Config/webserver-token.txt'e yazılır (gitignore'lu) ---
+const TOKEN_FILE = path.join(ROOT_DIR, 'Config', 'webserver-token.txt');
+let ACCESS_TOKEN;
+try {
+  ACCESS_TOKEN = fs.readFileSync(TOKEN_FILE, 'utf8').trim();
+  if (!ACCESS_TOKEN) throw new Error('empty');
+} catch (e) {
+  ACCESS_TOKEN = crypto.randomBytes(24).toString('hex');
+  fs.mkdirSync(path.dirname(TOKEN_FILE), { recursive: true });
+  fs.writeFileSync(TOKEN_FILE, ACCESS_TOKEN, 'utf8');
+}
+
+// Hassas uç noktalar varsayılan kapalı. Wi-Fi şifrelerini LAN'da açmak için: SYSTFORGE_ENABLE_WIFI=1
+const WIFI_API_ENABLED = process.env.SYSTFORGE_ENABLE_WIFI === '1';
+
+function isAuthorized(req) {
+  const auth = req.headers.authorization || '';
+  if (auth === `Bearer ${ACCESS_TOKEN}`) return true;
+  const cookies = String(req.headers.cookie || '');
+  if (cookies.split(/;\s*/).some(c => c === `sysforge_token=${ACCESS_TOKEN}`)) return true;
+  const q = new URL(req.url, 'http://localhost').searchParams.get('token');
+  return q === ACCESS_TOKEN;
+}
+
+function sendUnauthorized(res) {
+  sendJson(res, 401, { error: 'Yetkisiz. Erişim token\'ı gerekli.' });
+}
+
+// Statik panel için basit token giriş sayfası; doğrulanınca çerez set edip dashboard'a döner
+function serveLoginPage(res) {
+  res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+  res.end(`<!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><title>SysForge Studio — Giriş</title>
+<style>body{font-family:Segoe UI,sans-serif;background:#202020;color:#fff;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}
+.card{background:#262626;padding:32px;border-radius:12px;border:1px solid #333;width:340px}
+input{width:100%;padding:10px;margin:12px 0;background:#1c1c1c;color:#fff;border:1px solid #383838;border-radius:6px;box-sizing:border-box}
+button{width:100%;padding:10px;background:#0078d4;color:#fff;border:0;border-radius:6px;cursor:pointer;font-weight:600}</style></head>
+<body><div class="card"><h2>⚡ SysForge Studio</h2><p>Erişim token'ını girin.<br><small>Kaynak: Config\\webserver-token.txt</small></p>
+<input id="t" type="password" placeholder="Token" onkeydown="if(event.key==='Enter')go()">
+<button onclick="go()">Giriş</button><p id="err" style="color:#dc3545"></p></div>
+<script>function go(){const t=document.getElementById('t').value.trim();if(!t)return;
+fetch('/api/status',{headers:{'Authorization':'Bearer '+t}}).then(r=>{if(r.ok){document.cookie='sysforge_token='+t+'; path=/; SameSite=Strict';location.href='/';}else{document.getElementById('err').textContent='Geçersiz token.';}});}</script></body></html>`);
+}
 
 // Connected LAN clients tracking map: ip -> { lastSeen, userAgent, requestCount }
 const connectedClients = new Map();
@@ -486,6 +533,10 @@ function handleApi(req, res, pathname) {
 
   // /api/wifi-passwords - Retrieve saved Wi-Fi profiles and passwords
   if (pathname === '/api/wifi-passwords') {
+    if (!WIFI_API_ENABLED) {
+      sendJson(res, 403, { error: 'Bu uç nokta varsayılan olarak devre dışı. Etkinleştirmek için SYSTFORGE_ENABLE_WIFI=1 ile başlatın.' });
+      return;
+    }
     const psCmd = `
       $profiles = netsh wlan show profiles | Select-String "All User Profile\\s*:\\s*(.*)$" | ForEach-Object { $_.Matches[0].Groups[1].Value.Trim() }
       $results = @()
@@ -1108,6 +1159,16 @@ const server = http.createServer((req, res) => {
   const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   const pathname = parsedUrl.pathname;
 
+  // Tüm erişim token doğrulamasına tabi; dashboard kökü giriş sayfasına yönlendirilir
+  if (!isAuthorized(req)) {
+    if (pathname === '/' || pathname === '/index.html' || pathname === '/dashboard.html') {
+      serveLoginPage(res);
+    } else {
+      sendUnauthorized(res);
+    }
+    return;
+  }
+
   // Route API requests
   if (pathname.startsWith('/api/')) {
     handleApi(req, res, pathname);
@@ -1120,21 +1181,23 @@ const server = http.createServer((req, res) => {
 
 // Start Server
 server.listen(PORT, HOST, () => {
-  const lanAddresses = getLocalNetworkAddresses();
+  const lanAddresses = HOST === '0.0.0.0' ? getLocalNetworkAddresses() : [];
   const border = '═'.repeat(68);
 
   console.log(`\n╔${border}╗`);
   console.log(`║   🛠️   SysForge Studio — Node.js Virtual Server & LAN Host         ║`);
   console.log(`╠${border}╣`);
   console.log(`║  Local Access:      http://localhost:${PORT}/dashboard.html              ║`);
-  lanAddresses.forEach(net => {
-    const urlStr = `http://${net.address}:${PORT}/dashboard.html`;
-    const padding = Math.max(0, 48 - urlStr.length);
-    console.log(`║  LAN Network (${net.name}): ${urlStr}${' '.repeat(padding)}║`);
-  });
-  console.log(`║  Binding:           All Interfaces (0.0.0.0:${PORT})                       ║`);
-  console.log(`║  Multi-Device:      Accessible from any PC, Mac, iPad, iPhone, Android   ║`);
-  console.log(`║  Firewall Status:   Ensure TCP Port ${PORT} is open in Windows Firewall      ║`);
+  if (lanAddresses.length) {
+    lanAddresses.forEach(net => {
+      const urlStr = `http://${net.address}:${PORT}/dashboard.html`;
+      const padding = Math.max(0, 48 - urlStr.length);
+      console.log(`║  LAN Network (${net.name}): ${urlStr}${' '.repeat(padding)}║`);
+    });
+  } else if (HOST !== '0.0.0.0') {
+    console.log(`║  LAN erişimi kapalı (yalnızca localhost). Açmak için: HOST=0.0.0.0    ║`);
+  }
+  console.log(`║  Token:             Config\\webserver-token.txt (giriş için gerekli)      ║`);
   console.log(`╚${border}╝\n`);
   console.log(`[INFO] Server running. Press Ctrl+C to stop.`);
 });
